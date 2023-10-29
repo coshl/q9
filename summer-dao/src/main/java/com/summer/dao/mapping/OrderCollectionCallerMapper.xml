@@ -1,0 +1,460 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.summer.dao.mapper.OrderCollectionCallerDAO">
+    <resultMap id="BaseResultMap" type="com.summer.dao.entity.OrderCollectionCaller">
+        <id column="id" jdbcType="INTEGER" property="id"/>
+        <result column="user_id" jdbcType="INTEGER" property="userId"/>
+        <result column="repayment_id" jdbcType="INTEGER" property="repaymentId"/>
+        <result column="last_collection_user_id" jdbcType="INTEGER" property="lastCollectionUserId"/>
+        <result column="current_collection_user_id" jdbcType="INTEGER" property="currentCollectionUserId"/>
+        <result column="status" jdbcType="TINYINT" property="status"/>
+        <result column="promise_repayment_time" jdbcType="TIMESTAMP" property="promiseRepaymentTime"/>
+        <result column="last_collection_time" jdbcType="TIMESTAMP" property="lastCollectionTime"/>
+        <result column="create_time" jdbcType="TIMESTAMP" property="createTime"/>
+        <result column="update_time" jdbcType="TIMESTAMP" property="updateTime"/>
+        <result column="operator_name" jdbcType="VARCHAR" property="operatorName"/>
+        <result column="remark" jdbcType="VARCHAR" property="remark"/>
+        <result column="annotation" jdbcType="VARCHAR" property="annotation"/>
+        <result column="deleted" jdbcType="TINYINT" property="deleted"/>
+        <result column="dispatch_time" jdbcType="TIMESTAMP" property="dispatchTime"/>
+        <result column="allocation_number" jdbcType="INTEGER" property="allocationNumber"/>
+    </resultMap>
+    <sql id="Base_Column_List">
+    id, user_id, repayment_id, last_collection_user_id, current_collection_user_id, status,
+    promise_repayment_time, last_collection_time, create_time, update_time, operator_name,
+    remark, deleted, dispatch_time, allocation_number, annotation
+  </sql>
+    <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from order_collection_caller
+        where id = #{id,jdbcType=INTEGER}
+    </select>
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from order_collection_caller
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+    <insert id="insert" parameterType="com.summer.dao.entity.OrderCollectionCaller">
+    insert into order_collection_caller (id, user_id, repayment_id,
+      last_collection_user_id, current_collection_user_id,
+      status, promise_repayment_time, last_collection_time,
+      create_time, update_time, operator_name,
+      remark, deleted, dispatch_time,
+      allocation_number, annotation)
+    values (#{id,jdbcType=INTEGER}, #{userId,jdbcType=INTEGER}, #{repaymentId,jdbcType=INTEGER},
+      #{lastCollectionUserId,jdbcType=INTEGER}, #{currentCollectionUserId,jdbcType=INTEGER},
+      #{status,jdbcType=TINYINT}, #{promiseRepaymentTime,jdbcType=TIMESTAMP}, #{lastCollectionTime,jdbcType=TIMESTAMP},
+      #{createTime,jdbcType=TIMESTAMP}, #{updateTime,jdbcType=TIMESTAMP}, #{operatorName,jdbcType=VARCHAR},
+      #{remark,jdbcType=VARCHAR}, #{deleted,jdbcType=TINYINT}, #{dispatchTime,jdbcType=TIMESTAMP},
+      #{allocationNumber,jdbcType=INTEGER}, #{annotation,jdbcType=VARCHAR})
+  </insert>
+    <insert id="insertSelective" parameterType="com.summer.dao.entity.OrderCollectionCaller">
+        insert into order_collection_caller
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                id,
+            </if>
+            <if test="userId != null">
+                user_id,
+            </if>
+            <if test="repaymentId != null">
+                repayment_id,
+            </if>
+            <if test="lastCollectionUserId != null">
+                last_collection_user_id,
+            </if>
+            <if test="currentCollectionUserId != null">
+                current_collection_user_id,
+            </if>
+            <if test="status != null">
+                status,
+            </if>
+            <if test="promiseRepaymentTime != null">
+                promise_repayment_time,
+            </if>
+            <if test="lastCollectionTime != null">
+                last_collection_time,
+            </if>
+            <if test="createTime != null">
+                create_time,
+            </if>
+            <if test="updateTime != null">
+                update_time,
+            </if>
+            <if test="operatorName != null">
+                operator_name,
+            </if>
+            <if test="remark != null">
+                remark,
+            </if>
+            <if test="deleted != null">
+                deleted,
+            </if>
+            <if test="dispatchTime != null">
+                dispatch_time,
+            </if>
+            <if test="allocationNumber != null">
+                allocation_number,
+            </if>
+            <if test="annotation != null">
+                annotation,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                #{id,jdbcType=INTEGER},
+            </if>
+            <if test="userId != null">
+                #{userId,jdbcType=INTEGER},
+            </if>
+            <if test="repaymentId != null">
+                #{repaymentId,jdbcType=INTEGER},
+            </if>
+            <if test="lastCollectionUserId != null">
+                #{lastCollectionUserId,jdbcType=INTEGER},
+            </if>
+            <if test="currentCollectionUserId != null">
+                #{currentCollectionUserId,jdbcType=INTEGER},
+            </if>
+            <if test="status != null">
+                #{status,jdbcType=TINYINT},
+            </if>
+            <if test="promiseRepaymentTime != null">
+                #{promiseRepaymentTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="lastCollectionTime != null">
+                #{lastCollectionTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="createTime != null">
+                #{createTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="updateTime != null">
+                #{updateTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="operatorName != null">
+                #{operatorName,jdbcType=VARCHAR},
+            </if>
+            <if test="remark != null">
+                #{remark,jdbcType=VARCHAR},
+            </if>
+            <if test="deleted != null">
+                #{deleted,jdbcType=TINYINT},
+            </if>
+            <if test="dispatchTime != null">
+                #{dispatchTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="allocationNumber != null">
+                #{allocationNumber,jdbcType=INTEGER},
+            </if>
+            <if test="annotation != null">
+                #{annotation,jdbcType=VARCHAR},
+            </if>
+        </trim>
+    </insert>
+    <update id="updateByPrimaryKeySelective" parameterType="com.summer.dao.entity.OrderCollectionCaller">
+        update order_collection_caller
+        <set>
+            <if test="userId != null">
+                user_id = #{userId,jdbcType=INTEGER},
+            </if>
+            <if test="repaymentId != null">
+                repayment_id = #{repaymentId,jdbcType=INTEGER},
+            </if>
+            <if test="lastCollectionUserId != null">
+                last_collection_user_id = #{lastCollectionUserId,jdbcType=INTEGER},
+            </if>
+            <if test="currentCollectionUserId != null">
+                current_collection_user_id = #{currentCollectionUserId,jdbcType=INTEGER},
+            </if>
+            <if test="status != null">
+                status = #{status,jdbcType=TINYINT},
+            </if>
+            <if test="promiseRepaymentTime != null">
+                promise_repayment_time = #{promiseRepaymentTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="lastCollectionTime != null">
+                last_collection_time = #{lastCollectionTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="createTime != null">
+                create_time = #{createTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="updateTime != null">
+                update_time = #{updateTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="operatorName != null">
+                operator_name = #{operatorName,jdbcType=VARCHAR},
+            </if>
+            <if test="remark != null">
+                remark = #{remark,jdbcType=VARCHAR},
+            </if>
+            <if test="deleted != null">
+                deleted = #{deleted,jdbcType=TINYINT},
+            </if>
+            <if test="dispatchTime != null">
+                dispatch_time = #{dispatchTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="allocationNumber != null">
+                allocation_number = #{allocationNumber,jdbcType=INTEGER},
+            </if>
+            <if test="annotation != null">
+                annotation = #{annotation,jdbcType=VARCHAR},
+            </if>
+        </set>
+        where id = #{id,jdbcType=INTEGER}
+    </update>
+    <update id="updateByPrimaryKey" parameterType="com.summer.dao.entity.OrderCollectionCaller">
+    update order_collection_caller
+    set user_id = #{userId,jdbcType=INTEGER},
+      repayment_id = #{repaymentId,jdbcType=INTEGER},
+      last_collection_user_id = #{lastCollectionUserId,jdbcType=INTEGER},
+      current_collection_user_id = #{currentCollectionUserId,jdbcType=INTEGER},
+      status = #{status,jdbcType=TINYINT},
+      promise_repayment_time = #{promiseRepaymentTime,jdbcType=TIMESTAMP},
+      last_collection_time = #{lastCollectionTime,jdbcType=TIMESTAMP},
+      create_time = #{createTime,jdbcType=TIMESTAMP},
+      update_time = #{updateTime,jdbcType=TIMESTAMP},
+      operator_name = #{operatorName,jdbcType=VARCHAR},
+      remark = #{remark,jdbcType=VARCHAR},
+      deleted = #{deleted,jdbcType=TINYINT},
+      dispatch_time = #{dispatchTime,jdbcType=TIMESTAMP},
+      allocation_number = #{allocationNumber,jdbcType=INTEGER},
+      annotation = #{annotation,jdbcType=VARCHAR}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+
+    <select id="selectByRepaymentId" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+        select
+        occ.id, occ.user_id, occ.repayment_id, occ.last_collection_user_id, occ.current_collection_user_id, occ.status,
+        occ.promise_repayment_time, occ.last_collection_time, occ.create_time, occ.update_time, occ.operator_name,
+        occ.remark, occ.deleted, occ.dispatch_time, occ.allocation_number, occ.annotation
+        from order_collection_caller occ left join platform_user pu on occ.current_collection_user_id = pu.id
+        where occ.deleted = 0 and occ.repayment_id = #{repaymentId,jdbcType=INTEGER} and pu.status = 0 and pu.role_id = 10 order by occ.id desc limit 1
+    </select>
+
+    <insert id="insertBatchSelective" parameterType="java.util.List">
+        insert into order_collection_caller
+        (user_id, repayment_id, last_collection_user_id, current_collection_user_id,
+        status, promise_repayment_time, last_collection_time,
+        operator_name, remark, deleted, dispatch_time, allocation_number, annotation)
+        values
+        <foreach collection="list" index="index" item="item" separator=",">
+            <trim prefix="(" suffix=")" suffixOverrides=",">
+                <if test="item.userId != null">
+                    #{item.userId,jdbcType=INTEGER},
+                </if>
+                <if test="item.userId == null">
+                    NULL,
+                </if>
+                <if test="item.repaymentId != null">
+                    #{item.repaymentId,jdbcType=INTEGER},
+                </if>
+                <if test="item.repaymentId == null">
+                    NULL,
+                </if>
+                <if test="item.lastCollectionUserId != null">
+                    #{item.lastCollectionUserId,jdbcType=INTEGER},
+                </if>
+                <if test="item.lastCollectionUserId == null">
+                    NULL,
+                </if>
+                <if test="item.currentCollectionUserId != null">
+                    #{item.currentCollectionUserId,jdbcType=INTEGER},
+                </if>
+                <if test="item.currentCollectionUserId == null">
+                    NULL,
+                </if>
+                <if test="item.status != null">
+                    #{item.status,jdbcType=TINYINT},
+                </if>
+                <if test="item.status == null">
+                    0,
+                </if>
+                <if test="item.promiseRepaymentTime != null">
+                    #{item.promiseRepaymentTime,jdbcType=TIMESTAMP},
+                </if>
+                <if test="item.promiseRepaymentTime == null">
+                    NULL,
+                </if>
+                <if test="item.lastCollectionTime != null">
+                    #{item.lastCollectionTime,jdbcType=TIMESTAMP},
+                </if>
+                <if test="item.lastCollectionTime == null">
+                    NULL,
+                </if>
+                <if test="item.operatorName != null">
+                    #{item.operatorName,jdbcType=VARCHAR},
+                </if>
+                <if test="item.operatorName == null">
+                    NULL,
+                </if>
+                <if test="item.remark != null">
+                    #{item.remark,jdbcType=VARCHAR},
+                </if>
+                <if test="item.remark == null">
+                    NULL,
+                </if>
+                <if test="item.deleted != null">
+                    #{item.deleted,jdbcType=TINYINT},
+                </if>
+                <if test="item.deleted == null">
+                    0,
+                </if>
+                <if test="item.dispatchTime != null">
+                    #{item.dispatchTime,jdbcType=TIMESTAMP},
+                </if>
+                <if test="item.dispatchTime == null">
+                    NULL,
+                </if>
+                <if test="item.allocationNumber != null">
+                    #{item.allocationNumber,jdbcType=INTEGER},
+                </if>
+                <if test="item.allocationNumber == null">
+                    1,
+                </if>
+                <if test="item.annotation != null">
+                    #{item.annotation,jdbcType=VARCHAR},
+                </if>
+                <if test="item.annotation == null">
+                    NULL,
+                </if>
+            </trim>
+        </foreach>
+    </insert>
+
+    <select id="findParams" parameterType="java.util.Map" resultType="com.summer.pojo.vo.OrderCollectionCallerVo">
+        select date_format(orp.repayment_time,'%Y-%m-%d' ) as lastRepaymentTime, date_format(now(),'%Y-%m-%d' ) as
+        today,
+        occ.id, u.id as userId,u.real_name as realName, u.phone, orp.repayment_amount as repaymentAmount,
+        ob.loan_term as loanTerm, (orp.repayment_amount - orp.paid_amount) as principalAmount, orp.late_fee as lateFee,
+        orp.paid_amount as paidAmount, date_format(ob.loan_time,'%Y-%m-%d') loanTime, u.id_card as idCard,
+        date_format(orp.repayment_time,'%Y-%m-%d' ) as repaymentTime, occ.remark, u.status as userStatus,
+        pc.channel_name as channelName, orp.status as repaymentStatus, pu.user_name as userName, occ.annotation as
+        annotation,umd.task_id as taskId,ob.customer_type as customerType
+        from order_collection_caller occ LEFT join user_info u on occ.user_id = u.id
+        LEFT JOIN plateform_channel pc on u.channel_id = pc.id
+        LEFT join order_repayment orp on occ.repayment_id = orp.id
+        LEFT join order_borrow ob on orp.borrow_id = ob.id
+        LEFT join platform_user pu on occ.current_collection_user_id = pu.id
+        left join user_moxie_data umd on occ.user_id = umd.user_id
+        <where>
+            occ.deleted = 0 and orp.status in (0, 1, 2) and date_format(occ.create_time,'%Y-%m-%d') =
+            date_format(now(),'%Y-%m-%d')
+            <if test="userStatus == null">
+                and u.status != 2
+            </if>
+            <if test="realName != null and realName != ''">
+                and u.real_name like CONCAT('%',#{realName,jdbcType=VARCHAR},'%')
+            </if>
+            <if test="phone != null and phone != ''">
+                and u.phone = #{phone,jdbcType=VARCHAR}
+            </if>
+            <if test="serviceUserId != null">
+                and occ.current_collection_user_id = #{serviceUserId,jdbcType=TINYINT}
+            </if>
+            <if test="remark != null and remark != ''">
+                and occ.remark = #{remark,jdbcType=VARCHAR}
+            </if>
+            <if test="beginTime != null and beginTime != ''">
+                <![CDATA[ and orp.repayment_time >= #{beginTime} ]]>
+            </if>
+            <if test="endTime != null and endTime != ''">
+                <![CDATA[ and orp.repayment_time < date_add(#{endTime},interval 1 day)   ]]>
+            </if>
+            <if test="channelName != null and channelName != ''">
+                and pc.channel_name = #{channelName,jdbcType=VARCHAR}
+            </if>
+            <if test="repaymentStatusStr != null and repaymentStatusStr == 1">
+                and orp.status != 2 and date_format(orp.repayment_time,'%Y-%m-%d' ) = date_format(now(),'%Y-%m-%d' )
+            </if>
+            <if test="repaymentStatusStr != null and repaymentStatusStr == 2">
+                and date_format(orp.repayment_time,'%Y-%m-%d' ) != date_format(now(),'%Y-%m-%d' )
+            </if>
+            <if test="repaymentStatusStr != null and repaymentStatusStr == 3">
+                and orp.status = 2
+            </if>
+            <if test="userName != null and userName != ''">
+                and pu.user_name = #{userName,jdbcType=VARCHAR}
+            </if>
+            <if test="customerType != null and customerType != '' or customerType == 0">
+                and ob.customer_type = #{customerType}
+            </if>
+        </where>
+        order by occ.id desc
+    </select>
+
+    <select id="selectRepaymentByTime" parameterType="java.util.Map"
+            resultType="com.summer.dao.entity.CollectionStatistics">
+        select occ.current_collection_user_id as userId, count(1) as repaymentNumber, sum(repayment_amount) as
+        repaymentAmount ,distribution.distributionNumber, distribution.distributionAmount
+        from order_collection_caller occ LEFT JOIN platform_user pu on occ.current_collection_user_id = pu.id
+        LEFT join order_repayment orp on occ.repayment_id = orp.id LEFT JOIN (select occ.current_collection_user_id as
+        user_id, count(1) as distributionNumber, sum(repayment_amount) as distributionAmount
+        from order_collection_caller occ LEFT JOIN platform_user pu on occ.current_collection_user_id = pu.id
+        LEFT join order_repayment orp on occ.repayment_id = orp.id
+        where date_format(occ.create_time,'%Y-%m-%d') = #{nowTime} group by
+        occ.current_collection_user_id ) distribution on occ.current_collection_user_id = distribution.user_id
+        <where>
+            orp.status = 2
+            <if test="nowTime != null and nowTime != ''">
+                <![CDATA[ and date_format(occ.create_time,'%Y-%m-%d') = #{nowTime} ]]>
+            </if>
+            <if test="beginTime != null and beginTime != ''">
+                <![CDATA[ and orp.paid_time >= #{beginTime} ]]>
+            </if>
+            <if test="endTime != null and endTime != ''">
+                <![CDATA[ and orp.paid_time < #{endTime}   ]]>
+            </if>
+        </where>
+        group by occ.current_collection_user_id
+    </select>
+    <update id="updateBatch" parameterType="java.util.List">
+        UPDATE order_collection_caller
+        SET current_collection_user_id = CASE id
+        <foreach collection="list" item="item">
+            WHEN #{item.id} THEN #{item.currentCollectionUserId}
+        </foreach>
+        END,
+        dispatch_time = CASE id
+        <foreach collection="list" item="item">
+            WHEN #{item.id} THEN #{item.dispatchTime}
+        </foreach>
+        END,
+        operator_name = CASE id
+        <foreach collection="list" item="item">
+            WHEN #{item.id} THEN #{item.operatorName}
+        </foreach>
+        END,
+        remark = CASE id
+        <foreach collection="list" item="item">
+            WHEN #{item.id} THEN #{item.remark}
+        </foreach>
+        END
+        WHERE
+        id in
+        <foreach collection="list" item="item" open="(" separator="," close=")">
+            #{item.id}
+        </foreach>
+    </update>
+
+    <select id="selectToday" resultType="java.lang.Integer">
+        select repayment_id from order_collection_caller
+        where  deleted = 0 and date_format(create_time,'%Y-%m-%d') = date_format(now(),'%Y-%m-%d')
+    </select>
+
+    <select id="selectRenewalByTime" parameterType="java.util.Map" resultType="com.summer.dao.entity.CollectionStatistics">
+        select occ.current_collection_user_id as userId, count(1) as repaymentNumber, sum(orr.repayment_fee +
+        orr.late_fee + orr.renewal_fee) as repaymentAmount
+        from order_collection_caller occ
+        LEFT join order_renewal orr on occ.repayment_id = orr.repayment_id
+        <where>
+            orr.status = 2 and date_format(occ.create_time,'%Y-%m-%d') = #{nowTime}
+            <if test="beginTime != null and beginTime != ''">
+                <![CDATA[ and orr.create_time >= #{beginTime} ]]>
+            </if>
+            <if test="endTime != null and endTime != ''">
+                <![CDATA[ and orr.create_time < #{endTime}   ]]>
+            </if>
+        </where>
+        group by occ.current_collection_user_id
+    </select>
+</mapper>

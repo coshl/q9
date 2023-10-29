@@ -1,0 +1,259 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.summer.dao.mapper.PlatformBannerMapper">
+    <resultMap id="BaseResultMap" type="com.summer.dao.entity.PlatformBanner">
+        <id column="id" jdbcType="INTEGER" property="id"/>
+        <result column="equement_type" jdbcType="INTEGER" property="equementType"/>
+        <result column="channel_id" jdbcType="INTEGER" property="channelId"/>
+        <result column="user_level" jdbcType="INTEGER" property="userLevel"/>
+        <result column="present_way" jdbcType="INTEGER" property="presentWay"/>
+        <result column="start_time" jdbcType="TIMESTAMP" property="startTime"/>
+        <result column="end_time" jdbcType="TIMESTAMP" property="endTime"/>
+        <result column="sort" jdbcType="INTEGER" property="sort"/>
+        <result column="status" jdbcType="INTEGER" property="status"/>
+        <result column="url" jdbcType="VARCHAR" property="url"/>
+        <result column="reurl" jdbcType="VARCHAR" property="reurl"/>
+        <result column="title" jdbcType="VARCHAR" property="title"/>
+        <result column="add_person" jdbcType="VARCHAR" property="addPerson"/>
+        <result column="create_time" jdbcType="TIMESTAMP" property="createTime"/>
+        <result column="update_time" jdbcType="TIMESTAMP" property="updateTime"/>
+        <result column="type" jdbcType="INTEGER" property="type"></result>
+    </resultMap>
+    <sql id="Base_Column_List">
+    id, equement_type, channel_id, user_level, present_way, start_time, end_time, sort,
+    status, url, reurl, title,add_person, create_time, update_time,type
+  </sql>
+    <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from platform_banner
+        where id = #{id,jdbcType=INTEGER}
+    </select>
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from platform_banner
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+    <insert id="insert" parameterType="com.summer.dao.entity.PlatformBanner">
+    insert into platform_banner (id, equement_type,type, channel_id,
+      user_level, present_way, start_time, 
+      end_time, sort, status, 
+      url, reurl, title, add_person,
+      create_time, update_time)
+    values (#{id,jdbcType=INTEGER}, #{equementType,jdbcType=INTEGER},#{type}, #{channelId,jdbcType=INTEGER},
+      #{userLevel,jdbcType=INTEGER}, #{presentWay,jdbcType=INTEGER}, #{startTime,jdbcType=TIMESTAMP},
+      #{endTime,jdbcType=TIMESTAMP}, #{sort,jdbcType=INTEGER}, #{status,jdbcType=INTEGER},
+      #{url,jdbcType=VARCHAR}, #{reurl,jdbcType=VARCHAR}, #{title,jdbcType=VARCHAR},#{addPerson,jdbcType=VARCHAR},
+      #{createTime,jdbcType=TIMESTAMP}, #{updateTime,jdbcType=TIMESTAMP})
+  </insert>
+    <insert id="insertSelective" parameterType="com.summer.dao.entity.PlatformBanner">
+        insert into platform_banner
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                id,
+            </if>
+            <if test="equementType != null">
+                equement_type,
+            </if>
+            <if test="type !=null">
+                type ,
+            </if>
+
+            <if test="channelId != null">
+                channel_id,
+            </if>
+            <if test="userLevel != null">
+                user_level,
+            </if>
+            <if test="presentWay != null">
+                present_way,
+            </if>
+            <if test="startTime != null">
+                start_time,
+            </if>
+            <if test="endTime != null">
+                end_time,
+            </if>
+            <if test="sort != null">
+                sort,
+            </if>
+            <if test="status != null">
+                status,
+            </if>
+            <if test="url != null">
+                url,
+            </if>
+            <if test="reurl != null">
+                reurl,
+            </if>
+            <if test="title != null">
+                title,
+            </if>
+            <if test="addPerson != null">
+                add_person,
+            </if>
+            <if test="createTime != null">
+                create_time,
+            </if>
+            <if test="updateTime != null">
+                update_time,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                #{id,jdbcType=INTEGER},
+            </if>
+            <if test="equementType != null">
+                #{equementType,jdbcType=INTEGER},
+            </if>
+            <if test="type !=null">
+                #{type},
+            </if>
+            <if test="channelId != null">
+                #{channelId,jdbcType=INTEGER},
+            </if>
+            <if test="userLevel != null">
+                #{userLevel,jdbcType=INTEGER},
+            </if>
+            <if test="presentWay != null">
+                #{presentWay,jdbcType=INTEGER},
+            </if>
+            <if test="startTime != null">
+                #{startTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="endTime != null">
+                #{endTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="sort != null">
+                #{sort,jdbcType=INTEGER},
+            </if>
+            <if test="status != null">
+                #{status,jdbcType=INTEGER},
+            </if>
+            <if test="url != null">
+                #{url,jdbcType=VARCHAR},
+            </if>
+            <if test="reurl != null">
+                #{reurl,jdbcType=VARCHAR},
+            </if>
+            <if test="title != null">
+                #{title,jdbcType=VARCHAR},
+            </if>
+            <if test="addPerson != null">
+                #{addPerson,jdbcType=VARCHAR},
+            </if>
+            <if test="createTime != null">
+                #{createTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="updateTime != null">
+                #{updateTime,jdbcType=TIMESTAMP},
+            </if>
+        </trim>
+    </insert>
+    <update id="updateByPrimaryKeySelective" parameterType="com.summer.dao.entity.PlatformBanner">
+        update platform_banner
+        <set>
+            <if test="equementType != null">
+                equement_type = #{equementType,jdbcType=INTEGER},
+            </if>
+            <if test="channelId != null">
+                channel_id = #{channelId,jdbcType=INTEGER},
+            </if>
+            <if test="userLevel != null">
+                user_level = #{userLevel,jdbcType=INTEGER},
+            </if>
+            <if test="presentWay != null">
+                present_way = #{presentWay,jdbcType=INTEGER},
+            </if>
+            <if test="startTime != null">
+                start_time = #{startTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="endTime != null">
+                end_time = #{endTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="sort != null">
+                sort = #{sort,jdbcType=INTEGER},
+            </if>
+            <if test="status != null">
+                status = #{status,jdbcType=INTEGER},
+            </if>
+            <if test="url != null">
+                url = #{url,jdbcType=VARCHAR},
+            </if>
+            <if test="reurl != null">
+                reurl = #{reurl,jdbcType=VARCHAR},
+            </if>
+            <if test="title != null">
+                title = #{title,jdbcType=VARCHAR},
+            </if>
+            <if test="addPerson != null">
+                add_person = #{addPerson,jdbcType=VARCHAR},
+            </if>
+            <if test="createTime != null">
+                create_time = #{createTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="updateTime != null">
+                update_time = NOW(),
+            </if>
+        </set>
+        where id = #{id,jdbcType=INTEGER}
+    </update>
+    <update id="updateByPrimaryKey" parameterType="com.summer.dao.entity.PlatformBanner">
+    update platform_banner
+    set equement_type = #{equementType,jdbcType=INTEGER},
+      type ={type},
+      channel_id = #{channelId,jdbcType=INTEGER},
+      user_level = #{userLevel,jdbcType=INTEGER},
+      present_way = #{presentWay,jdbcType=INTEGER},
+      start_time = #{startTime,jdbcType=TIMESTAMP},
+      end_time = #{endTime,jdbcType=TIMESTAMP},
+      sort = #{sort,jdbcType=INTEGER},
+      status = #{status,jdbcType=INTEGER},
+      url = #{url,jdbcType=VARCHAR},
+      reurl = #{reurl,jdbcType=VARCHAR},
+      title = #{title,jdbcType=VARCHAR},
+        add_person = #{addPerson,jdbcType=VARCHAR},
+      create_time = #{createTime,jdbcType=TIMESTAMP},
+      update_time = NOW()
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+
+    <select id="selectByParams" parameterType="Map" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from platform_banner
+        <where>
+            <if test="title != null and title != '' ">
+                and title like concat('%',#{title},'%')
+            </if>
+            <if test="type != null ">
+                and type = #{type}
+            </if>
+
+        </where>
+        order by update_time desc
+    </select>
+
+    <select id="getList" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from platform_banner
+    </select>
+
+
+    <select id="findIndexImgByParam" parameterType="java.util.Map" resultMap="BaseResultMap">
+        select sort, url, reurl, title from platform_banner
+        <where>
+            <if test="equementType != null">
+                and equement_type=#{equementType}
+            </if>
+            <if test="type != null">
+                and type =#{type}
+            </if>
+            <if test="status != null">
+                and status=#{status}
+            </if>
+        </where>
+    </select>
+
+
+</mapper>

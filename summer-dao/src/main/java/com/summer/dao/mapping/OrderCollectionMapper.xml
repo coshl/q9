@@ -1,0 +1,1308 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.summer.dao.mapper.OrderCollectionDAO">
+    <resultMap id="BaseResultMap" type="com.summer.dao.entity.OrderCollection">
+        <id column="id" jdbcType="INTEGER" property="id"/>
+        <result column="user_id" jdbcType="INTEGER" property="userId"/>
+        <result column="borrow_id" jdbcType="INTEGER" property="borrowId"/>
+        <result column="repayment_id" jdbcType="INTEGER" property="repaymentId"/>
+        <result column="last_collection_user_id" jdbcType="INTEGER" property="lastCollectionUserId"/>
+        <result column="current_collection_user_id" jdbcType="INTEGER" property="currentCollectionUserId"/>
+        <result column="current_overdue_level" jdbcType="TINYINT" property="currentOverdueLevel"/>
+        <result column="overdue_day" jdbcType="INTEGER" property="overdueDay"/>
+        <result column="m1_approve_id" jdbcType="INTEGER" property="m1ApproveId"/>
+        <result column="m1_operate_status" jdbcType="TINYINT" property="m1OperateStatus"/>
+        <result column="m2_approve_id" jdbcType="INTEGER" property="m2ApproveId"/>
+        <result column="m2_operate_status" jdbcType="TINYINT" property="m2OperateStatus"/>
+        <result column="m3_approve_id" jdbcType="INTEGER" property="m3ApproveId"/>
+        <result column="m3_operate_status" jdbcType="TINYINT" property="m3OperateStatus"/>
+        <result column="m4_approve_id" jdbcType="INTEGER" property="m4ApproveId"/>
+        <result column="m4_operate_status" jdbcType="TINYINT" property="m4OperateStatus"/>
+        <result column="m5_approve_id" jdbcType="INTEGER" property="m5ApproveId"/>
+        <result column="m5_operate_status" jdbcType="TINYINT" property="m5OperateStatus"/>
+        <result column="status" jdbcType="TINYINT" property="status"/>
+        <result column="promise_repayment_time" jdbcType="TIMESTAMP" property="promiseRepaymentTime"/>
+        <result column="last_collection_time" jdbcType="TIMESTAMP" property="lastCollectionTime"/>
+        <result column="create_time" jdbcType="TIMESTAMP" property="createTime"/>
+        <result column="promise_repayment_time_chg" property="promiseRepaymentTimeChg" jdbcType="VARCHAR"/>
+        <result column="update_time" jdbcType="TIMESTAMP" property="updateTime"/>
+        <result column="dispatch_time" jdbcType="TIMESTAMP" property="dispatchTime"/>
+        <result column="operator_name" jdbcType="VARCHAR" property="operatorName"/>
+        <result column="remark" jdbcType="VARCHAR" property="remark"/>
+        <result column="order_no" jdbcType="VARCHAR" property="orderNo"/>
+        <result column="outside_company_id" jdbcType="SMALLINT" property="outsideCompanyId"/>
+        <result column="deleted" jdbcType="TINYINT" property="deleted"/>
+        <result column="important_weight" jdbcType="TINYINT" property="importantWeight"/>
+        <result column="loan_real_name" jdbcType="VARCHAR" property="loanRealName"/>
+        <result column="loan_user_phone" jdbcType="VARCHAR" property="loanUserPhone"/>
+        <result column="real_money" jdbcType="INTEGER" property="realMoney"/>
+        <result column="reduction" jdbcType="INTEGER" property="reductionMoney"/>
+    </resultMap>
+    <resultMap id="CollectionUserMap" type="com.summer.pojo.vo.CollectionUserVO">
+        <id column="id" jdbcType="BIGINT" property="id"/>
+        <result column="phone" property="phone" jdbcType="VARCHAR"/>
+        <result column="real_name" property="realName" jdbcType="VARCHAR"/>
+        <result column="reviewer" property="userName" jdbcType="VARCHAR"/>
+        <result column="create_time_chg" property="loanTimeChg" jdbcType="VARCHAR"/>
+        <result column="repayment_time_chg" property="repaymentTimeChg" jdbcType="VARCHAR"/>
+        <result column="paid_time_chg" property="paidTimeChg" jdbcType="VARCHAR"/>
+        <result column="group_level" property="groupLevel" jdbcType="VARCHAR"/>
+        <result column="remark" property="remark" jdbcType="VARCHAR"/>
+        <result column="apply_amount" property="applyAmount" jdbcType="INTEGER"/>
+        <result column="reduceAmount" property="reduceAmount" jdbcType="INTEGER"/>
+        <result column="paid" property="paidAmount" jdbcType="INTEGER"/>
+        <result column="to_pay" property="principalAmount" jdbcType="INTEGER"/>
+        <result column="late" property="lateFee" jdbcType="INTEGER"/>
+        <result column="late_day" property="lateDay" jdbcType="INTEGER"/>
+        <result column="loan_term" property="loanTerm" jdbcType="INTEGER"/>
+        <result column="overdue_count" property="overdueCount" jdbcType="INTEGER"/>
+        <result column="reduction" property="reductionAmount" jdbcType="INTEGER"/>
+        <result column="status" property="payStatus" jdbcType="TINYINT"/>
+        <result column="pay_type" property="payType" jdbcType="TINYINT"/>
+        <result column="auditStatus" property="auditStatus" jdbcType="TINYINT"/>
+        <result column="task_id" property="taskId"/>
+        <result column="collection_tag " property="collectionTag"/>
+        <result column="collectionRemark" property="collectionRemark"/>
+        <result column="collectionDescription" property="collectionDescription"/>
+        <result column="userId" property="userId"/>
+
+    </resultMap>
+    <sql id="Base_Column_List">
+        id,
+        user_id,
+        borrow_id,
+        repayment_id,
+        last_collection_user_id,
+        current_collection_user_id,
+        current_overdue_level,
+        overdue_day,
+        m1_approve_id,
+        m1_operate_status,
+        m2_approve_id,
+        m2_operate_status,
+        m3_approve_id,
+        m3_operate_status,
+        m4_approve_id,
+        m4_operate_status,
+        m5_approve_id,
+        m5_operate_status,
+        status,
+
+        date_format
+        (
+        promise_repayment_time,
+        '%Y-%m-%d %H:%i:%s'
+        )
+        promise_repayment_time_chg,
+        last_collection_time,
+        create_time,
+        date_format
+        (
+        create_time,
+        '%Y-%m-%d %H:%i:%s'
+        )
+        create_time_chg,
+        update_time,
+        dispatch_time,
+        operator_name,
+        order_no,
+        remark,
+        outside_company_id,
+        deleted,
+        important_weight,
+        loan_real_name,
+        loan_user_phone,
+        real_money,
+        reduction_money
+        reduction
+    </sql>
+    <sql id="User_Column_List">
+        oc
+        .
+        id,oc.reduction_money  reduction,
+        orp
+        .
+        paid_amount
+        paid,orp.reduce_amount/100.0 reduceAmount,
+        date_format
+        (
+        orp
+        .
+        create_time,
+        '%Y-%m-%d %H:%i:%s'
+        )
+        create_time_chg,
+        date_format
+        (
+        orp
+        .
+        repayment_time,
+        '%Y-%m-%d'
+        )
+        repayment_time_chg,
+        (
+        orp
+        .
+        principal_amount
+        +
+        orp
+        .
+        fee_amount
+        )
+        apply_amount,
+        (
+        orp
+        .
+        repayment_amount
+        -
+        orp
+        .
+        paid_amount-orp.reduce_amount
+        )
+        to_pay,
+        orp
+        .
+        late_fee
+        late,
+        orp
+        .
+        pay_type,
+        oc
+        .
+        overdue_day,
+        ob
+        .
+        loan_term,
+        orp
+        .
+        status,
+        ui
+        .
+        real_name,
+        ui
+        .
+        phone,
+        pu
+        .
+        user_name
+        reviewer,
+        pu
+        .
+        group_level,
+        overdue
+        .
+        overdue_count,IFNULL(ocr.audit_status,-1) auditStatus,ocr.remark,
+        ui.id_card as idCard, ui.status as userStatus ,umd.task_id as task_id,cod.collection_tag as collection_tag,cod.remark as collectionRemark,
+        cod.collection_tag as collectionDescription
+    </sql>
+    <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from order_collection
+        where id = #{id,jdbcType=INTEGER}
+    </select>
+    <select id="selectByIds" parameterType="java.util.Arrays" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from order_collection
+        <where>
+            <foreach collection="array" item="item" open="id IN (" close=")"
+                     separator=",">
+                #{item}
+            </foreach>
+        </where>
+    </select>
+    <select id="selectSimple" parameterType="java.util.Map" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from order_collection
+        <where>
+            <if test="borrowId != null ">
+                and borrow_id = #{borrowId}
+            </if>
+            <if test="repaymentId != null ">
+                and repayment_id = #{repaymentId}
+            </if>
+            <if test="userId != null ">
+                and user_id = #{userId}
+            </if>
+        </where>
+        ORDER BY id DESC
+    </select>
+    <select id="countOverdue" resultType="java.util.Map">
+        select 1 num, count(*) todaySuccessCount,IFNULL(sum(real_money),0) todaySuccessAmount
+        from order_collection
+        where DATEDIFF(now(),last_collection_time) = 0 and status=4 union all
+        select 2 num, count(*) monthSuccessCount,IFNULL(sum(real_money),0) monthSuccessAmount
+        from order_collection
+        where date_format(last_collection_time,'%Y-%m')  = date_format(now(),'%Y-%m') and status=4 union all
+        select 3 num, count(*) todayNewCount,IFNULL(sum(orp.repayment_amount-orp.paid_amount-orp.reduce_amount),0) todayNewAmount
+        from order_collection oc left join order_repayment orp on oc.repayment_id=orp.id
+        where DATEDIFF(now(),oc.create_time) = 0  union all
+        select 4 num, count(*) overdueCount3,IFNULL(sum(orp.repayment_amount-orp.paid_amount-orp.reduce_amount),0)  overdueAmount3
+        from order_collection oc left join order_repayment orp on oc.repayment_id=orp.id
+        where  <![CDATA[    oc.overdue_day < 3 ]]>
+        union all
+
+        select 5 num, count(*) overdueCount7,IFNULL(sum(orp.repayment_amount-orp.paid_amount-orp.reduce_amount),0)  overdueAmount4
+        from order_collection oc left join order_repayment orp on oc.repayment_id=orp.id
+        where   <![CDATA[   oc.overdue_day < 7 and oc.overdue_day >= 3 ]]>
+        union all
+        select 6 num, count(*) overdueCount30,IFNULL(sum(orp.repayment_amount-orp.paid_amount-orp.reduce_amount),0)  overdueAmount11
+        from order_collection oc left join order_repayment orp on oc.repayment_id=orp.id
+        where  <![CDATA[     oc.overdue_day < 30 and oc.overdue_day >= 7 ]]>
+        union all
+        select 7 num, count(*) overdueCount31,IFNULL(sum(orp.repayment_amount-orp.paid_amount-orp.reduce_amount),0)  overdueAmount31
+        from order_collection oc left join order_repayment orp on oc.repayment_id=orp.id
+        where  <![CDATA[    oc.overdue_day >= 30
+        ]]>
+
+    </select>
+    <select id="statisticByDay" parameterType="java.util.Map" resultType="com.summer.dao.entity.CountCollectionAssessment">
+        select
+        pu.id personId,pu.user_name personName,count(*)
+        orderTotal,IFNULL(sum(orp.principal_amount+orp.fee_amount)/100.0,0)
+        loanMoney,count(oc.status=4 or null)
+        repaymentOrderNum,IFNULL(sum(orp.true_principal)/100.0,0)
+        repaymentMoney,IFNULL(sum(orp.true_late_fee)/100.0,0) repaymentPenalty
+        from order_collection oc
+        left join platform_user pu on oc.current_collection_user_id = pu.id
+
+        INNER join order_repayment orp on oc.repayment_id=orp.id
+
+
+        <where>
+            <if test="platformUserId != null ">
+                and pu.id = #{platformUserId}
+            </if>
+
+            <if test="beginTime != null and beginTime != ''">
+                <![CDATA[    and oc.dispatch_time >= #{beginTime}   ]]>
+            </if>
+            <if test="endTime != null and endTime != ''">
+                <![CDATA[    and oc.dispatch_time < date_add(#{endTime},interval 1 day)  ]]>
+            </if>
+
+        </where>
+        group by oc.current_collection_user_id
+    </select>
+    <select id="findParams" parameterType="java.util.Map" resultMap="CollectionUserMap">
+        SELECT
+        oc.id,
+        oc.reduction_money reduction,
+        orp.paid_amount paid,
+        orp.reduce_amount / 100.0 reduceAmount,
+        date_format ( orp.create_time, '%Y-%m-%d %H:%i:%s' ) create_time_chg,
+        date_format ( orp.repayment_time, '%Y-%m-%d' ) repayment_time_chg,
+        date_format ( orp.paid_time, '%Y-%m-%d' ) paid_time_chg,
+        ( orp.principal_amount + orp.fee_amount ) apply_amount,
+        ( orp.repayment_amount - orp.paid_amount - orp.reduce_amount ) to_pay,
+        orp.late_fee late,
+        orp.pay_type,
+        orp.late_day,
+        ob.loan_term,
+        ob.user_id userId,
+        orp.STATUS,
+        ui.real_name,
+        ui.phone,
+        pu.user_name reviewer,
+        pu.group_level,
+        ifnull( ui.history_over_num, 0 ) overdue_count,
+        IFNULL( ocr.audit_status,- 1 ) auditStatus,
+        ocr.remark,
+        ui.id_card AS idCard,
+        ui.STATUS AS userStatus,
+        umd.task_id AS task_id,
+        cod.collection_tag AS collection_tag,
+        cod.remark AS collectionRemark,
+        cod.collection_tag AS collectionDescription
+        FROM
+        order_collection oc
+        INNER JOIN user_info ui ON oc.user_id = ui.id
+        LEFT JOIN platform_user pu ON oc.current_collection_user_id = pu.id
+        LEFT JOIN (
+        SELECT
+        a.*
+        FROM
+        order_collection_detail AS a
+        WHERE
+        a.id IN ( SELECT id FROM ( SELECT MAX( id ) AS id, collection_id FROM order_collection_detail GROUP BY collection_id ) b )
+        ) cod ON oc.id = cod.collection_id
+        LEFT JOIN (
+        SELECT
+        a.*
+        FROM
+        order_collection_reduction AS a
+        WHERE
+        a.id IN ( SELECT id FROM ( SELECT MAX( id ) AS id, collection_id FROM order_collection_reduction GROUP BY collection_id ) b )
+        ) ocr ON ocr.collection_id = oc.id
+        INNER JOIN order_borrow ob ON oc.borrow_id = ob.id
+        INNER JOIN order_repayment orp ON oc.repayment_id = orp.id
+        LEFT JOIN user_moxie_data umd ON oc.user_id = umd.user_id
+        <where>
+            ui.status != 2
+            <if test="realName != null and realName != ''">
+                and ui.real_name like concat('%',#{realName},'%')
+            </if>
+            <if test="phone != null and phone != ''">
+                and ui.phone = #{phone}
+            </if>
+            <if test="platformUserId != null ">
+                and pu.id = #{platformUserId}
+            </if>
+            <if test="payStatus == 0 ">
+                and orp.status in (0,3,5)
+            </if>
+            <if test="payStatus == 1 ">
+                and orp.status =1
+            </if>
+            <if test="payStatus == 2 ">
+                and orp.status in (2,4,6)
+            </if>
+            <if test="payType != null ">
+                and orp.pay_type = #{payType}
+            </if>
+            <if test="sRepaymentTime != null and sRepaymentTime != ''">
+                <![CDATA[    and orp.repayment_time >= #{sRepaymentTime}   ]]>
+            </if>
+            <if test="eRepaymentTime != null and eRepaymentTime != ''">
+                <![CDATA[    and orp.repayment_time < date_add(#{eRepaymentTime},interval 1 day)  ]]>
+            </if>
+            <if test="sPaidTimeChg != null and sPaidTimeChg != ''">
+                <![CDATA[    and orp.paid_time >= #{sPaidTimeChg}   ]]>
+            </if>
+            <if test="ePaidTimeChg != null and ePaidTimeChg != ''">
+                <![CDATA[    and orp.paid_time < date_add(#{ePaidTimeChg},interval 1 day)  ]]>
+            </if>
+            <if test="sLoanTime != null and sLoanTime != ''">
+                <![CDATA[    and orp.create_time >= #{sLoanTime}   ]]>
+            </if>
+            <if test="eLoanTime != null and eLoanTime != ''">
+                <![CDATA[    and orp.create_time < date_add(#{eLoanTime},interval 1 day) ]]>
+            </if>
+        </where>
+        order by oc.id desc
+    </select>
+
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+        delete
+        from order_collection
+        where id = #{id,jdbcType=INTEGER}
+    </delete>
+    <insert id="insert" parameterType="com.summer.dao.entity.OrderCollection">
+        insert into order_collection (id, user_id, borrow_id,
+                                      repayment_id, last_collection_user_id, current_collection_user_id,
+                                      current_overdue_level, overdue_day, m1_approve_id,
+                                      m1_operate_status, m2_approve_id, m2_operate_status,
+                                      m3_approve_id, m3_operate_status, m4_approve_id,
+                                      m4_operate_status, m5_approve_id, m5_operate_status,
+                                      status, promise_repayment_time, last_collection_time,
+                                      create_time, update_time,dispatch_time, operator_name,order_no,
+                                      remark, outside_company_id, deleted,
+                                      important_weight, loan_real_name, loan_user_phone,
+                                      real_money, reduction_money)
+        values (#{id,jdbcType=INTEGER}, #{userId,jdbcType=INTEGER}, #{borrowId,jdbcType=INTEGER},
+                #{repaymentId,jdbcType=INTEGER}, #{lastCollectionUserId,jdbcType=INTEGER},
+                #{currentCollectionUserId,jdbcType=INTEGER},
+                #{currentOverdueLevel,jdbcType=TINYINT}, #{overdueDay,jdbcType=INTEGER},
+                #{m1ApproveId,jdbcType=INTEGER},
+                #{m1OperateStatus,jdbcType=TINYINT}, #{m2ApproveId,jdbcType=INTEGER},
+                #{m2OperateStatus,jdbcType=TINYINT},
+                #{m3ApproveId,jdbcType=INTEGER}, #{m3OperateStatus,jdbcType=TINYINT}, #{m4ApproveId,jdbcType=INTEGER},
+                #{m4OperateStatus,jdbcType=TINYINT}, #{m5ApproveId,jdbcType=INTEGER},
+                #{m5OperateStatus,jdbcType=TINYINT},
+                #{status,jdbcType=TINYINT}, #{promiseRepaymentTime,jdbcType=TIMESTAMP},
+                #{lastCollectionTime,jdbcType=TIMESTAMP},
+                #{createTime,jdbcType=TIMESTAMP}, #{updateTime,jdbcType=TIMESTAMP}, #{dispatchTime,jdbcType=TIMESTAMP}, #{operatorName,jdbcType=VARCHAR},#{orderNo,jdbcType=VARCHAR},
+                #{remark,jdbcType=VARCHAR}, #{outsideCompanyId,jdbcType=SMALLINT}, #{deleted,jdbcType=TINYINT},
+                #{importantWeight,jdbcType=TINYINT}, #{loanRealName,jdbcType=VARCHAR},
+                #{loanUserPhone,jdbcType=VARCHAR},
+                #{realMoney,jdbcType=INTEGER}, #{reductionMoney,jdbcType=INTEGER})
+    </insert>
+    <insert id="insertSelective" parameterType="com.summer.dao.entity.OrderCollection">
+        insert into order_collection
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                id,
+            </if>
+            <if test="userId != null">
+                user_id,
+            </if>
+            <if test="borrowId != null">
+                borrow_id,
+            </if>
+            <if test="repaymentId != null">
+                repayment_id,
+            </if>
+            <if test="lastCollectionUserId != null">
+                last_collection_user_id,
+            </if>
+            <if test="currentCollectionUserId != null">
+                current_collection_user_id,
+            </if>
+            <if test="currentOverdueLevel != null">
+                current_overdue_level,
+            </if>
+            <if test="overdueDay != null">
+                overdue_day,
+            </if>
+            <if test="m1ApproveId != null">
+                m1_approve_id,
+            </if>
+            <if test="m1OperateStatus != null">
+                m1_operate_status,
+            </if>
+            <if test="m2ApproveId != null">
+                m2_approve_id,
+            </if>
+            <if test="m2OperateStatus != null">
+                m2_operate_status,
+            </if>
+            <if test="m3ApproveId != null">
+                m3_approve_id,
+            </if>
+            <if test="m3OperateStatus != null">
+                m3_operate_status,
+            </if>
+            <if test="m4ApproveId != null">
+                m4_approve_id,
+            </if>
+            <if test="m4OperateStatus != null">
+                m4_operate_status,
+            </if>
+            <if test="m5ApproveId != null">
+                m5_approve_id,
+            </if>
+            <if test="m5OperateStatus != null">
+                m5_operate_status,
+            </if>
+            <if test="status != null">
+                status,
+            </if>
+            <if test="promiseRepaymentTime != null">
+                promise_repayment_time,
+            </if>
+            <if test="lastCollectionTime != null">
+                last_collection_time,
+            </if>
+            <if test="createTime != null">
+                create_time,
+            </if>
+            <if test="updateTime != null">
+                update_time,
+            </if>
+            <if test="dispatchTime != null">
+                dispatch_time,
+            </if>
+            <if test="operatorName != null">
+                operator_name,
+            </if>
+            <if test="orderNo != null">
+                order_no,
+            </if>
+            <if test="remark != null">
+                remark,
+            </if>
+            <if test="outsideCompanyId != null">
+                outside_company_id,
+            </if>
+            <if test="deleted != null">
+                deleted,
+            </if>
+            <if test="importantWeight != null">
+                important_weight,
+            </if>
+            <if test="loanRealName != null">
+                loan_real_name,
+            </if>
+            <if test="loanUserPhone != null">
+                loan_user_phone,
+            </if>
+            <if test="realMoney != null">
+                real_money,
+            </if>
+            <if test="reductionMoney != null">
+                reduction_money,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                #{id,jdbcType=INTEGER},
+            </if>
+            <if test="userId != null">
+                #{userId,jdbcType=INTEGER},
+            </if>
+            <if test="borrowId != null">
+                #{borrowId,jdbcType=INTEGER},
+            </if>
+            <if test="repaymentId != null">
+                #{repaymentId,jdbcType=INTEGER},
+            </if>
+            <if test="lastCollectionUserId != null">
+                #{lastCollectionUserId,jdbcType=INTEGER},
+            </if>
+            <if test="currentCollectionUserId != null">
+                #{currentCollectionUserId,jdbcType=INTEGER},
+            </if>
+            <if test="currentOverdueLevel != null">
+                #{currentOverdueLevel,jdbcType=TINYINT},
+            </if>
+            <if test="overdueDay != null">
+                #{overdueDay,jdbcType=INTEGER},
+            </if>
+            <if test="m1ApproveId != null">
+                #{m1ApproveId,jdbcType=INTEGER},
+            </if>
+            <if test="m1OperateStatus != null">
+                #{m1OperateStatus,jdbcType=TINYINT},
+            </if>
+            <if test="m2ApproveId != null">
+                #{m2ApproveId,jdbcType=INTEGER},
+            </if>
+            <if test="m2OperateStatus != null">
+                #{m2OperateStatus,jdbcType=TINYINT},
+            </if>
+            <if test="m3ApproveId != null">
+                #{m3ApproveId,jdbcType=INTEGER},
+            </if>
+            <if test="m3OperateStatus != null">
+                #{m3OperateStatus,jdbcType=TINYINT},
+            </if>
+            <if test="m4ApproveId != null">
+                #{m4ApproveId,jdbcType=INTEGER},
+            </if>
+            <if test="m4OperateStatus != null">
+                #{m4OperateStatus,jdbcType=TINYINT},
+            </if>
+            <if test="m5ApproveId != null">
+                #{m5ApproveId,jdbcType=INTEGER},
+            </if>
+            <if test="m5OperateStatus != null">
+                #{m5OperateStatus,jdbcType=TINYINT},
+            </if>
+            <if test="status != null">
+                #{status,jdbcType=TINYINT},
+            </if>
+            <if test="promiseRepaymentTime != null">
+                #{promiseRepaymentTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="lastCollectionTime != null">
+                #{lastCollectionTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="createTime != null">
+                #{createTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="updateTime != null">
+                #{updateTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="dispatchTime != null">
+                #{dispatchTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="operatorName != null">
+                #{operatorName,jdbcType=VARCHAR},
+            </if>
+            <if test="orderNo != null">
+                #{orderNo,jdbcType=VARCHAR},
+            </if>
+            <if test="remark != null">
+                #{remark,jdbcType=VARCHAR},
+            </if>
+            <if test="outsideCompanyId != null">
+                #{outsideCompanyId,jdbcType=SMALLINT},
+            </if>
+            <if test="deleted != null">
+                #{deleted,jdbcType=TINYINT},
+            </if>
+            <if test="importantWeight != null">
+                #{importantWeight,jdbcType=TINYINT},
+            </if>
+            <if test="loanRealName != null">
+                #{loanRealName,jdbcType=VARCHAR},
+            </if>
+            <if test="loanUserPhone != null">
+                #{loanUserPhone,jdbcType=VARCHAR},
+            </if>
+            <if test="realMoney != null">
+                #{realMoney,jdbcType=INTEGER},
+            </if>
+            <if test="reductionMoney != null">
+                #{reductionMoney,jdbcType=INTEGER},
+            </if>
+        </trim>
+    </insert>
+    <update id="updateByPrimaryKeySelective" parameterType="com.summer.dao.entity.OrderCollection">
+        update order_collection
+        <set>
+            <if test="userId != null">
+                user_id = #{userId,jdbcType=INTEGER},
+            </if>
+            <if test="borrowId != null">
+                borrow_id = #{borrowId,jdbcType=INTEGER},
+            </if>
+            <if test="repaymentId != null">
+                repayment_id = #{repaymentId,jdbcType=INTEGER},
+            </if>
+            <if test="lastCollectionUserId != null">
+                last_collection_user_id = #{lastCollectionUserId,jdbcType=INTEGER},
+            </if>
+            <if test="currentCollectionUserId != null">
+                current_collection_user_id = #{currentCollectionUserId,jdbcType=INTEGER},
+            </if>
+            <if test="currentOverdueLevel != null">
+                current_overdue_level = #{currentOverdueLevel,jdbcType=TINYINT},
+            </if>
+            <if test="overdueDay != null">
+                overdue_day = #{overdueDay,jdbcType=INTEGER},
+            </if>
+            <if test="m1ApproveId != null">
+                m1_approve_id = #{m1ApproveId,jdbcType=INTEGER},
+            </if>
+            <if test="m1OperateStatus != null">
+                m1_operate_status = #{m1OperateStatus,jdbcType=TINYINT},
+            </if>
+            <if test="m2ApproveId != null">
+                m2_approve_id = #{m2ApproveId,jdbcType=INTEGER},
+            </if>
+            <if test="m2OperateStatus != null">
+                m2_operate_status = #{m2OperateStatus,jdbcType=TINYINT},
+            </if>
+            <if test="m3ApproveId != null">
+                m3_approve_id = #{m3ApproveId,jdbcType=INTEGER},
+            </if>
+            <if test="m3OperateStatus != null">
+                m3_operate_status = #{m3OperateStatus,jdbcType=TINYINT},
+            </if>
+            <if test="m4ApproveId != null">
+                m4_approve_id = #{m4ApproveId,jdbcType=INTEGER},
+            </if>
+            <if test="m4OperateStatus != null">
+                m4_operate_status = #{m4OperateStatus,jdbcType=TINYINT},
+            </if>
+            <if test="m5ApproveId != null">
+                m5_approve_id = #{m5ApproveId,jdbcType=INTEGER},
+            </if>
+            <if test="m5OperateStatus != null">
+                m5_operate_status = #{m5OperateStatus,jdbcType=TINYINT},
+            </if>
+            <if test="status != null">
+                status = #{status,jdbcType=TINYINT},
+            </if>
+            <if test="promiseRepaymentTime != null">
+                promise_repayment_time = #{promiseRepaymentTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="lastCollectionTime != null">
+                last_collection_time = #{lastCollectionTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="createTime != null">
+                create_time = #{createTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="updateTime != null">
+                update_time = #{updateTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="dispatchTime != null">
+                dispatch_time = #{dispatchTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="operatorName != null">
+                operator_name = #{operatorName,jdbcType=VARCHAR},
+            </if>
+            <if test="orderNo != null">
+                order_no = #{orderNo,jdbcType=VARCHAR},
+            </if>
+            <if test="remark != null">
+                remark = #{remark,jdbcType=VARCHAR},
+            </if>
+            <if test="outsideCompanyId != null">
+                outside_company_id = #{outsideCompanyId,jdbcType=SMALLINT},
+            </if>
+            <if test="deleted != null">
+                deleted = #{deleted,jdbcType=TINYINT},
+            </if>
+            <if test="importantWeight != null">
+                important_weight = #{importantWeight,jdbcType=TINYINT},
+            </if>
+            <if test="loanRealName != null">
+                loan_real_name = #{loanRealName,jdbcType=VARCHAR},
+            </if>
+            <if test="loanUserPhone != null">
+                loan_user_phone = #{loanUserPhone,jdbcType=VARCHAR},
+            </if>
+            <if test="realMoney != null">
+                real_money = #{realMoney,jdbcType=INTEGER},
+            </if>
+            <if test="reductionMoney != null">
+                reduction_money = #{reductionMoney,jdbcType=INTEGER},
+            </if>
+        </set>
+        where id = #{id,jdbcType=INTEGER}
+    </update>
+    <update id="updateByPrimaryKey" parameterType="com.summer.dao.entity.OrderCollection">
+        update order_collection
+        set user_id                    = #{userId,jdbcType=INTEGER},
+            borrow_id                  = #{borrowId,jdbcType=INTEGER},
+            repayment_id               = #{repaymentId,jdbcType=INTEGER},
+            last_collection_user_id    = #{lastCollectionUserId,jdbcType=INTEGER},
+            current_collection_user_id = #{currentCollectionUserId,jdbcType=INTEGER},
+            current_overdue_level      = #{currentOverdueLevel,jdbcType=TINYINT},
+            overdue_day                = #{overdueDay,jdbcType=INTEGER},
+            m1_approve_id              = #{m1ApproveId,jdbcType=INTEGER},
+            m1_operate_status          = #{m1OperateStatus,jdbcType=TINYINT},
+            m2_approve_id              = #{m2ApproveId,jdbcType=INTEGER},
+            m2_operate_status          = #{m2OperateStatus,jdbcType=TINYINT},
+            m3_approve_id              = #{m3ApproveId,jdbcType=INTEGER},
+            m3_operate_status          = #{m3OperateStatus,jdbcType=TINYINT},
+            m4_approve_id              = #{m4ApproveId,jdbcType=INTEGER},
+            m4_operate_status          = #{m4OperateStatus,jdbcType=TINYINT},
+            m5_approve_id              = #{m5ApproveId,jdbcType=INTEGER},
+            m5_operate_status          = #{m5OperateStatus,jdbcType=TINYINT},
+            status                     = #{status,jdbcType=TINYINT},
+            promise_repayment_time     = #{promiseRepaymentTime,jdbcType=TIMESTAMP},
+            last_collection_time       = #{lastCollectionTime,jdbcType=TIMESTAMP},
+            create_time                = #{createTime,jdbcType=TIMESTAMP},
+            update_time                = #{updateTime,jdbcType=TIMESTAMP},
+            dispatch_time                = #{dispatchTime,jdbcType=TIMESTAMP},
+            operator_name              = #{operatorName,jdbcType=VARCHAR},
+            order_no              = #{orderNo,jdbcType=VARCHAR},
+            remark             = #{remark,jdbcType=VARCHAR},
+            outside_company_id = #{outsideCompanyId,jdbcType=SMALLINT},
+            deleted            = #{deleted,jdbcType=TINYINT},
+            important_weight   = #{importantWeight,jdbcType=TINYINT},
+            loan_real_name     = #{loanRealName,jdbcType=VARCHAR},
+            loan_user_phone    = #{loanUserPhone,jdbcType=VARCHAR},
+            real_money         = #{realMoney,jdbcType=INTEGER},
+            reduction_money    = #{reductionMoney,jdbcType=INTEGER}
+        where id = #{id,jdbcType=INTEGER}
+    </update>
+    <update id="updateBatchByPrimaryKey" parameterType="java.util.List">
+        update order_collection
+        <trim prefix="set" suffixOverrides=",">
+            <trim prefix="userId =case id" suffix="end,">
+                <foreach collection="list" index="index" item="item" separator=" ">
+                    when #{item.id} then #{item.userId}
+                </foreach>
+            </trim>
+            <trim prefix="borrowId =case id" suffix="end,">
+                <foreach collection="list" index="index" item="item" separator=" ">
+                    when #{item.id} then #{item.borrowId}
+                </foreach>
+            </trim>
+            <trim prefix="repaymentId =case id" suffix="end,">
+                <foreach collection="list" index="index" item="item" separator=" ">
+                    when #{item.id} then #{item.repaymentId}
+                </foreach>
+            </trim>
+            <trim prefix="lastCollectionUserId =case id" suffix="end,">
+                <foreach collection="list" index="index" item="item" separator=" ">
+                    when #{item.id} then #{item.lastCollectionUserId}
+                </foreach>
+            </trim>
+            <trim prefix="currentCollectionUserId =case id" suffix="end,">
+                <foreach collection="list" index="index" item="item" separator=" ">
+                    when #{item.id} then #{item.currentCollectionUserId}
+                </foreach>
+            </trim>
+            <trim prefix="currentOverdueLevel =case id" suffix="end,">
+                <foreach collection="list" index="index" item="item" separator=" ">
+                    when #{item.id} then #{item.currentOverdueLevel}
+                </foreach>
+            </trim>
+            <trim prefix="overdueDay =case id" suffix="end,">
+                <foreach collection="list" index="index" item="item" separator=" ">
+                    when #{item.id} then #{item.overdueDay}
+                </foreach>
+            </trim>
+            <trim prefix="m1ApproveId =case id" suffix="end,">
+                <foreach collection="list" index="index" item="item" separator=" ">
+                    when #{item.id} then #{item.m1ApproveId}
+                </foreach>
+            </trim>
+            <trim prefix="m1OperateStatus =case id" suffix="end,">
+                <foreach collection="list" index="index" item="item" separator=" ">
+                    when #{item.id} then #{item.m1OperateStatus}
+                </foreach>
+            </trim>
+            <trim prefix="m2ApproveId =case id" suffix="end,">
+                <foreach collection="list" index="index" item="item" separator=" ">
+                    when #{item.id} then #{item.m2ApproveId}
+                </foreach>
+            </trim>
+            <trim prefix="m2OperateStatus =case id" suffix="end,">
+                <foreach collection="list" index="index" item="item" separator=" ">
+                    when #{item.id} then #{item.m2OperateStatus}
+                </foreach>
+            </trim>
+            <trim prefix="m3ApproveId =case id" suffix="end,">
+                <foreach collection="list" index="index" item="item" separator=" ">
+                    when #{item.id} then #{item.m3ApproveId}
+                </foreach>
+            </trim>
+            <trim prefix="m3OperateStatus =case id" suffix="end,">
+                <foreach collection="list" index="index" item="item" separator=" ">
+                    when #{item.id} then #{item.m3OperateStatus}
+                </foreach>
+            </trim>
+            <trim prefix="m4ApproveId =case id" suffix="end,">
+                <foreach collection="list" index="index" item="item" separator=" ">
+                    when #{item.id} then #{item.m4ApproveId}
+                </foreach>
+            </trim>
+            <trim prefix="m4OperateStatus =case id" suffix="end,">
+                <foreach collection="list" index="index" item="item" separator=" ">
+                    when #{item.id} then #{item.m4OperateStatus}
+                </foreach>
+            </trim>
+            <trim prefix="m5ApproveId =case id" suffix="end,">
+                <foreach collection="list" index="index" item="item" separator=" ">
+                    when #{item.id} then #{item.m5ApproveId}
+                </foreach>
+            </trim>
+            <trim prefix="m5OperateStatus =case id" suffix="end,">
+                <foreach collection="list" index="index" item="item" separator=" ">
+                    when #{item.id} then #{item.m5OperateStatus}
+                </foreach>
+            </trim>
+            <trim prefix="status =case id" suffix="end,">
+                <foreach collection="list" index="index" item="item" separator=" ">
+                    when #{item.id} then #{item.status}
+                </foreach>
+            </trim>
+            <trim prefix="promiseRepaymentTime =case id" suffix="end,">
+                <foreach collection="list" index="index" item="item" separator=" ">
+                    when #{item.id} then #{item.promiseRepaymentTime}
+                </foreach>
+            </trim>
+            <trim prefix="lastCollectionTime =case id" suffix="end,">
+                <foreach collection="list" index="index" item="item" separator=" ">
+                    when #{item.id} then #{item.lastCollectionTime}
+                </foreach>
+            </trim>
+            <trim prefix="createTime =case id" suffix="end,">
+                <foreach collection="list" index="index" item="item" separator=" ">
+                    when #{item.id} then #{item.createTime}
+                </foreach>
+            </trim>
+            <trim prefix="updateTime =case id" suffix="end,">
+                <foreach collection="list" index="index" item="item" separator=" ">
+                    when #{item.id} then #{item.updateTime}
+                </foreach>
+            </trim>
+            <trim prefix="operatorName =case id" suffix="end,">
+                <foreach collection="list" index="index" item="item" separator=" ">
+                    when #{item.id} then #{item.operatorName}
+                </foreach>
+            </trim>
+            <trim prefix="remark =case id" suffix="end,">
+                <foreach collection="list" index="index" item="item" separator=" ">
+                    when #{item.id} then #{item.remark}
+                </foreach>
+            </trim>
+            <trim prefix="outsideCompanyId =case id" suffix="end,">
+                <foreach collection="list" index="index" item="item" separator=" ">
+                    when #{item.id} then #{item.outsideCompanyId}
+                </foreach>
+            </trim>
+            <trim prefix="deleted =case id" suffix="end,">
+                <foreach collection="list" index="index" item="item" separator=" ">
+                    when #{item.id} then #{item.deleted}
+                </foreach>
+            </trim>
+            <trim prefix="importantWeight =case id" suffix="end,">
+                <foreach collection="list" index="index" item="item" separator=" ">
+                    when #{item.id} then #{item.importantWeight}
+                </foreach>
+            </trim>
+            <trim prefix="loanRealName =case id" suffix="end,">
+                <foreach collection="list" index="index" item="item" separator=" ">
+                    when #{item.id} then #{item.loanRealName}
+                </foreach>
+            </trim>
+            <trim prefix="loanUserPhone =case id" suffix="end,">
+                <foreach collection="list" index="index" item="item" separator=" ">
+                    when #{item.id} then #{item.loanUserPhone}
+                </foreach>
+            </trim>
+            <trim prefix="realMoney =case id" suffix="end,">
+                <foreach collection="list" index="index" item="item" separator=" ">
+                    when #{item.id} then #{item.realMoney}
+                </foreach>
+            </trim>
+            <trim prefix="reductionMoney =case id" suffix="end,">
+                <foreach collection="list" index="index" item="item" separator=" ">
+                    when #{item.id} then #{item.reductionMoney}
+                </foreach>
+            </trim>
+        </trim>
+        where id in
+        <foreach close=")" collection="list" index="index" item="item" open="(" separator=",">
+            #{item.id}
+        </foreach>
+    </update>
+    <update id="updateBatchByPrimaryKeySelective" parameterType="java.util.List">
+        update order_collection
+        <trim prefix="set" suffixOverrides=",">
+            <trim prefix="userId =case id" suffix="end,">
+                <foreach collection="list" index="index" item="item" separator=" ">
+                    <if test="item.userId != null ">
+                        when #{item.id} then #{item.userId}
+                    </if>
+                    <if test="item.userId == null ">
+                        when #{item.id} then order_collection.user_id
+                    </if>
+                </foreach>
+            </trim>
+            <trim prefix="borrowId =case id" suffix="end,">
+                <foreach collection="list" index="index" item="item" separator=" ">
+                    <if test="item.borrowId != null ">
+                        when #{item.id} then #{item.borrowId}
+                    </if>
+                    <if test="item.borrowId == null ">
+                        when #{item.id} then order_collection.borrow_id
+                    </if>
+                </foreach>
+            </trim>
+            <trim prefix="repaymentId =case id" suffix="end,">
+                <foreach collection="list" index="index" item="item" separator=" ">
+                    <if test="item.repaymentId != null ">
+                        when #{item.id} then #{item.repaymentId}
+                    </if>
+                    <if test="item.repaymentId == null ">
+                        when #{item.id} then order_collection.repayment_id
+                    </if>
+                </foreach>
+            </trim>
+            <trim prefix="lastCollectionUserId =case id" suffix="end,">
+                <foreach collection="list" index="index" item="item" separator=" ">
+                    <if test="item.lastCollectionUserId != null ">
+                        when #{item.id} then #{item.lastCollectionUserId}
+                    </if>
+                    <if test="item.lastCollectionUserId == null ">
+                        when #{item.id} then order_collection.last_collection_user_id
+                    </if>
+                </foreach>
+            </trim>
+            <trim prefix="currentCollectionUserId =case id" suffix="end,">
+                <foreach collection="list" index="index" item="item" separator=" ">
+                    <if test="item.currentCollectionUserId != null ">
+                        when #{item.id} then #{item.currentCollectionUserId}
+                    </if>
+                    <if test="item.currentCollectionUserId == null ">
+                        when #{item.id} then order_collection.current_collection_user_id
+                    </if>
+                </foreach>
+            </trim>
+            <trim prefix="currentOverdueLevel =case id" suffix="end,">
+                <foreach collection="list" index="index" item="item" separator=" ">
+                    <if test="item.currentOverdueLevel != null ">
+                        when #{item.id} then #{item.currentOverdueLevel}
+                    </if>
+                    <if test="item.currentOverdueLevel == null ">
+                        when #{item.id} then order_collection.current_overdue_level
+                    </if>
+                </foreach>
+            </trim>
+            <trim prefix="overdueDay =case id" suffix="end,">
+                <foreach collection="list" index="index" item="item" separator=" ">
+                    <if test="item.overdueDay != null ">
+                        when #{item.id} then #{item.overdueDay}
+                    </if>
+                    <if test="item.overdueDay == null ">
+                        when #{item.id} then order_collection.overdue_day
+                    </if>
+                </foreach>
+            </trim>
+            <trim prefix="m1ApproveId =case id" suffix="end,">
+                <foreach collection="list" index="index" item="item" separator=" ">
+                    <if test="item.m1ApproveId != null ">
+                        when #{item.id} then #{item.m1ApproveId}
+                    </if>
+                    <if test="item.m1ApproveId == null ">
+                        when #{item.id} then order_collection.m1_approve_id
+                    </if>
+                </foreach>
+            </trim>
+            <trim prefix="m1OperateStatus =case id" suffix="end,">
+                <foreach collection="list" index="index" item="item" separator=" ">
+                    <if test="item.m1OperateStatus != null ">
+                        when #{item.id} then #{item.m1OperateStatus}
+                    </if>
+                    <if test="item.m1OperateStatus == null ">
+                        when #{item.id} then order_collection.m1_operate_status
+                    </if>
+                </foreach>
+            </trim>
+            <trim prefix="m2ApproveId =case id" suffix="end,">
+                <foreach collection="list" index="index" item="item" separator=" ">
+                    <if test="item.m2ApproveId != null ">
+                        when #{item.id} then #{item.m2ApproveId}
+                    </if>
+                    <if test="item.m2ApproveId == null ">
+                        when #{item.id} then order_collection.m2_approve_id
+                    </if>
+                </foreach>
+            </trim>
+            <trim prefix="m2OperateStatus =case id" suffix="end,">
+                <foreach collection="list" index="index" item="item" separator=" ">
+                    <if test="item.m2OperateStatus != null ">
+                        when #{item.id} then #{item.m2OperateStatus}
+                    </if>
+                    <if test="item.m2OperateStatus == null ">
+                        when #{item.id} then order_collection.m2_operate_status
+                    </if>
+                </foreach>
+            </trim>
+            <trim prefix="m3ApproveId =case id" suffix="end,">
+                <foreach collection="list" index="index" item="item" separator=" ">
+                    <if test="item.m3ApproveId != null ">
+                        when #{item.id} then #{item.m3ApproveId}
+                    </if>
+                    <if test="item.m3ApproveId == null ">
+                        when #{item.id} then order_collection.m3_approve_id
+                    </if>
+                </foreach>
+            </trim>
+            <trim prefix="m3OperateStatus =case id" suffix="end,">
+                <foreach collection="list" index="index" item="item" separator=" ">
+                    <if test="item.m3OperateStatus != null ">
+                        when #{item.id} then #{item.m3OperateStatus}
+                    </if>
+                    <if test="item.m3OperateStatus == null ">
+                        when #{item.id} then order_collection.m3_operate_status
+                    </if>
+                </foreach>
+            </trim>
+            <trim prefix="m4ApproveId =case id" suffix="end,">
+                <foreach collection="list" index="index" item="item" separator=" ">
+                    <if test="item.m4ApproveId != null ">
+                        when #{item.id} then #{item.m4ApproveId}
+                    </if>
+                    <if test="item.m4ApproveId == null ">
+                        when #{item.id} then order_collection.m4_approve_id
+                    </if>
+                </foreach>
+            </trim>
+            <trim prefix="m4OperateStatus =case id" suffix="end,">
+                <foreach collection="list" index="index" item="item" separator=" ">
+                    <if test="item.m4OperateStatus != null ">
+                        when #{item.id} then #{item.m4OperateStatus}
+                    </if>
+                    <if test="item.m4OperateStatus == null ">
+                        when #{item.id} then order_collection.m4_operate_status
+                    </if>
+                </foreach>
+            </trim>
+            <trim prefix="m5ApproveId =case id" suffix="end,">
+                <foreach collection="list" index="index" item="item" separator=" ">
+                    <if test="item.m5ApproveId != null ">
+                        when #{item.id} then #{item.m5ApproveId}
+                    </if>
+                    <if test="item.m5ApproveId == null ">
+                        when #{item.id} then order_collection.m5_approve_id
+                    </if>
+                </foreach>
+            </trim>
+            <trim prefix="m5OperateStatus =case id" suffix="end,">
+                <foreach collection="list" index="index" item="item" separator=" ">
+                    <if test="item.m5OperateStatus != null ">
+                        when #{item.id} then #{item.m5OperateStatus}
+                    </if>
+                    <if test="item.m5OperateStatus == null ">
+                        when #{item.id} then order_collection.m5_operate_status
+                    </if>
+                </foreach>
+            </trim>
+            <trim prefix="status =case id" suffix="end,">
+                <foreach collection="list" index="index" item="item" separator=" ">
+                    <if test="item.status != null ">
+                        when #{item.id} then #{item.status}
+                    </if>
+                    <if test="item.status == null ">
+                        when #{item.id} then order_collection.status
+                    </if>
+                </foreach>
+            </trim>
+            <trim prefix="promiseRepaymentTime =case id" suffix="end,">
+                <foreach collection="list" index="index" item="item" separator=" ">
+                    <if test="item.promiseRepaymentTime != null ">
+                        when #{item.id} then #{item.promiseRepaymentTime}
+                    </if>
+                    <if test="item.promiseRepaymentTime == null ">
+                        when #{item.id} then order_collection.promise_repayment_time
+                    </if>
+                </foreach>
+            </trim>
+            <trim prefix="lastCollectionTime =case id" suffix="end,">
+                <foreach collection="list" index="index" item="item" separator=" ">
+                    <if test="item.lastCollectionTime != null ">
+                        when #{item.id} then #{item.lastCollectionTime}
+                    </if>
+                    <if test="item.lastCollectionTime == null ">
+                        when #{item.id} then order_collection.last_collection_time
+                    </if>
+                </foreach>
+            </trim>
+            <trim prefix="createTime =case id" suffix="end,">
+                <foreach collection="list" index="index" item="item" separator=" ">
+                    <if test="item.createTime != null ">
+                        when #{item.id} then #{item.createTime}
+                    </if>
+                    <if test="item.createTime == null ">
+                        when #{item.id} then order_collection.create_time
+                    </if>
+                </foreach>
+            </trim>
+            <trim prefix="updateTime =case id" suffix="end,">
+                <foreach collection="list" index="index" item="item" separator=" ">
+                    <if test="item.updateTime != null ">
+                        when #{item.id} then #{item.updateTime}
+                    </if>
+                    <if test="item.updateTime == null ">
+                        when #{item.id} then order_collection.update_time
+                    </if>
+                </foreach>
+            </trim>
+            <trim prefix="operatorName =case id" suffix="end,">
+                <foreach collection="list" index="index" item="item" separator=" ">
+                    <if test="item.operatorName != null ">
+                        when #{item.id} then #{item.operatorName}
+                    </if>
+                    <if test="item.operatorName == null ">
+                        when #{item.id} then order_collection.operator_name
+                    </if>
+                </foreach>
+            </trim>
+            <trim prefix="remark =case id" suffix="end,">
+                <foreach collection="list" index="index" item="item" separator=" ">
+                    <if test="item.remark != null ">
+                        when #{item.id} then #{item.remark}
+                    </if>
+                    <if test="item.remark == null ">
+                        when #{item.id} then order_collection.remark
+                    </if>
+                </foreach>
+            </trim>
+            <trim prefix="outsideCompanyId =case id" suffix="end,">
+                <foreach collection="list" index="index" item="item" separator=" ">
+                    <if test="item.outsideCompanyId != null ">
+                        when #{item.id} then #{item.outsideCompanyId}
+                    </if>
+                    <if test="item.outsideCompanyId == null ">
+                        when #{item.id} then order_collection.outside_company_id
+                    </if>
+                </foreach>
+            </trim>
+            <trim prefix="deleted =case id" suffix="end,">
+                <foreach collection="list" index="index" item="item" separator=" ">
+                    <if test="item.deleted != null ">
+                        when #{item.id} then #{item.deleted}
+                    </if>
+                    <if test="item.deleted == null ">
+                        when #{item.id} then order_collection.deleted
+                    </if>
+                </foreach>
+            </trim>
+            <trim prefix="importantWeight =case id" suffix="end,">
+                <foreach collection="list" index="index" item="item" separator=" ">
+                    <if test="item.importantWeight != null ">
+                        when #{item.id} then #{item.importantWeight}
+                    </if>
+                    <if test="item.importantWeight == null ">
+                        when #{item.id} then order_collection.important_weight
+                    </if>
+                </foreach>
+            </trim>
+            <trim prefix="loanRealName =case id" suffix="end,">
+                <foreach collection="list" index="index" item="item" separator=" ">
+                    <if test="item.loanRealName != null ">
+                        when #{item.id} then #{item.loanRealName}
+                    </if>
+                    <if test="item.loanRealName == null ">
+                        when #{item.id} then order_collection.loan_real_name
+                    </if>
+                </foreach>
+            </trim>
+            <trim prefix="loanUserPhone =case id" suffix="end,">
+                <foreach collection="list" index="index" item="item" separator=" ">
+                    <if test="item.loanUserPhone != null ">
+                        when #{item.id} then #{item.loanUserPhone}
+                    </if>
+                    <if test="item.loanUserPhone == null ">
+                        when #{item.id} then order_collection.loan_user_phone
+                    </if>
+                </foreach>
+            </trim>
+            <trim prefix="realMoney =case id" suffix="end,">
+                <foreach collection="list" index="index" item="item" separator=" ">
+                    <if test="item.realMoney != null ">
+                        when #{item.id} then #{item.realMoney}
+                    </if>
+                    <if test="item.realMoney == null ">
+                        when #{item.id} then order_collection.real_money
+                    </if>
+                </foreach>
+            </trim>
+            <trim prefix="reductionMoney =case id" suffix="end,">
+                <foreach collection="list" index="index" item="item" separator=" ">
+                    <if test="item.reductionMoney != null ">
+                        when #{item.id} then #{item.reductionMoney}
+                    </if>
+                    <if test="item.reductionMoney == null ">
+                        when #{item.id} then order_collection.reduction_money
+                    </if>
+                </foreach>
+            </trim>
+        </trim>
+        where id in
+        <foreach close=")" collection="list" index="index" item="item" open="(" separator=",">
+            #{item.id}
+        </foreach>
+    </update>
+
+    <select id="findByCollectionRepaymentId" parameterType="com.summer.dao.entity.OrderCollection"
+            resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from order_collection where repayment_id
+        <where>
+            <if test="borrowId != null">
+                borrow_id =#{borrowId}
+            </if>
+            <if test="repaymentId != null">
+                and repayment_id = #{repaymentId}
+            </if>
+        </where>
+    </select>
+
+    <select id="selectRepaymentByTime" parameterType="java.util.Map"
+            resultType="com.summer.dao.entity.CollectionStatistics">
+        select occ.current_collection_user_id as userId, count(1) as repaymentNumber, sum(paid_amount) as
+        repaymentAmount
+        from order_collection occ LEFT JOIN platform_user pu on occ.current_collection_user_id = pu.id
+        LEFT join order_repayment orp on occ.repayment_id = orp.id
+        <where>
+            orp.status = 4
+            <if test="beginTime != null and beginTime != ''">
+                <![CDATA[ and orp.paid_time >= #{beginTime} ]]>
+            </if>
+            <if test="endTime != null and endTime != ''">
+                <![CDATA[ and orp.paid_time < #{endTime}   ]]>
+            </if>
+        </where>
+        group by occ.current_collection_user_id
+    </select>
+
+    <select id="selectByTime" parameterType="java.util.Map" resultType="com.summer.dao.entity.CollectionStatistics">
+        select
+        oc.current_collection_user_id userId, count(*) distributionNumber,IFNULL(sum(orp.repayment_amount),0)
+        distributionAmount
+        from order_collection oc
+        INNER join order_repayment orp on oc.repayment_id=orp.id
+        <where>
+            <if test="beginTime != null and beginTime != ''">
+                <![CDATA[    and oc.dispatch_time >= #{beginTime}   ]]>
+            </if>
+            <if test="endTime != null and endTime != ''">
+                <![CDATA[    and oc.dispatch_time < date_add(#{endTime},interval 1 day)  ]]>
+            </if>
+        </where>
+        group by oc.current_collection_user_id
+    </select>
+</mapper>

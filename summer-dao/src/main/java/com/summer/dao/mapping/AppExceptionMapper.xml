@@ -1,0 +1,409 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.summer.dao.mapper.AppExceptionDAO">
+    <resultMap id="BaseResultMap" type="com.summer.dao.entity.AppException">
+        <id column="id" jdbcType="INTEGER" property="id"/>
+        <result column="user_id" jdbcType="INTEGER" property="userId"/>
+        <result column="sys_type" jdbcType="VARCHAR" property="sysType"/>
+        <result column="os_version" jdbcType="VARCHAR" property="osVersion"/>
+        <result column="app_verion" jdbcType="VARCHAR" property="appVerion"/>
+        <result column="device_name" jdbcType="VARCHAR" property="deviceName"/>
+        <result column="device_id" jdbcType="VARCHAR" property="deviceId"/>
+        <result column="create_time" jdbcType="TIMESTAMP" property="createTime"/>
+        <result column="update_time" jdbcType="TIMESTAMP" property="updateTime"/>
+    </resultMap>
+    <resultMap extends="BaseResultMap" id="ResultMapWithBLOBs" type="com.summer.dao.entity.AppException">
+        <result column="exception" jdbcType="LONGVARCHAR" property="exception"/>
+    </resultMap>
+    <sql id="Base_Column_List">
+    id, user_id, sys_type, os_version, app_verion, device_name, device_id, create_time, 
+    update_time
+  </sql>
+    <sql id="Blob_Column_List">
+    exception
+  </sql>
+    <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="ResultMapWithBLOBs">
+        select
+        <include refid="Base_Column_List"/>
+        ,
+        <include refid="Blob_Column_List"/>
+        from platform_app_exception
+        where id = #{id,jdbcType=INTEGER}
+    </select>
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from platform_app_exception
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+    <insert id="insert" parameterType="com.summer.dao.entity.AppException">
+    insert into platform_app_exception (id, user_id, sys_type, 
+      os_version, app_verion, device_name, 
+      device_id, create_time, update_time, 
+      exception)
+    values (#{id,jdbcType=INTEGER}, #{userId,jdbcType=INTEGER}, #{sysType,jdbcType=VARCHAR}, 
+      #{osVersion,jdbcType=VARCHAR}, #{appVerion,jdbcType=VARCHAR}, #{deviceName,jdbcType=VARCHAR}, 
+      #{deviceId,jdbcType=VARCHAR}, #{createTime,jdbcType=TIMESTAMP}, #{updateTime,jdbcType=TIMESTAMP}, 
+      #{exception,jdbcType=LONGVARCHAR})
+  </insert>
+    <insert id="insertSelective" parameterType="com.summer.dao.entity.AppException">
+        insert into platform_app_exception
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                id,
+            </if>
+            <if test="userId != null">
+                user_id,
+            </if>
+            <if test="sysType != null">
+                sys_type,
+            </if>
+            <if test="osVersion != null">
+                os_version,
+            </if>
+            <if test="appVerion != null">
+                app_verion,
+            </if>
+            <if test="deviceName != null">
+                device_name,
+            </if>
+            <if test="deviceId != null">
+                device_id,
+            </if>
+            <if test="createTime != null">
+                create_time,
+            </if>
+            <if test="updateTime != null">
+                update_time,
+            </if>
+            <if test="exception != null">
+                exception,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                #{id,jdbcType=INTEGER},
+            </if>
+            <if test="userId != null">
+                #{userId,jdbcType=INTEGER},
+            </if>
+            <if test="sysType != null">
+                #{sysType,jdbcType=VARCHAR},
+            </if>
+            <if test="osVersion != null">
+                #{osVersion,jdbcType=VARCHAR},
+            </if>
+            <if test="appVerion != null">
+                #{appVerion,jdbcType=VARCHAR},
+            </if>
+            <if test="deviceName != null">
+                #{deviceName,jdbcType=VARCHAR},
+            </if>
+            <if test="deviceId != null">
+                #{deviceId,jdbcType=VARCHAR},
+            </if>
+            <if test="createTime != null">
+                #{createTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="updateTime != null">
+                #{updateTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="exception != null">
+                #{exception,jdbcType=LONGVARCHAR},
+            </if>
+        </trim>
+    </insert>
+    <insert id="insertBatch" parameterType="java.util.List">
+        insert into platform_app_exception (id, user_id, sys_type,
+        os_version, app_verion, device_name,
+        device_id, create_time, update_time,
+        exception)
+        values
+        <foreach collection="list" index="index" item="item" separator=",">
+            (#{item.id,jdbcType=INTEGER}, #{item.userId,jdbcType=INTEGER}, #{item.sysType,jdbcType=VARCHAR},
+            #{item.osVersion,jdbcType=VARCHAR}, #{item.appVerion,jdbcType=VARCHAR}, #{item.deviceName,jdbcType=VARCHAR},
+            #{item.deviceId,jdbcType=VARCHAR}, #{item.createTime,jdbcType=TIMESTAMP},
+            #{item.updateTime,jdbcType=TIMESTAMP},
+            #{item.exception,jdbcType=LONGVARCHAR})
+        </foreach>
+    </insert>
+    <insert id="insertBatchSelective" parameterType="java.util.List">
+        insert into platform_app_exception
+        (id, user_id, sys_type, os_version, app_verion, device_name, device_id, create_time,
+        update_time, exception)
+        values
+        <foreach collection="list" index="index" item="item" separator=",">
+            <trim prefix="(" suffix=")" suffixOverrides=",">
+                <if test="item.id != null">
+                    #{item.id,jdbcType=INTEGER},
+                </if>
+                <if test="item.id == null">
+                    NULL,
+                </if>
+                <if test="item.userId != null">
+                    #{item.userId,jdbcType=INTEGER},
+                </if>
+                <if test="item.userId == null">
+                    NULL,
+                </if>
+                <if test="item.sysType != null">
+                    #{item.sysType,jdbcType=VARCHAR},
+                </if>
+                <if test="item.sysType == null">
+                    NULL,
+                </if>
+                <if test="item.osVersion != null">
+                    #{item.osVersion,jdbcType=VARCHAR},
+                </if>
+                <if test="item.osVersion == null">
+                    NULL,
+                </if>
+                <if test="item.appVerion != null">
+                    #{item.appVerion,jdbcType=VARCHAR},
+                </if>
+                <if test="item.appVerion == null">
+                    NULL,
+                </if>
+                <if test="item.deviceName != null">
+                    #{item.deviceName,jdbcType=VARCHAR},
+                </if>
+                <if test="item.deviceName == null">
+                    NULL,
+                </if>
+                <if test="item.deviceId != null">
+                    #{item.deviceId,jdbcType=VARCHAR},
+                </if>
+                <if test="item.deviceId == null">
+                    NULL,
+                </if>
+                <if test="item.createTime != null">
+                    #{item.createTime,jdbcType=TIMESTAMP},
+                </if>
+                <if test="item.createTime == null">
+                    NULL,
+                </if>
+                <if test="item.updateTime != null">
+                    #{item.updateTime,jdbcType=TIMESTAMP},
+                </if>
+                <if test="item.updateTime == null">
+                    NULL,
+                </if>
+                <if test="item.exception != null">
+                    #{item.exception,jdbcType=LONGVARCHAR},
+                </if>
+                <if test="item.exception == null">
+                    NULL,
+                </if>
+            </trim>
+        </foreach>
+    </insert>
+    <update id="updateByPrimaryKeySelective" parameterType="com.summer.dao.entity.AppException">
+        update platform_app_exception
+        <set>
+            <if test="userId != null">
+                user_id = #{userId,jdbcType=INTEGER},
+            </if>
+            <if test="sysType != null">
+                sys_type = #{sysType,jdbcType=VARCHAR},
+            </if>
+            <if test="osVersion != null">
+                os_version = #{osVersion,jdbcType=VARCHAR},
+            </if>
+            <if test="appVerion != null">
+                app_verion = #{appVerion,jdbcType=VARCHAR},
+            </if>
+            <if test="deviceName != null">
+                device_name = #{deviceName,jdbcType=VARCHAR},
+            </if>
+            <if test="deviceId != null">
+                device_id = #{deviceId,jdbcType=VARCHAR},
+            </if>
+            <if test="createTime != null">
+                create_time = #{createTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="updateTime != null">
+                update_time = #{updateTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="exception != null">
+                exception = #{exception,jdbcType=LONGVARCHAR},
+            </if>
+        </set>
+        where id = #{id,jdbcType=INTEGER}
+    </update>
+    <update id="updateByPrimaryKeyWithBLOBs" parameterType="com.summer.dao.entity.AppException">
+    update platform_app_exception
+    set user_id = #{userId,jdbcType=INTEGER},
+      sys_type = #{sysType,jdbcType=VARCHAR},
+      os_version = #{osVersion,jdbcType=VARCHAR},
+      app_verion = #{appVerion,jdbcType=VARCHAR},
+      device_name = #{deviceName,jdbcType=VARCHAR},
+      device_id = #{deviceId,jdbcType=VARCHAR},
+      create_time = #{createTime,jdbcType=TIMESTAMP},
+      update_time = #{updateTime,jdbcType=TIMESTAMP},
+      exception = #{exception,jdbcType=LONGVARCHAR}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+    <update id="updateByPrimaryKey" parameterType="com.summer.dao.entity.AppException">
+    update platform_app_exception
+    set user_id = #{userId,jdbcType=INTEGER},
+      sys_type = #{sysType,jdbcType=VARCHAR},
+      os_version = #{osVersion,jdbcType=VARCHAR},
+      app_verion = #{appVerion,jdbcType=VARCHAR},
+      device_name = #{deviceName,jdbcType=VARCHAR},
+      device_id = #{deviceId,jdbcType=VARCHAR},
+      create_time = #{createTime,jdbcType=TIMESTAMP},
+      update_time = #{updateTime,jdbcType=TIMESTAMP}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+    <update id="updateBatchByPrimaryKey" parameterType="java.util.List">
+        update platform_app_exception
+        <trim prefix="set" suffixOverrides=",">
+            <trim prefix="userId =case id" suffix="end,">
+                <foreach collection="list" index="index" item="item" separator=" ">
+                    when #{item.id} then #{item.userId}
+                </foreach>
+            </trim>
+            <trim prefix="sysType =case id" suffix="end,">
+                <foreach collection="list" index="index" item="item" separator=" ">
+                    when #{item.id} then #{item.sysType}
+                </foreach>
+            </trim>
+            <trim prefix="osVersion =case id" suffix="end,">
+                <foreach collection="list" index="index" item="item" separator=" ">
+                    when #{item.id} then #{item.osVersion}
+                </foreach>
+            </trim>
+            <trim prefix="appVerion =case id" suffix="end,">
+                <foreach collection="list" index="index" item="item" separator=" ">
+                    when #{item.id} then #{item.appVerion}
+                </foreach>
+            </trim>
+            <trim prefix="deviceName =case id" suffix="end,">
+                <foreach collection="list" index="index" item="item" separator=" ">
+                    when #{item.id} then #{item.deviceName}
+                </foreach>
+            </trim>
+            <trim prefix="deviceId =case id" suffix="end,">
+                <foreach collection="list" index="index" item="item" separator=" ">
+                    when #{item.id} then #{item.deviceId}
+                </foreach>
+            </trim>
+            <trim prefix="createTime =case id" suffix="end,">
+                <foreach collection="list" index="index" item="item" separator=" ">
+                    when #{item.id} then #{item.createTime}
+                </foreach>
+            </trim>
+            <trim prefix="updateTime =case id" suffix="end,">
+                <foreach collection="list" index="index" item="item" separator=" ">
+                    when #{item.id} then #{item.updateTime}
+                </foreach>
+            </trim>
+            <trim prefix="exception =case id" suffix="end,">
+                <foreach collection="list" index="index" item="item" separator=" ">
+                    when #{item.id} then #{item.exception}
+                </foreach>
+            </trim>
+        </trim>
+        where id in
+        <foreach close=")" collection="list" index="index" item="item" open="(" separator=",">
+            #{item.id}
+        </foreach>
+    </update>
+    <update id="updateBatchByPrimaryKeySelective" parameterType="java.util.List">
+        update platform_app_exception
+        <trim prefix="set" suffixOverrides=",">
+            <trim prefix="userId =case id" suffix="end,">
+                <foreach collection="list" index="index" item="item" separator=" ">
+                    <if test="item.userId != null ">
+                        when #{item.id} then #{item.userId}
+                    </if>
+                    <if test="item.userId == null ">
+                        when #{item.id} then platform_app_exception.user_id
+                    </if>
+                </foreach>
+            </trim>
+            <trim prefix="sysType =case id" suffix="end,">
+                <foreach collection="list" index="index" item="item" separator=" ">
+                    <if test="item.sysType != null ">
+                        when #{item.id} then #{item.sysType}
+                    </if>
+                    <if test="item.sysType == null ">
+                        when #{item.id} then platform_app_exception.sys_type
+                    </if>
+                </foreach>
+            </trim>
+            <trim prefix="osVersion =case id" suffix="end,">
+                <foreach collection="list" index="index" item="item" separator=" ">
+                    <if test="item.osVersion != null ">
+                        when #{item.id} then #{item.osVersion}
+                    </if>
+                    <if test="item.osVersion == null ">
+                        when #{item.id} then platform_app_exception.os_version
+                    </if>
+                </foreach>
+            </trim>
+            <trim prefix="appVerion =case id" suffix="end,">
+                <foreach collection="list" index="index" item="item" separator=" ">
+                    <if test="item.appVerion != null ">
+                        when #{item.id} then #{item.appVerion}
+                    </if>
+                    <if test="item.appVerion == null ">
+                        when #{item.id} then platform_app_exception.app_verion
+                    </if>
+                </foreach>
+            </trim>
+            <trim prefix="deviceName =case id" suffix="end,">
+                <foreach collection="list" index="index" item="item" separator=" ">
+                    <if test="item.deviceName != null ">
+                        when #{item.id} then #{item.deviceName}
+                    </if>
+                    <if test="item.deviceName == null ">
+                        when #{item.id} then platform_app_exception.device_name
+                    </if>
+                </foreach>
+            </trim>
+            <trim prefix="deviceId =case id" suffix="end,">
+                <foreach collection="list" index="index" item="item" separator=" ">
+                    <if test="item.deviceId != null ">
+                        when #{item.id} then #{item.deviceId}
+                    </if>
+                    <if test="item.deviceId == null ">
+                        when #{item.id} then platform_app_exception.device_id
+                    </if>
+                </foreach>
+            </trim>
+            <trim prefix="createTime =case id" suffix="end,">
+                <foreach collection="list" index="index" item="item" separator=" ">
+                    <if test="item.createTime != null ">
+                        when #{item.id} then #{item.createTime}
+                    </if>
+                    <if test="item.createTime == null ">
+                        when #{item.id} then platform_app_exception.create_time
+                    </if>
+                </foreach>
+            </trim>
+            <trim prefix="updateTime =case id" suffix="end,">
+                <foreach collection="list" index="index" item="item" separator=" ">
+                    <if test="item.updateTime != null ">
+                        when #{item.id} then #{item.updateTime}
+                    </if>
+                    <if test="item.updateTime == null ">
+                        when #{item.id} then platform_app_exception.update_time
+                    </if>
+                </foreach>
+            </trim>
+            <trim prefix="exception =case id" suffix="end,">
+                <foreach collection="list" index="index" item="item" separator=" ">
+                    <if test="item.exception != null ">
+                        when #{item.id} then #{item.exception}
+                    </if>
+                    <if test="item.exception == null ">
+                        when #{item.id} then platform_app_exception.exception
+                    </if>
+                </foreach>
+            </trim>
+        </trim>
+        where id in
+        <foreach close=")" collection="list" index="index" item="item" open="(" separator=",">
+            #{item.id}
+        </foreach>
+    </update>
+</mapper>

@@ -1,0 +1,188 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.summer.dao.mapper.MessagePushDAO">
+    <resultMap id="BaseResultMap" type="com.summer.dao.entity.MessagePush">
+        <id column="id" jdbcType="INTEGER" property="id"/>
+        <result column="title" jdbcType="VARCHAR" property="title"/>
+        <result column="add_person" jdbcType="VARCHAR" property="addPerson"/>
+        <result column="type" jdbcType="INTEGER" property="type"/>
+        <result column="send_nums" jdbcType="INTEGER" property="sendNums"/>
+        <result column="content" jdbcType="LONGVARCHAR" property="content"/>
+        <result column="object" jdbcType="LONGVARCHAR" property="object"/>
+        <result column="pv" jdbcType="INTEGER" property="pv"/>
+        <result column="uv" jdbcType="INTEGER" property="uv"/>
+        <result column="create_time" jdbcType="TIMESTAMP" property="createTime"/>
+        <result column="update_time" jdbcType="TIMESTAMP" property="updateTime"/>
+    </resultMap>
+    <sql id="Base_Column_List">
+    id, title, add_person, type, send_nums, pv, uv, create_time, update_time,content, object
+  </sql>
+    <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from platform_message_push
+        where id = #{id,jdbcType=INTEGER}
+    </select>
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from platform_message_push
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+    <insert id="insert" parameterType="com.summer.dao.entity.MessagePush" keyProperty="id" useGeneratedKeys="true">
+    insert into platform_message_push (id, title, add_person, 
+      type, send_nums, pv, 
+      uv, create_time, update_time, 
+      content, object)
+    values (#{id,jdbcType=INTEGER}, #{title,jdbcType=VARCHAR}, #{addPerson,jdbcType=VARCHAR}, 
+      #{type,jdbcType=INTEGER}, #{sendNums,jdbcType=INTEGER}, #{pv,jdbcType=INTEGER}, 
+      #{uv,jdbcType=INTEGER}, #{createTime,jdbcType=TIMESTAMP}, #{updateTime,jdbcType=TIMESTAMP}, 
+      #{content,jdbcType=LONGVARCHAR}, #{object,jdbcType=LONGVARCHAR})
+  </insert>
+    <insert id="insertSelective" parameterType="com.summer.dao.entity.MessagePush">
+        insert into platform_message_push
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                id,
+            </if>
+            <if test="title != null">
+                title,
+            </if>
+            <if test="addPerson != null">
+                add_person,
+            </if>
+            <if test="type != null">
+                type,
+            </if>
+            <if test="sendNums != null">
+                send_nums,
+            </if>
+            <if test="pv != null">
+                pv,
+            </if>
+            <if test="uv != null">
+                uv,
+            </if>
+            <if test="createTime != null">
+                create_time,
+            </if>
+            <if test="updateTime != null">
+                update_time,
+            </if>
+            <if test="content != null">
+                content,
+            </if>
+            <if test="object != null">
+                object,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                #{id,jdbcType=INTEGER},
+            </if>
+            <if test="title != null">
+                #{title,jdbcType=VARCHAR},
+            </if>
+            <if test="addPerson != null">
+                #{addPerson,jdbcType=VARCHAR},
+            </if>
+            <if test="type != null">
+                #{type,jdbcType=INTEGER},
+            </if>
+            <if test="sendNums != null">
+                #{sendNums,jdbcType=INTEGER},
+            </if>
+            <if test="pv != null">
+                #{pv,jdbcType=INTEGER},
+            </if>
+            <if test="uv != null">
+                #{uv,jdbcType=INTEGER},
+            </if>
+            <if test="createTime != null">
+                #{createTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="updateTime != null">
+                #{updateTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="content != null">
+                #{content,jdbcType=LONGVARCHAR},
+            </if>
+            <if test="object != null">
+                #{object,jdbcType=LONGVARCHAR},
+            </if>
+        </trim>
+    </insert>
+    <update id="updateByPrimaryKeySelective" parameterType="com.summer.dao.entity.MessagePush">
+        update platform_message_push
+        <set>
+            <if test="title != null">
+                title = #{title,jdbcType=VARCHAR},
+            </if>
+            <if test="addPerson != null">
+                add_person = #{addPerson,jdbcType=VARCHAR},
+            </if>
+            <if test="type != null">
+                type = #{type,jdbcType=INTEGER},
+            </if>
+            <if test="sendNums != null">
+                send_nums = #{sendNums,jdbcType=INTEGER},
+            </if>
+            <if test="pv != null">
+                pv = #{pv,jdbcType=INTEGER},
+            </if>
+            <if test="uv != null">
+                uv = #{uv,jdbcType=INTEGER},
+            </if>
+            <if test="createTime != null">
+                create_time = #{createTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="updateTime != null">
+                update_time = #{updateTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="content != null">
+                content = #{content,jdbcType=LONGVARCHAR},
+            </if>
+            <if test="object != null">
+                object = #{object,jdbcType=LONGVARCHAR},
+            </if>
+        </set>
+        where id = #{id,jdbcType=INTEGER}
+    </update>
+    <update id="updateByPrimaryKey" parameterType="com.summer.dao.entity.MessagePush">
+    update platform_message_push
+    set title = #{title,jdbcType=VARCHAR},
+      add_person = #{addPerson,jdbcType=VARCHAR},
+      type = #{type,jdbcType=INTEGER},
+      send_nums = #{sendNums,jdbcType=INTEGER},
+      pv = #{pv,jdbcType=INTEGER},
+      uv = #{uv,jdbcType=INTEGER},
+      content = #{content,jdbcType=LONGVARCHAR},
+      object = #{object,jdbcType=LONGVARCHAR},
+      create_time = #{createTime,jdbcType=TIMESTAMP},
+      update_time = #{updateTime,jdbcType=TIMESTAMP}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+
+    <select id="selectByParams" parameterType="java.util.Map" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from platform_message_push
+        <where>
+            <if test="content != null and content != '' ">
+                content = #{content,jdbcType=LONGVARCHAR},
+            </if>
+            <if test="title != null and title != '' ">
+                and title like concat ('%',#{title},'%')
+
+            </if>
+            <if test="addPerson != null and addPerson != ''">
+                add_person = #{addPerson,jdbcType=VARCHAR}
+            </if>
+            <if test="type != null">
+                type = #{type,jdbcType=INTEGER}
+            </if>
+            <if test="startTime != null and endTime != null and startTime != '' and endTime != '' ">
+                and create_time between #{startTime,jdbcType=TIMESTAMP}and #{endTime,jdbcType=TIMESTAMP}
+            </if>
+        </where>
+        order by create_time desc
+    </select>
+</mapper>

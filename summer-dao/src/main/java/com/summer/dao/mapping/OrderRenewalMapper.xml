@@ -1,0 +1,579 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.summer.dao.mapper.OrderRenewalMapper">
+    <resultMap id="BaseResultMap" type="com.summer.dao.entity.OrderRenewal">
+        <id column="id" property="id" jdbcType="BIGINT"/>
+        <result column="user_id" property="userId" jdbcType="INTEGER"/>
+        <result column="repayment_id" property="repaymentId" jdbcType="INTEGER"/>
+        <result column="borrow_id" property="borrowId" jdbcType="INTEGER"/>
+        <result column="repayment_principal" property="repaymentPrincipal" jdbcType="INTEGER"/>
+        <result column="repayment_fee" property="repaymentFee" jdbcType="INTEGER"/>
+        <result column="late_fee" property="lateFee" jdbcType="INTEGER"/>
+        <result column="renewal_fee_change" property="renewalFee" jdbcType="INTEGER"/>
+        <result column="old_repayment_time" property="oldRepaymentTime" jdbcType="TIMESTAMP"/>
+        <result column="renewal_day" property="renewalDay" jdbcType="TINYINT"/>
+        <result column="remark" property="remark" jdbcType="VARCHAR"/>
+        <result column="status" property="status" jdbcType="TINYINT"/>
+        <result column="sign" property="sign" jdbcType="TINYINT"/>
+        <result column="pay_type" property="payType" jdbcType="TINYINT"/>
+        <result column="renewal_no" property="renewalNo" jdbcType="TINYINT"/>
+        <result column="money_amount" property="moneyAmount" jdbcType="INTEGER"/>
+        <result column="repayment_time" property="repaymentTime" jdbcType="TIMESTAMP"/>
+        <result column="repayment_time_chg" property="repaymentTimeChg" jdbcType="VARCHAR"/>
+        <result column="create_time" property="createTime" jdbcType="TIMESTAMP"/>
+        <result column="create_time_chg" property="createTimeChg" jdbcType="VARCHAR"/>
+        <result column="update_time" property="updateTime" jdbcType="TIMESTAMP"/>
+        <result column="late_day" property="lateDay" jdbcType="INTEGER"/>
+        <result column="out_trade_no" property="outTradeNo" jdbcType="VARCHAR"/>
+        <result column="third" property="third" jdbcType="VARCHAR"/>
+        <result column="renewal_type" property="renewalType"/>
+        <result column="pay_url" jdbcType="VARCHAR" property="payUrl"/>
+    </resultMap>
+    <resultMap id="RenewalUserMap" type="com.summer.pojo.vo.RenewalUserVO" extends="BaseResultMap">
+        <result column="phone" property="phone" jdbcType="VARCHAR"/>
+        <result column="real_name" property="realName" jdbcType="VARCHAR"/>
+        <result column="reviewer" property="reviewer" jdbcType="VARCHAR"/>
+        <result column="repayment_amount_change" property="repaymentAmount" jdbcType="INTEGER"/>
+        <result column="paid_amount_change" property="paidAmount" jdbcType="INTEGER"/>
+        <result column="apply_amount" property="applyMoney"/>
+
+    </resultMap>
+    <sql id="Base_Column_List">
+        id, user_id, repayment_id, borrow_id, repayment_principal, repayment_fee, late_fee,
+        renewal_fee renewal_fee_change, old_repayment_time, renewal_day, remark, status, pay_type,
+        renewal_no,
+        money_amount,
+        repayment_time,
+        create_time,
+        update_time,
+        late_day,
+        out_trade_no,third,renewal_type,pay_url
+    </sql>
+    <sql id="User_Column_List">
+        pc.channel_name as channelName,
+        orn
+        .
+        id,
+        date_format
+        (
+        orn
+        .
+        create_time,
+        '%Y-%m-%d %H:%i:%s'
+        )
+        create_time_chg,
+        orn
+        .
+        renewal_fee
+        renewal_fee_change,
+        orn
+        .
+        renewal_day,
+        date_format
+        (
+        orn
+        .
+        repayment_time,
+        '%Y-%m-%d'
+        )
+        repayment_time_chg,
+        orn
+        .
+        status,
+        orn
+        .
+        remark,
+        orn
+        .
+        pay_type,
+        orn
+        .
+        renewal_no,
+        orn
+        .
+        out_trade_no,
+        orn
+        .
+        third,
+        ui
+        .
+        real_name,
+        ui
+        .
+        phone,
+        pu
+        .
+        user_name
+        reviewer,orp.repayment_amount repayment_amount_change ,orp.paid_amount paid_amount_change,ob.apply_amount
+        as apply_amount ,orn.renewal_type as renewal_type
+    </sql>
+    <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Long">
+        select
+        <include refid="Base_Column_List"/>
+        from order_renewal
+        where id = #{id,jdbcType=BIGINT}
+    </select>
+    <select id="selectLatestByRepaymentId" resultMap="BaseResultMap" parameterType="java.lang.Integer">
+        select
+        <include refid="Base_Column_List"/>
+        from order_renewal
+        where repayment_id = #{repaymentId} ORDER BY id DESC limit 1
+    </select>
+    <select id="statisticByDay" resultType="java.util.Map" parameterType="java.util.Map">
+
+        select
+        IFNULL(sum(orn.repayment_fee+orn.late_fee+orn.renewal_fee),0)/100.0 amount
+        from order_renewal orn join order_borrow ob on orn.borrow_id=ob.id
+        where DATEDIFF(#{date},orn.create_time)=1 and orn.status=2
+
+    </select>
+    <select id="countAll" resultType="java.util.Map" parameterType="java.util.Map">
+
+        select
+        count(*) num,IFNULL(sum(orn.repayment_fee+orn.late_fee+orn.renewal_fee),0)/100.0 amount
+        from order_renewal orn join order_borrow ob on orn.borrow_id=ob.id
+        where orn.status=2
+
+        <if test="customerType != null and customerType != 2">
+            and ob.customer_type=#{customerType}
+        </if>
+    </select>
+    <select id="selectSimple" parameterType="java.util.Map" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from order_renewal
+        <where>
+            <if test="borrowId != null">
+                AND borrow_id = #{borrowId}
+            </if>
+            <if test="repaymentId != null ">
+                and repayment_id = #{repaymentId}
+            </if>
+
+            <if test="status != null ">
+                and status = #{status}
+            </if>
+            <if test="payStatus != null ">
+                and status != #{payStatus}
+            </if>
+            <if test="out_trade_no != null and out_trade_no != ''">
+                and out_trade_no = #{out_trade_no}
+            </if>
+            <if test="createTime != null and createTime != ''">
+                <![CDATA[ and create_time >= #{createTime}   ]]>
+            </if>
+        </where>
+        ORDER BY id DESC
+    </select>
+    <select id="findParams" parameterType="java.util.Map" resultMap="RenewalUserMap">
+        select
+        <include refid="User_Column_List"/>
+        from order_renewal orn INNER join user_info ui on orn.user_id=ui.id
+        LEFT JOIN plateform_channel pc on ui.channel_id = pc.id
+        INNER join order_borrow ob on orn.borrow_id=ob.id
+        left join platform_user pu on ob.review_user_id = pu.id
+
+        INNER join order_repayment orp on orn.repayment_id=orp.id
+        <where>
+            ui.status != 2
+            <if test="channelName != null and channelName != ''">
+                and pc.channel_name = #{channelName,jdbcType=VARCHAR}
+            </if>
+            <if test="realName != null and realName != ''">
+                and ui.real_name like concat('%',#{realName},'%')
+            </if>
+            <if test="phone != null and phone != ''">
+                and ui.phone = #{phone}
+            </if>
+            <if test="platformUserId != null ">
+                and pu.id = #{platformUserId}
+            </if>
+            <if test="status != null ">
+                and orn.status = #{status}
+            </if>
+            <if test="outTradeNo != null and outTradeNo != ''">
+                and orn.out_trade_no = #{outTradeNo}
+            </if>
+            <if test="third != null and third != ''">
+                and orn.third = #{third}
+            </if>
+            <if test="payType != null ">
+                and orn.pay_type = #{payType}
+            </if>
+            <if test="sRenewalTime != null and sRenewalTime != ''">
+                <![CDATA[    and orn.create_time >= #{sRenewalTime}   ]]>
+            </if>
+            <if test="eRenewalTime != null and eRenewalTime != ''">
+                <![CDATA[    and orn.create_time < date_add(#{eRenewalTime},interval 1 day) ]]>
+            </if>
+            <if test="sRepayTime != null and sRepayTime != ''">
+                <![CDATA[    and orn.repayment_time >= #{sRepayTime}   ]]>
+            </if>
+            <if test="eRepayTime != null and eRepayTime != ''">
+                <![CDATA[    and orn.repayment_time < date_add(#{eRepayTime},interval 1 day) ]]>
+            </if>
+            <if test="renewalType != null">
+                and orn.renewal_type = #{renewalType}
+            </if>
+        </where>
+        order by orn.id desc
+    </select>
+    <select id="findStatistic" parameterType="java.util.Map" resultType="com.summer.pojo.vo.FinanceStatisticVO">
+        select
+        ord.id, date_format(ord.create_time,'%Y-%m-%d %H:%i:%s') renewalTime,
+        ord.renewal_day renewalTerm,ord.renewal_fee/100.0 renewalFee,
+        date_format(ord.old_repayment_time,'%Y-%m-%d %H:%i:%s') oldRepayTime,
+        date_format(ord.repayment_time,'%Y-%m-%d %H:%i:%s') newRepayTime,
+        ord.pay_type payType, ord.out_trade_no orderNo, ui.real_name realName, ui.phone, ord.status
+        from order_renewal ord INNER join user_info ui on ord.user_id=ui.id
+        <where>
+            <if test="phone != null and phone != ''">
+                and ui.phone = #{phone}
+            </if>
+            <if test="orderNo != null and orderNo != ''">
+                and ord.out_trade_no = #{orderNo}
+            </if>
+            <if test="renewalType != null ">
+                and ord.pay_type = #{renewalType}
+            </if>
+
+            <if test="sRenewalTime != null and sRenewalTime != ''">
+                <![CDATA[    and ord.create_time >= #{sRenewalTime}   ]]>
+            </if>
+            <if test="eRenewalTime != null and eRenewalTime != ''">
+                <![CDATA[    and ord.create_time < date_add(#{eRenewalTime},interval 1 day)  ]]>
+            </if>
+        </where>
+        order by ord.create_time desc
+    </select>
+    <select id="countStatistic" resultType="Map">
+
+        select 1 num,
+        IFNULL(sum(repayment_fee+renewal_fee+late_fee),0)/100.0 totalRenewalMoney,count(*) totalRenewalCount
+        from order_renewal where status in (1,2)
+    </select>
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+        delete from order_renewal
+        where id = #{id,jdbcType=BIGINT}
+    </delete>
+    <insert id="insert" parameterType="com.summer.dao.entity.OrderRenewal">
+        insert into order_renewal (id, user_id, repayment_id,
+        borrow_id, repayment_principal, repayment_fee,
+        late_fee, renewal_fee, old_repayment_time,
+        renewal_day, remark, status,
+        pay_type, renewal_no, money_amount,
+        repayment_time, create_time, update_time,
+        late_day, sign)
+        values (#{id,jdbcType=BIGINT}, #{userId,jdbcType=INTEGER}, #{repaymentId,jdbcType=INTEGER},
+        #{borrowId,jdbcType=INTEGER}, #{repaymentPrincipal,jdbcType=INTEGER}, #{repaymentFee,jdbcType=INTEGER},
+        #{lateFee,jdbcType=INTEGER}, #{renewalFee,jdbcType=INTEGER}, #{oldRepaymentTime,jdbcType=TIMESTAMP},
+        #{renewalDay,jdbcType=TINYINT}, #{remark,jdbcType=VARCHAR}, #{status,jdbcType=TINYINT},
+        #{payType,jdbcType=TINYINT}, #{renewalNo,jdbcType=TINYINT}, #{moneyAmount,jdbcType=INTEGER},
+        #{repaymentTime,jdbcType=TIMESTAMP}, #{createTime,jdbcType=TIMESTAMP}, #{updateTime,jdbcType=TIMESTAMP},
+        #{lateDay,jdbcType=INTEGER}, #{sign,jdbcType=TINYINT})
+    </insert>
+    <insert id="insertSelective" useGeneratedKeys="true" keyProperty="id"
+            parameterType="com.summer.dao.entity.OrderRenewal">
+        insert into order_renewal
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                id,
+            </if>
+            <if test="userId != null">
+                user_id,
+            </if>
+            <if test="repaymentId != null">
+                repayment_id,
+            </if>
+            <if test="borrowId != null">
+                borrow_id,
+            </if>
+            <if test="repaymentPrincipal != null">
+                repayment_principal,
+            </if>
+            <if test="repaymentFee != null">
+                repayment_fee,
+            </if>
+            <if test="lateFee != null">
+                late_fee,
+            </if>
+            <if test="renewalFee != null">
+                renewal_fee,
+            </if>
+            <if test="oldRepaymentTime != null">
+                old_repayment_time,
+            </if>
+            <if test="renewalDay != null">
+                renewal_day,
+            </if>
+            <if test="remark != null">
+                remark,
+            </if>
+            <if test="payUrl != null">
+                pay_url,
+            </if>
+            <if test="outTradeNo != null">
+                out_trade_no,
+            </if>
+            <if test="third != null">
+                third,
+            </if>
+            <if test="status != null">
+                status,
+            </if>
+            <if test="payType != null">
+                pay_type,
+            </if>
+            <if test="renewalNo != null">
+                renewal_no,
+            </if>
+            <if test="moneyAmount != null">
+                money_amount,
+            </if>
+            <if test="repaymentTime != null">
+                repayment_time,
+            </if>
+            <if test="createTime != null">
+                create_time,
+            </if>
+            <if test="updateTime != null">
+                update_time,
+            </if>
+            <if test="lateDay != null">
+                late_day,
+            </if>
+            <if test="renewalType != null">
+                renewal_type
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                #{id,jdbcType=BIGINT},
+            </if>
+            <if test="userId != null">
+                #{userId,jdbcType=INTEGER},
+            </if>
+            <if test="repaymentId != null">
+                #{repaymentId,jdbcType=INTEGER},
+            </if>
+            <if test="borrowId != null">
+                #{borrowId,jdbcType=INTEGER},
+            </if>
+            <if test="repaymentPrincipal != null">
+                #{repaymentPrincipal,jdbcType=INTEGER},
+            </if>
+            <if test="repaymentFee != null">
+                #{repaymentFee,jdbcType=INTEGER},
+            </if>
+            <if test="lateFee != null">
+                #{lateFee,jdbcType=INTEGER},
+            </if>
+            <if test="renewalFee != null">
+                #{renewalFee,jdbcType=INTEGER},
+            </if>
+            <if test="oldRepaymentTime != null">
+                #{oldRepaymentTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="renewalDay != null">
+                #{renewalDay,jdbcType=TINYINT},
+            </if>
+            <if test="remark != null">
+                #{remark,jdbcType=VARCHAR},
+            </if>
+            <if test="payUrl != null">
+                #{payUrl,jdbcType=VARCHAR},
+            </if>
+            <if test="outTradeNo != null">
+                #{outTradeNo,jdbcType=VARCHAR},
+            </if>
+            <if test="third != null">
+                #{third,jdbcType=VARCHAR},
+            </if>
+            <if test="status != null">
+                #{status,jdbcType=TINYINT},
+            </if>
+            <if test="payType != null">
+                #{payType,jdbcType=TINYINT},
+            </if>
+            <if test="renewalNo != null">
+                #{renewalNo,jdbcType=TINYINT},
+            </if>
+            <if test="moneyAmount != null">
+                #{moneyAmount,jdbcType=INTEGER},
+            </if>
+            <if test="repaymentTime != null">
+                #{repaymentTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="createTime != null">
+                #{createTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="updateTime != null">
+                #{updateTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="lateDay != null">
+                #{lateDay,jdbcType=INTEGER},
+            </if>
+            <if test="renewalType != null">
+                #{renewalType}
+            </if>
+        </trim>
+    </insert>
+    <update id="updateByPrimaryKeySelective" parameterType="com.summer.dao.entity.OrderRenewal">
+        update order_renewal
+        <set>
+            <if test="userId != null">
+                user_id = #{userId,jdbcType=INTEGER},
+            </if>
+            <if test="repaymentId != null">
+                repayment_id = #{repaymentId,jdbcType=INTEGER},
+            </if>
+            <if test="borrowId != null">
+                borrow_id = #{borrowId,jdbcType=INTEGER},
+            </if>
+            <if test="repaymentPrincipal != null">
+                repayment_principal = #{repaymentPrincipal,jdbcType=INTEGER},
+            </if>
+            <if test="repaymentFee != null">
+                repayment_fee = #{repaymentFee,jdbcType=INTEGER},
+            </if>
+            <if test="lateFee != null">
+                late_fee = #{lateFee,jdbcType=INTEGER},
+            </if>
+            <if test="payUrl != null">
+                pay_url = #{payUrl,jdbcType=VARCHAR},
+            </if>
+            <if test="renewalFee != null">
+                renewal_fee = #{renewalFee,jdbcType=INTEGER},
+            </if>
+            <if test="oldRepaymentTime != null">
+                old_repayment_time = #{oldRepaymentTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="renewalDay != null">
+                renewal_day = #{renewalDay,jdbcType=TINYINT},
+            </if>
+            <if test="remark != null">
+                remark = #{remark,jdbcType=VARCHAR},
+            </if>
+            <if test="status != null">
+                status = #{status,jdbcType=TINYINT},
+            </if>
+            <if test="payType != null">
+                pay_type = #{payType,jdbcType=TINYINT},
+            </if>
+            <if test="renewalNo != null">
+                renewal_no = #{renewalNo,jdbcType=TINYINT},
+            </if>
+            <if test="moneyAmount != null">
+                money_amount = #{moneyAmount,jdbcType=INTEGER},
+            </if>
+            <if test="repaymentTime != null">
+                repayment_time = #{repaymentTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="createTime != null">
+                create_time = #{createTime,jdbcType=TIMESTAMP},
+            </if>
+            update_time = now(),
+            <if test="lateDay != null">
+                late_day = #{lateDay,jdbcType=INTEGER},
+            </if>
+            <if test="sign != null">
+                sign = #{sign,jdbcType=TINYINT},
+            </if>
+
+            <if test="third != null">
+                third = #{third},
+            </if>
+            <if test="renewalType != null">
+                renewal_type = #{renewalType}
+            </if>
+        </set>
+        where id = #{id,jdbcType=BIGINT}
+    </update>
+    <update id="updateByPrimaryKey" parameterType="com.summer.dao.entity.OrderRenewal">
+        update order_renewal
+        set user_id = #{userId,jdbcType=INTEGER},
+        repayment_id = #{repaymentId,jdbcType=INTEGER},
+        borrow_id = #{borrowId,jdbcType=INTEGER},
+        repayment_principal = #{repaymentPrincipal,jdbcType=INTEGER},
+        repayment_fee = #{repaymentFee,jdbcType=INTEGER},
+        late_fee = #{lateFee,jdbcType=INTEGER},
+        renewal_fee = #{renewalFee,jdbcType=INTEGER},
+        old_repayment_time = #{oldRepaymentTime,jdbcType=TIMESTAMP},
+        renewal_day = #{renewalDay,jdbcType=TINYINT},
+        remark = #{remark,jdbcType=VARCHAR},
+        status = #{status,jdbcType=TINYINT},
+        pay_type = #{payType,jdbcType=TINYINT},
+        renewal_no = #{renewalNo,jdbcType=TINYINT},
+        money_amount = #{moneyAmount,jdbcType=INTEGER},
+        repayment_time = #{repaymentTime,jdbcType=TIMESTAMP},
+        create_time = #{createTime,jdbcType=TIMESTAMP},
+        update_time = #{updateTime,jdbcType=TIMESTAMP},
+        late_day = #{lateDay,jdbcType=INTEGER},
+        sign = #{sign,jdbcType=TINYINT}
+        where id = #{id,jdbcType=BIGINT}
+    </update>
+    <update id="updatePaying" parameterType="com.summer.dao.entity.OrderRenewal">
+        update order_renewal
+        set status = #{status,jdbcType=TINYINT}
+        where id = #{id,jdbcType=BIGINT} and status=0
+    </update>
+    <select id="findByRepaymentId" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from order_renewal where repayment_id=#{repaymentId} and status=2
+    </select>
+
+    <update id="updateBatch" parameterType="java.util.List">
+        UPDATE order_renewal
+        SET sign = CASE id
+        <foreach collection="list" item="item">
+            WHEN #{item.renewalId} THEN #{item.sign}
+        </foreach>
+        END
+        WHERE
+        id in
+        <foreach collection="list" item="item" open="(" separator="," close=")">
+            #{item.renewalId}
+        </foreach>
+    </update>
+
+    <select id="countRenewalFree" resultType="java.lang.Long" parameterType="java.lang.String">
+        select ifNUll(sum(repayment_fee),0) from order_renewal
+        where date_format(old_repayment_time,'%Y-%m-%d') = date_format(#{firstRepaymentTime},'%Y-%m-%d') and status=2
+    </select>
+
+    <select id="countRenewalServiceFee" resultType="java.lang.Long" parameterType="java.lang.String">
+        select ifNUll(sum(renewal_fee),0) from order_renewal
+        where date_format(old_repayment_time,'%Y-%m-%d') = date_format(#{firstRepaymentTime},'%Y-%m-%d') and status=2
+    </select>
+
+    <select id="countRenewalNum" resultType="java.lang.Integer" parameterType="java.lang.String">
+        select ifNUll(count(1),0) from order_renewal
+        where date_format(old_repayment_time,'%Y-%m-%d') = date_format(#{firstRepaymentTime},'%Y-%m-%d') and status=2
+    </select>
+
+    <select id="countRenewalExpireAmount" resultType="java.lang.Long">
+        select ifNUll(sum(repayment_principal),0) from order_renewal
+        where date_format(old_repayment_time,'%Y-%m-%d') = date_format(now(),'%Y-%m-%d') and status=2
+    </select>
+
+    <select id="countExpireRenewal" parameterType="java.lang.String" resultType="com.summer.pojo.vo.OrderRenewalVO">
+        select ui.customer_type customerType, count(1) num, ifNUll(sum(ren.repayment_principal),0)
+        expireAmount, ifNUll(sum(renewal_fee),0) renewalAmount
+        from order_renewal ren left join user_info ui on ren.user_id = ui.id
+        where date_format(ren.old_repayment_time,'%Y-%m-%d') = date_format(#{firstRepaymentTime},'%Y-%m-%d')
+        and ren.status = 2
+        GROUP BY ui.customer_type
+    </select>
+
+    <select id="countNowExpireRenewal" parameterType="java.lang.String" resultType="com.summer.pojo.vo.OrderRenewalVO">
+        select ui.customer_type customerType, count(1) num, ifNUll(sum(ren.repayment_principal),0)
+        expireAmount, ifNUll(sum(renewal_fee + repayment_fee),0) renewalAmount
+        from order_renewal ren left join user_info ui on ren.user_id = ui.id
+        where date_format(ren.old_repayment_time,'%Y-%m-%d') = date_format(#{firstRepaymentTime},'%Y-%m-%d')
+        and ren.status = 2
+        <![CDATA[ and INSERT(DATE_FORMAT(NOW(),'%Y-%m-%d %H:%i'),16,1,0) <= date_format(ren.update_time,'%Y-%m-%d %H:%i')]]>
+        GROUP BY ui.customer_type
+    </select>
+</mapper>

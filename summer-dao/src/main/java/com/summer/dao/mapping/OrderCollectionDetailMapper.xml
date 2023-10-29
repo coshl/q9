@@ -1,0 +1,627 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.summer.dao.mapper.OrderCollectionDetailDAO">
+    <resultMap id="BaseResultMap" type="com.summer.dao.entity.OrderCollectionDetail">
+        <id column="id" jdbcType="BIGINT" property="id"/>
+        <result column="collection_id" jdbcType="INTEGER" property="collectionId"/>
+        <result column="collection_user_id" jdbcType="INTEGER" property="collectionUserId"/>
+        <result column="user_id" jdbcType="INTEGER" property="userId"/>
+        <result column="contact_type" jdbcType="TINYINT" property="contactType"/>
+        <result column="contact_name" jdbcType="VARCHAR" property="contactName"/>
+        <result column="relation" jdbcType="TINYINT" property="relation"/>
+        <result column="contact_phone" jdbcType="VARCHAR" property="contactPhone"/>
+        <result column="press_level" jdbcType="TINYINT" property="pressLevel"/>
+        <result column="status" jdbcType="TINYINT" property="status"/>
+        <result column="collection_type" jdbcType="TINYINT" property="collectionType"/>
+        <result column="collected_amount" jdbcType="INTEGER" property="collectedAmount"/>
+        <result column="create_time" jdbcType="TIMESTAMP" property="createTime"/>
+        <result column="update_time" jdbcType="TIMESTAMP" property="updateTime"/>
+        <result column="create_time_chg" jdbcType="VARCHAR" property="createTimeChg"/>
+        <result column="collection_tag" jdbcType="VARCHAR" property="collectionTag"/>
+        <result column="remark" jdbcType="VARCHAR" property="remark"/>
+    </resultMap>
+    <sql id="Base_Column_List">
+        id,
+        collection_id,
+        collection_user_id,
+        user_id,
+        contact_type,
+        contact_name,
+        relation,
+        contact_phone,
+        press_level,
+        status,
+        collection_type,
+        collected_amount,
+        create_time,
+        date_format
+        (
+        create_time,
+        '%Y-%m-%d %H:%i:%s'
+        )
+        create_time_chg,
+        update_time,
+        collection_tag,
+        remark
+    </sql>
+    <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from order_collection_detail
+        where id = #{id,jdbcType=BIGINT}
+    </select>
+    <select id="selectSimple" parameterType="java.util.Map" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from order_collection_detail
+        <where>
+            <if test="collectionId != null ">
+                and collection_id = #{collectionId}
+            </if>
+        </where>
+        ORDER BY id DESC
+    </select>
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+        delete
+        from order_collection_detail
+        where id = #{id,jdbcType=BIGINT}
+    </delete>
+    <insert id="insert" parameterType="com.summer.dao.entity.OrderCollectionDetail">
+        insert into order_collection_detail (id, collection_id, collection_user_id,
+                                             user_id, contact_type, contact_name,
+                                             relation, contact_phone, press_level,
+                                             status, collection_type, collected_amount,
+                                             create_time, update_time, collection_tag,
+                                             remark)
+        values (#{id,jdbcType=BIGINT}, #{collectionId,jdbcType=INTEGER}, #{collectionUserId,jdbcType=INTEGER},
+                #{userId,jdbcType=INTEGER}, #{contactType,jdbcType=TINYINT}, #{contactName,jdbcType=VARCHAR},
+                #{relation,jdbcType=TINYINT}, #{contactPhone,jdbcType=VARCHAR}, #{pressLevel,jdbcType=TINYINT},
+                #{status,jdbcType=TINYINT}, #{collectionType,jdbcType=TINYINT}, #{collectedAmount,jdbcType=INTEGER},
+                #{createTime,jdbcType=TIMESTAMP}, #{updateTime,jdbcType=TIMESTAMP}, #{collectionTag,jdbcType=VARCHAR},
+                #{remark,jdbcType=VARCHAR})
+    </insert>
+    <insert id="insertSelective" parameterType="com.summer.dao.entity.OrderCollectionDetail">
+        insert into order_collection_detail
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                id,
+            </if>
+            <if test="collectionId != null">
+                collection_id,
+            </if>
+            <if test="collectionUserId != null">
+                collection_user_id,
+            </if>
+            <if test="userId != null">
+                user_id,
+            </if>
+            <if test="contactType != null">
+                contact_type,
+            </if>
+            <if test="contactName != null">
+                contact_name,
+            </if>
+            <if test="relation != null">
+                relation,
+            </if>
+            <if test="contactPhone != null">
+                contact_phone,
+            </if>
+            <if test="pressLevel != null">
+                press_level,
+            </if>
+            <if test="status != null">
+                status,
+            </if>
+            <if test="collectionType != null">
+                collection_type,
+            </if>
+            <if test="collectedAmount != null">
+                collected_amount,
+            </if>
+            <if test="createTime != null">
+                create_time,
+            </if>
+            <if test="updateTime != null">
+                update_time,
+            </if>
+            <if test="collectionTag != null">
+                collection_tag,
+            </if>
+            <if test="remark != null">
+                remark,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                #{id,jdbcType=BIGINT},
+            </if>
+            <if test="collectionId != null">
+                #{collectionId,jdbcType=INTEGER},
+            </if>
+            <if test="collectionUserId != null">
+                #{collectionUserId,jdbcType=INTEGER},
+            </if>
+            <if test="userId != null">
+                #{userId,jdbcType=INTEGER},
+            </if>
+            <if test="contactType != null">
+                #{contactType,jdbcType=TINYINT},
+            </if>
+            <if test="contactName != null">
+                #{contactName,jdbcType=VARCHAR},
+            </if>
+            <if test="relation != null">
+                #{relation,jdbcType=TINYINT},
+            </if>
+            <if test="contactPhone != null">
+                #{contactPhone,jdbcType=VARCHAR},
+            </if>
+            <if test="pressLevel != null">
+                #{pressLevel,jdbcType=TINYINT},
+            </if>
+            <if test="status != null">
+                #{status,jdbcType=TINYINT},
+            </if>
+            <if test="collectionType != null">
+                #{collectionType,jdbcType=TINYINT},
+            </if>
+            <if test="collectedAmount != null">
+                #{collectedAmount,jdbcType=INTEGER},
+            </if>
+            <if test="createTime != null">
+                #{createTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="updateTime != null">
+                #{updateTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="collectionTag != null">
+                #{collectionTag,jdbcType=VARCHAR},
+            </if>
+            <if test="remark != null">
+                #{remark,jdbcType=VARCHAR},
+            </if>
+        </trim>
+    </insert>
+    <insert id="insertBatch" parameterType="java.util.List">
+        insert into order_collection_detail (id, collection_id, collection_user_id,
+        user_id, contact_type, contact_name,
+        relation, contact_phone, press_level,
+        status, collection_type, collected_amount,
+        create_time, update_time, collection_tag,
+        remark)
+        values
+        <foreach collection="list" index="index" item="item" separator=",">
+            (#{item.id,jdbcType=BIGINT}, #{item.collectionId,jdbcType=INTEGER},
+            #{item.collectionUserId,jdbcType=INTEGER},
+            #{item.userId,jdbcType=INTEGER}, #{item.contactType,jdbcType=TINYINT}, #{item.contactName,jdbcType=VARCHAR},
+            #{item.relation,jdbcType=TINYINT}, #{item.contactPhone,jdbcType=VARCHAR},
+            #{item.pressLevel,jdbcType=TINYINT},
+            #{item.status,jdbcType=TINYINT}, #{item.collectionType,jdbcType=TINYINT},
+            #{item.collectedAmount,jdbcType=INTEGER},
+            #{item.createTime,jdbcType=TIMESTAMP}, #{item.updateTime,jdbcType=TIMESTAMP},
+            #{item.collectionTag,jdbcType=VARCHAR},
+            #{item.remark,jdbcType=VARCHAR})
+        </foreach>
+    </insert>
+    <insert id="insertBatchSelective" parameterType="java.util.List">
+        insert into order_collection_detail
+        (id, collection_id, collection_user_id, user_id, contact_type, contact_name, relation,
+        contact_phone, press_level, status, collection_type, collected_amount, create_time,
+        update_time, collection_tag, remark)
+        values
+        <foreach collection="list" index="index" item="item" separator=",">
+            <trim prefix="(" suffix=")" suffixOverrides=",">
+                <if test="item.id != null">
+                    #{item.id,jdbcType=BIGINT},
+                </if>
+                <if test="item.id == null">
+                    NULL,
+                </if>
+                <if test="item.collectionId != null">
+                    #{item.collectionId,jdbcType=INTEGER},
+                </if>
+                <if test="item.collectionId == null">
+                    NULL,
+                </if>
+                <if test="item.collectionUserId != null">
+                    #{item.collectionUserId,jdbcType=INTEGER},
+                </if>
+                <if test="item.collectionUserId == null">
+                    NULL,
+                </if>
+                <if test="item.userId != null">
+                    #{item.userId,jdbcType=INTEGER},
+                </if>
+                <if test="item.userId == null">
+                    NULL,
+                </if>
+                <if test="item.contactType != null">
+                    #{item.contactType,jdbcType=TINYINT},
+                </if>
+                <if test="item.contactType == null">
+                    NULL,
+                </if>
+                <if test="item.contactName != null">
+                    #{item.contactName,jdbcType=VARCHAR},
+                </if>
+                <if test="item.contactName == null">
+                    NULL,
+                </if>
+                <if test="item.relation != null">
+                    #{item.relation,jdbcType=TINYINT},
+                </if>
+                <if test="item.relation == null">
+                    NULL,
+                </if>
+                <if test="item.contactPhone != null">
+                    #{item.contactPhone,jdbcType=VARCHAR},
+                </if>
+                <if test="item.contactPhone == null">
+                    NULL,
+                </if>
+                <if test="item.pressLevel != null">
+                    #{item.pressLevel,jdbcType=TINYINT},
+                </if>
+                <if test="item.pressLevel == null">
+                    NULL,
+                </if>
+                <if test="item.status != null">
+                    #{item.status,jdbcType=TINYINT},
+                </if>
+                <if test="item.status == null">
+                    NULL,
+                </if>
+                <if test="item.collectionType != null">
+                    #{item.collectionType,jdbcType=TINYINT},
+                </if>
+                <if test="item.collectionType == null">
+                    NULL,
+                </if>
+                <if test="item.collectedAmount != null">
+                    #{item.collectedAmount,jdbcType=INTEGER},
+                </if>
+                <if test="item.collectedAmount == null">
+                    NULL,
+                </if>
+                <if test="item.createTime != null">
+                    #{item.createTime,jdbcType=TIMESTAMP},
+                </if>
+                <if test="item.createTime == null">
+                    NULL,
+                </if>
+                <if test="item.updateTime != null">
+                    #{item.updateTime,jdbcType=TIMESTAMP},
+                </if>
+                <if test="item.updateTime == null">
+                    NULL,
+                </if>
+                <if test="item.collectionTag != null">
+                    #{item.collectionTag,jdbcType=VARCHAR},
+                </if>
+                <if test="item.collectionTag == null">
+                    NULL,
+                </if>
+                <if test="item.remark != null">
+                    #{item.remark,jdbcType=VARCHAR},
+                </if>
+                <if test="item.remark == null">
+                    NULL,
+                </if>
+            </trim>
+        </foreach>
+    </insert>
+    <update id="updateByPrimaryKeySelective" parameterType="com.summer.dao.entity.OrderCollectionDetail">
+        update order_collection_detail
+        <set>
+            <if test="collectionId != null">
+                collection_id = #{collectionId,jdbcType=INTEGER},
+            </if>
+            <if test="collectionUserId != null">
+                collection_user_id = #{collectionUserId,jdbcType=INTEGER},
+            </if>
+            <if test="userId != null">
+                user_id = #{userId,jdbcType=INTEGER},
+            </if>
+            <if test="contactType != null">
+                contact_type = #{contactType,jdbcType=TINYINT},
+            </if>
+            <if test="contactName != null">
+                contact_name = #{contactName,jdbcType=VARCHAR},
+            </if>
+            <if test="relation != null">
+                relation = #{relation,jdbcType=TINYINT},
+            </if>
+            <if test="contactPhone != null">
+                contact_phone = #{contactPhone,jdbcType=VARCHAR},
+            </if>
+            <if test="pressLevel != null">
+                press_level = #{pressLevel,jdbcType=TINYINT},
+            </if>
+            <if test="status != null">
+                status = #{status,jdbcType=TINYINT},
+            </if>
+            <if test="collectionType != null">
+                collection_type = #{collectionType,jdbcType=TINYINT},
+            </if>
+            <if test="collectedAmount != null">
+                collected_amount = #{collectedAmount,jdbcType=INTEGER},
+            </if>
+            <if test="createTime != null">
+                create_time = #{createTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="updateTime != null">
+                update_time = #{updateTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="collectionTag != null">
+                collection_tag = #{collectionTag,jdbcType=VARCHAR},
+            </if>
+            <if test="remark != null">
+                remark = #{remark,jdbcType=VARCHAR},
+            </if>
+        </set>
+        where id = #{id,jdbcType=BIGINT}
+    </update>
+    <update id="updateByPrimaryKey" parameterType="com.summer.dao.entity.OrderCollectionDetail">
+        update order_collection_detail
+        set collection_id      = #{collectionId,jdbcType=INTEGER},
+            collection_user_id = #{collectionUserId,jdbcType=INTEGER},
+            user_id            = #{userId,jdbcType=INTEGER},
+            contact_type       = #{contactType,jdbcType=TINYINT},
+            contact_name       = #{contactName,jdbcType=VARCHAR},
+            relation           = #{relation,jdbcType=TINYINT},
+            contact_phone      = #{contactPhone,jdbcType=VARCHAR},
+            press_level        = #{pressLevel,jdbcType=TINYINT},
+            status             = #{status,jdbcType=TINYINT},
+            collection_type    = #{collectionType,jdbcType=TINYINT},
+            collected_amount   = #{collectedAmount,jdbcType=INTEGER},
+            create_time        = #{createTime,jdbcType=TIMESTAMP},
+            update_time        = #{updateTime,jdbcType=TIMESTAMP},
+            collection_tag     = #{collectionTag,jdbcType=VARCHAR},
+            remark             = #{remark,jdbcType=VARCHAR}
+        where id = #{id,jdbcType=BIGINT}
+    </update>
+    <update id="updateBatchByPrimaryKey" parameterType="java.util.List">
+        update order_collection_detail
+        <trim prefix="set" suffixOverrides=",">
+            <trim prefix="collectionId =case id" suffix="end,">
+                <foreach collection="list" index="index" item="item" separator=" ">
+                    when #{item.id} then #{item.collectionId}
+                </foreach>
+            </trim>
+            <trim prefix="collectionUserId =case id" suffix="end,">
+                <foreach collection="list" index="index" item="item" separator=" ">
+                    when #{item.id} then #{item.collectionUserId}
+                </foreach>
+            </trim>
+            <trim prefix="userId =case id" suffix="end,">
+                <foreach collection="list" index="index" item="item" separator=" ">
+                    when #{item.id} then #{item.userId}
+                </foreach>
+            </trim>
+            <trim prefix="contactType =case id" suffix="end,">
+                <foreach collection="list" index="index" item="item" separator=" ">
+                    when #{item.id} then #{item.contactType}
+                </foreach>
+            </trim>
+            <trim prefix="contactName =case id" suffix="end,">
+                <foreach collection="list" index="index" item="item" separator=" ">
+                    when #{item.id} then #{item.contactName}
+                </foreach>
+            </trim>
+            <trim prefix="relation =case id" suffix="end,">
+                <foreach collection="list" index="index" item="item" separator=" ">
+                    when #{item.id} then #{item.relation}
+                </foreach>
+            </trim>
+            <trim prefix="contactPhone =case id" suffix="end,">
+                <foreach collection="list" index="index" item="item" separator=" ">
+                    when #{item.id} then #{item.contactPhone}
+                </foreach>
+            </trim>
+            <trim prefix="pressLevel =case id" suffix="end,">
+                <foreach collection="list" index="index" item="item" separator=" ">
+                    when #{item.id} then #{item.pressLevel}
+                </foreach>
+            </trim>
+            <trim prefix="status =case id" suffix="end,">
+                <foreach collection="list" index="index" item="item" separator=" ">
+                    when #{item.id} then #{item.status}
+                </foreach>
+            </trim>
+            <trim prefix="collectionType =case id" suffix="end,">
+                <foreach collection="list" index="index" item="item" separator=" ">
+                    when #{item.id} then #{item.collectionType}
+                </foreach>
+            </trim>
+            <trim prefix="collectedAmount =case id" suffix="end,">
+                <foreach collection="list" index="index" item="item" separator=" ">
+                    when #{item.id} then #{item.collectedAmount}
+                </foreach>
+            </trim>
+            <trim prefix="createTime =case id" suffix="end,">
+                <foreach collection="list" index="index" item="item" separator=" ">
+                    when #{item.id} then #{item.createTime}
+                </foreach>
+            </trim>
+            <trim prefix="updateTime =case id" suffix="end,">
+                <foreach collection="list" index="index" item="item" separator=" ">
+                    when #{item.id} then #{item.updateTime}
+                </foreach>
+            </trim>
+            <trim prefix="collectionTag =case id" suffix="end,">
+                <foreach collection="list" index="index" item="item" separator=" ">
+                    when #{item.id} then #{item.collectionTag}
+                </foreach>
+            </trim>
+            <trim prefix="remark =case id" suffix="end,">
+                <foreach collection="list" index="index" item="item" separator=" ">
+                    when #{item.id} then #{item.remark}
+                </foreach>
+            </trim>
+        </trim>
+        where id in
+        <foreach close=")" collection="list" index="index" item="item" open="(" separator=",">
+            #{item.id}
+        </foreach>
+    </update>
+    <update id="updateBatchByPrimaryKeySelective" parameterType="java.util.List">
+        update order_collection_detail
+        <trim prefix="set" suffixOverrides=",">
+            <trim prefix="collectionId =case id" suffix="end,">
+                <foreach collection="list" index="index" item="item" separator=" ">
+                    <if test="item.collectionId != null ">
+                        when #{item.id} then #{item.collectionId}
+                    </if>
+                    <if test="item.collectionId == null ">
+                        when #{item.id} then order_collection_detail.collection_id
+                    </if>
+                </foreach>
+            </trim>
+            <trim prefix="collectionUserId =case id" suffix="end,">
+                <foreach collection="list" index="index" item="item" separator=" ">
+                    <if test="item.collectionUserId != null ">
+                        when #{item.id} then #{item.collectionUserId}
+                    </if>
+                    <if test="item.collectionUserId == null ">
+                        when #{item.id} then order_collection_detail.collection_user_id
+                    </if>
+                </foreach>
+            </trim>
+            <trim prefix="userId =case id" suffix="end,">
+                <foreach collection="list" index="index" item="item" separator=" ">
+                    <if test="item.userId != null ">
+                        when #{item.id} then #{item.userId}
+                    </if>
+                    <if test="item.userId == null ">
+                        when #{item.id} then order_collection_detail.user_id
+                    </if>
+                </foreach>
+            </trim>
+            <trim prefix="contactType =case id" suffix="end,">
+                <foreach collection="list" index="index" item="item" separator=" ">
+                    <if test="item.contactType != null ">
+                        when #{item.id} then #{item.contactType}
+                    </if>
+                    <if test="item.contactType == null ">
+                        when #{item.id} then order_collection_detail.contact_type
+                    </if>
+                </foreach>
+            </trim>
+            <trim prefix="contactName =case id" suffix="end,">
+                <foreach collection="list" index="index" item="item" separator=" ">
+                    <if test="item.contactName != null ">
+                        when #{item.id} then #{item.contactName}
+                    </if>
+                    <if test="item.contactName == null ">
+                        when #{item.id} then order_collection_detail.contact_name
+                    </if>
+                </foreach>
+            </trim>
+            <trim prefix="relation =case id" suffix="end,">
+                <foreach collection="list" index="index" item="item" separator=" ">
+                    <if test="item.relation != null ">
+                        when #{item.id} then #{item.relation}
+                    </if>
+                    <if test="item.relation == null ">
+                        when #{item.id} then order_collection_detail.relation
+                    </if>
+                </foreach>
+            </trim>
+            <trim prefix="contactPhone =case id" suffix="end,">
+                <foreach collection="list" index="index" item="item" separator=" ">
+                    <if test="item.contactPhone != null ">
+                        when #{item.id} then #{item.contactPhone}
+                    </if>
+                    <if test="item.contactPhone == null ">
+                        when #{item.id} then order_collection_detail.contact_phone
+                    </if>
+                </foreach>
+            </trim>
+            <trim prefix="pressLevel =case id" suffix="end,">
+                <foreach collection="list" index="index" item="item" separator=" ">
+                    <if test="item.pressLevel != null ">
+                        when #{item.id} then #{item.pressLevel}
+                    </if>
+                    <if test="item.pressLevel == null ">
+                        when #{item.id} then order_collection_detail.press_level
+                    </if>
+                </foreach>
+            </trim>
+            <trim prefix="status =case id" suffix="end,">
+                <foreach collection="list" index="index" item="item" separator=" ">
+                    <if test="item.status != null ">
+                        when #{item.id} then #{item.status}
+                    </if>
+                    <if test="item.status == null ">
+                        when #{item.id} then order_collection_detail.status
+                    </if>
+                </foreach>
+            </trim>
+            <trim prefix="collectionType =case id" suffix="end,">
+                <foreach collection="list" index="index" item="item" separator=" ">
+                    <if test="item.collectionType != null ">
+                        when #{item.id} then #{item.collectionType}
+                    </if>
+                    <if test="item.collectionType == null ">
+                        when #{item.id} then order_collection_detail.collection_type
+                    </if>
+                </foreach>
+            </trim>
+            <trim prefix="collectedAmount =case id" suffix="end,">
+                <foreach collection="list" index="index" item="item" separator=" ">
+                    <if test="item.collectedAmount != null ">
+                        when #{item.id} then #{item.collectedAmount}
+                    </if>
+                    <if test="item.collectedAmount == null ">
+                        when #{item.id} then order_collection_detail.collected_amount
+                    </if>
+                </foreach>
+            </trim>
+            <trim prefix="createTime =case id" suffix="end,">
+                <foreach collection="list" index="index" item="item" separator=" ">
+                    <if test="item.createTime != null ">
+                        when #{item.id} then #{item.createTime}
+                    </if>
+                    <if test="item.createTime == null ">
+                        when #{item.id} then order_collection_detail.create_time
+                    </if>
+                </foreach>
+            </trim>
+            <trim prefix="updateTime =case id" suffix="end,">
+                <foreach collection="list" index="index" item="item" separator=" ">
+                    <if test="item.updateTime != null ">
+                        when #{item.id} then #{item.updateTime}
+                    </if>
+                    <if test="item.updateTime == null ">
+                        when #{item.id} then order_collection_detail.update_time
+                    </if>
+                </foreach>
+            </trim>
+            <trim prefix="collectionTag =case id" suffix="end,">
+                <foreach collection="list" index="index" item="item" separator=" ">
+                    <if test="item.collectionTag != null ">
+                        when #{item.id} then #{item.collectionTag}
+                    </if>
+                    <if test="item.collectionTag == null ">
+                        when #{item.id} then order_collection_detail.collection_tag
+                    </if>
+                </foreach>
+            </trim>
+            <trim prefix="remark =case id" suffix="end,">
+                <foreach collection="list" index="index" item="item" separator=" ">
+                    <if test="item.remark != null ">
+                        when #{item.id} then #{item.remark}
+                    </if>
+                    <if test="item.remark == null ">
+                        when #{item.id} then order_collection_detail.remark
+                    </if>
+                </foreach>
+            </trim>
+        </trim>
+        where id in
+        <foreach close=")" collection="list" index="index" item="item" open="(" separator=",">
+            #{item.id}
+        </foreach>
+    </update>
+</mapper>

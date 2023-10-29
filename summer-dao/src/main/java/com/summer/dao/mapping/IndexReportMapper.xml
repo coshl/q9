@@ -1,0 +1,546 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.summer.dao.mapper.IndexReportDAO">
+    <resultMap id="BaseResultMap" type="com.summer.dao.entity.IndexReport">
+        <id column="id" jdbcType="INTEGER" property="id"/>
+        <result column="report_date" jdbcType="CHAR" property="reportDate"/>
+        <result column="loaned_money" jdbcType="DECIMAL" property="loanedMoney"/>
+        <result column="paid_money" jdbcType="DECIMAL" property="paidMoney"/>
+        <result column="renewal_money" jdbcType="DECIMAL" property="renewalMoney"/>
+        <result column="pay_money" jdbcType="DECIMAL" property="payMoney"/>
+        <result column="overdue_money" jdbcType="DECIMAL" property="overdueMoney"/>
+        <result column="register_num" jdbcType="INTEGER" property="registerNum"/>
+        <result column="loaned_num" jdbcType="INTEGER" property="loanedNum"/>
+        <result column="overdue_num" jdbcType="INTEGER" property="overdueNum"/>
+        <result column="create_time" jdbcType="TIMESTAMP" property="createTime"/>
+        <result column="update_time" jdbcType="TIMESTAMP" property="updateTime"/>
+        <result column="status" jdbcType="TINYINT" property="status"/>
+        <result column="customer_type" jdbcType="TINYINT" property="customerType"/>
+    </resultMap>
+    <sql id="Base_Column_List">
+    id, report_date, loaned_money, paid_money, renewal_money, pay_money, overdue_money, 
+    register_num, loaned_num, overdue_num, create_time, update_time, status, customer_type
+  </sql>
+    <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from index_report
+        where id = #{id,jdbcType=INTEGER}
+    </select>
+    <select id="selectSimple" parameterType="java.util.Map" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from index_report
+        <where>
+            <if test="startDate != null and startDate != ''">
+
+                <![CDATA[   and report_date>=#{startDate}  ]]>
+            </if>
+            <if test="status != null ">
+                and status = #{status}
+            </if>
+            <if test="reportDate != null ">
+                and report_date = #{reportDate}
+            </if>
+            <if test="customerType != null ">
+                and customer_type = #{customerType}
+            </if>
+
+        </where>
+    </select>
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from index_report
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+    <insert id="insert" parameterType="com.summer.dao.entity.IndexReport">
+    insert into index_report (id, report_date, loaned_money, 
+      paid_money, renewal_money, pay_money, 
+      overdue_money, register_num, loaned_num, 
+      overdue_num, create_time, update_time, 
+      status, customer_type)
+    values (#{id,jdbcType=INTEGER}, #{reportDate,jdbcType=CHAR}, #{loanedMoney,jdbcType=DECIMAL}, 
+      #{paidMoney,jdbcType=DECIMAL}, #{renewalMoney,jdbcType=DECIMAL}, #{payMoney,jdbcType=DECIMAL}, 
+      #{overdueMoney,jdbcType=DECIMAL}, #{registerNum,jdbcType=INTEGER}, #{loanedNum,jdbcType=INTEGER}, 
+      #{overdueNum,jdbcType=INTEGER}, #{createTime,jdbcType=TIMESTAMP}, #{updateTime,jdbcType=TIMESTAMP}, 
+      #{status,jdbcType=TINYINT}, #{customerType,jdbcType=TINYINT})
+  </insert>
+    <insert id="insertSelective" parameterType="com.summer.dao.entity.IndexReport">
+        insert ignore into index_report
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                id,
+            </if>
+            <if test="reportDate != null">
+                report_date,
+            </if>
+            <if test="loanedMoney != null">
+                loaned_money,
+            </if>
+            <if test="paidMoney != null">
+                paid_money,
+            </if>
+            <if test="renewalMoney != null">
+                renewal_money,
+            </if>
+            <if test="payMoney != null">
+                pay_money,
+            </if>
+            <if test="overdueMoney != null">
+                overdue_money,
+            </if>
+            <if test="registerNum != null">
+                register_num,
+            </if>
+            <if test="loanedNum != null">
+                loaned_num,
+            </if>
+            <if test="overdueNum != null">
+                overdue_num,
+            </if>
+            <if test="createTime != null">
+                create_time,
+            </if>
+            <if test="updateTime != null">
+                update_time,
+            </if>
+            <if test="status != null">
+                status,
+            </if>
+            <if test="customerType != null">
+                customer_type,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                #{id,jdbcType=INTEGER},
+            </if>
+            <if test="reportDate != null">
+                #{reportDate,jdbcType=CHAR},
+            </if>
+            <if test="loanedMoney != null">
+                #{loanedMoney,jdbcType=DECIMAL},
+            </if>
+            <if test="paidMoney != null">
+                #{paidMoney,jdbcType=DECIMAL},
+            </if>
+            <if test="renewalMoney != null">
+                #{renewalMoney,jdbcType=DECIMAL},
+            </if>
+            <if test="payMoney != null">
+                #{payMoney,jdbcType=DECIMAL},
+            </if>
+            <if test="overdueMoney != null">
+                #{overdueMoney,jdbcType=DECIMAL},
+            </if>
+            <if test="registerNum != null">
+                #{registerNum,jdbcType=INTEGER},
+            </if>
+            <if test="loanedNum != null">
+                #{loanedNum,jdbcType=INTEGER},
+            </if>
+            <if test="overdueNum != null">
+                #{overdueNum,jdbcType=INTEGER},
+            </if>
+            <if test="createTime != null">
+                #{createTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="updateTime != null">
+                #{updateTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="status != null">
+                #{status,jdbcType=TINYINT},
+            </if>
+            <if test="customerType != null">
+                #{customerType,jdbcType=TINYINT},
+            </if>
+        </trim>
+    </insert>
+    <insert id="insertBatch" parameterType="java.util.List">
+        insert into index_report (id, report_date, loaned_money,
+        paid_money, renewal_money, pay_money,
+        overdue_money, register_num, loaned_num,
+        overdue_num, create_time, update_time,
+        status, customer_type)
+        values
+        <foreach collection="list" index="index" item="item" separator=",">
+            (#{item.id,jdbcType=INTEGER}, #{item.reportDate,jdbcType=CHAR}, #{item.loanedMoney,jdbcType=DECIMAL},
+            #{item.paidMoney,jdbcType=DECIMAL}, #{item.renewalMoney,jdbcType=DECIMAL},
+            #{item.payMoney,jdbcType=DECIMAL},
+            #{item.overdueMoney,jdbcType=DECIMAL}, #{item.registerNum,jdbcType=INTEGER},
+            #{item.loanedNum,jdbcType=INTEGER},
+            #{item.overdueNum,jdbcType=INTEGER}, #{item.createTime,jdbcType=TIMESTAMP},
+            #{item.updateTime,jdbcType=TIMESTAMP},
+            #{item.status,jdbcType=TINYINT}, #{item.customerType,jdbcType=TINYINT})
+        </foreach>
+    </insert>
+    <insert id="insertBatchSelective" parameterType="java.util.List">
+        insert into index_report
+        (id, report_date, loaned_money, paid_money, renewal_money, pay_money, overdue_money,
+        register_num, loaned_num, overdue_num, create_time, update_time, status, customer_type
+        )
+        values
+        <foreach collection="list" index="index" item="item" separator=",">
+            <trim prefix="(" suffix=")" suffixOverrides=",">
+                <if test="item.id != null">
+                    #{item.id,jdbcType=INTEGER},
+                </if>
+                <if test="item.id == null">
+                    NULL,
+                </if>
+                <if test="item.reportDate != null">
+                    #{item.reportDate,jdbcType=CHAR},
+                </if>
+                <if test="item.reportDate == null">
+                    NULL,
+                </if>
+                <if test="item.loanedMoney != null">
+                    #{item.loanedMoney,jdbcType=DECIMAL},
+                </if>
+                <if test="item.loanedMoney == null">
+                    NULL,
+                </if>
+                <if test="item.paidMoney != null">
+                    #{item.paidMoney,jdbcType=DECIMAL},
+                </if>
+                <if test="item.paidMoney == null">
+                    NULL,
+                </if>
+                <if test="item.renewalMoney != null">
+                    #{item.renewalMoney,jdbcType=DECIMAL},
+                </if>
+                <if test="item.renewalMoney == null">
+                    NULL,
+                </if>
+                <if test="item.payMoney != null">
+                    #{item.payMoney,jdbcType=DECIMAL},
+                </if>
+                <if test="item.payMoney == null">
+                    NULL,
+                </if>
+                <if test="item.overdueMoney != null">
+                    #{item.overdueMoney,jdbcType=DECIMAL},
+                </if>
+                <if test="item.overdueMoney == null">
+                    NULL,
+                </if>
+                <if test="item.registerNum != null">
+                    #{item.registerNum,jdbcType=INTEGER},
+                </if>
+                <if test="item.registerNum == null">
+                    NULL,
+                </if>
+                <if test="item.loanedNum != null">
+                    #{item.loanedNum,jdbcType=INTEGER},
+                </if>
+                <if test="item.loanedNum == null">
+                    NULL,
+                </if>
+                <if test="item.overdueNum != null">
+                    #{item.overdueNum,jdbcType=INTEGER},
+                </if>
+                <if test="item.overdueNum == null">
+                    NULL,
+                </if>
+                <if test="item.createTime != null">
+                    #{item.createTime,jdbcType=TIMESTAMP},
+                </if>
+                <if test="item.createTime == null">
+                    NULL,
+                </if>
+                <if test="item.updateTime != null">
+                    #{item.updateTime,jdbcType=TIMESTAMP},
+                </if>
+                <if test="item.updateTime == null">
+                    NULL,
+                </if>
+                <if test="item.status != null">
+                    #{item.status,jdbcType=TINYINT},
+                </if>
+                <if test="item.status == null">
+                    NULL,
+                </if>
+                <if test="item.customerType != null">
+                    #{item.customerType,jdbcType=TINYINT},
+                </if>
+                <if test="item.customerType == null">
+                    NULL,
+                </if>
+            </trim>
+        </foreach>
+    </insert>
+    <update id="updateByPrimaryKeySelective" parameterType="com.summer.dao.entity.IndexReport">
+        update index_report
+        <set>
+            <if test="reportDate != null">
+                report_date = #{reportDate,jdbcType=CHAR},
+            </if>
+            <if test="loanedMoney != null">
+                loaned_money = #{loanedMoney,jdbcType=DECIMAL},
+            </if>
+            <if test="paidMoney != null">
+                paid_money = #{paidMoney,jdbcType=DECIMAL},
+            </if>
+            <if test="renewalMoney != null">
+                renewal_money = #{renewalMoney,jdbcType=DECIMAL},
+            </if>
+            <if test="payMoney != null">
+                pay_money = #{payMoney,jdbcType=DECIMAL},
+            </if>
+            <if test="overdueMoney != null">
+                overdue_money = #{overdueMoney,jdbcType=DECIMAL},
+            </if>
+            <if test="registerNum != null">
+                register_num = #{registerNum,jdbcType=INTEGER},
+            </if>
+            <if test="loanedNum != null">
+                loaned_num = #{loanedNum,jdbcType=INTEGER},
+            </if>
+            <if test="overdueNum != null">
+                overdue_num = #{overdueNum,jdbcType=INTEGER},
+            </if>
+            <if test="createTime != null">
+                create_time = #{createTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="updateTime != null">
+                update_time = #{updateTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="status != null">
+                status = #{status,jdbcType=TINYINT},
+            </if>
+            <if test="customerType != null">
+                customer_type = #{customerType,jdbcType=TINYINT},
+            </if>
+        </set>
+        where id = #{id,jdbcType=INTEGER}
+    </update>
+    <update id="updateByPrimaryKey" parameterType="com.summer.dao.entity.IndexReport">
+    update index_report
+    set report_date = #{reportDate,jdbcType=CHAR},
+      loaned_money = #{loanedMoney,jdbcType=DECIMAL},
+      paid_money = #{paidMoney,jdbcType=DECIMAL},
+      renewal_money = #{renewalMoney,jdbcType=DECIMAL},
+      pay_money = #{payMoney,jdbcType=DECIMAL},
+      overdue_money = #{overdueMoney,jdbcType=DECIMAL},
+      register_num = #{registerNum,jdbcType=INTEGER},
+      loaned_num = #{loanedNum,jdbcType=INTEGER},
+      overdue_num = #{overdueNum,jdbcType=INTEGER},
+      create_time = #{createTime,jdbcType=TIMESTAMP},
+      update_time = #{updateTime,jdbcType=TIMESTAMP},
+      status = #{status,jdbcType=TINYINT},
+      customer_type = #{customerType,jdbcType=TINYINT}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+    <update id="updateBatchByPrimaryKey" parameterType="java.util.List">
+        update index_report
+        <trim prefix="set" suffixOverrides=",">
+            <trim prefix="reportDate =case id" suffix="end,">
+                <foreach collection="list" index="index" item="item" separator=" ">
+                    when #{item.id} then #{item.reportDate}
+                </foreach>
+            </trim>
+            <trim prefix="loanedMoney =case id" suffix="end,">
+                <foreach collection="list" index="index" item="item" separator=" ">
+                    when #{item.id} then #{item.loanedMoney}
+                </foreach>
+            </trim>
+            <trim prefix="paidMoney =case id" suffix="end,">
+                <foreach collection="list" index="index" item="item" separator=" ">
+                    when #{item.id} then #{item.paidMoney}
+                </foreach>
+            </trim>
+            <trim prefix="renewalMoney =case id" suffix="end,">
+                <foreach collection="list" index="index" item="item" separator=" ">
+                    when #{item.id} then #{item.renewalMoney}
+                </foreach>
+            </trim>
+            <trim prefix="payMoney =case id" suffix="end,">
+                <foreach collection="list" index="index" item="item" separator=" ">
+                    when #{item.id} then #{item.payMoney}
+                </foreach>
+            </trim>
+            <trim prefix="overdueMoney =case id" suffix="end,">
+                <foreach collection="list" index="index" item="item" separator=" ">
+                    when #{item.id} then #{item.overdueMoney}
+                </foreach>
+            </trim>
+            <trim prefix="registerNum =case id" suffix="end,">
+                <foreach collection="list" index="index" item="item" separator=" ">
+                    when #{item.id} then #{item.registerNum}
+                </foreach>
+            </trim>
+            <trim prefix="loanedNum =case id" suffix="end,">
+                <foreach collection="list" index="index" item="item" separator=" ">
+                    when #{item.id} then #{item.loanedNum}
+                </foreach>
+            </trim>
+            <trim prefix="overdueNum =case id" suffix="end,">
+                <foreach collection="list" index="index" item="item" separator=" ">
+                    when #{item.id} then #{item.overdueNum}
+                </foreach>
+            </trim>
+            <trim prefix="createTime =case id" suffix="end,">
+                <foreach collection="list" index="index" item="item" separator=" ">
+                    when #{item.id} then #{item.createTime}
+                </foreach>
+            </trim>
+            <trim prefix="updateTime =case id" suffix="end,">
+                <foreach collection="list" index="index" item="item" separator=" ">
+                    when #{item.id} then #{item.updateTime}
+                </foreach>
+            </trim>
+            <trim prefix="status =case id" suffix="end,">
+                <foreach collection="list" index="index" item="item" separator=" ">
+                    when #{item.id} then #{item.status}
+                </foreach>
+            </trim>
+            <trim prefix="customerType =case id" suffix="end,">
+                <foreach collection="list" index="index" item="item" separator=" ">
+                    when #{item.id} then #{item.customerType}
+                </foreach>
+            </trim>
+        </trim>
+        where id in
+        <foreach close=")" collection="list" index="index" item="item" open="(" separator=",">
+            #{item.id}
+        </foreach>
+    </update>
+    <update id="updateBatchByPrimaryKeySelective" parameterType="java.util.List">
+        update index_report
+        <trim prefix="set" suffixOverrides=",">
+            <trim prefix="reportDate =case id" suffix="end,">
+                <foreach collection="list" index="index" item="item" separator=" ">
+                    <if test="item.reportDate != null ">
+                        when #{item.id} then #{item.reportDate}
+                    </if>
+                    <if test="item.reportDate == null ">
+                        when #{item.id} then index_report.report_date
+                    </if>
+                </foreach>
+            </trim>
+            <trim prefix="loanedMoney =case id" suffix="end,">
+                <foreach collection="list" index="index" item="item" separator=" ">
+                    <if test="item.loanedMoney != null ">
+                        when #{item.id} then #{item.loanedMoney}
+                    </if>
+                    <if test="item.loanedMoney == null ">
+                        when #{item.id} then index_report.loaned_money
+                    </if>
+                </foreach>
+            </trim>
+            <trim prefix="paidMoney =case id" suffix="end,">
+                <foreach collection="list" index="index" item="item" separator=" ">
+                    <if test="item.paidMoney != null ">
+                        when #{item.id} then #{item.paidMoney}
+                    </if>
+                    <if test="item.paidMoney == null ">
+                        when #{item.id} then index_report.paid_money
+                    </if>
+                </foreach>
+            </trim>
+            <trim prefix="renewalMoney =case id" suffix="end,">
+                <foreach collection="list" index="index" item="item" separator=" ">
+                    <if test="item.renewalMoney != null ">
+                        when #{item.id} then #{item.renewalMoney}
+                    </if>
+                    <if test="item.renewalMoney == null ">
+                        when #{item.id} then index_report.renewal_money
+                    </if>
+                </foreach>
+            </trim>
+            <trim prefix="payMoney =case id" suffix="end,">
+                <foreach collection="list" index="index" item="item" separator=" ">
+                    <if test="item.payMoney != null ">
+                        when #{item.id} then #{item.payMoney}
+                    </if>
+                    <if test="item.payMoney == null ">
+                        when #{item.id} then index_report.pay_money
+                    </if>
+                </foreach>
+            </trim>
+            <trim prefix="overdueMoney =case id" suffix="end,">
+                <foreach collection="list" index="index" item="item" separator=" ">
+                    <if test="item.overdueMoney != null ">
+                        when #{item.id} then #{item.overdueMoney}
+                    </if>
+                    <if test="item.overdueMoney == null ">
+                        when #{item.id} then index_report.overdue_money
+                    </if>
+                </foreach>
+            </trim>
+            <trim prefix="registerNum =case id" suffix="end,">
+                <foreach collection="list" index="index" item="item" separator=" ">
+                    <if test="item.registerNum != null ">
+                        when #{item.id} then #{item.registerNum}
+                    </if>
+                    <if test="item.registerNum == null ">
+                        when #{item.id} then index_report.register_num
+                    </if>
+                </foreach>
+            </trim>
+            <trim prefix="loanedNum =case id" suffix="end,">
+                <foreach collection="list" index="index" item="item" separator=" ">
+                    <if test="item.loanedNum != null ">
+                        when #{item.id} then #{item.loanedNum}
+                    </if>
+                    <if test="item.loanedNum == null ">
+                        when #{item.id} then index_report.loaned_num
+                    </if>
+                </foreach>
+            </trim>
+            <trim prefix="overdueNum =case id" suffix="end,">
+                <foreach collection="list" index="index" item="item" separator=" ">
+                    <if test="item.overdueNum != null ">
+                        when #{item.id} then #{item.overdueNum}
+                    </if>
+                    <if test="item.overdueNum == null ">
+                        when #{item.id} then index_report.overdue_num
+                    </if>
+                </foreach>
+            </trim>
+            <trim prefix="createTime =case id" suffix="end,">
+                <foreach collection="list" index="index" item="item" separator=" ">
+                    <if test="item.createTime != null ">
+                        when #{item.id} then #{item.createTime}
+                    </if>
+                    <if test="item.createTime == null ">
+                        when #{item.id} then index_report.create_time
+                    </if>
+                </foreach>
+            </trim>
+            <trim prefix="updateTime =case id" suffix="end,">
+                <foreach collection="list" index="index" item="item" separator=" ">
+                    <if test="item.updateTime != null ">
+                        when #{item.id} then #{item.updateTime}
+                    </if>
+                    <if test="item.updateTime == null ">
+                        when #{item.id} then index_report.update_time
+                    </if>
+                </foreach>
+            </trim>
+            <trim prefix="status =case id" suffix="end,">
+                <foreach collection="list" index="index" item="item" separator=" ">
+                    <if test="item.status != null ">
+                        when #{item.id} then #{item.status}
+                    </if>
+                    <if test="item.status == null ">
+                        when #{item.id} then index_report.status
+                    </if>
+                </foreach>
+            </trim>
+            <trim prefix="customerType =case id" suffix="end,">
+                <foreach collection="list" index="index" item="item" separator=" ">
+                    <if test="item.customerType != null ">
+                        when #{item.id} then #{item.customerType}
+                    </if>
+                    <if test="item.customerType == null ">
+                        when #{item.id} then index_report.customer_type
+                    </if>
+                </foreach>
+            </trim>
+        </trim>
+        where id in
+        <foreach close=")" collection="list" index="index" item="item" open="(" separator=",">
+            #{item.id}
+        </foreach>
+    </update>
+</mapper>

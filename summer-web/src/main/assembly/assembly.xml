@@ -1,0 +1,24 @@
+<assembly>
+    <id>final</id>
+    <formats>
+        <format>zip</format>
+    </formats>
+    <fileSets>
+        <!-- 从目标目录拷贝文件去压缩 -->
+        <fileSet>
+            <directory>../target/summer-final</directory>
+            <includes>
+                <include>*.jar</include>
+            </includes>
+            <outputDirectory>../target</outputDirectory>
+        </fileSet>
+        <fileSet>
+            <directory>../target/summer-final/lib</directory>
+            <outputDirectory>../target/lib</outputDirectory>
+        </fileSet>
+        <fileSet>
+            <directory>../target/summer-final/config</directory>
+            <outputDirectory>../target/config</outputDirectory>
+        </fileSet>
+    </fileSets>
+</assembly>

@@ -1,0 +1,347 @@
+server:
+  port: 8012
+  custom:
+    # http 端口
+    httpPort: 8022
+
+spring:
+  profiles:
+    active: dafuhao
+  application:
+    name: dafuhao
+
+
+nacos:
+  config:
+    # nacos
+    server-addr: 47.74.48.135:8848
+    data-ids: dafuhao,dafuhao-bs,dafuhao-sms,dafuhao-ocr,dafuhao-mobile,dafuhao-oss,dafuhao-fk,dafuhao-pay
+    type: YAML
+    auto-refresh: true
+    namespace: ca4682ed-eab6-49b0-9a5f-630b1df9a440
+    bootstrap:
+      enable: true
+
+#    ext-config:
+#      - server-addr: 8.210.166.87:82 # Nacos 服务器地址
+#        data-id: dev-sms # 使用的 Nacos 配置集的 dataId。
+#        # data-ids: dev-sms
+#        type: properties # 使用的 Nacos 配置集的配置格式。默认为 PROPERTIES。
+#        namespace: a31478cc-37f4-48e6-a75f-c3dede11eb03 # 使用的 Nacos 的命名空间，默认为 null。
+#        auto-refresh: true # 是否自动刷新，默认为 false。
+#        bootstrap:
+#          enable: true
+    #      - # 这里，可以继续添加。
+
+    #server:
+    #    tomcat:
+    #        max-http-post-size: -1
+    #        min-spare-threads: 20
+    #        max-threads: 2000
+    #        max-connections: 5000
+    #    connection-timeout: 30000
+    #rest:
+    #    connection:
+    #        connectionRequestTimeout: 30000
+    #        connectTimeout: 30000
+    #        readTimeout: 30000
+    #
+    ## DATASOURCE
+    #spring:
+    #    cloud:
+    #        nacos:
+    #            discovery:
+    #                # namespace: dc27f534-59bd-4e3e-925d-516c299e058a
+    #                server-addr: 47.74.48.135:8848
+    #    datasource:
+    #        url: jdbc:mysql://rm-3ns04ek6bj453322o1o.mysql.rds.aliyuncs.com:3306/b_rongyifenqi?autoReconnect=true&useSSL=false&useUnicode=true&characterEncoding=UTF-8&allowMultiQueries=true&serverTimezone=GMT%2B8
+    #        username: root
+    #        password: Qdsdff23224#@R!s$#
+    #        driver-classs-name: com.mysql.cj.jdbc.Driver
+    #    # connection-properties: druid.stat.mergeSql=true;druid.stat.slowSqlMillis=5000;config.decrypt=true;
+    #    # config:
+    #        # decrypt:
+    #            # key: ${spring.datasource.publicKey}
+    #        filter:
+    #            config:
+    #                enabled: true
+    #        initial-size: 25
+    #        min-idle: 50
+    #        max-active: 100
+    #        max-wait: 60000
+    #        time-between-eviction-runs-millis: 60000
+    #        min-evictable-idle-time-millis: 300000
+    #        validation-query: SELECT 'x'
+    #        test-while-idle: true
+    #        test-on-borrow: false
+    #        test-on-return: false
+    #        pool-prepared-statements: false
+    #        max-pool-prepared-statement-per-connection-size: 100
+    #        filters: stat
+    #    devtools:
+    #        restart:
+    #            enabled: true
+    ## REDIS
+    #    redis:
+    #        host: 127.0.0.1
+    #        port: 6379
+    #        password: dev888
+    #        timeout: 10000ms
+    #        database: 2
+    #        pool:
+    #            max-active: 128
+    #            max-idle: 10
+    #            max-wait: -1
+    #            min-idle: 1
+    #
+    ##activeMQ
+    #    activemq:
+    #        broker-url: tcp://127.0.0.1:61616
+    #        in-memory: true
+    #        pool.enabled: false
+    #        user: admin
+    #        password: admin
+    #
+    ##mongodb
+    #    data:
+    #        mongodb:
+    #            host: 127.0.0.1
+    #            port: 27017
+    #            database: admin
+    #            username: root
+    #            password: admin_mima
+    #
+    #mybatis-plus:
+    #    db-config:
+    #            id-type: 0
+    #    type-aliases-package: com/summer/dao/entity
+    #    mapper-locations: classpath:com/summer/dao/mapping/*.xml
+    #    configuration:
+    #        log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
+    #
+    #
+    #logging:
+    #    level:
+    #        com:
+    #            summer:
+    #                mapper: debug
+    #
+    ## redisson lock
+    #redisson:
+    #  address: redis://127.0.0.1:6379
+    #  password: dev888
+    #  timeout: 30000
+    #  connectionMinimumIdleSize: 10
+    #
+    ## feign微服务调用配置
+    #feign:
+    #  client:
+    #    config:
+    #      default:
+    #        connectTimeout: 35000
+    #        readTimeout: 35000
+    #        loggerLevel: basic
+    #
+    ## 微服务监控
+    #management:
+    #    endpoints:
+    #      web:
+    #        exposure:
+    #          include: '*'
+
+
+  #sms:
+  #    service:
+  #         #聚光短信配置，短信帐号
+  #        juguang:
+  #            url: http://39.99.132.129:8088/sms.aspx
+  #            userid : '36'
+  #            account : 'DB123456'
+  #            password: 'a12345678'
+  #        #暂未使用到
+  #        registerCode: 您的验证码为#cont#，30分钟内有效，打死不要告诉别人哦！
+  #        #客服微信
+  #        WeChat: 18652615863
+  #        #APP名字
+  #        appName: 融亿分期
+  #        #在提醒还款时，提示提升的假额度
+  #        increaseMoney: 1000.00
+  #        #到期前一天提醒短信
+  #        repayRemind: 尊敬的#userName#，您在${appName}申请#money#元还有1天到期。按时还款将会为您提额#increaseMoney#元，若超时将会影响您的信誉，并收取相关服务费，请您按时归还。有问题联系${appName}客服：#WeChat#。
+  #        #到期当天
+  #        repayRemindNow: 尊敬的#userName#，您在${appName}申请#money#元已到期。按时还款将会为您提额#increaseMoney#元，若今日未按时归还，将会影响您的征信，并收取罚息。有问题联系${appName}客服：#WeChat#。
+  #        #逾期.
+  #        repayOverdue: 尊敬的#userName#，您在${appName}申请#money#元已超时#day#天，请尽快归还减少对您的信誉影响。有问题联系${appName}客服：#WeChat#。
+  #        #银行卡绑定成功
+  #        bankBindSucc: 尊敬的用户您好！银行卡已成功绑定。请登录APP继续完成申请操作！
+  #        #提额成功
+  #        increaseSucc: 恭喜您已经成功归还，额度将提高到#MaxAmount#元，请继续保持良好的归还习惯！
+  #        #商户余额不足
+  #        moneyInsufficient: 商户号(#CorpAcctNo#)余额不足，请赶快充值！
+  #        #打款成功
+  #        remitIsSucc: 尊敬的#RealName#，您在#appName#申请的(#applyAmount#)元借款，已经成功发放至您的银行卡，请注意查收，按时还款将会为您提额#increaseMoney#元，祝您用款愉快。
+  #        #打款失败
+  #        remitIsFail: 尊敬的#RealName#，您在#appName#申请的(#applyAmount#)元借款，打款失败原因(#reason#)，请及时更换其他银行卡。
+  #        #ios更新短信
+  #        iosUpdate: 您好,APP已成功升级,最新版本下载地址:#url#,请删除老版本,下载新版本噢。还款续借请认准官方APP,以防被骗,索要验证码和公众号还款等行为全部属于诈骗行为!
+  #        #第三方支付商户名
+  #        commercialName: 畅捷
+  #        #商户余额不足
+  #        commercialMoney: "#commercialName#商户余额不足，请赶快充值！"
+  #        #放款异常
+  #        loanException: "请求#commercialName#放款失败！请尽快处理！"
+  #        #支付失败
+  #        payError: 支付失败,失败原因:#reason#！请尽快处理！
+  #        #APP、落地页注册、后台登录,短信验证码，修改密码等
+  #        sendContent: "#title#验证码：#code#，30分钟内有效，打死不要告诉别人哦！"
+  #        title: 【融亿分期】
+  #        suffix: 回T退订
+
+
+     ##系统统一前缀,无论是redis还是rocketMQ都用一样前缀
+      #system:
+      #    prefix: RYFQ_
+      #    centerUrl: http://8.210.125.126:8062/index.html/v1.0/api/
+      #    isWhiteList: 18139139139,15967716767,13888888888,19999999999,13777777777
+      #    isWhiteListPwd: e10adc3949ba59abbe56e057f20f883e
+      #
+      ##渠道默认投放链接
+      #channelLink: http://wu.polanbao.cn
+      #channelCode: 7011
+      #backStage: http://8.210.93.21:9011/#/login
+      #serviceUrl: http://8.209.246.66
+      #
+      #app:
+      #    name: 融亿分期
+      #    pid: 10001
+      #config:
+      #    #利润系数
+      #    profit: 1.5
+      #    #后台管理员默认短信验证码
+      #    default:
+      #        smsLoginCode: 2369
+      #    channelBlackLikn: https://99.necdn.top:8084/index.html?channel_code=LpDAL27
+      #
+      ##七牛
+      #qiniu:
+      #    accessKey: ppW1Kz_8XBtw96cfM6LlzBYsN7ppJpzuW0bkBlpl
+      #    secretKey: BpCv2f9_2CenmSvciQaZA4nC4E-5aPiDU9aYzjCI
+      #    bucket: suanpan
+      ##七牛图片访问地址前缀
+      #    pathPrefix: http://qe2bfkpre.bkt.clouddn.com/
+      #
+      #
+      ##费用中心地址
+      #billing:
+      #    centerUrl: http://116.62.65.37:8084/v1.0/api/billing
+      #
+      ##黑名单
+      #nykj: #宁远科技
+      #    url: http://8.210.117.248/user/black/queryThirdBlack?idcardNo=IDCARDNO&telephone=PHONE
+      #mh: #孟华
+      #    url: https://api.jygzy.com/api/blacklist-query
+      #    secret: a17d2189e5894311a6e8749189e6a993
+      #    account: 669776047
+      #kls: #昆仑山
+      #    url: http://8.129.168.128:8081/black/blackList/
+      #    authCode: be2GkKS*#nFk7xMn
+      #    appCode: gtrh
+      #exporExcel_id: 18318253749,13035975884,13150764489,13706785856,15630192681,13738750439,15633070590
+      #
+      #suowo: #suowo短链
+      #    apiUrl: http://api.suowo.cn/api.htm
+      #    key: 5f4e3b52b1b63c067174bec3@4206ee1c3ad87b1907913ae2699764aa
+
+
+  #link_face:
+  #  ocr:
+  #    appId: 20ed320447a54e3294ac0e8c359b20ea
+  #    apiSecret: a297844490f443ea841d82e8dcbe94b2
+  #    confidence: 0.5
+  #    url: https://cloudapi.linkface.cn
+  #    face_id: 21c0eda2b74f4fc0aff86df5e0d3d759
+  #    secret_id: b131353dac304bc880e37d7b0d067d67
+
+
+      ## 运营商相关配置
+      #mobile:
+      #    xinPan:
+      #        appId: 8008869
+      #        appKey: 33db31946cb94b0b671b6d1985245646
+      #        h5Uri: http://xpapi2.miyodac.com/api/crawler/create/url/v2
+      #        #获取天创通话记录（与数据）接口
+      #        rawDataUrl: http://xpapi2.miyodac.com/api/crawler/records
+      #        #获取天创通话报告接口url
+      #        reportDataUrl: http://xpapi2.miyodac.com/api/crawler/report
+      #        backUrl: http://47.57.190.195:8033/v1.0/api/moxie/XPCallBack
+      #
+      #    wuHua:
+      #        merchantId: 52367284
+      #        privateKey: MIICeAIBADANBgkqhkiG9w0BAQEFAASCAmIwggJeAgEAAoGBANdvtG1wOe9Ghtfwa2o/jeU4RC92YRGaiyu73PJ2tXoeowEjAsZzs2NYTHrbqXRCZ4HwX8E2sx3EuFX5REdKlmAASN+Vj1p7ucV3mGBtvgF9w3FW8aRQ7rhubdYRcg2KdxEXG4ywhGArgL7z5kcThnTGtSs89KD4Ek7AJ/oRrEKdAgMBAAECgYB2Sc83h7dHueGwD0HrRJoUkaBerxD9KW3gxXW7a5KZStkVdrO/YyfMFF9p1dJlE1Dh96mb3PzcC3drPUJQIpQNgAepwyx/VhmmGYCjsdrd5eoh0mMVoGKx/4Mw+198QVzhTaC7DH80XuFzHMSvZIk8qBfaoCqfW5f+pokJpKwfwQJBAPPO8OtsXlc/mKcmFY40ZLMCMj2xnYYQIwA30kGP5QA5UrbIu4lBqZhCjk7IAymoGv3Dtg42PU+gcbel02QucNcCQQDiNZDK/Q/uHgBI8VhJhaFW7y2YBR7JGlOfO+4x4uagmbKw5kbfImE3rvrRHUSlDglMfyebwQK+7jR2wN6G3NWrAkEA4X9qduRxUVMh1p8z2qX86VBDtan8nw13wfDfSAJV9OIP7b01LxsLSCduxdDalAHGjSUh0n06MdactxXpscP+WwJBAJZ+jpsNq5h+qy/cKSGY3tLogwvddDLU6gdJJtpXm5oDR0e7nDD9PXJ/XmzbLP0mjncvLVnJGhuOfKb4/9L3fssCQQDNacjRovk/6szTe5qtTjxT1ZzB3fN0Qfl1cYIaGVbBpaj+QEw2mF3CqcrkrHISPBrn1DZBqyZSxsupViB1Mmcc
+      #        publicKey: MIGfMA0GCSqGSIb3DQEBAQUAA4GNADCBiQKBgQCeHgAuxuUOYIrvkXeq+B43dOzQ18Qtdvwr61ve5CPLa0MUOIZBpWFLQDqebrk91lxoMuuFuRtP5yquF4L2cwutUUw4Nhrv3Jk2oGo6MbEWQT+k+sWjwo20y/fLMvCSJv7XZ6mETNz2+SlLcfjHo6HkWFOzFHmllRXWTIo5nuvcMQIDAQAB
+      #        url: http://129.211.171.164
+      #        notifyUrl: http://47.57.190.195:8033/v1.0/api/moxie/WHCallBack
+      #        backUrl: http://8.209.212.16:8076/otheryys/callPageBack/
+
+
+  #oss:
+  #  access_key_id: LTAI4GGExypJHex7hZRuYSWe
+  #  access_key_secret: vUzoyC8Y5PWw21hcd1P7DLIigQeFUX
+  #  endpoint: oss-cn-hangzhou.aliyuncs.com
+  #  bucket_name: q9youqianjie
+  #  ocr_path_prefix: images/ocr_
+
+
+      #risk:
+      #    report-api-url: http://www.fuygs.com/system/risk_leishi/riskInterFace
+      #    user-key: ABTEMtbE1m72MhlC2eQ18WU0AIq1QeES
+      #    account-code: nongfushanquan
+      #    # 放款通知
+      #    notify-url: http://www.fuygs.com/system/risk_leishi/notifyInterFace
+      #    # 订单状态上传
+      #    upload-url: http://www.fuygs.com/system/risk_leishi/uploadInterFace
+      #risk1:
+      #    report-api-url: http://xpapi.soumasou.com/api/queryGzipZM2/gzipZM2.0/xingpan_v3/
+      #    appid: 8091172
+      #    key: 8c7749fcf0250e16bda1adfbaca7a7ce
+      #    # 放款通知
+      #    notify-url: http://xpapi.soumasou.com/api/queryGzipZM2/gzipZM202/xingpan_v3/
+      #    # 订单状态上传
+      #    upload-url: http://xpapi.soumasou.com/api/queryGzipZM2/gzipZM203/xingpan_v3/
+      ##龙珠共债
+      #lzgz:
+      #    appName: 669776047
+      #    appSecret: a17d2189e5894311a6e8749189e6a993
+      #    url: https://api.jygzy.com/my-debtors/debtor/statistic
+
+
+#payChannel:
+#    inuse: "[4]"
+#    unuse: "[1,2,4]"
+#jzf:
+#    account_id: 200000222
+#    key: A7CCE3FC968DF04D38BA86583334ED3D
+#    jzfPayUrl: http://fugui.dongfu.shop/api/Gateway/
+#    # jzfUrl: http://eerr.5a0bb.cn/Gateway/agent-pay-create
+#    success_url: http://47.57.233.175:8088/v1.0/api/changJiePay/loanSuccessOrFail/1
+#    error_url: http://47.57.233.175:8088/v1.0/api/changJiePay/loanSuccessOrFail/0
+#self:
+#    # 放款回调
+#    url: http://47.57.190.195:8033/v1.0/api/changJiePay/
+#
+#btzf:
+#    appId: 1362
+#    appKey: z8Ez1VK0qf58hQHhsXc59B6zrlQTztqN
+#    payUrl: http://www.bitespay.co/api/
+#    backUrl: http://47.57.190.195:8033/v1.0/api/payBack/
+#
+#aczf:
+#    userId: 13672
+#    apiKey: z8Ez1VK0qf58hQHhsXc59B6zrlQTztqN
+#    payUrl: http://ultrapay.cc/Apipay/
+#    backUrl: http://47.57.190.195:8033/v1.0/api/payBack/
+#
+#myzf:
+#    mchNo: M1672295581
+#    appId: 63ad349d58562bb7a9928b8b
+#    apiKey: GMuHpjenYGi7QyMmW68hfNwxyVsPDBWnryENgN9W1aQ4FXjGIiPNYTs9zYXC3pdFXn451zBN3d1GsW0e0RMrmuOCRk61ZJXH4VlGUisxLLfoh8oYgJk5W5pLw99JiSnM

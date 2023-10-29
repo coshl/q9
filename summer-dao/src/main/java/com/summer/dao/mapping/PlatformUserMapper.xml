@@ -1,0 +1,439 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.summer.dao.mapper.PlatformUserMapper">
+    <resultMap id="BaseResultMap" type="com.summer.dao.entity.PlatformUser">
+        <id column="id" property="id" jdbcType="INTEGER"/>
+        <result column="phone_number" property="phoneNumber" jdbcType="VARCHAR"/>
+        <result column="user_name" property="userName" jdbcType="VARCHAR"/>
+        <result column="password" property="password" jdbcType="VARCHAR"/>
+        <result column="role_id" property="roleId" jdbcType="INTEGER"/>
+        <result column="channel_id" property="channelId" jdbcType="INTEGER"/>
+        <result column="company_id" property="companyId" jdbcType="INTEGER"/>
+        <result column="salt" property="salt" jdbcType="VARCHAR"/>
+        <result column="code" property="code" jdbcType="VARCHAR"/>
+        <result column="last_login_time" property="lastLoginTime" jdbcType="TIMESTAMP"/>
+        <result column="ip_address" property="ipAddress" jdbcType="VARCHAR"/>
+        <result column="group_level" property="groupLevel" jdbcType="VARCHAR"/>
+        <result column="user_super_id" property="userSuperId" jdbcType="INTEGER"/>
+        <result column="update_time" property="updateTime" jdbcType="TIMESTAMP"/>
+        <result column="create_time" property="createTime" jdbcType="TIMESTAMP"/>
+        <result column="status" property="status" jdbcType="INTEGER"/>
+        <result column="last_code_time" property="lastCodeTime" jdbcType="TIMESTAMP"/>
+    </resultMap>
+    <sql id="Base_Column_List">
+    id, phone_number, user_name, password, role_id,channel_id,company_id, salt, code, last_login_time,
+    ip_address,group_level,
+    user_super_id, update_time, create_time, status, last_code_time
+  </sql>
+    <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer">
+        select
+        <include refid="Base_Column_List"/>
+        from platform_user
+        where id = #{id,jdbcType=INTEGER}
+    </select>
+    <select id="selectSimple" parameterType="java.util.Map" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from platform_user
+        <where>
+            <if test="channel != null and channel != ''">
+                and channel_id != 0
+            </if>
+            <if test="status != null ">
+                and status = #{status}
+            </if>
+            <if test="roleId != null and roleId !=40">
+                and role_id = #{roleId}
+            </if>
+            <if test="roleId == 40 ">
+                and role_id in (4,10)
+            </if>
+        </where>
+        ORDER BY id DESC
+    </select>
+    <!-- 查询当前组中所有非禁用的催收员，按照当前手里总未处理的订单数升序排序 -->
+    <select id="findCollecterByCurrentUnCompleteCount" resultType="com.summer.dao.entity.MmanLoanCollectionPerson"
+            parameterType="Map">
+        SELECT
+        a.id ,
+        a.user_name AS username,
+        a.phone_number AS phone,
+        a.group_level AS groupLevel,
+        a.company_id AS companyId,
+        c.title AS companyName,
+        a.status AS userStatus,
+        IFNULL(d.currentUnCount, 0) currentUnCompleteCount
+        FROM
+        platform_user a
+
+        LEFT JOIN collection_company c
+        ON a.company_id = c.id
+        LEFT JOIN
+        (SELECT
+        current_collection_user_id,
+        COUNT(1) AS currentUnCount
+        FROM
+        order_collection
+        WHERE STATUS != 4
+        and (DATEDIFF(CURDATE(),dispatch_time) = 0)
+        GROUP BY current_collection_user_id) AS d
+        ON d.current_collection_user_id = a.id
+        WHERE 1 = 1 and c.status=1
+        <if test="roleId != null ">
+            AND a.role_id = #{roleId}
+        </if>
+        <if test="companyId != null ">
+            AND a.company_id = #{companyId}
+        </if>
+        <if test="groupLevel != null and groupLevel != '' and groupLevel != '34'">
+            AND a.group_level = #{groupLevel}
+        </if>
+        <if test="groupLevel != null and groupLevel != '' and groupLevel == '34'">
+            AND (a.group_level = '3' OR a.group_level = '4')
+        </if>
+        <if test="userStatus != null ">
+            AND a.status= #{userStatus}
+        </if>
+
+        ORDER BY currentUnCompleteCount ASC;
+    </select>
+    <select id="findTodayAssignedCount" resultType="Integer" parameterType="com.summer.dao.entity.MmanLoanCollectionPerson">
+    SELECT
+      COUNT(d.id)
+    FROM
+      platform_user a
+        LEFT JOIN order_collection d
+                  ON d.current_collection_user_id = a.id
+    WHERE a.id = #{id}
+      AND  TO_DAYS(NOW()) - TO_DAYS(d.dispatch_time) = 0
+  </select>
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from platform_user
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+    <insert id="insert" parameterType="com.summer.dao.entity.PlatformUser">
+    insert into platform_user (id, phone_number, user_name, 
+      password, role_id,channel_id,company_id, salt,
+      code, last_login_time, ip_address,group_level,
+      user_super_id, update_time, create_time, 
+      status, last_code_time)
+    values (#{id,jdbcType=INTEGER}, #{phoneNumber,jdbcType=VARCHAR}, #{userName,jdbcType=VARCHAR},
+      #{password,jdbcType=VARCHAR}, #{roleId,jdbcType=INTEGER}, #{channelId,jdbcType=INTEGER}, #{companyId,jdbcType=INTEGER}, #{salt,jdbcType=VARCHAR},
+      #{code,jdbcType=VARCHAR}, #{lastLoginTime,jdbcType=TIMESTAMP}, #{ipAddress,jdbcType=VARCHAR},#{groupLevel,jdbcType=VARCHAR},
+      #{userSuperId,jdbcType=INTEGER}, #{updateTime,jdbcType=TIMESTAMP}, #{createTime,jdbcType=TIMESTAMP}, 
+      #{status,jdbcType=INTEGER}, #{lastCodeTime,jdbcType=TIMESTAMP})
+  </insert>
+    <insert id="insertSelective" parameterType="com.summer.dao.entity.PlatformUser">
+        insert into platform_user
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                id,
+            </if>
+            <if test="phoneNumber != null">
+                phone_number,
+            </if>
+            <if test="userName != null">
+                user_name,
+            </if>
+            <if test="password != null">
+                password,
+            </if>
+            <if test="roleId != null">
+                role_id,
+            </if>
+            <if test="channelId != null">
+                channel_id,
+            </if>
+            <if test="companyId != null">
+                company_id,
+            </if>
+            <if test="salt != null">
+                salt,
+            </if>
+            <if test="code != null">
+                code,
+            </if>
+            <if test="lastLoginTime != null">
+                last_login_time,
+            </if>
+            <if test="ipAddress != null">
+                ip_address,
+            </if>
+            <if test="groupLevel != null">
+                group_level,
+            </if>
+            <if test="userSuperId != null">
+                user_super_id,
+            </if>
+            <if test="updateTime != null">
+                update_time,
+            </if>
+            <if test="createTime != null">
+                create_time,
+            </if>
+            <if test="status != null">
+                status,
+            </if>
+            <if test="lastCodeTime != null">
+                last_code_time,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                #{id,jdbcType=INTEGER},
+            </if>
+            <if test="phoneNumber != null">
+                #{phoneNumber,jdbcType=VARCHAR},
+            </if>
+            <if test="userName != null">
+                #{userName,jdbcType=VARCHAR},
+            </if>
+            <if test="password != null">
+                #{password,jdbcType=VARCHAR},
+            </if>
+            <if test="roleId != null">
+                #{roleId,jdbcType=INTEGER},
+            </if>
+            <if test="channelId != null">
+                #{channelId,jdbcType=INTEGER},
+            </if>
+            <if test="companyId != null">
+                #{companyId,jdbcType=INTEGER},
+            </if>
+            <if test="salt != null">
+                #{salt,jdbcType=VARCHAR},
+            </if>
+            <if test="code != null">
+                #{code,jdbcType=VARCHAR},
+            </if>
+            <if test="lastLoginTime != null">
+                #{lastLoginTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="ipAddress != null">
+                #{ipAddress,jdbcType=VARCHAR},
+            </if>
+            <if test="groupLevel != null">
+                #{groupLevel,jdbcType=VARCHAR},
+            </if>
+            <if test="userSuperId != null">
+                #{userSuperId,jdbcType=INTEGER},
+            </if>
+            <if test="updateTime != null">
+                #{updateTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="createTime != null">
+                #{createTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="status != null">
+                #{status,jdbcType=INTEGER},
+            </if>
+            <if test="lastCodeTime != null">
+                #{lastCodeTime,jdbcType=TIMESTAMP},
+            </if>
+        </trim>
+    </insert>
+    <update id="updateByPrimaryKeySelective" parameterType="com.summer.dao.entity.PlatformUser">
+        update platform_user
+        <set>
+            <if test="phoneNumber != null and phoneNumber != ''">
+                phone_number = #{phoneNumber,jdbcType=VARCHAR},
+            </if>
+            <if test="userName != null and userName != ''">
+                user_name = #{userName,jdbcType=VARCHAR},
+            </if>
+            <if test="password != null and password != ''">
+                password = #{password,jdbcType=VARCHAR},
+            </if>
+            <if test="roleId != null">
+                role_id = #{roleId,jdbcType=INTEGER},
+            </if>
+            <if test="channelId != null">
+                channel_id = #{channelId,jdbcType=INTEGER},
+            </if>
+            <if test="companyId != null">
+                company_id = #{companyId,jdbcType=INTEGER},
+            </if>
+            <if test="salt != null and salt != ''">
+                salt = #{salt,jdbcType=VARCHAR},
+            </if>
+            <if test="code != null">
+                code = #{code,jdbcType=VARCHAR},
+            </if>
+            <if test="lastLoginTime != null">
+                last_login_time = #{lastLoginTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="ipAddress != null and ipAddress != null">
+                ip_address = #{ipAddress,jdbcType=VARCHAR},
+            </if>
+            <if test="groupLevel != null">
+                group_level = #{groupLevel,jdbcType=VARCHAR},
+            </if>
+            <if test="userSuperId != null">
+                user_super_id = #{userSuperId,jdbcType=INTEGER},
+            </if>
+            <if test="updateTime != null">
+                update_time = #{updateTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="createTime != null">
+                create_time = #{createTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="status != null">
+                status = #{status,jdbcType=INTEGER},
+            </if>
+            <if test="lastCodeTime != null">
+                last_code_time = #{lastCodeTime,jdbcType=TIMESTAMP},
+            </if>
+        </set>
+        where id = #{id,jdbcType=INTEGER}
+    </update>
+    <update id="updateByPrimaryKey" parameterType="com.summer.dao.entity.PlatformUser">
+    update platform_user
+    set phone_number = #{phoneNumber,jdbcType=VARCHAR},
+      user_name = #{userName,jdbcType=VARCHAR},
+      password = #{password,jdbcType=VARCHAR},
+      role_id = #{roleId,jdbcType=INTEGER},
+        channel_id = #{channelId,jdbcType=INTEGER},
+        company_id = #{companyId,jdbcType=INTEGER},
+      salt = #{salt,jdbcType=VARCHAR},
+      code = #{code,jdbcType=VARCHAR},
+      last_login_time = #{lastLoginTime,jdbcType=TIMESTAMP},
+      ip_address = #{ipAddress,jdbcType=VARCHAR},
+        group_level = #{groupLevel,jdbcType=VARCHAR},
+      user_super_id = #{userSuperId,jdbcType=INTEGER},
+      update_time = #{updateTime,jdbcType=TIMESTAMP},
+      create_time = #{createTime,jdbcType=TIMESTAMP},
+      status = #{status,jdbcType=INTEGER},
+      last_code_time = #{lastCodeTime,jdbcType=TIMESTAMP}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+    <!--根据手机号查询用户信息-->
+    <select id="findByPhoneNumber" resultMap="BaseResultMap" parameterType="java.lang.String">
+        select
+        <include refid="Base_Column_List"/>
+        from platform_user
+        where phone_number = #{phoneNumber,jdbcType=VARCHAR}
+    </select>
+    <!--账户管理列表-->
+    <select id="findParams" parameterType="java.util.Map" resultType="com.summer.pojo.vo.PlatformUserVo">
+        select
+        pu.id, pu.phone_number as phoneNumber, pu.user_name as userName,pu.role_id as roleId,
+        pu.last_login_time as lastLoginTime,pu.ip_address as ipAddress,pus.user_name as
+        userSuperName,pu.status,pr.description as roleName,pu.group_level as groupLevel
+        from platform_user pu LEFT join platform_role pr on pr.id=pu.role_id
+        LEFT JOIN platform_user pus on pu.user_super_id=pus.id
+        <where>
+            <if test="status != null ">
+                and pu.status = #{status}
+            </if>
+            <if test="userName != null and userName != ''">
+                and pu.user_name like CONCAT('%',#{userName,jdbcType=VARCHAR},'%')
+            </if>
+            <if test="phoneNumber != null and phoneNumber != ''">
+                and pu.phone_number = #{phoneNumber}
+            </if>
+            <if test="roleName != null">
+                and pu.role_id = #{roleName}
+            </if>
+        </where>
+        order by pu.last_login_time desc
+    </select>
+    <!--逻辑删除用户-->
+    <update id="deleteByStatus" parameterType="java.util.Map">
+        UPDATE platform_user
+        <set>
+            <if test="status != null">
+                status = #{status,jdbcType=INTEGER},
+            </if>
+        </set>
+        WHERE id = #{id,jdbcType=INTEGER}
+    </update>
+    <!--修改用户角色-->
+    <update id="updateByRole" parameterType="java.util.Map">
+        UPDATE platform_user
+        <set>
+            <if test="status != null">
+                status = #{status,jdbcType=INTEGER},
+            </if>
+            <if test="phoneNumber != null and phoneNumber != ''">
+                phone_number = #{phoneNumber},
+            </if>
+
+            <if test="roleId != null">
+                role_id =#{roleId},
+            </if>
+
+            <if test="csId != null">
+                group_level =#{csId},company_id = 1
+            </if>
+
+        </set>
+        WHERE id = #{id,jdbcType=INTEGER}
+    </update>
+    <select id="findByRoleName" resultType="com.summer.pojo.vo.PlatformUserVo" parameterType="integer">
+    SELECT pr.name as roleName
+    FROM  platform_role pr
+    where pr.id=#{roleId}
+  </select>
+    <select id="findAuthority" resultType="com.summer.pojo.vo.PlateformAuthorityDTO" parameterType="integer">
+
+     SELECT  pap.code  FROM platform_authority as pa
+                                      LEFT JOIN platform_role_authority as pra on pra.authority_Id=pa.id
+                                      left join platform_authority pap on pap.id=pa.parent_id
+     where pra.role_Id=#{roleId} and pap.code is not null union
+     SELECT pa.code FROM platform_authority as pa
+                           LEFT JOIN platform_role_authority as pra on pra.authority_Id=pa.id
+                           left join platform_authority pap on pap.id=pa.parent_id
+     where pra.role_Id=#{roleId}
+
+   </select>
+    <select id="findAuthorityNew" resultType="com.summer.pojo.vo.PlateformAuthorityDTO" parameterType="integer">
+
+     SELECT  pap.code  FROM platform_authority_new as pa
+                                      LEFT JOIN platform_role_authority_new as pra on pra.authority_Id=pa.id
+                                      left join platform_authority_new pap on pap.id=pa.parent_id
+     where pra.role_Id=#{roleId} and pap.code is not null union
+     SELECT pa.code FROM platform_authority_new as pa
+                           LEFT JOIN platform_role_authority_new as pra on pra.authority_Id=pa.id
+                           left join platform_authority_new pap on pap.id=pa.parent_id
+     where pra.role_Id=#{roleId}
+
+   </select>
+
+
+    <resultMap id="operatorMap" type="com.summer.pojo.vo.OperatorVo">
+        <id column="id" property="id" jdbcType="INTEGER"/>
+        <result column="user_name" property="userName" jdbcType="VARCHAR"/>
+    </resultMap>
+    <select id="findByRoleId" parameterType="java.util.Map" resultMap="operatorMap">
+    select id ,user_name from platform_user where  role_id=#{operatorRoleId} or  role_id = #{adminRoleId} or role_id = #{channelAdminRoleId}
+   </select>
+
+    <select id="findByCuishouRoleId" parameterType="java.util.Map" resultMap="operatorMap">
+        select id ,user_name from platform_user
+        <where>
+            <if test="roleId == 8">
+                and role_id=#{roleId}
+            </if>
+            <if test="roleId == 810">
+                and role_id in (8,10)
+            </if>
+        </where>
+    </select>
+
+    <select id="findFirstAdmin" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from platform_user where role_id=1 order by id limit 1
+    </select>
+
+    <select id="findAllUser" parameterType="java.lang.String" resultType="com.summer.pojo.vo.UserPhoneInfo">
+
+    select id,phone_number as phoneNumber from platform_user
+    <where>
+        <if test="phone != null and phone != ''">
+            phone_number=#{phone}
+        </if>
+    </where>
+
+    </select>
+</mapper>

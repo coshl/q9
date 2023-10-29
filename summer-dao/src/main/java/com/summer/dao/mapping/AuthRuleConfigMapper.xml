@@ -1,0 +1,327 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.summer.dao.mapper.AuthRuleConfigDAO">
+    <resultMap id="BaseResultMap" type="com.summer.dao.entity.AuthRuleConfig">
+        <id column="id" jdbcType="INTEGER" property="id"/>
+        <result column="auth_rule_key" jdbcType="VARCHAR" property="authRuleKey"/>
+        <result column="auth_rule_descript" jdbcType="VARCHAR" property="authRuleDescript"/>
+        <result column="auth_rule_type" jdbcType="TINYINT" property="authRuleType"/>
+        <result column="add_user" jdbcType="VARCHAR" property="addUser"/>
+        <result column="create_time" jdbcType="TIMESTAMP" property="createTime"/>
+        <result column="update_time" jdbcType="TIMESTAMP" property="updateTime"/>
+        <result column="status" jdbcType="TINYINT" property="status"/>
+    </resultMap>
+    <sql id="Base_Column_List">
+    id, auth_rule_key, auth_rule_descript, auth_rule_type, add_user, create_time, update_time, 
+    status
+  </sql>
+    <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from auth_rule_config
+        where id = #{id,jdbcType=INTEGER}
+    </select>
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from auth_rule_config
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+    <insert id="insert" parameterType="com.summer.dao.entity.AuthRuleConfig">
+    insert into auth_rule_config (id, auth_rule_key, auth_rule_descript, 
+      auth_rule_type, add_user, create_time, 
+      update_time, status)
+    values (#{id,jdbcType=INTEGER}, #{authRuleKey,jdbcType=VARCHAR}, #{authRuleDescript,jdbcType=VARCHAR}, 
+      #{authRuleType,jdbcType=TINYINT}, #{addUser,jdbcType=VARCHAR}, #{createTime,jdbcType=TIMESTAMP}, 
+      #{updateTime,jdbcType=TIMESTAMP}, #{status,jdbcType=TINYINT})
+  </insert>
+    <insert id="insertSelective" parameterType="com.summer.dao.entity.AuthRuleConfig">
+        insert into auth_rule_config
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                id,
+            </if>
+            <if test="authRuleKey != null">
+                auth_rule_key,
+            </if>
+            <if test="authRuleDescript != null">
+                auth_rule_descript,
+            </if>
+            <if test="authRuleType != null">
+                auth_rule_type,
+            </if>
+            <if test="addUser != null">
+                add_user,
+            </if>
+            <if test="createTime != null">
+                create_time,
+            </if>
+            <if test="updateTime != null">
+                update_time,
+            </if>
+            <if test="status != null">
+                status,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                #{id,jdbcType=INTEGER},
+            </if>
+            <if test="authRuleKey != null">
+                #{authRuleKey,jdbcType=VARCHAR},
+            </if>
+            <if test="authRuleDescript != null">
+                #{authRuleDescript,jdbcType=VARCHAR},
+            </if>
+            <if test="authRuleType != null">
+                #{authRuleType,jdbcType=TINYINT},
+            </if>
+            <if test="addUser != null">
+                #{addUser,jdbcType=VARCHAR},
+            </if>
+            <if test="createTime != null">
+                #{createTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="updateTime != null">
+                #{updateTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="status != null">
+                #{status,jdbcType=TINYINT},
+            </if>
+        </trim>
+    </insert>
+    <insert id="insertBatch" parameterType="java.util.List">
+        insert into auth_rule_config (id, auth_rule_key, auth_rule_descript,
+        auth_rule_type, add_user, create_time,
+        update_time, status)
+        values
+        <foreach collection="list" index="index" item="item" separator=",">
+            (#{item.id,jdbcType=INTEGER}, #{item.authRuleKey,jdbcType=VARCHAR},
+            #{item.authRuleDescript,jdbcType=VARCHAR},
+            #{item.authRuleType,jdbcType=TINYINT}, #{item.addUser,jdbcType=VARCHAR},
+            #{item.createTime,jdbcType=TIMESTAMP},
+            #{item.updateTime,jdbcType=TIMESTAMP}, #{item.status,jdbcType=TINYINT})
+        </foreach>
+    </insert>
+    <insert id="insertBatchSelective" parameterType="java.util.List">
+        insert into auth_rule_config
+        (id, auth_rule_key, auth_rule_descript, auth_rule_type, add_user, create_time, update_time,
+        status)
+        values
+        <foreach collection="list" index="index" item="item" separator=",">
+            <trim prefix="(" suffix=")" suffixOverrides=",">
+                <if test="item.id != null">
+                    #{item.id,jdbcType=INTEGER},
+                </if>
+                <if test="item.id == null">
+                    NULL,
+                </if>
+                <if test="item.authRuleKey != null">
+                    #{item.authRuleKey,jdbcType=VARCHAR},
+                </if>
+                <if test="item.authRuleKey == null">
+                    NULL,
+                </if>
+                <if test="item.authRuleDescript != null">
+                    #{item.authRuleDescript,jdbcType=VARCHAR},
+                </if>
+                <if test="item.authRuleDescript == null">
+                    NULL,
+                </if>
+                <if test="item.authRuleType != null">
+                    #{item.authRuleType,jdbcType=TINYINT},
+                </if>
+                <if test="item.authRuleType == null">
+                    NULL,
+                </if>
+                <if test="item.addUser != null">
+                    #{item.addUser,jdbcType=VARCHAR},
+                </if>
+                <if test="item.addUser == null">
+                    NULL,
+                </if>
+                <if test="item.createTime != null">
+                    #{item.createTime,jdbcType=TIMESTAMP},
+                </if>
+                <if test="item.createTime == null">
+                    NULL,
+                </if>
+                <if test="item.updateTime != null">
+                    #{item.updateTime,jdbcType=TIMESTAMP},
+                </if>
+                <if test="item.updateTime == null">
+                    NULL,
+                </if>
+                <if test="item.status != null">
+                    #{item.status,jdbcType=TINYINT},
+                </if>
+                <if test="item.status == null">
+                    NULL,
+                </if>
+            </trim>
+        </foreach>
+    </insert>
+    <update id="updateByPrimaryKeySelective" parameterType="com.summer.dao.entity.AuthRuleConfig">
+        update auth_rule_config
+        <set>
+            <if test="authRuleKey != null">
+                auth_rule_key = #{authRuleKey,jdbcType=VARCHAR},
+            </if>
+            <if test="authRuleDescript != null">
+                auth_rule_descript = #{authRuleDescript,jdbcType=VARCHAR},
+            </if>
+            <if test="authRuleType != null">
+                auth_rule_type = #{authRuleType,jdbcType=TINYINT},
+            </if>
+            <if test="addUser != null">
+                add_user = #{addUser,jdbcType=VARCHAR},
+            </if>
+            <if test="createTime != null">
+                create_time = #{createTime,jdbcType=TIMESTAMP},
+            </if>
+            update_time = NOW(),
+            <if test="status != null">
+                status = #{status,jdbcType=TINYINT},
+            </if>
+        </set>
+        where id = #{id,jdbcType=INTEGER}
+    </update>
+    <update id="updateByPrimaryKey" parameterType="com.summer.dao.entity.AuthRuleConfig">
+    update auth_rule_config
+    set auth_rule_key = #{authRuleKey,jdbcType=VARCHAR},
+      auth_rule_descript = #{authRuleDescript,jdbcType=VARCHAR},
+      auth_rule_type = #{authRuleType,jdbcType=TINYINT},
+      add_user = #{addUser,jdbcType=VARCHAR},
+      create_time = #{createTime,jdbcType=TIMESTAMP},
+      update_time = #{updateTime,jdbcType=TIMESTAMP},
+      status = #{status,jdbcType=TINYINT}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+    <update id="updateBatchByPrimaryKey" parameterType="java.util.List">
+        update auth_rule_config
+        <trim prefix="set" suffixOverrides=",">
+            <trim prefix="authRuleKey =case id" suffix="end,">
+                <foreach collection="list" index="index" item="item" separator=" ">
+                    when #{item.id} then #{item.authRuleKey}
+                </foreach>
+            </trim>
+            <trim prefix="authRuleDescript =case id" suffix="end,">
+                <foreach collection="list" index="index" item="item" separator=" ">
+                    when #{item.id} then #{item.authRuleDescript}
+                </foreach>
+            </trim>
+            <trim prefix="authRuleType =case id" suffix="end,">
+                <foreach collection="list" index="index" item="item" separator=" ">
+                    when #{item.id} then #{item.authRuleType}
+                </foreach>
+            </trim>
+            <trim prefix="addUser =case id" suffix="end,">
+                <foreach collection="list" index="index" item="item" separator=" ">
+                    when #{item.id} then #{item.addUser}
+                </foreach>
+            </trim>
+            <trim prefix="createTime =case id" suffix="end,">
+                <foreach collection="list" index="index" item="item" separator=" ">
+                    when #{item.id} then #{item.createTime}
+                </foreach>
+            </trim>
+            <trim prefix="updateTime =case id" suffix="end,">
+                <foreach collection="list" index="index" item="item" separator=" ">
+                    when #{item.id} then #{item.updateTime}
+                </foreach>
+            </trim>
+            <trim prefix="status =case id" suffix="end,">
+                <foreach collection="list" index="index" item="item" separator=" ">
+                    when #{item.id} then #{item.status}
+                </foreach>
+            </trim>
+        </trim>
+        where id in
+        <foreach close=")" collection="list" index="index" item="item" open="(" separator=",">
+            #{item.id}
+        </foreach>
+    </update>
+    <update id="updateBatchByPrimaryKeySelective" parameterType="java.util.List">
+        update auth_rule_config
+        <trim prefix="set" suffixOverrides=",">
+            <trim prefix="authRuleKey =case id" suffix="end,">
+                <foreach collection="list" index="index" item="item" separator=" ">
+                    <if test="item.authRuleKey != null ">
+                        when #{item.id} then #{item.authRuleKey}
+                    </if>
+                    <if test="item.authRuleKey == null ">
+                        when #{item.id} then auth_rule_config.auth_rule_key
+                    </if>
+                </foreach>
+            </trim>
+            <trim prefix="authRuleDescript =case id" suffix="end,">
+                <foreach collection="list" index="index" item="item" separator=" ">
+                    <if test="item.authRuleDescript != null ">
+                        when #{item.id} then #{item.authRuleDescript}
+                    </if>
+                    <if test="item.authRuleDescript == null ">
+                        when #{item.id} then auth_rule_config.auth_rule_descript
+                    </if>
+                </foreach>
+            </trim>
+            <trim prefix="authRuleType =case id" suffix="end,">
+                <foreach collection="list" index="index" item="item" separator=" ">
+                    <if test="item.authRuleType != null ">
+                        when #{item.id} then #{item.authRuleType}
+                    </if>
+                    <if test="item.authRuleType == null ">
+                        when #{item.id} then auth_rule_config.auth_rule_type
+                    </if>
+                </foreach>
+            </trim>
+            <trim prefix="addUser =case id" suffix="end,">
+                <foreach collection="list" index="index" item="item" separator=" ">
+                    <if test="item.addUser != null ">
+                        when #{item.id} then #{item.addUser}
+                    </if>
+                    <if test="item.addUser == null ">
+                        when #{item.id} then auth_rule_config.add_user
+                    </if>
+                </foreach>
+            </trim>
+            <trim prefix="createTime =case id" suffix="end,">
+                <foreach collection="list" index="index" item="item" separator=" ">
+                    <if test="item.createTime != null ">
+                        when #{item.id} then #{item.createTime}
+                    </if>
+                    <if test="item.createTime == null ">
+                        when #{item.id} then auth_rule_config.create_time
+                    </if>
+                </foreach>
+            </trim>
+            <trim prefix="updateTime =case id" suffix="end,">
+                <foreach collection="list" index="index" item="item" separator=" ">
+                    <if test="item.updateTime != null ">
+                        when #{item.id} then #{item.updateTime}
+                    </if>
+                    <if test="item.updateTime == null ">
+                        when #{item.id} then auth_rule_config.update_time
+                    </if>
+                </foreach>
+            </trim>
+            <trim prefix="status =case id" suffix="end,">
+                <foreach collection="list" index="index" item="item" separator=" ">
+                    <if test="item.status != null ">
+                        when #{item.id} then #{item.status}
+                    </if>
+                    <if test="item.status == null ">
+                        when #{item.id} then auth_rule_config.status
+                    </if>
+                </foreach>
+            </trim>
+        </trim>
+        where id in
+        <foreach close=")" collection="list" index="index" item="item" open="(" separator=",">
+            #{item.id}
+        </foreach>
+    </update>
+
+    <select id="findAllAuthRule" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from auth_rule_config
+    </select>
+</mapper>

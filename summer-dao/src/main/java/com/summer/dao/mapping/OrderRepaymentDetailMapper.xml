@@ -1,0 +1,891 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.summer.dao.mapper.OrderRepaymentDetailDAO">
+    <resultMap id="BaseResultMap" type="com.summer.dao.entity.OrderRepaymentDetail">
+        <id column="id" jdbcType="BIGINT" property="id"/>
+        <result column="borrow_id" jdbcType="INTEGER" property="borrowId"/>
+        <result column="repayment_id" jdbcType="INTEGER" property="repaymentId"/>
+        <result column="user_id" jdbcType="INTEGER" property="userId"/>
+        <result column="paid" jdbcType="INTEGER" property="paidAmount"/>
+        <result column="remark" jdbcType="VARCHAR" property="remark"/>
+        <result column="third_order_no" jdbcType="VARCHAR" property="thirdOrderNo"/>
+        <result column="order_no" jdbcType="VARCHAR" property="orderNo"/>
+        <result column="pay_time_chg" jdbcType="VARCHAR" property="payTimeChg"/>
+        <result column="create_time_chg" jdbcType="VARCHAR" property="createTimeChg"/>
+        <result column="pay_time" jdbcType="TIMESTAMP" property="payTime"/>
+        <result column="pay_tip" jdbcType="VARCHAR" property="payTip"/>
+        <result column="pay_url" jdbcType="VARCHAR" property="payUrl"/>
+        <result column="create_time" jdbcType="TIMESTAMP" property="createTime"/>
+        <result column="update_time" jdbcType="TIMESTAMP" property="updateTime"/>
+        <result column="operator_user_id" jdbcType="INTEGER" property="operatorUserId"/>
+        <result column="status" jdbcType="TINYINT" property="status"/>
+        <result column="overdue" jdbcType="TINYINT" property="overdue"/>
+        <result column="pay_type" jdbcType="TINYINT" property="payType"/>
+    </resultMap>
+    <resultMap id="OrderUserMap" type="com.summer.pojo.vo.PaymentDetailUserVO" extends="BaseResultMap">
+        <result column="toPay" property="repaymentAmount" jdbcType="INTEGER"/>
+        <result column="loan_term" property="loanTerm" jdbcType="INTEGER"/>
+        <result column="repayment_time_chg" property="repaymentTime" jdbcType="VARCHAR"/>
+
+        <result column="phone" property="phone" jdbcType="VARCHAR"/>
+        <result column="real_name" property="realName" jdbcType="VARCHAR"/>
+        <result column="reviewer" property="reviewer" jdbcType="VARCHAR"/>
+        <result column="forward_count" property="forwardCount" jdbcType="INTEGER"/>
+        <result column="overdue_count" property="overdueCount" jdbcType="INTEGER"/>
+
+        <result column="customer_type" property="customerType"/>
+        <result column="apply_amount" property="applyMoney"/>
+        <result column="repayment_id" property="repaymentId"/>
+
+    </resultMap>
+    <sql id="Base_Column_List">
+        id,
+        borrow_id,
+        repayment_id,
+        user_id,
+        paid_amount
+        paid,
+        remark,
+        third_order_no,
+        order_no,
+        date_format
+        (
+        pay_time,
+        '%Y-%m-%d %H:%i:%s'
+        )
+        pay_time_chg,
+        pay_tip,
+        pay_url,
+        create_time,
+        date_format
+        (
+        create_time,
+        '%Y-%m-%d %H:%i:%s'
+        )
+        create_time_chg,
+        update_time,
+        operator_user_id,
+        status,
+        overdue,
+        pay_type
+    </sql>
+    <sql id="User_Column_List">
+        pc.channel_name as channelName,
+        ord
+        .
+        id,
+        date_format
+        (
+        ord
+        .
+        pay_time,
+        '%Y-%m-%d %H:%i:%s'
+        )
+        pay_time_chg,
+        (
+        orp
+        .
+        repayment_amount - orp.reduce_amount
+        )
+        toPay,
+        ob
+        .
+        loan_term,
+        date_format
+        (
+        orp
+        .
+        repayment_time,
+        '%Y-%m-%d'
+        )
+        repayment_time_chg,
+        ord
+        .
+        paid_amount
+        paid,
+        ord
+        .
+        status,
+        ord
+        .
+        pay_tip,
+        ord
+        .
+        pay_type,
+        ord
+        .
+        overdue,
+        ord
+        .
+        order_no ,
+        ord
+        .
+        third_order_no,
+        ui
+        .
+        real_name,
+        ui
+        .
+        phone,
+        pu
+        .
+        user_name
+        reviewer,
+        0 forward_count,
+        0 overdue_count
+        ,ob.customer_type as customer_type,ob.apply_amount as apply_amount,ord.repayment_id as repayment_id,ord.remark as remark
+
+  </sql>
+    <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from order_repayment_detail
+        where id = #{id,jdbcType=BIGINT}
+    </select>
+    <select id="selectLatestByRepaymentId" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from order_repayment_detail
+        where repayment_id = #{repaymentId} ORDER BY id DESC limit 1
+    </select>
+    <select id="selectSimple" parameterType="java.util.Map" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from order_repayment_detail
+        <where>
+            <if test="repaymentId != null ">
+                and repayment_id = #{repaymentId}
+            </if>
+            <if test="status != null ">
+                and status = #{status}
+            </if>
+            <if test="payStatus != null ">
+                and status != #{payStatus}
+            </if>
+            <if test="out_trade_no != null and out_trade_no != ''">
+                and order_no = #{out_trade_no}
+            </if>
+        </where>
+        ORDER BY id DESC
+    </select>
+    <select id="findParams" parameterType="java.util.Map" resultMap="OrderUserMap">
+        select
+        <include refid="User_Column_List"/>
+        from order_repayment_detail ord INNER join user_info ui on ord.user_id=ui.id
+
+        LEFT JOIN plateform_channel pc on ui.channel_id = pc.id
+        INNER join order_borrow ob on ord.borrow_id=ob.id
+        INNER join order_repayment orp on ord.repayment_id=orp.id
+
+        left join platform_user pu on ob.review_user_id = pu.id
+
+--         inner join (SELECT ui.id ,count(orp.id) overdue_count FROM user_info ui left join
+--         order_repayment orp on ui.id = orp.user_id and orp.collected = 1
+--         GROUP BY ui.id) overdue on ui.id = overdue.id
+--         inner join (SELECT ui.id ,count(orp.id) forward_count FROM user_info ui left join
+--         order_repayment orp on ui.id = orp.user_id and orp.paid_forward = 1
+--         GROUP BY ui.id) forward on ui.id = forward.id
+        <where>
+
+            ui.status != 2
+            <if test="platformUserId != null ">
+                and pu.id = #{platformUserId}
+            </if>
+            <if test="realName != null and realName != ''">
+                and ui.real_name like concat('%',#{realName},'%')
+            </if>
+            <if test="phone != null and phone != ''">
+                and ui.phone = #{phone}
+            </if>
+            <if test="thirdOrderNo != null and thirdOrderNo != ''">
+                and ord.third_order_no = #{thirdOrderNo}
+            </if>
+            <if test="outTradeNo != null and outTradeNo != ''">
+                and ord.order_no = #{outTradeNo}
+            </if>
+            <if test="sPayTime != null and sPayTime != ''">
+                <![CDATA[    and ord.pay_time >= #{sPayTime}   ]]>
+            </if>
+            <if test="ePayTime != null and ePayTime != ''">
+                <![CDATA[    and ord.pay_time <  date_add(#{ePayTime},interval 1 day)]]>
+            </if>
+            <if test="status != null ">
+                and ord.status = #{status}
+            </if>
+
+            <if test="overdue != null ">
+                and ord.overdue = #{overdue}
+            </if>
+            <if test="payType != null ">
+                and ord.pay_type = #{payType}
+            </if>
+            <if test="channelName != null and channelName != ''">
+                and pc.channel_name = #{channelName,jdbcType=VARCHAR}
+            </if>
+            <if test="customerType != null">
+                and ob.customer_type =#{customerType}
+            </if>
+            <if test="repaymentType == null">
+                and ord.pay_type in (0,1,2,3,4,5,6,7,8)
+            </if>
+            <if test="repaymentType == 0">
+                and ord.pay_type in (0)
+            </if>
+            <if test="repaymentType == 1">
+                and ord.pay_type in (2,3,4)
+            </if>
+            <if test="repaymentType == 2">
+                and ord.pay_type in (5,6,7)
+            </if>
+            <if test="repaymentType == 3">
+                and ord.pay_type in (1)
+            </if>
+            <if test="repaymentTimeSt != null and repaymentTimeSt != ''">
+                <![CDATA[    and orp.repayment_time >= #{repaymentTimeSt}   ]]>
+            </if>
+            <if test="repaymentTimeEn != null and repaymentTimeEn != ''">
+                <![CDATA[    and orp.repayment_time <  date_add(#{repaymentTimeEn},interval 1 day)]]>
+            </if>
+
+        </where>
+        order by ord.id desc
+    </select>
+    <select id="findStatistic" parameterType="java.util.Map" resultType="com.summer.pojo.vo.FinanceStatisticVO">
+        select
+        ord.id, date_format(ord.pay_time,'%Y-%m-%d %H:%i:%s') repayTime,
+        (ora.repayment_amount-ora.paid_amount-ora.reduce_amount)/100.0
+        topayMoney, ora.paid_amount/100.0 paidMoney, ord.status, ord.pay_type payType, ord.order_no orderNo,
+        ui.real_name realName,
+        ui.phone
+        from order_repayment_detail ord INNER join user_info ui on ord.user_id=ui.id
+        INNER join order_repayment ora on ord.repayment_id=ora.id
+        <if test="phone != null and phone != ''">
+            and ui.phone = #{phone}
+        </if>
+        <where>
+            <if test="orderNo != null and orderNo != ''">
+                and ord.order_no = #{orderNo}
+            </if>
+            <if test="repayType != null ">
+                and ord.pay_type = #{repayType}
+            </if>
+
+            <if test="sRepayTime != null and sRepayTime != ''">
+                <![CDATA[    and ord.pay_time >= #{sRepayTime}   ]]>
+            </if>
+            <if test="eRepayTime != null and eRepayTime != ''">
+                <![CDATA[    and ord.pay_time < date_add(#{eRepayTime},interval 1 day)  ]]>
+            </if>
+        </where>
+        order by ord.pay_time desc
+    </select>
+    <select id="countStatistic" resultType="Map">
+
+        select 1 num,
+               IFNULL(sum(paid_amount),0)/100.0 repayAmount,count(*) repayCount
+        from order_repayment where status in(1,2,4,6) union all
+        select 2 num,
+               IFNULL(sum(paid_amount),0)/100.0,count(*)
+        from order_repayment where status in(1,4) union all
+        select 3 num,
+               IFNULL(sum(paid_amount),0)/100.0,count(*)
+        from order_repayment where status in(2,6)
+    </select>
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+    delete from order_repayment_detail
+    where id = #{id,jdbcType=BIGINT}
+  </delete>
+    <insert id="insert" parameterType="com.summer.dao.entity.OrderRepaymentDetail">
+        insert into order_repayment_detail (id, borrow_id, repayment_id,
+                                            user_id, paid_amount, remark,
+                                            third_order_no, order_no, pay_time,
+                                            pay_tip, create_time, update_time,
+                                            operator_user_id, status, overdue,
+                                            pay_type)
+        values (#{id,jdbcType=BIGINT}, #{borrowId,jdbcType=INTEGER}, #{repaymentId,jdbcType=INTEGER},
+                #{userId,jdbcType=INTEGER}, #{paidAmount,jdbcType=INTEGER}, #{remark,jdbcType=VARCHAR},
+                #{thirdOrderNo,jdbcType=VARCHAR}, #{orderNo,jdbcType=VARCHAR}, #{payTime,jdbcType=TIMESTAMP},
+                #{payTip,jdbcType=VARCHAR}, #{createTime,jdbcType=TIMESTAMP}, #{updateTime,jdbcType=TIMESTAMP},
+                #{operatorUserId,jdbcType=INTEGER}, #{status,jdbcType=TINYINT}, #{overdue,jdbcType=TINYINT},
+                #{payType,jdbcType=TINYINT})
+  </insert>
+    <insert id="insertSelective" useGeneratedKeys="true" keyProperty="id"
+            parameterType="com.summer.dao.entity.OrderRepaymentDetail">
+        insert into order_repayment_detail
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                id,
+            </if>
+            <if test="borrowId != null">
+                borrow_id,
+            </if>
+            <if test="repaymentId != null">
+                repayment_id,
+            </if>
+            <if test="userId != null">
+                user_id,
+            </if>
+            <if test="paidAmount != null">
+                paid_amount,
+            </if>
+            <if test="remark != null">
+                remark,
+            </if>
+            <if test="thirdOrderNo != null">
+                third_order_no,
+            </if>
+            <if test="orderNo != null">
+                order_no,
+            </if>
+            <if test="payTime != null">
+                pay_time,
+            </if>
+            <if test="payTip != null">
+                pay_tip,
+            </if>
+            <if test="payUrl != null">
+                pay_url,
+            </if>
+            <if test="createTime != null">
+                create_time,
+            </if>
+            <if test="updateTime != null">
+                update_time,
+            </if>
+            <if test="operatorUserId != null">
+                operator_user_id,
+            </if>
+            <if test="status != null">
+                status,
+            </if>
+            <if test="overdue != null">
+                overdue,
+            </if>
+            <if test="payType != null">
+                pay_type,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                #{id,jdbcType=BIGINT},
+            </if>
+            <if test="borrowId != null">
+                #{borrowId,jdbcType=INTEGER},
+            </if>
+            <if test="repaymentId != null">
+                #{repaymentId,jdbcType=INTEGER},
+            </if>
+            <if test="userId != null">
+                #{userId,jdbcType=INTEGER},
+            </if>
+            <if test="paidAmount != null">
+                #{paidAmount,jdbcType=INTEGER},
+            </if>
+            <if test="remark != null">
+                #{remark,jdbcType=VARCHAR},
+            </if>
+            <if test="thirdOrderNo != null">
+                #{thirdOrderNo,jdbcType=VARCHAR},
+            </if>
+            <if test="orderNo != null">
+                #{orderNo,jdbcType=VARCHAR},
+            </if>
+            <if test="payTime != null">
+                #{payTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="payTip != null">
+                #{payTip,jdbcType=VARCHAR},
+            </if>
+            <if test="payUrl != null">
+                #{payUrl,jdbcType=VARCHAR},
+            </if>
+            <if test="createTime != null">
+                #{createTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="updateTime != null">
+                #{updateTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="operatorUserId != null">
+                #{operatorUserId,jdbcType=INTEGER},
+            </if>
+            <if test="status != null">
+                #{status,jdbcType=TINYINT},
+            </if>
+            <if test="overdue != null">
+                #{overdue,jdbcType=TINYINT},
+            </if>
+            <if test="payType != null">
+                #{payType,jdbcType=TINYINT},
+            </if>
+        </trim>
+    </insert>
+    <insert id="insertBatch" parameterType="java.util.List">
+        insert into order_repayment_detail (id, borrow_id, repayment_id,
+        user_id, paid_amount, remark,
+        third_order_no, order_no, pay_time,
+        pay_tip, create_time, update_time,
+        operator_user_id, status, overdue,
+        pay_type)
+        values
+        <foreach collection="list" index="index" item="item" separator=",">
+            (#{item.id,jdbcType=BIGINT}, #{item.borrowId,jdbcType=INTEGER}, #{item.repaymentId,jdbcType=INTEGER},
+            #{item.userId,jdbcType=INTEGER}, #{item.paidAmount,jdbcType=INTEGER}, #{item.remark,jdbcType=VARCHAR},
+            #{item.thirdOrderNo,jdbcType=VARCHAR}, #{item.orderNo,jdbcType=VARCHAR},
+            #{item.payTime,jdbcType=TIMESTAMP},
+            #{item.payTip,jdbcType=VARCHAR}, #{item.createTime,jdbcType=TIMESTAMP},
+            #{item.updateTime,jdbcType=TIMESTAMP},
+            #{item.operatorUserId,jdbcType=INTEGER}, #{item.status,jdbcType=TINYINT}, #{item.overdue,jdbcType=TINYINT},
+            #{item.payType,jdbcType=TINYINT})
+        </foreach>
+    </insert>
+    <insert id="insertBatchSelective" parameterType="java.util.List">
+        insert into order_repayment_detail
+        (id, borrow_id, repayment_id, user_id, paid_amount, remark, third_order_no, order_no,
+        pay_time, pay_tip, create_time, update_time, operator_user_id, status, overdue,
+        pay_type)
+        values
+        <foreach collection="list" index="index" item="item" separator=",">
+            <trim prefix="(" suffix=")" suffixOverrides=",">
+                <if test="item.id != null">
+                    #{item.id,jdbcType=BIGINT},
+                </if>
+                <if test="item.id == null">
+                    NULL,
+                </if>
+                <if test="item.borrowId != null">
+                    #{item.borrowId,jdbcType=INTEGER},
+                </if>
+                <if test="item.borrowId == null">
+                    NULL,
+                </if>
+                <if test="item.repaymentId != null">
+                    #{item.repaymentId,jdbcType=INTEGER},
+                </if>
+                <if test="item.repaymentId == null">
+                    NULL,
+                </if>
+                <if test="item.userId != null">
+                    #{item.userId,jdbcType=INTEGER},
+                </if>
+                <if test="item.userId == null">
+                    NULL,
+                </if>
+                <if test="item.paidAmount != null">
+                    #{item.paidAmount,jdbcType=INTEGER},
+                </if>
+                <if test="item.paidAmount == null">
+                    NULL,
+                </if>
+                <if test="item.remark != null">
+                    #{item.remark,jdbcType=VARCHAR},
+                </if>
+                <if test="item.remark == null">
+                    NULL,
+                </if>
+                <if test="item.thirdOrderNo != null">
+                    #{item.thirdOrderNo,jdbcType=VARCHAR},
+                </if>
+                <if test="item.thirdOrderNo == null">
+                    NULL,
+                </if>
+                <if test="item.orderNo != null">
+                    #{item.orderNo,jdbcType=VARCHAR},
+                </if>
+                <if test="item.orderNo == null">
+                    NULL,
+                </if>
+                <if test="item.payTime != null">
+                    #{item.payTime,jdbcType=TIMESTAMP},
+                </if>
+                <if test="item.payTime == null">
+                    NULL,
+                </if>
+                <if test="item.payTip != null">
+                    #{item.payTip,jdbcType=VARCHAR},
+                </if>
+                <if test="item.payTip == null">
+                    NULL,
+                </if>
+                <if test="item.createTime != null">
+                    #{item.createTime,jdbcType=TIMESTAMP},
+                </if>
+                <if test="item.createTime == null">
+                    NULL,
+                </if>
+                <if test="item.updateTime != null">
+                    #{item.updateTime,jdbcType=TIMESTAMP},
+                </if>
+                <if test="item.updateTime == null">
+                    NULL,
+                </if>
+                <if test="item.operatorUserId != null">
+                    #{item.operatorUserId,jdbcType=INTEGER},
+                </if>
+                <if test="item.operatorUserId == null">
+                    NULL,
+                </if>
+                <if test="item.status != null">
+                    #{item.status,jdbcType=TINYINT},
+                </if>
+                <if test="item.status == null">
+                    NULL,
+                </if>
+                <if test="item.overdue != null">
+                    #{item.overdue,jdbcType=TINYINT},
+                </if>
+                <if test="item.overdue == null">
+                    NULL,
+                </if>
+                <if test="item.payType != null">
+                    #{item.payType,jdbcType=TINYINT},
+                </if>
+                <if test="item.payType == null">
+                    NULL,
+                </if>
+            </trim>
+        </foreach>
+    </insert>
+    <update id="updateByPrimaryKeySelective" parameterType="com.summer.dao.entity.OrderRepaymentDetail">
+        update order_repayment_detail
+        <set>
+            <if test="borrowId != null">
+                borrow_id = #{borrowId,jdbcType=INTEGER},
+            </if>
+            <if test="repaymentId != null">
+                repayment_id = #{repaymentId,jdbcType=INTEGER},
+            </if>
+            <if test="userId != null">
+                user_id = #{userId,jdbcType=INTEGER},
+            </if>
+            <if test="paidAmount != null">
+                paid_amount = #{paidAmount,jdbcType=INTEGER},
+            </if>
+            <if test="remark != null">
+                remark = #{remark,jdbcType=VARCHAR},
+            </if>
+            <if test="thirdOrderNo != null">
+                third_order_no = #{thirdOrderNo,jdbcType=VARCHAR},
+            </if>
+            <if test="orderNo != null">
+                order_no = #{orderNo,jdbcType=VARCHAR},
+            </if>
+            <if test="payTime != null">
+                pay_time = #{payTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="payTip != null">
+                pay_tip = #{payTip,jdbcType=VARCHAR},
+            </if>
+            <if test="payUrl != null">
+                pay_url = #{payUrl,jdbcType=VARCHAR},
+            </if>
+            <if test="createTime != null">
+                create_time = #{createTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="updateTime != null">
+                update_time = #{updateTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="operatorUserId != null">
+                operator_user_id = #{operatorUserId,jdbcType=INTEGER},
+            </if>
+            <if test="status != null">
+                status = #{status,jdbcType=TINYINT},
+            </if>
+            <if test="overdue != null">
+                overdue = #{overdue,jdbcType=TINYINT},
+            </if>
+            <if test="payType != null">
+                pay_type = #{payType,jdbcType=TINYINT},
+            </if>
+        </set>
+        where id = #{id,jdbcType=BIGINT}
+    </update>
+    <update id="updateByPrimaryKey" parameterType="com.summer.dao.entity.OrderRepaymentDetail">
+        update order_repayment_detail
+        set borrow_id        = #{borrowId,jdbcType=INTEGER},
+            repayment_id     = #{repaymentId,jdbcType=INTEGER},
+            user_id          = #{userId,jdbcType=INTEGER},
+            paid_amount      = #{paidAmount,jdbcType=INTEGER},
+            remark           = #{remark,jdbcType=VARCHAR},
+            third_order_no   = #{thirdOrderNo,jdbcType=VARCHAR},
+            order_no     = #{orderNo,jdbcType=VARCHAR},
+            pay_time         = #{payTime,jdbcType=TIMESTAMP},
+            pay_tip          = #{payTip,jdbcType=VARCHAR},
+            create_time      = #{createTime,jdbcType=TIMESTAMP},
+            update_time      = #{updateTime,jdbcType=TIMESTAMP},
+            operator_user_id = #{operatorUserId,jdbcType=INTEGER},
+            status           = #{status,jdbcType=TINYINT},
+            overdue          = #{overdue,jdbcType=TINYINT},
+            pay_type         = #{payType,jdbcType=TINYINT}
+        where id = #{id,jdbcType=BIGINT}
+    </update>
+    <update id="updatePaying" parameterType="com.summer.dao.entity.OrderRepaymentDetail">
+        update order_repayment_detail
+        set status = #{status,jdbcType=TINYINT}
+        where id = #{id,jdbcType=BIGINT} and status=0
+    </update>
+    <update id="updateBatchByPrimaryKey" parameterType="java.util.List">
+        update order_repayment_detail
+        <trim prefix="set" suffixOverrides=",">
+            <trim prefix="borrowId =case id" suffix="end,">
+                <foreach collection="list" index="index" item="item" separator=" ">
+                    when #{item.id} then #{item.borrowId}
+                </foreach>
+            </trim>
+            <trim prefix="repaymentId =case id" suffix="end,">
+                <foreach collection="list" index="index" item="item" separator=" ">
+                    when #{item.id} then #{item.repaymentId}
+                </foreach>
+            </trim>
+            <trim prefix="userId =case id" suffix="end,">
+                <foreach collection="list" index="index" item="item" separator=" ">
+                    when #{item.id} then #{item.userId}
+                </foreach>
+            </trim>
+            <trim prefix="paidAmount =case id" suffix="end,">
+                <foreach collection="list" index="index" item="item" separator=" ">
+                    when #{item.id} then #{item.paidAmount}
+                </foreach>
+            </trim>
+            <trim prefix="remark =case id" suffix="end,">
+                <foreach collection="list" index="index" item="item" separator=" ">
+                    when #{item.id} then #{item.remark}
+                </foreach>
+            </trim>
+            <trim prefix="thirdOrderNo =case id" suffix="end,">
+                <foreach collection="list" index="index" item="item" separator=" ">
+                    when #{item.id} then #{item.thirdOrderNo}
+                </foreach>
+            </trim>
+            <trim prefix="orderNo =case id" suffix="end,">
+                <foreach collection="list" index="index" item="item" separator=" ">
+                    when #{item.id} then #{item.orderNo}
+                </foreach>
+            </trim>
+            <trim prefix="payTime =case id" suffix="end,">
+                <foreach collection="list" index="index" item="item" separator=" ">
+                    when #{item.id} then #{item.payTime}
+                </foreach>
+            </trim>
+            <trim prefix="payTip =case id" suffix="end,">
+                <foreach collection="list" index="index" item="item" separator=" ">
+                    when #{item.id} then #{item.payTip}
+                </foreach>
+            </trim>
+            <trim prefix="createTime =case id" suffix="end,">
+                <foreach collection="list" index="index" item="item" separator=" ">
+                    when #{item.id} then #{item.createTime}
+                </foreach>
+            </trim>
+            <trim prefix="updateTime =case id" suffix="end,">
+                <foreach collection="list" index="index" item="item" separator=" ">
+                    when #{item.id} then #{item.updateTime}
+                </foreach>
+            </trim>
+            <trim prefix="operatorUserId =case id" suffix="end,">
+                <foreach collection="list" index="index" item="item" separator=" ">
+                    when #{item.id} then #{item.operatorUserId}
+                </foreach>
+            </trim>
+            <trim prefix="status =case id" suffix="end,">
+                <foreach collection="list" index="index" item="item" separator=" ">
+                    when #{item.id} then #{item.status}
+                </foreach>
+            </trim>
+            <trim prefix="overdue =case id" suffix="end,">
+                <foreach collection="list" index="index" item="item" separator=" ">
+                    when #{item.id} then #{item.overdue}
+                </foreach>
+            </trim>
+            <trim prefix="payType =case id" suffix="end,">
+                <foreach collection="list" index="index" item="item" separator=" ">
+                    when #{item.id} then #{item.payType}
+                </foreach>
+            </trim>
+        </trim>
+        where id in
+        <foreach close=")" collection="list" index="index" item="item" open="(" separator=",">
+            #{item.id}
+        </foreach>
+    </update>
+    <update id="updateBatchByPrimaryKeySelective" parameterType="java.util.List">
+        update order_repayment_detail
+        <trim prefix="set" suffixOverrides=",">
+            <trim prefix="borrowId =case id" suffix="end,">
+                <foreach collection="list" index="index" item="item" separator=" ">
+                    <if test="item.borrowId != null ">
+                        when #{item.id} then #{item.borrowId}
+                    </if>
+                    <if test="item.borrowId == null ">
+                        when #{item.id} then order_repayment_detail.borrow_id
+                    </if>
+                </foreach>
+            </trim>
+            <trim prefix="repaymentId =case id" suffix="end,">
+                <foreach collection="list" index="index" item="item" separator=" ">
+                    <if test="item.repaymentId != null ">
+                        when #{item.id} then #{item.repaymentId}
+                    </if>
+                    <if test="item.repaymentId == null ">
+                        when #{item.id} then order_repayment_detail.repayment_id
+                    </if>
+                </foreach>
+            </trim>
+            <trim prefix="userId =case id" suffix="end,">
+                <foreach collection="list" index="index" item="item" separator=" ">
+                    <if test="item.userId != null ">
+                        when #{item.id} then #{item.userId}
+                    </if>
+                    <if test="item.userId == null ">
+                        when #{item.id} then order_repayment_detail.user_id
+                    </if>
+                </foreach>
+            </trim>
+            <trim prefix="paidAmount =case id" suffix="end,">
+                <foreach collection="list" index="index" item="item" separator=" ">
+                    <if test="item.paidAmount != null ">
+                        when #{item.id} then #{item.paidAmount}
+                    </if>
+                    <if test="item.paidAmount == null ">
+                        when #{item.id} then order_repayment_detail.paid_amount
+                    </if>
+                </foreach>
+            </trim>
+            <trim prefix="remark =case id" suffix="end,">
+                <foreach collection="list" index="index" item="item" separator=" ">
+                    <if test="item.remark != null ">
+                        when #{item.id} then #{item.remark}
+                    </if>
+                    <if test="item.remark == null ">
+                        when #{item.id} then order_repayment_detail.remark
+                    </if>
+                </foreach>
+            </trim>
+            <trim prefix="thirdOrderNo =case id" suffix="end,">
+                <foreach collection="list" index="index" item="item" separator=" ">
+                    <if test="item.thirdOrderNo != null ">
+                        when #{item.id} then #{item.thirdOrderNo}
+                    </if>
+                    <if test="item.thirdOrderNo == null ">
+                        when #{item.id} then order_repayment_detail.third_order_no
+                    </if>
+                </foreach>
+            </trim>
+            <trim prefix="orderNo =case id" suffix="end,">
+                <foreach collection="list" index="index" item="item" separator=" ">
+                    <if test="item.orderNo != null ">
+                        when #{item.id} then #{item.orderNo}
+                    </if>
+                    <if test="item.orderNo == null ">
+                        when #{item.id} then order_repayment_detail.order_no
+                    </if>
+                </foreach>
+            </trim>
+            <trim prefix="payTime =case id" suffix="end,">
+                <foreach collection="list" index="index" item="item" separator=" ">
+                    <if test="item.payTime != null ">
+                        when #{item.id} then #{item.payTime}
+                    </if>
+                    <if test="item.payTime == null ">
+                        when #{item.id} then order_repayment_detail.pay_time
+                    </if>
+                </foreach>
+            </trim>
+            <trim prefix="payTip =case id" suffix="end,">
+                <foreach collection="list" index="index" item="item" separator=" ">
+                    <if test="item.payTip != null ">
+                        when #{item.id} then #{item.payTip}
+                    </if>
+                    <if test="item.payTip == null ">
+                        when #{item.id} then order_repayment_detail.pay_tip
+                    </if>
+                </foreach>
+            </trim>
+            <trim prefix="createTime =case id" suffix="end,">
+                <foreach collection="list" index="index" item="item" separator=" ">
+                    <if test="item.createTime != null ">
+                        when #{item.id} then #{item.createTime}
+                    </if>
+                    <if test="item.createTime == null ">
+                        when #{item.id} then order_repayment_detail.create_time
+                    </if>
+                </foreach>
+            </trim>
+            <trim prefix="updateTime =case id" suffix="end,">
+                <foreach collection="list" index="index" item="item" separator=" ">
+                    <if test="item.updateTime != null ">
+                        when #{item.id} then #{item.updateTime}
+                    </if>
+                    <if test="item.updateTime == null ">
+                        when #{item.id} then order_repayment_detail.update_time
+                    </if>
+                </foreach>
+            </trim>
+            <trim prefix="operatorUserId =case id" suffix="end,">
+                <foreach collection="list" index="index" item="item" separator=" ">
+                    <if test="item.operatorUserId != null ">
+                        when #{item.id} then #{item.operatorUserId}
+                    </if>
+                    <if test="item.operatorUserId == null ">
+                        when #{item.id} then order_repayment_detail.operator_user_id
+                    </if>
+                </foreach>
+            </trim>
+            <trim prefix="status =case id" suffix="end,">
+                <foreach collection="list" index="index" item="item" separator=" ">
+                    <if test="item.status != null ">
+                        when #{item.id} then #{item.status}
+                    </if>
+                    <if test="item.status == null ">
+                        when #{item.id} then order_repayment_detail.status
+                    </if>
+                </foreach>
+            </trim>
+            <trim prefix="overdue =case id" suffix="end,">
+                <foreach collection="list" index="index" item="item" separator=" ">
+                    <if test="item.overdue != null ">
+                        when #{item.id} then #{item.overdue}
+                    </if>
+                    <if test="item.overdue == null ">
+                        when #{item.id} then order_repayment_detail.overdue
+                    </if>
+                </foreach>
+            </trim>
+            <trim prefix="payType =case id" suffix="end,">
+                <foreach collection="list" index="index" item="item" separator=" ">
+                    <if test="item.payType != null ">
+                        when #{item.id} then #{item.payType}
+                    </if>
+                    <if test="item.payType == null ">
+                        when #{item.id} then order_repayment_detail.pay_type
+                    </if>
+                </foreach>
+            </trim>
+        </trim>
+        where id in
+        <foreach close=")" collection="list" index="index" item="item" open="(" separator=",">
+            #{item.id}
+        </foreach>
+    </update>
+
+    <select id="selectLatestByRefundId" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from order_repayment_detail
+        where repayment_id = #{repaymentId}  ORDER BY id DESC limit 1
+    </select>
+
+    <select id="selectLatestByRepay" parameterType="java.util.Map" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from order_repayment_detail
+        where repayment_id = #{repaymentId} and SUBSTRING(order_no,1,2) = #{orderType}  ORDER BY id DESC limit 1
+    </select>
+
+    <select id="selectLatestByRefund" parameterType="java.util.Map" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from order_repayment_detail
+        where repayment_id = #{repaymentId} and SUBSTRING(order_no,1,3) = #{orderType}  ORDER BY id DESC limit 1
+    </select>
+
+</mapper>

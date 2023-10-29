@@ -1,0 +1,34 @@
+server:
+  port: 8033
+  custom:
+    # http 端口
+    httpPort: 8032
+
+spring:
+  profiles:
+    active: diqiucun
+  application:
+    name: diqiucun
+
+
+nacos:
+  config:
+    # nacos
+    server-addr: 47.74.48.135:8848
+    data-ids: diqiucun,diqiucun-bs,diqiucun-sms,diqiucun-ocr,diqiucun-mobile,diqiucun-oss,diqiucun-fk,diqiucun-pay
+    type: YAML
+    auto-refresh: true
+    namespace: e65312a9-04a9-49bd-b73d-32a4d8ea63ad
+    bootstrap:
+      enable: true
+
+#    ext-config:
+#      - server-addr: 8.210.166.87:82 # Nacos 服务器地址
+#        data-id: dev-sms # 使用的 Nacos 配置集的 dataId。
+#        # data-ids: dev-sms
+#        type: properties # 使用的 Nacos 配置集的配置格式。默认为 PROPERTIES。
+#        namespace: a31478cc-37f4-48e6-a75f-c3dede11eb03 # 使用的 Nacos 的命名空间，默认为 null。
+#        auto-refresh: true # 是否自动刷新，默认为 false。
+#        bootstrap:
+#          enable: true
+    #      - # 这里，可以继续添加。

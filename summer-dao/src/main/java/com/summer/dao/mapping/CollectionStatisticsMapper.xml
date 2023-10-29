@@ -1,0 +1,199 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.summer.dao.mapper.CollectionStatisticsMapper">
+    <resultMap id="BaseResultMap" type="com.summer.dao.entity.CollectionStatistics">
+        <id column="id" jdbcType="INTEGER" property="id"/>
+        <result column="count_date" jdbcType="DATE" property="countDate"/>
+        <result column="user_id" jdbcType="INTEGER" property="userId"/>
+        <result column="distribution_number" jdbcType="INTEGER" property="distributionNumber"/>
+        <result column="repayment_number" jdbcType="INTEGER" property="repaymentNumber"/>
+        <result column="repayment_number_rate" jdbcType="DECIMAL" property="repaymentNumberRate"/>
+        <result column="distribution_amount" jdbcType="DECIMAL" property="distributionAmount"/>
+        <result column="repayment_amount" jdbcType="DECIMAL" property="repaymentAmount"/>
+        <result column="repayment_amount_rate" jdbcType="DECIMAL" property="repaymentAmountRate"/>
+        <result column="update_time" jdbcType="TIMESTAMP" property="updateTime"/>
+    </resultMap>
+    <sql id="Base_Column_List">
+    id, count_date, user_id, distribution_number, repayment_number, repayment_number_rate, 
+    distribution_amount, repayment_amount, repayment_amount_rate, update_time
+  </sql>
+    <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from collection_statistics
+        where id = #{id,jdbcType=INTEGER}
+    </select>
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from collection_statistics
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+    <insert id="insert" parameterType="com.summer.dao.entity.CollectionStatistics">
+    insert into collection_statistics (id, count_date, user_id, 
+      distribution_number, repayment_number, repayment_number_rate, 
+      distribution_amount, repayment_amount, repayment_amount_rate, 
+      update_time)
+    values (#{id,jdbcType=INTEGER}, #{countDate,jdbcType=DATE}, #{userId,jdbcType=INTEGER}, 
+      #{distributionNumber,jdbcType=INTEGER}, #{repaymentNumber,jdbcType=INTEGER}, #{repaymentNumberRate,jdbcType=DECIMAL}, 
+      #{distributionAmount,jdbcType=DECIMAL}, #{repaymentAmount,jdbcType=DECIMAL}, #{repaymentAmountRate,jdbcType=DECIMAL}, 
+      #{updateTime,jdbcType=TIMESTAMP})
+  </insert>
+    <insert id="insertSelective" parameterType="com.summer.dao.entity.CollectionStatistics">
+        insert into collection_statistics
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                id,
+            </if>
+            <if test="countDate != null">
+                count_date,
+            </if>
+            <if test="userId != null">
+                user_id,
+            </if>
+            <if test="distributionNumber != null">
+                distribution_number,
+            </if>
+            <if test="repaymentNumber != null">
+                repayment_number,
+            </if>
+            <if test="repaymentNumberRate != null">
+                repayment_number_rate,
+            </if>
+            <if test="distributionAmount != null">
+                distribution_amount,
+            </if>
+            <if test="repaymentAmount != null">
+                repayment_amount,
+            </if>
+            <if test="repaymentAmountRate != null">
+                repayment_amount_rate,
+            </if>
+            <if test="updateTime != null">
+                update_time,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                #{id,jdbcType=INTEGER},
+            </if>
+            <if test="countDate != null">
+                #{countDate,jdbcType=DATE},
+            </if>
+            <if test="userId != null">
+                #{userId,jdbcType=INTEGER},
+            </if>
+            <if test="distributionNumber != null">
+                #{distributionNumber,jdbcType=INTEGER},
+            </if>
+            <if test="repaymentNumber != null">
+                #{repaymentNumber,jdbcType=INTEGER},
+            </if>
+            <if test="repaymentNumberRate != null">
+                #{repaymentNumberRate,jdbcType=DECIMAL},
+            </if>
+            <if test="distributionAmount != null">
+                #{distributionAmount,jdbcType=DECIMAL},
+            </if>
+            <if test="repaymentAmount != null">
+                #{repaymentAmount,jdbcType=DECIMAL},
+            </if>
+            <if test="repaymentAmountRate != null">
+                #{repaymentAmountRate,jdbcType=DECIMAL},
+            </if>
+            <if test="updateTime != null">
+                #{updateTime,jdbcType=TIMESTAMP},
+            </if>
+        </trim>
+    </insert>
+    <update id="updateByPrimaryKeySelective" parameterType="com.summer.dao.entity.CollectionStatistics">
+        update collection_statistics
+        <set>
+            <if test="countDate != null">
+                count_date = #{countDate,jdbcType=DATE},
+            </if>
+            <if test="userId != null">
+                user_id = #{userId,jdbcType=INTEGER},
+            </if>
+            <if test="distributionNumber != null">
+                distribution_number = #{distributionNumber,jdbcType=INTEGER},
+            </if>
+            <if test="repaymentNumber != null">
+                repayment_number = #{repaymentNumber,jdbcType=INTEGER},
+            </if>
+            <if test="repaymentNumberRate != null">
+                repayment_number_rate = #{repaymentNumberRate,jdbcType=DECIMAL},
+            </if>
+            <if test="distributionAmount != null">
+                distribution_amount = #{distributionAmount,jdbcType=DECIMAL},
+            </if>
+            <if test="repaymentAmount != null">
+                repayment_amount = #{repaymentAmount,jdbcType=DECIMAL},
+            </if>
+            <if test="repaymentAmountRate != null">
+                repayment_amount_rate = #{repaymentAmountRate,jdbcType=DECIMAL},
+            </if>
+            <if test="updateTime != null">
+                update_time = #{updateTime,jdbcType=TIMESTAMP},
+            </if>
+        </set>
+        where id = #{id,jdbcType=INTEGER}
+    </update>
+    <update id="updateByPrimaryKey" parameterType="com.summer.dao.entity.CollectionStatistics">
+    update collection_statistics
+    set count_date = #{countDate,jdbcType=DATE},
+      user_id = #{userId,jdbcType=INTEGER},
+      distribution_number = #{distributionNumber,jdbcType=INTEGER},
+      repayment_number = #{repaymentNumber,jdbcType=INTEGER},
+      repayment_number_rate = #{repaymentNumberRate,jdbcType=DECIMAL},
+      distribution_amount = #{distributionAmount,jdbcType=DECIMAL},
+      repayment_amount = #{repaymentAmount,jdbcType=DECIMAL},
+      repayment_amount_rate = #{repaymentAmountRate,jdbcType=DECIMAL},
+      update_time = #{updateTime,jdbcType=TIMESTAMP}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+
+    <select id="findByParams" parameterType="java.util.Map" resultType="com.summer.pojo.vo.CollectionStatisticsVo">
+        select cs.id, date_format(cs.count_date,'%Y-%m-%d') as countDate, pr.description as roleName,
+        pu.user_name as userName, cs.distribution_number as distributionNumber, cs.repayment_number as repaymentNumber,
+        cs.repayment_number_rate as repaymentNumberRate, cs.distribution_amount/100 as distributionAmount,
+        cs.repayment_amount/100 as repaymentAmount, cs.repayment_amount_rate as repaymentAmountRate
+        from collection_statistics cs LEFT join platform_user pu on cs.user_id = pu.id left join platform_role pr on
+        pu.role_id=pr.id
+        <where>
+            <if test="roleId != null">
+                and pu.role_id = #{roleId,jdbcType=INTEGER}
+            </if>
+            <if test="userId != null">
+                and pu.id = #{userId,jdbcType=INTEGER}
+            </if>
+            <if test="beginTime != null and beginTime != ''">
+                <![CDATA[ and cs.count_date >= #{beginTime} ]]>
+            </if>
+            <if test="endTime != null and endTime != ''">
+                <![CDATA[ and cs.count_date < date_add(#{endTime},interval 1 day) ]]>
+            </if>
+            <if test="userName != null and userName != ''">
+                and pu.user_name = #{userName,jdbcType=INTEGER}
+            </if>
+        </where>
+        order by cs.count_date desc
+    </select>
+
+    <select id="selectByDateAndUserId" parameterType="java.util.Map" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from collection_statistics
+        <where>
+            <if test="userId != null">
+                and user_id = #{userId,jdbcType=INTEGER}
+            </if>
+            <if test="countDate != null and countDate != ''">
+                and count_date = #{countDate}
+            </if>
+        </where>
+    </select>
+
+    <delete id="deleteByTime" parameterType="java.lang.String">
+    delete from collection_statistics
+    where count_date = #{countDate}
+  </delete>
+</mapper>

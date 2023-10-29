@@ -1,0 +1,194 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.summer.dao.mapper.UserOcrDataDAO">
+  <resultMap id="BaseResultMap" type="com.summer.dao.entity.UserOcrData">
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="user_id" jdbcType="INTEGER" property="userId" />
+    <result column="status" jdbcType="INTEGER" property="status" />
+    <result column="phone" jdbcType="VARCHAR" property="phone" />
+    <result column="token" jdbcType="VARCHAR" property="token" />
+    <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
+    <result column="update_time" jdbcType="TIMESTAMP" property="updateTime" />
+  </resultMap>
+  <resultMap extends="BaseResultMap" id="ResultMapWithBLOBs" type="com.summer.dao.entity.UserOcrDataWithBLOBs">
+    <result column="ocr_detail" jdbcType="LONGVARBINARY" property="ocrDetail" />
+    <result column="ocr_face_indicators" jdbcType="LONGVARBINARY" property="ocrFaceIndicators" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    id, status, fail_cause ,user_id, phone, token, create_time, update_time
+  </sql>
+  <sql id="Blob_Column_List">
+    ocr_detail, ocr_face_indicators
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="ResultMapWithBLOBs">
+    select 
+    <include refid="Base_Column_List" />
+    ,
+    <include refid="Blob_Column_List" />
+    from user_ocr_data
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <select id="selectByUserId" parameterType="java.lang.Integer" resultMap="ResultMapWithBLOBs">
+    select
+    <include refid="Base_Column_List" />
+    ,
+    <include refid="Blob_Column_List" />
+    from user_ocr_data
+    where user_id = #{userId,jdbcType=INTEGER}
+    limit 1
+  </select>
+    <select id="selectByUserIdAndToken" resultMap="ResultMapWithBLOBs">
+      SELECT * FROM user_ocr_data WHERE user_id=#{userId} AND token=#{token}
+    </select>
+
+  <select id="listByStatus" resultMap="BaseResultMap">
+    SELECT * FROM user_ocr_data WHERE status = #{status}
+  </select>
+
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from user_ocr_data
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.summer.dao.entity.UserOcrDataWithBLOBs">
+    insert into user_ocr_data (status,fail_cause, user_id, phone,
+      token, create_time, update_time, 
+      ocr_detail, ocr_face_indicators
+      )
+    values (#{status,jdbcType=INTEGER},#{failCause,jdbcType=VARCHAR},#{userId,jdbcType=INTEGER}, #{phone,jdbcType=VARCHAR},
+      #{token,jdbcType=VARCHAR}, now(), now(),
+      #{ocrDetail,jdbcType=LONGVARBINARY}, #{ocrFaceIndicators,jdbcType=LONGVARBINARY}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.summer.dao.entity.UserOcrDataWithBLOBs">
+    insert into user_ocr_data
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        id,
+      </if>
+      <if test="status != null">
+        status,
+      </if>
+      <if test="failCause != null">
+        fail_cause,
+      </if>
+      <if test="userId != null">
+        user_id,
+      </if>
+      <if test="phone != null">
+        phone,
+      </if>
+      <if test="token != null">
+        token,
+      </if>
+      <if test="ocrDetail != null">
+        ocr_detail,
+      </if>
+      <if test="ocrFaceIndicators != null">
+        ocr_face_indicators,
+      </if>
+      create_time,
+      update_time,
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="status != null">
+        #{status,jdbcType=INTEGER},
+      </if>
+      <if test="failCause != null">
+        #{failCause,jdbcType=VARCHAR},
+      </if>
+      <if test="userId != null">
+        #{userId,jdbcType=INTEGER},
+      </if>
+      <if test="phone != null">
+        #{phone,jdbcType=VARCHAR},
+      </if>
+      <if test="token != null">
+        #{token,jdbcType=VARCHAR},
+      </if>
+      <if test="ocrDetail != null">
+        #{ocrDetail,jdbcType=LONGVARBINARY},
+      </if>
+      <if test="ocrFaceIndicators != null">
+        #{ocrFaceIndicators,jdbcType=LONGVARBINARY},
+      </if>
+        now(),
+        now(),
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.summer.dao.entity.UserOcrDataWithBLOBs">
+    update user_ocr_data
+    <set>
+      <if test="status != null">
+        status = #{status,jdbcType=INTEGER},
+      </if>
+      <if test="failCause != null">
+        fail_cause = #{failCause,jdbcType=VARCHAR},
+      </if>
+      <if test="userId != null">
+        user_id = #{userId,jdbcType=INTEGER},
+      </if>
+      <if test="phone != null">
+        phone = #{phone,jdbcType=VARCHAR},
+      </if>
+      <if test="token != null">
+        token = #{token,jdbcType=VARCHAR},
+      </if>
+      <if test="createTime != null">
+        create_time = #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="ocrDetail != null">
+        ocr_detail = #{ocrDetail,jdbcType=LONGVARBINARY},
+      </if>
+      <if test="ocrFaceIndicators != null">
+        ocr_face_indicators = #{ocrFaceIndicators,jdbcType=LONGVARBINARY},
+      </if>
+      update_time = NOW(),
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKeyWithBLOBs" parameterType="com.summer.dao.entity.UserOcrDataWithBLOBs">
+    update user_ocr_data
+    set
+      status = #{status,jdbcType=INTEGER},
+      fail_cause = #{failCause,jdbcType=VARCHAR},
+      user_id = #{userId,jdbcType=INTEGER},
+      phone = #{phone,jdbcType=VARCHAR},
+      token = #{token,jdbcType=VARCHAR},
+      create_time = #{createTime,jdbcType=TIMESTAMP},
+      update_time = NOW(),
+      ocr_detail = #{ocrDetail,jdbcType=LONGVARBINARY},
+      ocr_face_indicators = #{ocrFaceIndicators,jdbcType=LONGVARBINARY}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.summer.dao.entity.UserOcrData">
+    update user_ocr_data
+    set
+      status = #{status,jdbcType=INTEGER},
+      fail_cause = #{failCause,jdbcType=VARCHAR},
+      user_id = #{userId,jdbcType=INTEGER},
+      phone = #{phone,jdbcType=VARCHAR},
+      token = #{token,jdbcType=VARCHAR},
+      create_time = #{createTime,jdbcType=TIMESTAMP},
+      update_time = NOW()
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+
+  <update id="updateStatusByUserIdAndStatus">
+    UPDATE user_ocr_data
+    SET
+    status = #{targetStatus,jdbcType=INTEGER},
+    update_time = NOW()
+    WHERE user_id=#{userId} AND status=#{sourceStatus}
+  </update>
+
+  <update id="updateStatusAndFailCauseById">
+      UPDATE user_ocr_data
+      status = #{status,jdbcType=INTEGER},
+      fail_cause = #{failCause,jdbcType=VARCHAR},
+      update_time = NOW()
+      WHERE id=#{id}
+  </update>
+</mapper>

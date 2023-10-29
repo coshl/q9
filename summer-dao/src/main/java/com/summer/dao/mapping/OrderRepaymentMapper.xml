@@ -1,0 +1,1063 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.summer.dao.mapper.OrderRepaymentMapper">
+    <resultMap id="BaseResultMap" type="com.summer.dao.entity.OrderRepayment">
+        <id column="id" property="id" jdbcType="INTEGER"/>
+        <result column="user_id" property="userId" jdbcType="INTEGER"/>
+        <result column="borrow_id" property="borrowId" jdbcType="INTEGER"/>
+        <result column="repayment" property="repaymentAmount" jdbcType="INTEGER"/>
+        <result column="paid" property="paidAmount" jdbcType="INTEGER"/>
+        <result column="principal" property="principalAmount" jdbcType="INTEGER"/>
+        <result column="fee" property="feeAmount" jdbcType="INTEGER"/>
+        <result column="late" property="lateFee" jdbcType="INTEGER"/>
+        <result column="true_late_fee" property="trueLateFee" jdbcType="INTEGER"/>
+        <result column="true_principal" property="truePrincipal" jdbcType="INTEGER"/>
+        <result column="reduce_amount" property="reduceAmount" jdbcType="INTEGER"/>
+        <result column="late_fee_apr" property="lateFeeApr" jdbcType="SMALLINT"/>
+        <result column="repayment_time" property="repaymentTime" jdbcType="TIMESTAMP"/>
+        <result column="paid_time" property="paidTime" jdbcType="TIMESTAMP"/>
+        <result column="late_start_time" property="lateStartTime" jdbcType="TIMESTAMP"/>
+        <result column="late_update_time" property="lateUpdateTime" jdbcType="TIMESTAMP"/>
+        <result column="late_day" property="lateDay" jdbcType="INTEGER"/>
+        <result column="create_time" property="createTime" jdbcType="TIMESTAMP"/>
+        <result column="update_time" property="updateTime" jdbcType="TIMESTAMP"/>
+        <result column="remark" property="remark" jdbcType="VARCHAR"/>
+        <result column="status" property="status" jdbcType="TINYINT"/>
+        <result column="collected" property="collected" jdbcType="TINYINT"/>
+        <result column="paid_forward" property="paidForward" jdbcType="TINYINT"/>
+        <result column="pay_type" property="payType" jdbcType="TINYINT"/>
+        <result column="first_repayment_time" property="firstRepaymentTime" jdbcType="TIMESTAMP"/>
+    </resultMap>
+    <resultMap id="OrderUserMap" type="com.summer.pojo.vo.PaymentUserVO" extends="BaseResultMap">
+        <result column="toPay" property="repaymentAmount" jdbcType="INTEGER"/>
+        <result column="loan_term" property="loanTerm" jdbcType="INTEGER"/>
+        <result column="days" property="repaymentInterval" jdbcType="INTEGER"/>
+        <result column="out_trade_no" property="outTradeNo" jdbcType="VARCHAR"/>
+        <result column="phone" property="phone" jdbcType="VARCHAR"/>
+        <result column="real_name" property="realName" jdbcType="VARCHAR"/>
+        <result column="reviewer" property="reviewer" jdbcType="VARCHAR"/>
+        <result column="renewal_count" property="renewalCount" jdbcType="INTEGER"/>
+        <result column="overdue_count" property="overdueCount" jdbcType="INTEGER"/>
+        <result column="status" property="status"/>
+        <result column="customer_type" property="customerType"/>
+        <result column="apply_money" property="applyMoney"/>
+        <result column="paid_amount" property="paidAmount"/>
+        <result column="reduce_amount" property="reduceAmount"/>
+        <result column="fee_amount" property="feeAmount"/>
+        <result column="into_money" property="intoMoney"/>
+        <result column="userId" property="userId" jdbcType="INTEGER"/>
+    </resultMap>
+    <sql id="Base_Column_List">
+        id,
+        user_id,
+        borrow_id,
+        repayment_amount
+        repayment,
+        paid_amount
+        paid,
+        principal_amount
+        principal,
+        fee_amount
+        fee,
+        late_fee
+        late,true_late_fee,true_principal,reduce_amount,
+        late_fee_apr,
+        repayment_time,
+        paid_time,
+        late_start_time,
+        late_update_time,
+    late_day, create_time, update_time, remark, status, collected, paid_forward, pay_type,
+    first_repayment_time
+  </sql>
+    <sql id="User_Column_List">
+        orp.id, orp.status ,
+        date_format(orp.repayment_time,'%Y-%m-%d')
+        repayment_time_chg,
+        (orp.repayment_amount-orp.paid_amount-orp.reduce_amount) toPay,
+        ob.loan_term,
+        datediff(orp.repayment_time,now()) days,
+        ob.out_trade_no,
+        ui.real_name,
+        ui.phone,
+        orp.user_id userId,
+        pu.user_name reviewer,
+        renewal.renewal_count,
+        0 overdue_count,
+        pc.channel_name as channelName,
+        ob.customer_type customer_type,
+        ob.apply_amount apply_money,
+        ob.into_money into_money,
+        orp.paid_amount paid_amount,
+        orp.fee_amount fee_amount,
+        orp.reduce_amount reduce_amount
+    </sql>
+    <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer">
+        select
+        <include refid="Base_Column_List"/>
+        from order_repayment
+        where id = #{id,jdbcType=INTEGER}
+    </select>
+    <select id="selectSimple" parameterType="java.util.Map" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from order_repayment
+        <where>
+            <if test="borrowId != null ">
+                and borrow_id = #{borrowId}
+            </if>
+            <if test="status != null ">
+                and status = #{status}
+            </if>
+            <if test="userId != null ">
+                and user_id = #{userId}
+            </if>
+            <if test="collection != null ">
+                and collected = #{collection}
+            </if>
+            <if test="repaymentTimeStart != null">
+                <![CDATA[    and repayment_time >= #{repaymentTimeStart}   ]]>
+            </if>
+            <if test="due == 1 ">
+                and DATEDIFF(now(),repayment_time) = 0 and status in (0,1)
+            </if>
+            <if test="list != null ">
+                and id not in
+                <foreach collection="list" item="item" open="(" separator="," close=")">
+                    #{item}
+                </foreach>
+            </if>
+        </where>
+        ORDER BY id DESC
+    </select>
+    <select id="findToPay" resultMap="BaseResultMap" parameterType="Map">
+        select
+        <include refid="Base_Column_List"/>
+        from order_repayment where    <![CDATA[   DATEDIFF(now(),repayment_time)>=0   ]]>
+        and status in(0,1,3,5) order by id desc
+    </select>
+    <select id="statisticByDay" resultType="java.util.Map" parameterType="java.util.Map">
+
+        select
+        IFNULL(sum(orn.principal_amount),0)/100.0 loanAmount,IFNULL(sum(orn.paid_amount),0)/100.0
+        paidAmount,IFNULL(sum(orn.repayment_amount-orn.paid_amount-orn.reduce_amount),0)/100.0 toPay
+        from order_repayment orn join order_borrow ob on orn.borrow_id=ob.id
+        where 1=1
+        <if test="loan == 'true'">
+            and DATEDIFF(#{date},orn.create_time)=1
+        </if>
+        <if test="repay == 'true'">
+            and DATEDIFF(#{date},orn.paid_time)=1
+        </if>
+        <if test="over == 'true'">
+            and DATEDIFF(#{date},orn.repayment_time)=2
+        </if>
+        <if test="normal == 'true'">
+            and DATEDIFF(#{date},orn.repayment_time)=1
+        </if>
+
+    </select>
+    <select id="countAll" resultType="java.util.Map" parameterType="java.util.Map">
+
+        select
+        count(*) num,count(orn.paid_time) paidNum,IFNULL(sum(orn.principal_amount),0)/100.0
+        loanAmount,IFNULL(sum(orn.paid_amount),0)/100.0
+        paidAmount,IFNULL(sum(orn.repayment_amount-orn.paid_amount-orn.reduce_amount),0)/100.0 toPay
+        from order_repayment orn join order_borrow ob on orn.borrow_id=ob.id
+        where 1=1
+
+        <if test="customerType != null and customerType != 2">
+            and ob.customer_type=#{customerType}
+        </if>
+        <if test="over == 'true'">
+            and orn.status in(3,5)
+        </if>
+        <if test="normal == 'true'">
+
+            and orn.status in(0,1)
+        </if>
+
+    </select>
+    <select id="countPaid" resultType="java.util.Map" parameterType="java.util.Map">
+
+        select
+        count(orn.paid_time) paidNum,IFNULL(sum(orn.paid_amount),0)/100.0
+        paidAmount
+        from order_repayment orn join order_borrow ob on orn.borrow_id=ob.id
+        where 1=1
+
+        <if test="customerType != null and customerType != 2">
+            and ob.customer_type=#{customerType}
+        </if>
+        <if test="over == 'true'">
+            and orn.status in(3,5)
+        </if>
+        <if test="normal == 'true'">
+
+            and orn.status in(0,1)
+        </if>
+
+    </select>
+    <select id="countToday" resultType="Long" parameterType="java.util.Map">
+
+        select
+        count(*)
+        from order_repayment orn join order_borrow ob on orn.borrow_id=ob.id
+        where DATEDIFF(now(),orn.create_time)=0
+
+        <if test="customerType != null and customerType != 2">
+            and ob.customer_type=#{customerType}
+        </if>
+
+    </select>
+    <select id="countByDay" parameterType="java.lang.Integer" resultType="java.util.Map">
+        select count(*) num,IFNULL(sum(orn.principal_amount),0) loanAmount
+        from order_repayment orn
+        where  DATEDIFF(NOW(),orn.create_time) = #{number,jdbcType=INTEGER}
+    </select>
+    <select id="findParams" parameterType="java.util.Map" resultMap="OrderUserMap">
+        select
+        <include refid="User_Column_List"/>
+        from order_repayment orp INNER join user_info ui on orp.user_id=ui.id
+        INNER join order_borrow ob on orp.borrow_id=ob.id
+        left join platform_user pu on ob.review_user_id = pu.id
+        LEFT JOIN plateform_channel pc on ui.channel_id = pc.id
+        inner join (SELECT ob.id ,count(orn.id) renewal_count FROM order_borrow ob left join
+        order_renewal
+        orn on ob.id = orn.borrow_id and orn.status=2
+        GROUP BY ob.id) renewal on ob.id = renewal.id
+--         inner join (SELECT ui.id ,count(orp.id) overdue_count FROM user_info ui left join
+--         order_repayment orp on ui.id = orp.user_id and orp.collected = 1
+--         GROUP BY ui.id) overdue on ui.id = overdue.id
+        <where>
+            ui.status != 2
+            <if test="platformUserId != null ">
+                and pu.id = #{platformUserId}
+            </if>
+            <if test="outTradeNo != null and outTradeNo != ''">
+                and ob.out_trade_no = #{outTradeNo}
+            </if>
+            <if test="realName != null and realName != ''">
+                and ui.real_name like concat('%',#{realName},'%')
+            </if>
+            <if test="phone != null and phone != ''">
+                and ui.phone = #{phone}
+            </if>
+            <if test="sRepaymentTime != null and sRepaymentTime != ''">
+                <![CDATA[    and orp.repayment_time >= #{sRepaymentTime}   ]]>
+            </if>
+            <if test="eRepaymentTime != null and eRepaymentTime != ''">
+                <![CDATA[    and orp.repayment_time < date_add(#{eRepaymentTime},interval 1 day)    ]]>
+            </if>
+            <if test="toPay == 'true'">
+                and orp.status in (0,1,3,5)
+            </if>
+            <if test="status == 0">
+                and orp.status in (3,5)
+            </if>
+            <if test="status == 1">
+                and renewal.renewal_count =0 and orp.status in (0,1)
+            </if>
+            <if test="status == 2">
+                <![CDATA[    and renewal.renewal_count >0 and orp.status in (0,1)   ]]>
+            </if>
+            <if test="channelName != null and channelName != ''">
+                and pc.channel_name = #{channelName,jdbcType=VARCHAR}
+            </if>
+            <if test="customerType != null">
+                and ob.customer_type = #{customerType}
+            </if>
+
+        </where>
+        order by orp.id desc
+    </select>
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from order_repayment
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+    <insert id="insert" parameterType="com.summer.dao.entity.OrderRepayment">
+    insert into order_repayment (id, user_id, borrow_id,
+      repayment_amount, paid_amount, principal_amount,
+      fee_amount, late_fee,true_late_fee,true_principal,reduce_amount, late_fee_apr,
+      repayment_time, paid_time, late_start_time,
+      late_update_time, late_day, create_time,
+      update_time, remark, status,
+      collected, paid_forward, pay_type,
+      first_repayment_time)
+    values (#{id,jdbcType=INTEGER}, #{userId,jdbcType=INTEGER}, #{borrowId,jdbcType=INTEGER},
+      #{repaymentAmount,jdbcType=INTEGER}, #{paidAmount,jdbcType=INTEGER}, #{principalAmount,jdbcType=INTEGER},
+      #{feeAmount,jdbcType=INTEGER}, #{lateFee,jdbcType=INTEGER}, #{trueLateFee,jdbcType=INTEGER}, #{truePrincipal,jdbcType=INTEGER}, #{reduceAmount,jdbcType=INTEGER},
+            #{lateFeeApr,jdbcType=SMALLINT},
+      #{repaymentTime,jdbcType=TIMESTAMP}, #{paidTime,jdbcType=TIMESTAMP}, #{lateStartTime,jdbcType=TIMESTAMP},
+      #{lateUpdateTime,jdbcType=TIMESTAMP}, #{lateDay,jdbcType=INTEGER}, #{createTime,jdbcType=TIMESTAMP},
+      #{updateTime,jdbcType=TIMESTAMP}, #{remark,jdbcType=VARCHAR}, #{status,jdbcType=TINYINT},
+      #{collected,jdbcType=TINYINT}, #{paidForward,jdbcType=TINYINT}, #{payType,jdbcType=TINYINT},
+      #{firstRepaymentTime,jdbcType=TIMESTAMP})
+  </insert>
+    <insert id="insertSelective" parameterType="com.summer.dao.entity.OrderRepayment">
+        insert ignore into order_repayment
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                id,
+            </if>
+            <if test="userId != null">
+                user_id,
+            </if>
+            <if test="borrowId != null">
+                borrow_id,
+            </if>
+            <if test="repaymentAmount != null">
+                repayment_amount,
+            </if>
+            <if test="paidAmount != null">
+                paid_amount,
+            </if>
+            <if test="principalAmount != null">
+                principal_amount,
+            </if>
+            <if test="feeAmount != null">
+                fee_amount,
+            </if>
+            <if test="lateFee != null">
+                late_fee,
+            </if>
+            <if test="trueLateFee != null">
+                true_late_fee,
+            </if>
+            <if test="truePrincipal != null">
+                true_principal,
+            </if>
+            <if test="reduceAmount != null">
+                reduce_amount,
+            </if>
+            <if test="lateFeeApr != null">
+                late_fee_apr,
+            </if>
+            <if test="repaymentTime != null">
+                repayment_time,
+            </if>
+            <if test="paidTime != null">
+                paid_time,
+            </if>
+            <if test="lateStartTime != null">
+                late_start_time,
+            </if>
+            <if test="lateUpdateTime != null">
+                late_update_time,
+            </if>
+            <if test="lateDay != null">
+                late_day,
+            </if>
+            <if test="createTime != null">
+                create_time,
+            </if>
+            <if test="updateTime != null">
+                update_time,
+            </if>
+            <if test="remark != null">
+                remark,
+            </if>
+            <if test="status != null">
+                status,
+            </if>
+            <if test="collected != null">
+                collected,
+            </if>
+            <if test="paidForward != null">
+                paid_forward,
+            </if>
+            <if test="payType != null">
+                pay_type,
+            </if>
+            <if test="firstRepaymentTime != null">
+                first_repayment_time,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                #{id,jdbcType=INTEGER},
+            </if>
+            <if test="userId != null">
+                #{userId,jdbcType=INTEGER},
+            </if>
+            <if test="borrowId != null">
+                #{borrowId,jdbcType=INTEGER},
+            </if>
+            <if test="repaymentAmount != null">
+                #{repaymentAmount,jdbcType=INTEGER},
+            </if>
+            <if test="paidAmount != null">
+                #{paidAmount,jdbcType=INTEGER},
+            </if>
+            <if test="principalAmount != null">
+                #{principalAmount,jdbcType=INTEGER},
+            </if>
+            <if test="feeAmount != null">
+                #{feeAmount,jdbcType=INTEGER},
+            </if>
+            <if test="lateFee != null">
+                #{lateFee,jdbcType=INTEGER},
+            </if>
+            <if test="trueLateFee != null">
+                #{trueLateFee,jdbcType=INTEGER},
+            </if>
+            <if test="truePrincipal != null">
+                #{truePrincipal,jdbcType=INTEGER},
+            </if>
+            <if test="reduceAmount != null">
+                #{reduceAmount,jdbcType=INTEGER},
+            </if>
+            <if test="lateFeeApr != null">
+                #{lateFeeApr,jdbcType=SMALLINT},
+            </if>
+            <if test="repaymentTime != null">
+                #{repaymentTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="paidTime != null">
+                #{paidTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="lateStartTime != null">
+                #{lateStartTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="lateUpdateTime != null">
+                #{lateUpdateTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="lateDay != null">
+                #{lateDay,jdbcType=INTEGER},
+            </if>
+            <if test="createTime != null">
+                #{createTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="updateTime != null">
+                #{updateTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="remark != null">
+                #{remark,jdbcType=VARCHAR},
+            </if>
+            <if test="status != null">
+                #{status,jdbcType=TINYINT},
+            </if>
+            <if test="collected != null">
+                #{collected,jdbcType=TINYINT},
+            </if>
+            <if test="paidForward != null">
+                #{paidForward,jdbcType=TINYINT},
+            </if>
+            <if test="payType != null">
+                #{payType,jdbcType=TINYINT},
+            </if>
+            <if test="firstRepaymentTime != null">
+                #{firstRepaymentTime,jdbcType=TIMESTAMP},
+            </if>
+        </trim>
+    </insert>
+    <update id="updateByPrimaryKeySelective" parameterType="com.summer.dao.entity.OrderRepayment">
+        update order_repayment
+        <set>
+            <if test="userId != null">
+                user_id = #{userId,jdbcType=INTEGER},
+            </if>
+            <if test="borrowId != null">
+                borrow_id = #{borrowId,jdbcType=INTEGER},
+            </if>
+            <if test="repaymentAmount != null">
+                repayment_amount = #{repaymentAmount,jdbcType=INTEGER},
+            </if>
+            <if test="paidAmount != null">
+                paid_amount = #{paidAmount,jdbcType=INTEGER},
+            </if>
+            <if test="principalAmount != null">
+                principal_amount = #{principalAmount,jdbcType=INTEGER},
+            </if>
+            <if test="feeAmount != null">
+                fee_amount = #{feeAmount,jdbcType=INTEGER},
+            </if>
+            <if test="lateFee != null">
+                late_fee = #{lateFee,jdbcType=INTEGER},
+            </if>
+            <if test="trueLateFee != null">
+                true_late_fee = #{trueLateFee,jdbcType=INTEGER},
+            </if>
+            <if test="truePrincipal != null">
+                true_principal = #{truePrincipal,jdbcType=INTEGER},
+            </if>
+            <if test="reduceAmount != null">
+                reduce_amount = #{reduceAmount,jdbcType=INTEGER},
+            </if>
+            <if test="lateFeeApr != null">
+                late_fee_apr = #{lateFeeApr,jdbcType=SMALLINT},
+            </if>
+            <if test="repaymentTime != null">
+                repayment_time = #{repaymentTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="paidTime != null">
+                paid_time = #{paidTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="lateStartTime != null">
+                late_start_time = #{lateStartTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="lateUpdateTime != null">
+                late_update_time = #{lateUpdateTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="lateDay != null">
+                late_day = #{lateDay,jdbcType=INTEGER},
+            </if>
+            <if test="createTime != null">
+                create_time = #{createTime,jdbcType=TIMESTAMP},
+            </if>
+            update_time = now(),
+            <if test="remark != null">
+                remark = #{remark,jdbcType=VARCHAR},
+            </if>
+            <if test="status != null">
+                status = #{status,jdbcType=TINYINT},
+            </if>
+            <if test="collected != null">
+                collected = #{collected,jdbcType=TINYINT},
+            </if>
+            <if test="paidForward != null">
+                paid_forward = #{paidForward,jdbcType=TINYINT},
+            </if>
+            <if test="payType != null">
+                pay_type = #{payType,jdbcType=TINYINT},
+            </if>
+            <if test="firstRepaymentTime != null">
+                first_repayment_time = #{firstRepaymentTime,jdbcType=TIMESTAMP},
+            </if>
+        </set>
+        where id = #{id,jdbcType=INTEGER}
+    </update>
+    <update id="updateByPrimaryKey" parameterType="com.summer.dao.entity.OrderRepayment">
+    update order_repayment
+    set user_id = #{userId,jdbcType=INTEGER},
+      borrow_id = #{borrowId,jdbcType=INTEGER},
+      repayment_amount = #{repaymentAmount,jdbcType=INTEGER},
+      paid_amount = #{paidAmount,jdbcType=INTEGER},
+      principal_amount = #{principalAmount,jdbcType=INTEGER},
+      fee_amount = #{feeAmount,jdbcType=INTEGER},
+      late_fee = #{lateFee,jdbcType=INTEGER},
+        true_late_fee = #{trueLateFee,jdbcType=INTEGER},
+        true_principal = #{truePrincipal,jdbcType=INTEGER},
+        reduce_amount = #{reduceAmount,jdbcType=INTEGER},
+      late_fee_apr = #{lateFeeApr,jdbcType=SMALLINT},
+      repayment_time = #{repaymentTime,jdbcType=TIMESTAMP},
+      paid_time = #{paidTime,jdbcType=TIMESTAMP},
+      late_start_time = #{lateStartTime,jdbcType=TIMESTAMP},
+      late_update_time = #{lateUpdateTime,jdbcType=TIMESTAMP},
+      late_day = #{lateDay,jdbcType=INTEGER},
+      create_time = #{createTime,jdbcType=TIMESTAMP},
+      update_time = #{updateTime,jdbcType=TIMESTAMP},
+      remark = #{remark,jdbcType=VARCHAR},
+      status = #{status,jdbcType=TINYINT},
+      collected = #{collected,jdbcType=TINYINT},
+      paid_forward = #{paidForward,jdbcType=TINYINT},
+      pay_type = #{payType,jdbcType=TINYINT},
+      first_repayment_time = #{firstRepaymentTime,jdbcType=TIMESTAMP}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+
+    <select id="findOrderPrepaymentByParam" parameterType="java.util.Map" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from order_repayment
+        <where>
+            <if test="userId != null">
+                user_id=#{userId}
+            </if>
+            <if test="status != null and status != 43210">
+                and status = #{status }
+            </if>
+            <if test="status != null and status = 43210">
+                and status in (4,3,2,1,0)
+            </if>
+            <if test="createTime != null">
+                <![CDATA[ and create_time <= NOW() order by create_time desc limit 1   ]]>
+            </if>
+            <if test="borrowId != null">
+                and borrow_id = #{borrowId}
+            </if>
+        </where>
+
+    </select>
+
+    <select id="findStayRepayment" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from order_repayment where user_id=#{userId} and status in (0,1,3,5) order by create_time desc
+    </select>
+    <select id="findRepayment" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from order_repayment where user_id=#{userId} and status in (2,4,6) order by paid_time desc
+    </select>
+    <!--查询待还款总人数and b.status in (0,1,3,5)-->
+    <select id="findStayRepaymentCount" resultType="java.util.LinkedHashMap" parameterType="java.util.HashMap">
+        select t.channel_id as channelId ,COUNT(1) as count from (select b.user_id,a.channel_id from
+        order_repayment b
+        INNER JOIN user_info a ON b.user_id = a.id
+        where a.channel_id in
+        <foreach item="item" index="index" collection="channelIds"
+                 open="(" separator="," close=")">
+            #{item}
+        </foreach>
+        and <![CDATA[ DATE_FORMAT(b.repayment_time,'%Y-%m-%d') = DATE_FORMAT(#{nowTime},'%Y-%m-%d') ]]>
+
+        ) t
+        GROUP BY t.channel_id
+    </select>
+    <!--老用户待还统计-->
+    <select id="findStayOldRepaymentCount" resultType="java.util.LinkedHashMap" parameterType="java.util.HashMap">
+        select t.channel_id as channelId ,COUNT(1) as count from (select b.user_id,a.channel_id from
+        order_repayment b
+        INNER JOIN user_info a ON b.user_id = a.id
+        inner join order_borrow o on b.borrow_id=o.id
+        where a.channel_id in
+        <foreach item="item" index="index" collection="channelIds"
+                 open="(" separator="," close=")">
+            #{item}
+        </foreach>
+        and <![CDATA[ DATE_FORMAT(b.repayment_time,'%Y-%m-%d') = DATE_FORMAT(#{nowTime},'%Y-%m-%d') ]]>
+        and o.customer_type=1
+        ) t
+        GROUP BY t.channel_id
+    </select>
+    <!--新用户待还统计 and b.status in (0,1,3,5)-->
+    <select id="findStayNewRepaymentCount" resultType="java.util.LinkedHashMap" parameterType="java.util.HashMap">
+        select t.channel_id as channelId ,COUNT(1) as count from (select b.user_id,a.channel_id from
+        order_repayment b
+        INNER JOIN user_info a ON b.user_id = a.id
+        inner join order_borrow o on b.borrow_id = o.id
+        where a.channel_id in
+        <foreach item="item" index="index" collection="channelIds"
+                 open="(" separator="," close=")">
+            #{item}
+        </foreach>
+        and <![CDATA[ DATE_FORMAT(b.repayment_time,'%Y-%m-%d') = DATE_FORMAT(#{nowTime},'%Y-%m-%d') ]]>
+        and o.customer_type=0
+        ) t
+        GROUP BY t.channel_id
+    </select>
+
+
+    <!--当日逾期总人数-->
+    <select id="findOverdueRepaymentCount" resultType="java.util.LinkedHashMap" parameterType="java.util.HashMap">
+        select t.channel_id as channelId ,COUNT(1) as count from (select b.user_id,a.channel_id from
+        order_repayment b
+        INNER JOIN user_info a ON b.user_id = a.id
+        where a.channel_id in
+        <foreach item="item" index="index" collection="channelIds"
+                 open="(" separator="," close=")">
+            #{item}
+        </foreach>
+        and b.status in (3,5)
+        and datediff(DATE_FORMAT(#{nowTime},'%Y-%m-%d'), DATE_FORMAT(b.repayment_time,'%Y-%m-%d'))=1
+        ) t
+        GROUP BY t.channel_id
+    </select>
+    <!--当日老用户逾期统计-->
+    <select id="findOldOverdueRepaymentCount" resultType="java.util.LinkedHashMap" parameterType="java.util.HashMap">
+        select t.channel_id as channelId ,COUNT(1) as count from (select b.user_id,a.channel_id from
+        order_repayment b
+        INNER JOIN user_info a ON b.user_id = a.id
+        inner join order_borrow o on b.borrow_id=o.id
+        where a.channel_id in
+        <foreach item="item" index="index" collection="channelIds"
+                 open="(" separator="," close=")">
+            #{item}
+        </foreach>
+        and b.status in (3,5)
+        and datediff(DATE_FORMAT(#{nowTime},'%Y-%m-%d'), DATE_FORMAT(b.repayment_time,'%Y-%m-%d'))=1
+        and o.customer_type=1
+        ) t
+        GROUP BY t.channel_id
+    </select>
+    <!--当日新用户逾期统计 GROUP BY b.user_id-->
+    <select id="findNewOverdueRepaymentCount" resultType="java.util.LinkedHashMap" parameterType="java.util.HashMap">
+        select t.channel_id as channelId ,COUNT(1) as count from (select b.user_id,a.channel_id from
+        order_repayment b
+        INNER JOIN user_info a ON b.user_id = a.id
+        inner join order_borrow o on b.borrow_id = o.id
+        where a.channel_id in
+        <foreach item="item" index="index" collection="channelIds"
+                 open="(" separator="," close=")">
+            #{item}
+        </foreach>
+        and b.status in (3,5)
+        and datediff(DATE_FORMAT(#{nowTime},'%Y-%m-%d'), DATE_FORMAT(b.repayment_time,'%Y-%m-%d'))=1
+        and o.customer_type=0
+        ) t
+        GROUP BY t.channel_id
+    </select>
+    <!--当日已还统计-->
+    <!--<![CDATA[DATE_FORMAT(b.repayment_time,'%Y-%m-%d %H:%i:%s') < date_add(#{nowTime},interval 1 day)]]>-->
+    <select id="findRepaymentCount" resultType="java.util.LinkedHashMap" parameterType="java.util.HashMap">
+        select t.channel_id as channelId ,COUNT(1) as count from (select b.user_id,a.channel_id from
+        order_repayment b
+        INNER JOIN user_info a ON b.user_id = a.id
+        where a.channel_id in
+        <foreach item="item" index="index" collection="channelIds"
+                 open="(" separator="," close=")">
+            #{item}
+        </foreach>
+        and <![CDATA[ DATE_FORMAT(b.repayment_time,'%Y-%m-%d') = DATE_FORMAT(#{nowTime},'%Y-%m-%d') ]]>
+        and b.status in (2,4,6)
+        ) t
+        GROUP BY t.channel_id
+    </select>
+    <!--查询放款成功的数量-->
+    <select id="findLoanSuccCount" resultType="java.lang.Integer" parameterType="java.util.HashMap">
+        select count(ort.id)
+        from order_repayment ort
+        left join order_borrow ob  on ob.id = ort.borrow_id
+        left join user_info ui on ui.id=ob.user_id
+        where ob.customer_type=0
+        and ui.channel_id in (#{channelId})
+        and <![CDATA[ ui.create_time >= DATE_FORMAT(#{nowTime},'%Y-%m-%d') and ui.create_time  < date_add(DATE_FORMAT(#{nowTime},'%Y-%m-%d'),interval 1 day) ]]>
+    </select>
+
+    <!--逾期总人数-->
+    <select id="findTotalOverdueCount" resultType="java.util.LinkedHashMap" parameterType="java.util.HashMap">
+        select t.channel_id as channelId ,COUNT(1) as count from (select b.user_id,a.channel_id from
+        order_repayment b
+        INNER JOIN user_info a ON b.user_id = a.id
+        where a.channel_id in
+        <foreach item="item" index="index" collection="channelIds"
+                 open="(" separator="," close=")">
+            #{item}
+        </foreach>
+        and b.status in (3,5)
+        and <![CDATA[ DATE_FORMAT(b.repayment_time,'%Y-%m-%d') = DATE_FORMAT(#{repaymentTime},'%Y-%m-%d') ]]>
+        and datediff(DATE_FORMAT(#{nowTime},'%Y-%m-%d'), DATE_FORMAT(b.repayment_time,'%Y-%m-%d')) > 0
+        ) t
+        GROUP BY t.channel_id
+    </select>
+
+    <!--当日老用户逾期统计-->
+    <select id="findOldTotalOverdueCount" resultType="java.util.LinkedHashMap" parameterType="java.util.HashMap">
+        select t.channel_id as channelId ,COUNT(1) as count from (select b.user_id,a.channel_id from
+        order_repayment b
+        INNER JOIN user_info a ON b.user_id = a.id
+        inner join order_borrow o on b.borrow_id=o.id
+        where a.channel_id in
+        <foreach item="item" index="index" collection="channelIds"
+                 open="(" separator="," close=")">
+            #{item}
+        </foreach>
+        and b.status in (3,5)
+        and <![CDATA[ DATE_FORMAT(b.repayment_time,'%Y-%m-%d') = DATE_FORMAT(#{repaymentTime},'%Y-%m-%d') ]]>
+        and datediff(DATE_FORMAT(#{nowTime},'%Y-%m-%d'), DATE_FORMAT(b.repayment_time,'%Y-%m-%d')) > 0
+        and o.customer_type=1
+        ) t
+        GROUP BY t.channel_id
+    </select>
+
+    <!--当日新用户逾期统计 GROUP BY b.user_id-->
+    <select id="findNewTotalOverdueCount" resultType="java.util.LinkedHashMap" parameterType="java.util.HashMap">
+        select t.channel_id as channelId ,COUNT(1) as count from (select b.user_id,a.channel_id from
+        order_repayment b
+        INNER JOIN user_info a ON b.user_id = a.id
+        inner join order_borrow o on b.borrow_id = o.id
+        where a.channel_id in
+        <foreach item="item" index="index" collection="channelIds"
+                 open="(" separator="," close=")">
+            #{item}
+        </foreach>
+        and b.status in (3,5)
+        and <![CDATA[ DATE_FORMAT(b.repayment_time,'%Y-%m-%d') = DATE_FORMAT(#{repaymentTime},'%Y-%m-%d') ]]>
+        and datediff(DATE_FORMAT(#{nowTime},'%Y-%m-%d'), DATE_FORMAT(b.repayment_time,'%Y-%m-%d')) > 0
+        and o.customer_type=0
+        ) t
+        GROUP BY t.channel_id
+    </select>
+
+    <select id="countUserByDay" parameterType="java.lang.Integer" resultType="com.summer.pojo.vo.CountLoanByUserTypeVO">
+        select orb.customer_type as customerType, count(*) num, IFNULL(sum(orr.principal_amount),0) loanAmount
+        from order_repayment orr LEFT JOIN order_borrow orb  ON orr.borrow_id = orb.id
+        where DATEDIFF(NOW(),orr.create_time) = #{number,jdbcType=INTEGER} group by orb.customer_type
+    </select>
+
+    <select id="selectOverdueNum" parameterType="java.lang.Integer" resultType="java.lang.Integer">
+        select COUNT(id) from order_repayment where user_id = #{userId} and late_day != 0
+    </select>
+
+    <select id="selectOverdueMax" parameterType="java.lang.Integer" resultType="java.lang.Integer">
+        select IFNULL(MAX(late_day),0) from order_repayment where user_id = #{userId}
+    </select>
+
+
+    <!--当日已还统计-->
+    <!--<![CDATA[DATE_FORMAT(b.repayment_time,'%Y-%m-%d %H:%i:%s') < date_add(#{nowTime},interval 1 day)]]>-->
+    <select id="findNewRepaymentCount" resultType="java.util.LinkedHashMap" parameterType="java.util.HashMap">
+        select t.channel_id as channelId ,COUNT(1) as count from (select b.user_id,a.channel_id from
+        order_repayment b
+        INNER JOIN user_info a ON b.user_id = a.id
+        inner join order_borrow o on b.borrow_id = o.id
+        where a.channel_id in
+        <foreach item="item" index="index" collection="channelIds"
+                 open="(" separator="," close=")">
+            #{item}
+        </foreach>
+        and <![CDATA[ DATE_FORMAT(b.repayment_time,'%Y-%m-%d') = DATE_FORMAT(#{nowTime},'%Y-%m-%d') ]]>
+        and b.status in (2,4,6)
+        and o.customer_type=0
+        ) t
+        GROUP BY t.channel_id
+    </select>
+    <!--当日已还统计-->
+    <!--<![CDATA[DATE_FORMAT(b.repayment_time,'%Y-%m-%d %H:%i:%s') < date_add(#{nowTime},interval 1 day)]]>-->
+    <select id="findOldRepaymentCount" resultType="java.util.LinkedHashMap" parameterType="java.util.HashMap">
+        select t.channel_id as channelId ,COUNT(1) as count from (select b.user_id,a.channel_id from
+        order_repayment b
+        INNER JOIN user_info a ON b.user_id = a.id
+        inner join order_borrow o on b.borrow_id = o.id
+        where a.channel_id in
+        <foreach item="item" index="index" collection="channelIds"
+                 open="(" separator="," close=")">
+            #{item}
+        </foreach>
+        and <![CDATA[ DATE_FORMAT(b.repayment_time,'%Y-%m-%d') = DATE_FORMAT(#{nowTime},'%Y-%m-%d') ]]>
+        and o.customer_type=1
+        and b.status in (2,4,6)
+        ) t
+        GROUP BY t.channel_id
+    </select>
+    <!--续期数量-->
+    <select id="findRenewalCount" resultType="java.util.LinkedHashMap" parameterType="java.util.HashMap">
+        select t.channel_id as channelId ,COUNT(1) as count from (select b.user_id,a.channel_id from
+        order_repayment b
+        INNER JOIN user_info a ON b.user_id = a.id
+        INNER JOIN order_renewal orl on b.id = orl.repayment_id
+        where a.channel_id in
+        <foreach item="item" index="index" collection="channelIds"
+                 open="(" separator="," close=")">
+            #{item}
+        </foreach>
+        and orl.`status` = 2
+        and <![CDATA[ DATE_FORMAT(orl.old_repayment_time,'%Y-%m-%d') = DATE_FORMAT(#{nowTime},'%Y-%m-%d') ]]>
+        ) t
+        GROUP BY t.channel_id
+    </select>
+
+    <!--新用户续期数量-->
+    <select id="findNewRenewalCount" resultType="java.util.LinkedHashMap" parameterType="java.util.HashMap">
+        select t.channel_id as channelId ,COUNT(1) as count from (select b.user_id,a.channel_id from
+        order_repayment b
+        INNER JOIN user_info a ON b.user_id = a.id
+        INNER JOIN order_borrow o on b.borrow_id = o.id
+        INNER JOIN order_renewal orl on b.id = orl.repayment_id
+        where a.channel_id in
+        <foreach item="item" index="index" collection="channelIds"
+                 open="(" separator="," close=")">
+            #{item}
+        </foreach>
+        and <![CDATA[ DATE_FORMAT(orl.old_repayment_time,'%Y-%m-%d') = DATE_FORMAT(#{nowTime},'%Y-%m-%d') ]]>
+        and orl.`status` = 2
+        and o.customer_type=0
+        ) t
+        GROUP BY t.channel_id
+    </select>
+
+    <select id="findOldRenewalCount" resultType="java.util.LinkedHashMap" parameterType="java.util.HashMap">
+        select t.channel_id as channelId ,COUNT(1) as count from (select b.user_id,a.channel_id from
+        order_repayment b
+        INNER JOIN user_info a ON b.user_id = a.id
+        INNER JOIN order_borrow o on b.borrow_id = o.id
+        INNER JOIN order_renewal orl on b.id = orl.repayment_id
+        where a.channel_id in
+        <foreach item="item" index="index" collection="channelIds"
+                 open="(" separator="," close=")">
+            #{item}
+        </foreach>
+        and <![CDATA[ DATE_FORMAT(orl.old_repayment_time,'%Y-%m-%d') = DATE_FORMAT(#{nowTime},'%Y-%m-%d') ]]>
+        and orl.`status` = 2
+        and o.customer_type=1
+        ) t
+        GROUP BY t.channel_id
+    </select>
+
+    <select id="findTodayRenewalCount" resultType="java.util.LinkedHashMap" parameterType="java.util.HashMap">
+        select t.channel_id as channelId ,COUNT(1) as count from (select b.user_id,a.channel_id from
+        order_repayment b
+        INNER JOIN user_info a ON b.user_id = a.id
+        INNER JOIN order_renewal orl on b.id = orl.repayment_id
+        where a.channel_id in
+        <foreach item="item" index="index" collection="channelIds"
+                 open="(" separator="," close=")">
+            #{item}
+        </foreach>
+        and orl.`status` = 2
+        and <![CDATA[ DATE_FORMAT(orl.old_repayment_time,'%Y-%m-%d') = DATE_FORMAT(#{nowTime},'%Y-%m-%d') ]]>
+        and <![CDATA[ DATE_FORMAT(orl.create_time,'%Y-%m-%d') = DATE_FORMAT(#{nowTime},'%Y-%m-%d') ]]>
+        ) t
+        GROUP BY t.channel_id
+    </select>
+    <select id="findNewTodayRenewalCount" resultType="java.util.LinkedHashMap" parameterType="java.util.HashMap">
+        select t.channel_id as channelId ,COUNT(1) as count from (select b.user_id,a.channel_id from
+        order_repayment b
+        INNER JOIN user_info a ON b.user_id = a.id
+        INNER JOIN order_borrow o on b.borrow_id = o.id
+        INNER JOIN order_renewal orl on b.id = orl.repayment_id
+        where a.channel_id in
+        <foreach item="item" index="index" collection="channelIds"
+                 open="(" separator="," close=")">
+            #{item}
+        </foreach>
+        and orl.`status` = 2
+        and <![CDATA[ DATE_FORMAT(orl.old_repayment_time,'%Y-%m-%d') = DATE_FORMAT(#{nowTime},'%Y-%m-%d') ]]>
+        and <![CDATA[ DATE_FORMAT(orl.create_time,'%Y-%m-%d') = DATE_FORMAT(#{nowTime},'%Y-%m-%d') ]]>
+        and o.customer_type=0
+        ) t
+        GROUP BY t.channel_id
+    </select>
+    <select id="findOldTodayRenewalCount" resultType="java.util.LinkedHashMap" parameterType="java.util.HashMap">
+        select t.channel_id as channelId ,COUNT(1) as count from (select b.user_id,a.channel_id from
+        order_repayment b
+        INNER JOIN user_info a ON b.user_id = a.id
+        INNER JOIN order_borrow o on b.borrow_id = o.id
+        INNER JOIN order_renewal orl on b.id = orl.repayment_id
+        where a.channel_id in
+        <foreach item="item" index="index" collection="channelIds"
+                 open="(" separator="," close=")">
+            #{item}
+        </foreach>
+        and orl.`status` = 2
+        and <![CDATA[ DATE_FORMAT(orl.old_repayment_time,'%Y-%m-%d') = DATE_FORMAT(#{nowTime},'%Y-%m-%d') ]]>
+        and <![CDATA[ DATE_FORMAT(orl.create_time,'%Y-%m-%d') = DATE_FORMAT(#{nowTime},'%Y-%m-%d') ]]>
+        and o.customer_type=1
+        ) t
+        GROUP BY t.channel_id
+    </select>
+
+    <select id="findAheadRenewalCount" resultType="java.util.LinkedHashMap" parameterType="java.util.HashMap">
+        select t.channel_id as channelId ,COUNT(1) as count from (select b.user_id,a.channel_id from
+        order_repayment b
+        INNER JOIN user_info a ON b.user_id = a.id
+        INNER JOIN order_renewal orl on b.id = orl.repayment_id
+        where a.channel_id in
+        <foreach item="item" index="index" collection="channelIds"
+                 open="(" separator="," close=")">
+            #{item}
+        </foreach>
+        and orl.`status` = 2
+        and <![CDATA[ DATE_FORMAT(orl.old_repayment_time,'%Y-%m-%d') = DATE_FORMAT(#{nowTime},'%Y-%m-%d') ]]>
+        and <![CDATA[ DATE_FORMAT(orl.create_time,'%Y-%m-%d') != DATE_FORMAT(#{nowTime},'%Y-%m-%d') ]]>
+        ) t
+        GROUP BY t.channel_id
+    </select>
+
+    <select id="findNewAheadRenewalCount" resultType="java.util.LinkedHashMap" parameterType="java.util.HashMap">
+        select t.channel_id as channelId ,COUNT(1) as count from (select b.user_id,a.channel_id from
+        order_repayment b
+        INNER JOIN user_info a ON b.user_id = a.id
+        INNER JOIN order_borrow o on b.borrow_id = o.id
+        INNER JOIN order_renewal orl on b.id = orl.repayment_id
+        where a.channel_id in
+        <foreach item="item" index="index" collection="channelIds"
+                 open="(" separator="," close=")">
+            #{item}
+        </foreach>
+        and orl.`status` = 2
+        and <![CDATA[ DATE_FORMAT(orl.old_repayment_time,'%Y-%m-%d') = DATE_FORMAT(#{nowTime},'%Y-%m-%d') ]]>
+        and <![CDATA[ DATE_FORMAT(orl.create_time,'%Y-%m-%d') != DATE_FORMAT(#{nowTime},'%Y-%m-%d') ]]>
+        and o.customer_type=0
+        ) t
+        GROUP BY t.channel_id
+    </select>
+    <select id="findOldAheadRenewalCount" resultType="java.util.LinkedHashMap" parameterType="java.util.HashMap">
+        select t.channel_id as channelId ,COUNT(1) as count from (select b.user_id,a.channel_id from
+        order_repayment b
+        INNER JOIN user_info a ON b.user_id = a.id
+        INNER JOIN order_borrow o on b.borrow_id = o.id
+        INNER JOIN order_renewal orl on b.id = orl.repayment_id
+        where a.channel_id in
+        <foreach item="item" index="index" collection="channelIds"
+                 open="(" separator="," close=")">
+            #{item}
+        </foreach>
+        and orl.`status` = 2
+        and <![CDATA[ DATE_FORMAT(orl.old_repayment_time,'%Y-%m-%d') = DATE_FORMAT(#{nowTime},'%Y-%m-%d') ]]>
+        and <![CDATA[ DATE_FORMAT(orl.create_time,'%Y-%m-%d') != DATE_FORMAT(#{nowTime},'%Y-%m-%d') ]]>
+        and o.customer_type=1
+        ) t
+        GROUP BY t.channel_id
+    </select>
+
+    <select id="selectByOverdue" parameterType="java.lang.Integer" resultType="com.summer.dao.entity.UserBlackList">
+      SELECT
+    ui.id as userId,
+	ui.phone as phone,
+	ui.real_name as userName,
+	ui.id_card as idCard,
+	ui.create_time as userCreateTime,
+	ort.late_day as overdueDay
+FROM
+	order_repayment ort
+	LEFT JOIN user_info ui ON ort.user_id = ui.id
+WHERE
+	 <![CDATA[ ort.late_day >= #{overdue} ]]>
+	order by ort.late_day
+    </select>
+
+    <select id="selectRepaymentByPaidTime" parameterType="java.util.Map" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from order_repayment
+        <where>
+            status = 4
+            <if test="beginTime != null and beginTime != ''">
+                <![CDATA[    and paid_time >= #{beginTime}   ]]>
+            </if>
+            <if test="endTime != null and endTime != ''">
+                <![CDATA[    and paid_time < #{endTime}   ]]>
+            </if>
+        </where>
+    </select>
+
+    <select id="selectByBorrowId" resultMap="BaseResultMap" parameterType="java.lang.Integer">
+        select
+        <include refid="Base_Column_List"/>
+        from order_repayment
+        where borrow_id = #{borrowId,jdbcType=INTEGER}
+    </select>
+
+    <select id="selectByLateDay" resultType="java.util.Map" parameterType="java.lang.Integer">
+        select
+            ui.real_name as name,ui.phone as phone,ui.id_card as idNo
+        from order_repayment ore
+        LEFT JOIN user_info ui
+        ON ore.user_id = ui.id
+        where ore.late_day = #{lateDay,jdbcType=INTEGER} and ore.status = 3
+    </select>
+
+    <select id="selectTodayOrder" resultType="java.util.Map">
+        select
+            ui.real_name as name,ui.phone as phone,ui.id_card as idNo
+        from order_repayment ore
+        LEFT JOIN user_info ui
+        ON ore.user_id = ui.id
+        where TO_DAYS(ore.repayment_time) = TO_DAYS(NOW()) and ore.status = 0
+    </select>
+    <select id="orderId" resultType="java.lang.Integer">
+        select customer_type FROM order_borrow WHERE  id in ( select borrow_id FROM order_repayment WHERE id=#{repaymentId})
+    </select>
+
+    <update id="updateServiceCharge" parameterType="com.summer.dao.entity.UserMoneyRate">
+    	update user_money_rate
+    	<set>
+            <if test="serviceCharge != null">
+                service_charge = #{serviceCharge,jdbcType=DOUBLE}
+            </if>
+        </set>
+        where user_id = #{userId,jdbcType=INTEGER}
+    </update>
+
+    <update id="updateRepaymentDate" parameterType="com.summer.dao.entity.OrderRepayment">
+        update order_repayment
+        <set>
+            <if test="repaymentTime != null">
+                repayment_time = ADDTIME (DATE(#{repaymentTime,jdbcType=TIMESTAMP}) + INTERVAL 0 HOUR,TIME(repayment_time))
+            </if>
+        </set>
+        where id = #{id,jdbcType=INTEGER}
+    </update>
+</mapper>

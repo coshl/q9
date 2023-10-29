@@ -1,0 +1,275 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.summer.dao.mapper.UserMoneyRateMapper">
+    <resultMap id="BaseResultMap" type="com.summer.dao.entity.UserMoneyRate">
+        <id column="id" property="id" jdbcType="INTEGER"/>
+        <result column="user_id" property="userId" jdbcType="INTEGER"/>
+        <result column="max_amount" property="maxAmount" jdbcType="INTEGER"/>
+        <result column="credit_vet" property="creditVet" jdbcType="DOUBLE"/>
+        <result column="account_manage" property="accountManage" jdbcType="DOUBLE"/>
+        <result column="accrual" property="accrual" jdbcType="DOUBLE"/>
+        <result column="create_time" property="createTime" jdbcType="DATE"/>
+        <result column="update_time" property="updateTime" jdbcType="DATE"/>
+        <result column="normal_repayment_times" property="normalRepaymentTimes"/>
+        <result column="overdue_repayment_times" property="overdueRepaymentTimes"/>
+        <result column="service_charge" property="serviceCharge"/>
+        <result column="repetition_times" property="repetitionTimes"/>
+        <result column="loan_term" property="loanTerm" jdbcType="INTEGER"/>
+    </resultMap>
+    <insert id="insert" parameterType="com.summer.dao.entity.UserMoneyRate" useGeneratedKeys="true" keyProperty="id">
+        insert ignore into user_money_rate
+        (user_id
+        <if test="maxAmount != null">
+            ,max_amount
+        </if>
+        <if test="creditVet != null">
+            ,credit_vet
+        </if>
+        <if test="accountManage != null">
+            ,account_manage
+        </if>
+        <if test="serviceCharge != null">
+            ,service_charge
+        </if>
+        <if test="accrual != null">
+            ,accrual
+        </if>
+        <if test="createTime == null ">
+            ,create_time
+        </if>
+        <if test="updateTime != null ">
+            ,update_time
+        </if>
+        <if test="normalRepaymentTimes != null ">
+            ,normal_repayment_times
+        </if>
+        <if test="overdueRepaymentTimes != null ">
+            ,overdue_repayment_times
+        </if>
+        <if test="repetitionTimes != null ">
+            ,repetition_times
+        </if>
+        <if test="loanTerm != null ">
+            ,loan_term
+        </if>
+        )
+        values
+        (#{userId}
+        <if test="maxAmount != null">
+            ,#{maxAmount}
+        </if>
+        <if test="creditVet != null">
+            ,#{creditVet}
+        </if>
+        <if test="accountManage != null">
+            ,#{accountManage}
+        </if>
+        <if test="serviceCharge != null">
+            ,#{serviceCharge}
+        </if>
+        <if test="accrual != null">
+            ,#{accrual}
+        </if>
+
+        <if test="createTime == null ">
+            ,NOW()
+        </if>
+        <if test="updateTime != null ">
+            ,#{updateTime}
+        </if>
+        <if test="normalRepaymentTimes != null ">
+            ,#{normalRepaymentTimes}
+        </if>
+        <if test="overdueRepaymentTimes != null ">
+            ,#{overdueRepaymentTimes}
+        </if>
+        <if test="repetitionTimes != null ">
+            ,#{repetitionTimes}
+        </if>
+        <if test="loanTerm != null ">
+            ,#{loanTerm}
+        </if>
+        )
+    </insert>
+    <update id="update" parameterType="com.summer.dao.entity.UserMoneyRate">
+        update user_money_rate
+        <set>
+            <if test="maxAmount != null">
+                max_amount = #{maxAmount},
+            </if>
+            <if test="creditVet != null">
+                credit_vet = #{creditVet},
+            </if>
+            <if test="accountManage != null">
+                account_manage = #{accountManage},
+            </if>
+            <if test="serviceCharge != null">
+                service_charge = #{serviceCharge},
+            </if>
+            <if test="accrual != null">
+                accrual = #{accrual},
+            </if>
+            <if test="createTime != null ">
+                create_time=#{createTime},
+            </if>
+            <if test="updateTime != null ">
+                update_time=#{updateTime},
+            </if>
+            <if test="repetitionTimes != null ">
+                repetition_times=#{repetitionTimes},
+            </if>
+            <if test="loanTerm != null ">
+                loan_term= #{loanTerm}
+            </if>
+        </set>
+        where user_id=#{userId}
+    </update>
+
+    <sql id="Base_Column">
+		id,user_id,max_amount,credit_vet,account_manage,accrual,create_time,update_time,normal_repayment_times,overdue_repayment_times,service_charge,repetition_times,loan_term loanTerm
+	</sql>
+
+    <select id="findByUserId" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column"/>
+        from user_money_rate where user_id =#{uid}
+    </select>
+
+    <delete id="deleteById" parameterType="java.lang.Integer">
+		delete from user_money_rate where id=#{id}
+	</delete>
+
+    <update id="updateAmountAccrualByTimes" parameterType="com.summer.dao.entity.UserMoneyRate">
+        update user_money_rate
+        <set>
+            <if test="maxAmount != null">
+                max_amount=#{maxAmount},
+            </if>
+            <if test="creditVet != null">
+                credit_vet = #{creditVet},
+            </if>
+            <if test="accountManage != null">
+                account_manage = #{accountManage},
+            </if>
+            <if test="serviceCharge != null">
+                service_charge = #{serviceCharge},
+            </if>
+            <if test="accrual != null">
+                accrual = #{accrual},
+            </if>
+            <if test="createTime != null ">
+                create_time = #{createTime},
+            </if>
+            <if test="loanTerm != null ">
+                loan_term= #{loanTerm},
+            </if>
+            <if test="updateTime != null">
+                update_time = NOW(),
+            </if>
+        </set>
+        <where>
+            <if test="normalRepaymentTimes != null ">
+                normal_repayment_times = #{normalRepaymentTimes}
+            </if>
+            <if test="overdueRepaymentTimes != null ">
+                and overdue_repayment_times = #{overdueRepaymentTimes}
+            </if>
+            <if test="repetitionTimes != null ">
+                and repetition_times=#{repetitionTimes}
+            </if>
+        </where>
+    </update>
+    <select id="findByParam" parameterType="java.util.Map" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column"/>
+        from user_money_rate
+        <where>
+            <if test="id">
+                id = #{id}
+            </if>
+            <if test="normalRepaymentTimes != null ">
+                and normal_repayment_times = #{normalRepaymentTimes}
+            </if>
+            <if test="overdueRepaymentTimes != null ">
+                and overdue_repayment_times = #{overdueRepaymentTimes}
+            </if>
+        </where>
+    </select>
+
+    <update id="updateMaxAmountAndServiceCharge" parameterType="com.summer.dao.entity.UserMoneyRate">
+        update user_money_rate
+        <set>
+            <if test="maxAmount != null">
+                max_amount=#{maxAmount},
+            </if>
+            <if test="updateTime != null">
+                update_time = NOW(),
+            </if>
+        </set>
+
+        <where>
+            <if test="beforeMaxAmount !=null">
+                <![CDATA[max_amount <= #{beforeMaxAmount}]]>
+            </if>
+        </where>
+    </update>
+
+    <update id="updateByUserId" parameterType="HashMap">
+        update user_money_rate
+        <set>
+            <if test="maxAmount != null">
+                max_amount = #{maxAmount},
+            </if>
+            <if test="creditVet != null">
+                credit_vet = #{creditVet},
+            </if>
+            <if test="accountManage != null">
+                account_manage = #{accountManage},
+            </if>
+            <if test="serviceCharge != null">
+                service_charge = #{serviceCharge},
+            </if>
+            <if test="accrual != null">
+                accrual = #{accrual},
+            </if>
+            <if test="createTime != null ">
+                create_time=#{createTime},
+            </if>
+            <if test="updateTime != null ">
+                update_time=#{updateTime},
+            </if>
+            <if test="loanTerm != null ">
+                loan_term= #{loanTerm},
+            </if>
+            <if test="repetitionTimes != null ">
+                repetition_times=#{repetitionTimes}
+            </if>
+        </set>
+        where user_id=#{userId}
+    </update>
+
+    <update id="updateMaxAmountByChannel" parameterType="java.util.Map">
+        update user_money_rate
+        <set>
+            <if test="nowAmount != null">
+                max_amount=#{nowAmount},
+            </if>
+            <if test="updateTime == null">
+                update_time = NOW(),
+            </if>
+        </set>
+
+        <where>
+            <if test="channelIds !=  null">
+                user_id in
+                <foreach close=")" collection="channelIds" index="index" item="item" open="(" separator=",">
+                    #{item}
+                </foreach>
+            </if>
+            <if test="nowAmount !=null">
+                and <![CDATA[max_amount < #{nowAmount}]]>
+            </if>
+
+        </where>
+    </update>
+</mapper>

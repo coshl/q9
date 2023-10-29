@@ -1,0 +1,170 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.summer.dao.mapper.SourceUserLoginInfoMapper">
+
+    <resultMap id="BaseResultMap" type="com.summer.dao.entity.SourceUserLoginInfo">
+        <id column="id" property="id" jdbcType="BIGINT"/>
+        <result column="phone_number" property="phoneNumber" jdbcType="VARCHAR"/>
+        <result column="source_h5_code" property="sourceH5Code" jdbcType="VARCHAR"/>
+        <result column="login_times" property="loginTimes" jdbcType="INTEGER"/>
+        <result column="ip_address" property="ipAddress" jdbcType="VARCHAR"/>
+        <result column="source_channel_code" property="sourceChannelCode"/>
+        <result column="login_time" property="loginTime" jdbcType="TIMESTAMP"/>
+        <result column="client_type" property="clientType"/>
+        <result column="user_creat_time" property="userCreatTime"/>
+        <result column="user_login_info" property="userLoginInfo"/>
+    </resultMap>
+
+    <sql id="columns">
+		id,
+		phone_number,
+		source_h5_code,
+		login_times,
+		ip_address,
+		source_channel_code,
+		login_time,
+		client_type,
+		user_creat_time,
+		user_login_info
+	</sql>
+
+    <!-- 保存 -->
+    <insert id="save" useGeneratedKeys="true" keyProperty="id" parameterType="SourceUserLoginInfo">
+        INSERT IGNORE INTO source_user_login_info
+        (<include refid="columns"/>)
+        VALUES
+        (
+        NULL,
+        #{phoneNumber},
+        #{sourceH5Code},
+        #{loginTimes},
+        #{ipAddress},
+        #{sourceChannelCode},
+        NOW(),
+        #{clientType},
+        #{userCreatTime},
+        #{userLoginInfo}
+        )
+    </insert>
+
+    <!-- 根据id查找 -->
+    <select id="findById" parameterType="Long" resultMap="BaseResultMap">
+        SELECT
+        <include refid="columns"/>
+        FROM source_user_login_info t
+        WHERE t.id = #{id}
+    </select>
+
+    <!-- 根据手机号查找 -->
+    <select id="findByPhoneNumber" parameterType="map" resultMap="BaseResultMap">
+        SELECT
+        <include refid="columns"/>
+        FROM source_user_login_info t
+        WHERE t.phone_number = #{phoneNumber} and t.source_h5_code = #{h5Code} and t.source_channel_code =
+        #{channelCode}
+    </select>
+
+    <!-- 根据手机号和h5查询 -->
+    <select id="findByPhoneAndH5Code" parameterType="map" resultMap="BaseResultMap">
+        SELECT
+        <include refid="columns"/>
+        FROM source_user_login_info t
+        WHERE t.phone_number = #{phoneNumber} and t.source_h5_code = #{sourceH5Code}
+        order by t.id desc LIMIT 1
+    </select>
+
+    <!-- 修改 -->
+    <update id="update" parameterType="com.summer.dao.entity.SourceUserLoginInfo">
+        UPDATE source_user_login_info
+        <trim prefix="set" suffixOverrides=",">
+            <if test="phoneNumber != null">phone_number = #{phoneNumber},</if>
+            <if test="sourceH5Code != null">source_h5_code = #{sourceH5Code},</if>
+            <if test="loginTimes != null">login_times = #{loginTimes},</if>
+            <if test="ipAddress != null">ip_address = #{ipAddress},</if>
+            <if test="sourceChannelCode != null">source_channel_code = #{sourceChannelCode},</if>
+            <if test="loginTime == null">login_time = NOW(),</if>
+            <if test="clientType != null">
+                client_type = #{clientType},
+            </if>
+            <if test="userCreatTime != null">
+                user_creat_time =#{userCreatTime},
+            </if>
+            <if test="userLoginInfo != null">
+                user_login_info = #{userLoginInfo}
+            </if>
+
+        </trim>
+        WHERE
+        id = #{id}
+        limit 1
+    </update>
+
+    <!-- 批量删除 -->
+    <delete id="deleteAll">
+        DELETE FROM source_user_login_info
+        WHERE id IN
+        <foreach item="item" index="index" collection="array" open="(" separator="," close=")">
+            #{item}
+        </foreach>
+    </delete>
+
+    <!-- 统计 -->
+    <select id="count" parameterType="map" resultType="java.lang.Long">
+		SELECT
+		COUNT(*)
+		FROM source_user_login_info t
+	</select>
+
+    <update id="updateByPhoneNumber" parameterType="com.summer.dao.entity.SourceUserLoginInfo">
+        UPDATE source_user_login_info
+        <trim prefix="set" suffixOverrides=",">
+            <if test="loginTimes != null">
+                login_times = #{loginTimes},
+            </if>
+            <if test="ipAddress != null">
+                ip_address = #{ipAddress},
+            </if>
+            <if test="sourceChannelCode != null">
+                source_channel_code = #{sourceChannelCode},
+            </if>
+            <if test="loginTime == null">
+                login_time = NOW(),
+            </if>
+            <if test="clientType != null">
+                client_type = #{clientType},
+            </if>
+            <if test="userCreatTime != null">
+                user_creat_time =#{userCreatTime},
+            </if>
+            <if test="userLoginInfo != null and userLoginInfo != ''">
+                user_login_info = #{userLoginInfo}
+            </if>
+        </trim>
+        WHERE
+        phone_number = #{phoneNumber}
+    </update>
+
+    <sql id="column2">
+		id,
+		phone_number,
+		login_times,
+		ip_address,
+		source_channel_code,
+		login_time,
+		client_type,
+		user_creat_time,
+		user_login_info
+	</sql>
+    <select id="findByPhone" parameterType="java.lang.String" resultMap="BaseResultMap">
+        select
+        <include refid="column2"/>
+        from source_user_login_info where phone_number=#{phone}
+    </select>
+
+    <select id="findBySourceChannelCode" parameterType="com.summer.dao.entity.SourceUserLoginInfo"
+            resultType="java.lang.Integer">
+		select count(*) as channelCount from source_user_login_info
+		 where source_channel_code = #{sourceChannelCode} and DATE_FORMAT(user_creat_time,'%y-%d-%m') = DATE_FORMAT(#{userCreatTime},'%y-%d-%m')
+	</select>
+</mapper>

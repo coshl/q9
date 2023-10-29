@@ -1,0 +1,248 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.summer.dao.mapper.SourceH5Mapper">
+    <resultMap id="BaseResultMap" type="com.summer.dao.entity.SourceH5">
+        <id column="id" property="id" jdbcType="INTEGER"/>
+        <result column="code" property="code" jdbcType="VARCHAR"/>
+        <result column="domain_name" property="domainName" jdbcType="VARCHAR"/>
+        <result column="logo" property="logo" jdbcType="VARCHAR"/>
+        <result column="background_url" property="backgroundUrl" jdbcType="VARCHAR"/>
+        <result column="wechat_qrcode_url" property="wechatQrcodeUrl" jdbcType="VARCHAR"/>
+        <result column="banner1" property="banner1" jdbcType="VARCHAR"/>
+        <result column="banner2" property="banner2" jdbcType="VARCHAR"/>
+        <result column="banner3" property="banner3" jdbcType="VARCHAR"/>
+        <result column="wechat_describe" property="wechatDescribe" jdbcType="VARCHAR"/>
+        <result column="login" property="login" jdbcType="VARCHAR"/>
+        <result column="card" property="card" jdbcType="VARCHAR"/>
+        <result column="product" property="product" jdbcType="VARCHAR"/>
+        <result column="wechat" property="wechat" jdbcType="VARCHAR"/>
+        <result column="wechat_login" property="wechatLogin" jdbcType="VARCHAR"/>
+        <result column="app_id" property="appId" jdbcType="VARCHAR"/>
+        <result column="app_secret" property="appSecret" jdbcType="VARCHAR"/>
+        <result column="create_time" property="createTime" jdbcType="TIMESTAMP"/>
+    </resultMap>
+    <sql id="Base_Column_List">
+    id, code, domain_name, logo, background_url, wechat_qrcode_url, banner1, banner2, 
+    banner3, wechat_describe, login, card, product, wechat, wechat_login, app_id, app_secret, 
+    create_time
+  </sql>
+    <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer">
+        select
+        <include refid="Base_Column_List"/>
+        from source_h5
+        where id = #{id,jdbcType=INTEGER}
+    </select>
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from source_h5
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+    <insert id="insert" parameterType="com.summer.dao.entity.SourceH5">
+    insert into source_h5 (id, code, domain_name, 
+      logo, background_url, wechat_qrcode_url, 
+      banner1, banner2, banner3, 
+      wechat_describe, login, card, 
+      product, wechat, wechat_login, 
+      app_id, app_secret, create_time
+      )
+    values (#{id,jdbcType=INTEGER}, #{code,jdbcType=VARCHAR}, #{domainName,jdbcType=VARCHAR}, 
+      #{logo,jdbcType=VARCHAR}, #{backgroundUrl,jdbcType=VARCHAR}, #{wechatQrcodeUrl,jdbcType=VARCHAR}, 
+      #{banner1,jdbcType=VARCHAR}, #{banner2,jdbcType=VARCHAR}, #{banner3,jdbcType=VARCHAR}, 
+      #{wechatDescribe,jdbcType=VARCHAR}, #{login,jdbcType=VARCHAR}, #{card,jdbcType=VARCHAR}, 
+      #{product,jdbcType=VARCHAR}, #{wechat,jdbcType=VARCHAR}, #{wechatLogin,jdbcType=VARCHAR}, 
+      #{appId,jdbcType=VARCHAR}, #{appSecret,jdbcType=VARCHAR}, #{createTime,jdbcType=TIMESTAMP}
+      )
+  </insert>
+    <insert id="insertSelective" parameterType="com.summer.dao.entity.SourceH5">
+        insert into source_h5
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                id,
+            </if>
+            <if test="code != null">
+                code,
+            </if>
+            <if test="domainName != null">
+                domain_name,
+            </if>
+            <if test="logo != null">
+                logo,
+            </if>
+            <if test="backgroundUrl != null">
+                background_url,
+            </if>
+            <if test="wechatQrcodeUrl != null">
+                wechat_qrcode_url,
+            </if>
+            <if test="banner1 != null">
+                banner1,
+            </if>
+            <if test="banner2 != null">
+                banner2,
+            </if>
+            <if test="banner3 != null">
+                banner3,
+            </if>
+            <if test="wechatDescribe != null">
+                wechat_describe,
+            </if>
+            <if test="login != null">
+                login,
+            </if>
+            <if test="card != null">
+                card,
+            </if>
+            <if test="product != null">
+                product,
+            </if>
+            <if test="wechat != null">
+                wechat,
+            </if>
+            <if test="wechatLogin != null">
+                wechat_login,
+            </if>
+            <if test="appId != null">
+                app_id,
+            </if>
+            <if test="appSecret != null">
+                app_secret,
+            </if>
+            <if test="createTime != null">
+                create_time,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                #{id,jdbcType=INTEGER},
+            </if>
+            <if test="code != null">
+                #{code,jdbcType=VARCHAR},
+            </if>
+            <if test="domainName != null">
+                #{domainName,jdbcType=VARCHAR},
+            </if>
+            <if test="logo != null">
+                #{logo,jdbcType=VARCHAR},
+            </if>
+            <if test="backgroundUrl != null">
+                #{backgroundUrl,jdbcType=VARCHAR},
+            </if>
+            <if test="wechatQrcodeUrl != null">
+                #{wechatQrcodeUrl,jdbcType=VARCHAR},
+            </if>
+            <if test="banner1 != null">
+                #{banner1,jdbcType=VARCHAR},
+            </if>
+            <if test="banner2 != null">
+                #{banner2,jdbcType=VARCHAR},
+            </if>
+            <if test="banner3 != null">
+                #{banner3,jdbcType=VARCHAR},
+            </if>
+            <if test="wechatDescribe != null">
+                #{wechatDescribe,jdbcType=VARCHAR},
+            </if>
+            <if test="login != null">
+                #{login,jdbcType=VARCHAR},
+            </if>
+            <if test="card != null">
+                #{card,jdbcType=VARCHAR},
+            </if>
+            <if test="product != null">
+                #{product,jdbcType=VARCHAR},
+            </if>
+            <if test="wechat != null">
+                #{wechat,jdbcType=VARCHAR},
+            </if>
+            <if test="wechatLogin != null">
+                #{wechatLogin,jdbcType=VARCHAR},
+            </if>
+            <if test="appId != null">
+                #{appId,jdbcType=VARCHAR},
+            </if>
+            <if test="appSecret != null">
+                #{appSecret,jdbcType=VARCHAR},
+            </if>
+            <if test="createTime != null">
+                #{createTime,jdbcType=TIMESTAMP},
+            </if>
+        </trim>
+    </insert>
+    <update id="updateByPrimaryKeySelective" parameterType="com.summer.dao.entity.SourceH5">
+        update source_h5
+        <set>
+            <if test="code != null">
+                code = #{code,jdbcType=VARCHAR},
+            </if>
+            <if test="domainName != null">
+                domain_name = #{domainName,jdbcType=VARCHAR},
+            </if>
+            <if test="logo != null">
+                logo = #{logo,jdbcType=VARCHAR},
+            </if>
+            <if test="backgroundUrl != null">
+                background_url = #{backgroundUrl,jdbcType=VARCHAR},
+            </if>
+            <if test="wechatQrcodeUrl != null">
+                wechat_qrcode_url = #{wechatQrcodeUrl,jdbcType=VARCHAR},
+            </if>
+            <if test="banner1 != null">
+                banner1 = #{banner1,jdbcType=VARCHAR},
+            </if>
+            <if test="banner2 != null">
+                banner2 = #{banner2,jdbcType=VARCHAR},
+            </if>
+            <if test="banner3 != null">
+                banner3 = #{banner3,jdbcType=VARCHAR},
+            </if>
+            <if test="wechatDescribe != null">
+                wechat_describe = #{wechatDescribe,jdbcType=VARCHAR},
+            </if>
+            <if test="login != null">
+                login = #{login,jdbcType=VARCHAR},
+            </if>
+            <if test="card != null">
+                card = #{card,jdbcType=VARCHAR},
+            </if>
+            <if test="product != null">
+                product = #{product,jdbcType=VARCHAR},
+            </if>
+            <if test="wechat != null">
+                wechat = #{wechat,jdbcType=VARCHAR},
+            </if>
+            <if test="wechatLogin != null">
+                wechat_login = #{wechatLogin,jdbcType=VARCHAR},
+            </if>
+            <if test="appId != null">
+                app_id = #{appId,jdbcType=VARCHAR},
+            </if>
+            <if test="appSecret != null">
+                app_secret = #{appSecret,jdbcType=VARCHAR},
+            </if>
+            <if test="createTime != null">
+                create_time = #{createTime,jdbcType=TIMESTAMP},
+            </if>
+        </set>
+        where id = #{id,jdbcType=INTEGER}
+    </update>
+    <update id="updateByPrimaryKey" parameterType="com.summer.dao.entity.SourceH5">
+    update source_h5
+    set code = #{code,jdbcType=VARCHAR},
+      domain_name = #{domainName,jdbcType=VARCHAR},
+      logo = #{logo,jdbcType=VARCHAR},
+      background_url = #{backgroundUrl,jdbcType=VARCHAR},
+      wechat_qrcode_url = #{wechatQrcodeUrl,jdbcType=VARCHAR},
+      banner1 = #{banner1,jdbcType=VARCHAR},
+      banner2 = #{banner2,jdbcType=VARCHAR},
+      banner3 = #{banner3,jdbcType=VARCHAR},
+      wechat_describe = #{wechatDescribe,jdbcType=VARCHAR},
+      login = #{login,jdbcType=VARCHAR},
+      card = #{card,jdbcType=VARCHAR},
+      product = #{product,jdbcType=VARCHAR},
+      wechat = #{wechat,jdbcType=VARCHAR},
+      wechat_login = #{wechatLogin,jdbcType=VARCHAR},
+      app_id = #{appId,jdbcType=VARCHAR},
+      app_secret = #{appSecret,jdbcType=VARCHAR},
+      create_time = #{createTime,jdbcType=TIMESTAMP}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+</mapper>

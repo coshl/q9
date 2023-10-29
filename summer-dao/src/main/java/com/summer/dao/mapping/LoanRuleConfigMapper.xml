@@ -1,0 +1,848 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.summer.dao.mapper.LoanRuleConfigDAO">
+    <resultMap id="BaseResultMap" type="com.summer.dao.entity.LoanRuleConfig">
+        <id column="id" jdbcType="INTEGER" property="id"/>
+        <result column="product_name" jdbcType="VARCHAR" property="productName"/>
+        <result column="loan_amount" jdbcType="INTEGER" property="loanAmount"/>
+        <result column="expire" jdbcType="INTEGER" property="expire"/>
+        <result column="inquire" jdbcType="DOUBLE" property="inquire"/>
+        <result column="account_management" jdbcType="DOUBLE" property="accountManagement"/>
+        <result column="service_charge" jdbcType="DOUBLE" property="serviceCharge"/>
+        <result column="borrow_interest" jdbcType="DOUBLE" property="borrowInterest"/>
+        <result column="overdue_rate" jdbcType="DOUBLE" property="overdueRate"/>
+        <result column="highest_overdue_rate" jdbcType="DOUBLE" property="highestOverdueRate"/>
+        <result column="renewal_expire" jdbcType="INTEGER" property="renewalExpire"/>
+        <result column="renewal_fee" jdbcType="DOUBLE" property="renewalFee"/>
+        <result column="hit_risk_allow_borrow_day" jdbcType="INTEGER" property="hitRiskAllowBorrowDay"/>
+        <result column="hit_black_allow_borrow_day" jdbcType="INTEGER" property="hitBlackAllowBorrowDay"/>
+        <result column="normal_repayment_repetition_loan" jdbcType="INTEGER" property="normalRepaymentRepetitionLoan"/>
+        <result column="overdue_repayment_repetition_loan" jdbcType="VARCHAR"
+                property="overdueRepaymentRepetitionLoan"/>
+        <result column="create_time" jdbcType="TIMESTAMP" property="createTime"/>
+        <result column="update_time" jdbcType="TIMESTAMP" property="updateTime"/>
+        <result column="status" jdbcType="INTEGER" property="status"/>
+        <result column="hightest_renewal" jdbcType="INTEGER" property="hightestRenewal"/>
+        <result column="channel_id" property="channelId"/>
+    </resultMap>
+    <sql id="Base_Column_List">
+    id, product_name, loan_amount, expire, inquire, account_management, service_charge, 
+    borrow_interest, overdue_rate, highest_overdue_rate, renewal_expire, renewal_fee, 
+    hit_risk_allow_borrow_day, hit_black_allow_borrow_day, normal_repayment_repetition_loan, 
+    overdue_repayment_repetition_loan, create_time, update_time, status,hightest_renewal,channel_id
+  </sql>
+    <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from loan_rule_config
+        where id = #{id,jdbcType=INTEGER}
+    </select>
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from loan_rule_config
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+    <insert id="insert" parameterType="com.summer.dao.entity.LoanRuleConfig">
+    insert into loan_rule_config (id, product_name, loan_amount, 
+      expire, inquire, account_management, 
+      service_charge, borrow_interest, overdue_rate, 
+      highest_overdue_rate, renewal_expire, renewal_fee, hightest_renewal,
+      hit_risk_allow_borrow_day, hit_black_allow_borrow_day, 
+      normal_repayment_repetition_loan, overdue_repayment_repetition_loan, 
+      create_time, update_time, status
+      )
+    values (#{id,jdbcType=INTEGER}, #{productName,jdbcType=VARCHAR}, #{loanAmount,jdbcType=INTEGER}, 
+      #{expire,jdbcType=INTEGER}, #{inquire,jdbcType=DOUBLE}, #{accountManagement,jdbcType=DOUBLE}, 
+      #{serviceCharge,jdbcType=DOUBLE}, #{borrowInterest,jdbcType=DOUBLE}, #{overdueRate,jdbcType=DOUBLE}, 
+      #{highestOverdueRate,jdbcType=DOUBLE}, #{renewalExpire,jdbcType=INTEGER}, #{renewalFee,jdbcType=DOUBLE}, #{hightestRenewal},
+      #{hitRiskAllowBorrowDay,jdbcType=INTEGER}, #{hitBlackAllowBorrowDay,jdbcType=INTEGER}, 
+      #{normalRepaymentRepetitionLoan,jdbcType=INTEGER}, #{overdueRepaymentRepetitionLoan,jdbcType=VARCHAR}, 
+      #{createTime,jdbcType=TIMESTAMP}, #{updateTime,jdbcType=TIMESTAMP}, #{status,jdbcType=INTEGER}
+      )
+  </insert>
+    <insert id="insertSelective" parameterType="com.summer.dao.entity.LoanRuleConfig">
+        insert ignore into loan_rule_config
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                id,
+            </if>
+            <if test="productName != null">
+                product_name,
+            </if>
+            <if test="loanAmount != null">
+                loan_amount,
+            </if>
+            <if test="expire != null">
+                expire,
+            </if>
+            <if test="inquire != null">
+                inquire,
+            </if>
+            <if test="accountManagement != null">
+                account_management,
+            </if>
+            <if test="serviceCharge != null">
+                service_charge,
+            </if>
+            <if test="borrowInterest != null">
+                borrow_interest,
+            </if>
+            <if test="overdueRate != null">
+                overdue_rate,
+            </if>
+            <if test="highestOverdueRate != null">
+                highest_overdue_rate,
+            </if>
+            <if test="renewalExpire != null">
+                renewal_expire,
+            </if>
+            <if test="renewalFee != null">
+                renewal_fee,
+            </if>
+            <if test="hightestRenewal != null ">
+                hightest_renewal,
+            </if>
+
+            <if test="hitRiskAllowBorrowDay != null">
+                hit_risk_allow_borrow_day,
+            </if>
+            <if test="hitBlackAllowBorrowDay != null">
+                hit_black_allow_borrow_day,
+            </if>
+            <if test="normalRepaymentRepetitionLoan != null">
+                normal_repayment_repetition_loan,
+            </if>
+            <if test="overdueRepaymentRepetitionLoan != null">
+                overdue_repayment_repetition_loan,
+            </if>
+            <if test="createTime != null">
+                create_time,
+            </if>
+            <if test="updateTime != null">
+                update_time,
+            </if>
+            <if test="status != null">
+                status,
+            </if>
+            <if test="channelId != null">
+                channel_id
+            </if>
+
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                #{id,jdbcType=INTEGER},
+            </if>
+            <if test="productName != null">
+                #{productName,jdbcType=VARCHAR},
+            </if>
+            <if test="loanAmount != null">
+                #{loanAmount,jdbcType=INTEGER},
+            </if>
+            <if test="expire != null">
+                #{expire,jdbcType=INTEGER},
+            </if>
+            <if test="inquire != null">
+                #{inquire,jdbcType=DOUBLE},
+            </if>
+            <if test="accountManagement != null">
+                #{accountManagement,jdbcType=DOUBLE},
+            </if>
+            <if test="serviceCharge != null">
+                #{serviceCharge,jdbcType=DOUBLE},
+            </if>
+            <if test="borrowInterest != null">
+                #{borrowInterest,jdbcType=DOUBLE},
+            </if>
+            <if test="overdueRate != null">
+                #{overdueRate,jdbcType=DOUBLE},
+            </if>
+            <if test="highestOverdueRate != null">
+                #{highestOverdueRate,jdbcType=DOUBLE},
+            </if>
+            <if test="renewalExpire != null">
+                #{renewalExpire,jdbcType=INTEGER},
+            </if>
+            <if test="renewalFee != null">
+                #{renewalFee,jdbcType=DOUBLE},
+            </if>
+            <if test="hightestRenewal != null ">
+                #{hightestRenewal,jdbcType=INTEGER},
+            </if>
+            <if test="hitRiskAllowBorrowDay != null">
+                #{hitRiskAllowBorrowDay,jdbcType=INTEGER},
+            </if>
+            <if test="hitBlackAllowBorrowDay != null">
+                #{hitBlackAllowBorrowDay,jdbcType=INTEGER},
+            </if>
+            <if test="normalRepaymentRepetitionLoan != null">
+                #{normalRepaymentRepetitionLoan,jdbcType=INTEGER},
+            </if>
+            <if test="overdueRepaymentRepetitionLoan != null">
+                #{overdueRepaymentRepetitionLoan,jdbcType=VARCHAR},
+            </if>
+            <if test="createTime != null">
+                #{createTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="updateTime != null">
+                #{updateTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="status != null">
+                #{status,jdbcType=INTEGER},
+            </if>
+            <if test="channelId != null">
+                #{channelId}
+            </if>
+        </trim>
+    </insert>
+    <insert id="insertBatch" parameterType="java.util.List">
+        insert into loan_rule_config (id, product_name, loan_amount,
+        expire, inquire, account_management,
+        service_charge, borrow_interest,
+        overdue_rate, highest_overdue_rate,
+        renewal_expire, renewal_fee, hit_risk_allow_borrow_day,
+        hit_black_allow_borrow_day, normal_repayment_repetition_loan,
+        overdue_repayment_repetition_loan, create_time,
+        update_time, status)
+        values
+        <foreach collection="list" index="index" item="item" separator=",">
+            (#{item.id,jdbcType=INTEGER}, #{item.productName,jdbcType=VARCHAR}, #{item.loanAmount,jdbcType=INTEGER},
+            #{item.expire,jdbcType=INTEGER}, #{item.inquire,jdbcType=DOUBLE}, #{item.accountManagement,jdbcType=DOUBLE},
+            #{item.serviceCharge,jdbcType=DOUBLE}, #{item.borrowInterest,jdbcType=DOUBLE},
+            #{item.overdueRate,jdbcType=DOUBLE}, #{item.highestOverdueRate,jdbcType=DOUBLE},
+            #{item.renewalExpire,jdbcType=INTEGER}, #{item.renewalFee,jdbcType=DOUBLE},
+            #{item.hitRiskAllowBorrowDay,jdbcType=INTEGER},
+            #{item.hitBlackAllowBorrowDay,jdbcType=INTEGER}, #{item.normalRepaymentRepetitionLoan,jdbcType=INTEGER},
+            #{item.overdueRepaymentRepetitionLoan,jdbcType=VARCHAR}, #{item.createTime,jdbcType=TIMESTAMP},
+            #{item.updateTime,jdbcType=TIMESTAMP}, #{item.status,jdbcType=INTEGER})
+        </foreach>
+    </insert>
+    <insert id="insertBatchSelective" parameterType="java.util.List">
+        insert into loan_rule_config
+        (id, product_name, loan_amount, expire, inquire, account_management, service_charge,
+        borrow_interest, overdue_rate, highest_overdue_rate, renewal_expire, renewal_fee,
+        hit_risk_allow_borrow_day, hit_black_allow_borrow_day, normal_repayment_repetition_loan,
+        overdue_repayment_repetition_loan, create_time, update_time, status)
+        values
+        <foreach collection="list" index="index" item="item" separator=",">
+            <trim prefix="(" suffix=")" suffixOverrides=",">
+                <if test="item.id != null">
+                    #{item.id,jdbcType=INTEGER},
+                </if>
+                <if test="item.id == null">
+                    NULL,
+                </if>
+                <if test="item.productName != null">
+                    #{item.productName,jdbcType=VARCHAR},
+                </if>
+                <if test="item.productName == null">
+                    NULL,
+                </if>
+                <if test="item.loanAmount != null">
+                    #{item.loanAmount,jdbcType=INTEGER},
+                </if>
+                <if test="item.loanAmount == null">
+                    NULL,
+                </if>
+                <if test="item.expire != null">
+                    #{item.expire,jdbcType=INTEGER},
+                </if>
+                <if test="item.expire == null">
+                    NULL,
+                </if>
+                <if test="item.inquire != null">
+                    #{item.inquire,jdbcType=DOUBLE},
+                </if>
+                <if test="item.inquire == null">
+                    NULL,
+                </if>
+                <if test="item.accountManagement != null">
+                    #{item.accountManagement,jdbcType=DOUBLE},
+                </if>
+                <if test="item.accountManagement == null">
+                    NULL,
+                </if>
+                <if test="item.serviceCharge != null">
+                    #{item.serviceCharge,jdbcType=DOUBLE},
+                </if>
+                <if test="item.serviceCharge == null">
+                    NULL,
+                </if>
+                <if test="item.borrowInterest != null">
+                    #{item.borrowInterest,jdbcType=DOUBLE},
+                </if>
+                <if test="item.borrowInterest == null">
+                    NULL,
+                </if>
+                <if test="item.overdueRate != null">
+                    #{item.overdueRate,jdbcType=DOUBLE},
+                </if>
+                <if test="item.overdueRate == null">
+                    NULL,
+                </if>
+                <if test="item.highestOverdueRate != null">
+                    #{item.highestOverdueRate,jdbcType=DOUBLE},
+                </if>
+                <if test="item.highestOverdueRate == null">
+                    NULL,
+                </if>
+                <if test="item.renewalExpire != null">
+                    #{item.renewalExpire,jdbcType=INTEGER},
+                </if>
+                <if test="item.renewalExpire == null">
+                    NULL,
+                </if>
+                <if test="item.renewalFee != null">
+                    #{item.renewalFee,jdbcType=DOUBLE},
+                </if>
+                <if test="item.renewalFee == null">
+                    NULL,
+                </if>
+                <if test="item.hitRiskAllowBorrowDay != null">
+                    #{item.hitRiskAllowBorrowDay,jdbcType=INTEGER},
+                </if>
+                <if test="item.hitRiskAllowBorrowDay == null">
+                    NULL,
+                </if>
+                <if test="item.hitBlackAllowBorrowDay != null">
+                    #{item.hitBlackAllowBorrowDay,jdbcType=INTEGER},
+                </if>
+                <if test="item.hitBlackAllowBorrowDay == null">
+                    NULL,
+                </if>
+                <if test="item.normalRepaymentRepetitionLoan != null">
+                    #{item.normalRepaymentRepetitionLoan,jdbcType=INTEGER},
+                </if>
+                <if test="item.normalRepaymentRepetitionLoan == null">
+                    NULL,
+                </if>
+                <if test="item.overdueRepaymentRepetitionLoan != null">
+                    #{item.overdueRepaymentRepetitionLoan,jdbcType=VARCHAR},
+                </if>
+                <if test="item.overdueRepaymentRepetitionLoan == null">
+                    NULL,
+                </if>
+                <if test="item.createTime != null">
+                    #{item.createTime,jdbcType=TIMESTAMP},
+                </if>
+                <if test="item.createTime == null">
+                    NULL,
+                </if>
+                <if test="item.updateTime != null">
+                    #{item.updateTime,jdbcType=TIMESTAMP},
+                </if>
+                <if test="item.updateTime == null">
+                    NULL,
+                </if>
+                <if test="item.status != null">
+                    #{item.status,jdbcType=INTEGER},
+                </if>
+                <if test="item.status == null">
+                    NULL,
+                </if>
+            </trim>
+        </foreach>
+    </insert>
+    <update id="updateByPrimaryKeySelective" parameterType="com.summer.dao.entity.LoanRuleConfig">
+        update loan_rule_config
+        <set>
+            <if test="productName != null">
+                product_name = #{productName,jdbcType=VARCHAR},
+            </if>
+            <if test="loanAmount != null">
+                loan_amount = #{loanAmount,jdbcType=INTEGER},
+            </if>
+            <if test="expire != null">
+                expire = #{expire,jdbcType=INTEGER},
+            </if>
+            <if test="inquire != null">
+                inquire = #{inquire,jdbcType=DOUBLE},
+            </if>
+            <if test="accountManagement != null">
+                account_management = #{accountManagement,jdbcType=DOUBLE},
+            </if>
+            <if test="serviceCharge != null">
+                service_charge = #{serviceCharge,jdbcType=DOUBLE},
+            </if>
+            <if test="borrowInterest != null">
+                borrow_interest = #{borrowInterest,jdbcType=DOUBLE},
+            </if>
+            <if test="overdueRate != null">
+                overdue_rate = #{overdueRate,jdbcType=DOUBLE},
+            </if>
+            <if test="highestOverdueRate != null">
+                highest_overdue_rate = #{highestOverdueRate,jdbcType=DOUBLE},
+            </if>
+            <if test="renewalExpire != null">
+                renewal_expire = #{renewalExpire,jdbcType=INTEGER},
+            </if>
+            <if test="renewalFee != null">
+                renewal_fee = #{renewalFee,jdbcType=DOUBLE},
+            </if>
+            <if test="hightestRenewal != null ">
+                hightest_renewal = #{hightestRenewal},
+            </if>
+            <if test="hitRiskAllowBorrowDay != null">
+                hit_risk_allow_borrow_day = #{hitRiskAllowBorrowDay,jdbcType=INTEGER},
+            </if>
+            <if test="hitBlackAllowBorrowDay != null">
+                hit_black_allow_borrow_day = #{hitBlackAllowBorrowDay,jdbcType=INTEGER},
+            </if>
+            <if test="normalRepaymentRepetitionLoan != null">
+                normal_repayment_repetition_loan = #{normalRepaymentRepetitionLoan,jdbcType=INTEGER},
+            </if>
+            <if test="overdueRepaymentRepetitionLoan != null">
+                overdue_repayment_repetition_loan = #{overdueRepaymentRepetitionLoan,jdbcType=VARCHAR},
+            </if>
+            <if test="createTime != null">
+                create_time = #{createTime,jdbcType=TIMESTAMP},
+            </if>
+            update_time = NOW(),
+            <if test="status != null">
+                status = #{status,jdbcType=INTEGER},
+            </if>
+            <if test="channelId != null">
+                channel_id = #{channelId}
+            </if>
+        </set>
+        where id = #{id,jdbcType=INTEGER}
+    </update>
+    <update id="updateByPrimaryKey" parameterType="com.summer.dao.entity.LoanRuleConfig">
+    update loan_rule_config
+    set product_name = #{productName,jdbcType=VARCHAR},
+      loan_amount = #{loanAmount,jdbcType=INTEGER},
+      expire = #{expire,jdbcType=INTEGER},
+      inquire = #{inquire,jdbcType=DOUBLE},
+      account_management = #{accountManagement,jdbcType=DOUBLE},
+      service_charge = #{serviceCharge,jdbcType=DOUBLE},
+      borrow_interest = #{borrowInterest,jdbcType=DOUBLE},
+      overdue_rate = #{overdueRate,jdbcType=DOUBLE},
+      highest_overdue_rate = #{highestOverdueRate,jdbcType=DOUBLE},
+      renewal_expire = #{renewalExpire,jdbcType=INTEGER},
+      renewal_fee = #{renewalFee,jdbcType=DOUBLE},
+      hit_risk_allow_borrow_day = #{hitRiskAllowBorrowDay,jdbcType=INTEGER},
+      hit_black_allow_borrow_day = #{hitBlackAllowBorrowDay,jdbcType=INTEGER},
+      normal_repayment_repetition_loan = #{normalRepaymentRepetitionLoan,jdbcType=INTEGER},
+      overdue_repayment_repetition_loan = #{overdueRepaymentRepetitionLoan,jdbcType=VARCHAR},
+      create_time = #{createTime,jdbcType=TIMESTAMP},
+      update_time = #{updateTime,jdbcType=TIMESTAMP},
+      status = #{status,jdbcType=INTEGER}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+    <update id="updateBatchByPrimaryKey" parameterType="java.util.List">
+        update loan_rule_config
+        <trim prefix="set" suffixOverrides=",">
+            <trim prefix="productName =case id" suffix="end,">
+                <foreach collection="list" index="index" item="item" separator=" ">
+                    when #{item.id} then #{item.productName}
+                </foreach>
+            </trim>
+            <trim prefix="loanAmount =case id" suffix="end,">
+                <foreach collection="list" index="index" item="item" separator=" ">
+                    when #{item.id} then #{item.loanAmount}
+                </foreach>
+            </trim>
+            <trim prefix="expire =case id" suffix="end,">
+                <foreach collection="list" index="index" item="item" separator=" ">
+                    when #{item.id} then #{item.expire}
+                </foreach>
+            </trim>
+            <trim prefix="inquire =case id" suffix="end,">
+                <foreach collection="list" index="index" item="item" separator=" ">
+                    when #{item.id} then #{item.inquire}
+                </foreach>
+            </trim>
+            <trim prefix="accountManagement =case id" suffix="end,">
+                <foreach collection="list" index="index" item="item" separator=" ">
+                    when #{item.id} then #{item.accountManagement}
+                </foreach>
+            </trim>
+            <trim prefix="serviceCharge =case id" suffix="end,">
+                <foreach collection="list" index="index" item="item" separator=" ">
+                    when #{item.id} then #{item.serviceCharge}
+                </foreach>
+            </trim>
+            <trim prefix="borrowInterest =case id" suffix="end,">
+                <foreach collection="list" index="index" item="item" separator=" ">
+                    when #{item.id} then #{item.borrowInterest}
+                </foreach>
+            </trim>
+            <trim prefix="overdueRate =case id" suffix="end,">
+                <foreach collection="list" index="index" item="item" separator=" ">
+                    when #{item.id} then #{item.overdueRate}
+                </foreach>
+            </trim>
+            <trim prefix="highestOverdueRate =case id" suffix="end,">
+                <foreach collection="list" index="index" item="item" separator=" ">
+                    when #{item.id} then #{item.highestOverdueRate}
+                </foreach>
+            </trim>
+            <trim prefix="renewalExpire =case id" suffix="end,">
+                <foreach collection="list" index="index" item="item" separator=" ">
+                    when #{item.id} then #{item.renewalExpire}
+                </foreach>
+            </trim>
+            <trim prefix="renewalFee =case id" suffix="end,">
+                <foreach collection="list" index="index" item="item" separator=" ">
+                    when #{item.id} then #{item.renewalFee}
+                </foreach>
+            </trim>
+            <trim prefix="hitRiskAllowBorrowDay =case id" suffix="end,">
+                <foreach collection="list" index="index" item="item" separator=" ">
+                    when #{item.id} then #{item.hitRiskAllowBorrowDay}
+                </foreach>
+            </trim>
+            <trim prefix="hitBlackAllowBorrowDay =case id" suffix="end,">
+                <foreach collection="list" index="index" item="item" separator=" ">
+                    when #{item.id} then #{item.hitBlackAllowBorrowDay}
+                </foreach>
+            </trim>
+            <trim prefix="normalRepaymentRepetitionLoan =case id" suffix="end,">
+                <foreach collection="list" index="index" item="item" separator=" ">
+                    when #{item.id} then #{item.normalRepaymentRepetitionLoan}
+                </foreach>
+            </trim>
+            <trim prefix="overdueRepaymentRepetitionLoan =case id" suffix="end,">
+                <foreach collection="list" index="index" item="item" separator=" ">
+                    when #{item.id} then #{item.overdueRepaymentRepetitionLoan}
+                </foreach>
+            </trim>
+            <trim prefix="createTime =case id" suffix="end,">
+                <foreach collection="list" index="index" item="item" separator=" ">
+                    when #{item.id} then #{item.createTime}
+                </foreach>
+            </trim>
+            <trim prefix="updateTime =case id" suffix="end,">
+                <foreach collection="list" index="index" item="item" separator=" ">
+                    when #{item.id} then #{item.updateTime}
+                </foreach>
+            </trim>
+            <trim prefix="status =case id" suffix="end,">
+                <foreach collection="list" index="index" item="item" separator=" ">
+                    when #{item.id} then #{item.status}
+                </foreach>
+            </trim>
+        </trim>
+        where id in
+        <foreach close=")" collection="list" index="index" item="item" open="(" separator=",">
+            #{item.id}
+        </foreach>
+    </update>
+    <update id="updateBatchByPrimaryKeySelective" parameterType="java.util.Map">
+        update loan_rule_config
+        <trim prefix="set" suffixOverrides=",">
+            <trim prefix="productName =case id" suffix="end,">
+                <foreach collection="list" index="index" item="item" separator=" ">
+                    <if test="item.productName != null ">
+                        when #{item.id} then #{item.productName}
+                    </if>
+                    <if test="item.productName == null ">
+                        when #{item.id} then loan_rule_config.product_name
+                    </if>
+                </foreach>
+            </trim>
+            <trim prefix="loanAmount =case id" suffix="end,">
+                <foreach collection="list" index="index" item="item" separator=" ">
+                    <if test="item.loanAmount != null ">
+                        when #{item.id} then #{item.loanAmount}
+                    </if>
+                    <if test="item.loanAmount == null ">
+                        when #{item.id} then loan_rule_config.loan_amount
+                    </if>
+                </foreach>
+            </trim>
+            <trim prefix="expire =case id" suffix="end,">
+                <foreach collection="list" index="index" item="item" separator=" ">
+                    <if test="item.expire != null ">
+                        when #{item.id} then #{item.expire}
+                    </if>
+                    <if test="item.expire == null ">
+                        when #{item.id} then loan_rule_config.expire
+                    </if>
+                </foreach>
+            </trim>
+            <trim prefix="inquire =case id" suffix="end,">
+                <foreach collection="list" index="index" item="item" separator=" ">
+                    <if test="item.inquire != null ">
+                        when #{item.id} then #{item.inquire}
+                    </if>
+                    <if test="item.inquire == null ">
+                        when #{item.id} then loan_rule_config.inquire
+                    </if>
+                </foreach>
+            </trim>
+            <trim prefix="accountManagement =case id" suffix="end,">
+                <foreach collection="list" index="index" item="item" separator=" ">
+                    <if test="item.accountManagement != null ">
+                        when #{item.id} then #{item.accountManagement}
+                    </if>
+                    <if test="item.accountManagement == null ">
+                        when #{item.id} then loan_rule_config.account_management
+                    </if>
+                </foreach>
+            </trim>
+            <trim prefix="serviceCharge =case id" suffix="end,">
+                <foreach collection="list" index="index" item="item" separator=" ">
+                    <if test="item.serviceCharge != null ">
+                        when #{item.id} then #{item.serviceCharge}
+                    </if>
+                    <if test="item.serviceCharge == null ">
+                        when #{item.id} then loan_rule_config.service_charge
+                    </if>
+                </foreach>
+            </trim>
+            <trim prefix="borrowInterest =case id" suffix="end,">
+                <foreach collection="list" index="index" item="item" separator=" ">
+                    <if test="item.borrowInterest != null ">
+                        when #{item.id} then #{item.borrowInterest}
+                    </if>
+                    <if test="item.borrowInterest == null ">
+                        when #{item.id} then loan_rule_config.borrow_interest
+                    </if>
+                </foreach>
+            </trim>
+            <trim prefix="overdueRate =case id" suffix="end,">
+                <foreach collection="list" index="index" item="item" separator=" ">
+                    <if test="item.overdueRate != null ">
+                        when #{item.id} then #{item.overdueRate}
+                    </if>
+                    <if test="item.overdueRate == null ">
+                        when #{item.id} then loan_rule_config.overdue_rate
+                    </if>
+                </foreach>
+            </trim>
+            <trim prefix="highestOverdueRate =case id" suffix="end,">
+                <foreach collection="list" index="index" item="item" separator=" ">
+                    <if test="item.highestOverdueRate != null ">
+                        when #{item.id} then #{item.highestOverdueRate}
+                    </if>
+                    <if test="item.highestOverdueRate == null ">
+                        when #{item.id} then loan_rule_config.highest_overdue_rate
+                    </if>
+                </foreach>
+            </trim>
+            <trim prefix="renewalExpire =case id" suffix="end,">
+                <foreach collection="list" index="index" item="item" separator=" ">
+                    <if test="item.renewalExpire != null ">
+                        when #{item.id} then #{item.renewalExpire}
+                    </if>
+                    <if test="item.renewalExpire == null ">
+                        when #{item.id} then loan_rule_config.renewal_expire
+                    </if>
+                </foreach>
+            </trim>
+            <trim prefix="renewalFee =case id" suffix="end,">
+                <foreach collection="list" index="index" item="item" separator=" ">
+                    <if test="item.renewalFee != null ">
+                        when #{item.id} then #{item.renewalFee}
+                    </if>
+                    <if test="item.renewalFee == null ">
+                        when #{item.id} then loan_rule_config.renewal_fee
+                    </if>
+                </foreach>
+            </trim>
+            <trim prefix="hitRiskAllowBorrowDay =case id" suffix="end,">
+                <foreach collection="list" index="index" item="item" separator=" ">
+                    <if test="item.hitRiskAllowBorrowDay != null ">
+                        when #{item.id} then #{item.hitRiskAllowBorrowDay}
+                    </if>
+                    <if test="item.hitRiskAllowBorrowDay == null ">
+                        when #{item.id} then loan_rule_config.hit_risk_allow_borrow_day
+                    </if>
+                </foreach>
+            </trim>
+            <trim prefix="hitBlackAllowBorrowDay =case id" suffix="end,">
+                <foreach collection="list" index="index" item="item" separator=" ">
+                    <if test="item.hitBlackAllowBorrowDay != null ">
+                        when #{item.id} then #{item.hitBlackAllowBorrowDay}
+                    </if>
+                    <if test="item.hitBlackAllowBorrowDay == null ">
+                        when #{item.id} then loan_rule_config.hit_black_allow_borrow_day
+                    </if>
+                </foreach>
+            </trim>
+            <trim prefix="normalRepaymentRepetitionLoan =case id" suffix="end,">
+                <foreach collection="list" index="index" item="item" separator=" ">
+                    <if test="item.normalRepaymentRepetitionLoan != null ">
+                        when #{item.id} then #{item.normalRepaymentRepetitionLoan}
+                    </if>
+                    <if test="item.normalRepaymentRepetitionLoan == null ">
+                        when #{item.id} then loan_rule_config.normal_repayment_repetition_loan
+                    </if>
+                </foreach>
+            </trim>
+            <trim prefix="overdueRepaymentRepetitionLoan =case id" suffix="end,">
+                <foreach collection="list" index="index" item="item" separator=" ">
+                    <if test="item.overdueRepaymentRepetitionLoan != null ">
+                        when #{item.id} then #{item.overdueRepaymentRepetitionLoan}
+                    </if>
+                    <if test="item.overdueRepaymentRepetitionLoan == null ">
+                        when #{item.id} then loan_rule_config.overdue_repayment_repetition_loan
+                    </if>
+                </foreach>
+            </trim>
+            <trim prefix="createTime =case id" suffix="end,">
+                <foreach collection="list" index="index" item="item" separator=" ">
+                    <if test="item.createTime != null ">
+                        when #{item.id} then #{item.createTime}
+                    </if>
+                    <if test="item.createTime == null ">
+                        when #{item.id} then loan_rule_config.create_time
+                    </if>
+                </foreach>
+            </trim>
+            <trim prefix="updateTime =case id" suffix="end,">
+                <foreach collection="list" index="index" item="item" separator=" ">
+                    <if test="item.updateTime != null ">
+                        when #{item.id} then #{item.updateTime}
+                    </if>
+                    <if test="item.updateTime == null ">
+                        when #{item.id} then loan_rule_config.update_time
+                    </if>
+                </foreach>
+            </trim>
+            <trim prefix="status =case id" suffix="end,">
+                <foreach collection="list" index="index" item="item" separator=" ">
+                    <if test="item.status != null ">
+                        when #{item.id} then #{item.status}
+                    </if>
+                    <if test="item.status == null ">
+                        when #{item.id} then loan_rule_config.status
+                    </if>
+                </foreach>
+            </trim>
+        </trim>
+        where id in
+        <foreach close=")" collection="list" index="index" item="item" open="(" separator=",">
+            #{item.id}
+        </foreach>
+    </update>
+
+    <select id="findLoanConfigByParams" parameterType="java.util.Map" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from loan_rule_config
+        <where>
+            <if test="status != null">
+                status=#{status}
+            </if>
+            <if test="channelId != null">
+                and channel_id = #{channelId}
+            </if>
+        </where>
+    </select>
+
+    <select id="findByChannelId" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from loan_rule_config where channel_id = #{channelId}
+    </select>
+
+
+    <update id="updateByChannelIdSelective" parameterType="com.summer.dao.entity.LoanRuleConfig">
+        update loan_rule_config
+        <set>
+            <if test="productName != null">
+                product_name = #{productName,jdbcType=VARCHAR},
+            </if>
+            <if test="loanAmount != null">
+                loan_amount = #{loanAmount,jdbcType=INTEGER},
+            </if>
+            <if test="expire != null">
+                expire = #{expire,jdbcType=INTEGER},
+            </if>
+            <if test="inquire != null">
+                inquire = #{inquire,jdbcType=DOUBLE},
+            </if>
+            <if test="accountManagement != null">
+                account_management = #{accountManagement,jdbcType=DOUBLE},
+            </if>
+            <if test="serviceCharge != null">
+                service_charge = #{serviceCharge,jdbcType=DOUBLE},
+            </if>
+            <if test="borrowInterest != null">
+                borrow_interest = #{borrowInterest,jdbcType=DOUBLE},
+            </if>
+            <if test="overdueRate != null">
+                overdue_rate = #{overdueRate,jdbcType=DOUBLE},
+            </if>
+            <if test="highestOverdueRate != null">
+                highest_overdue_rate = #{highestOverdueRate,jdbcType=DOUBLE},
+            </if>
+            <if test="renewalExpire != null">
+                renewal_expire = #{renewalExpire,jdbcType=INTEGER},
+            </if>
+            <if test="renewalFee != null">
+                renewal_fee = #{renewalFee,jdbcType=DOUBLE},
+            </if>
+            <if test="hightestRenewal != null ">
+                hightest_renewal = #{hightestRenewal},
+            </if>
+            <if test="hitRiskAllowBorrowDay != null">
+                hit_risk_allow_borrow_day = #{hitRiskAllowBorrowDay,jdbcType=INTEGER},
+            </if>
+            <if test="hitBlackAllowBorrowDay != null">
+                hit_black_allow_borrow_day = #{hitBlackAllowBorrowDay,jdbcType=INTEGER},
+            </if>
+            <if test="normalRepaymentRepetitionLoan != null">
+                normal_repayment_repetition_loan = #{normalRepaymentRepetitionLoan,jdbcType=INTEGER},
+            </if>
+            <if test="overdueRepaymentRepetitionLoan != null">
+                overdue_repayment_repetition_loan = #{overdueRepaymentRepetitionLoan,jdbcType=VARCHAR},
+            </if>
+            <if test="createTime != null">
+                create_time = #{createTime,jdbcType=TIMESTAMP},
+            </if>
+            update_time = NOW(),
+            <if test="status != null">
+                status = #{status,jdbcType=INTEGER},
+            </if>
+
+        </set>
+        where channel_id = #{channelId}
+    </update>
+
+    <update id="updateLoanAmount" parameterType="com.summer.dao.entity.LoanRuleConfig">
+        update loan_rule_config
+        <set>
+            <if test="overdueRate != null">
+                overdue_rate = #{overdueRate,jdbcType=DOUBLE},
+            </if>
+            <if test="highestOverdueRate != null">
+                highest_overdue_rate = #{highestOverdueRate,jdbcType=DOUBLE},
+            </if>
+            <if test="hightestRenewal != null ">
+                hightest_renewal = #{hightestRenewal}
+            </if>
+        </set>
+    </update>
+
+    <select id="findByUserId" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+        select
+        lrc.id, lrc.product_name, lrc.loan_amount, lrc.channel_id
+        from loan_rule_config lrc left join user_info ui on lrc.channel_id = ui.channel_id where ui.id = #{userId} group by lrc.id
+    </select>
+    
+    <select id="findUserMoneyInfo" parameterType="java.lang.Integer" resultType="com.summer.dao.entity.UserMoneyRate">
+        SELECT max_amount as maxAmount,repetition_times as repetitionTimes from user_money_rate where user_id = #{userId}
+    </select>
+    
+    <select id="findIncreaseMoneyConfig" parameterType="java.lang.Integer" resultType="com.summer.dao.entity.IncreaseMoneyConfig">
+        select repetition_inrease_money from increase_money_config where increase_type= 2 and achieve_times = #{achieveTimes}
+    </select>
+    
+    <select id="findIncreaseMoneyConfigCount" resultType="java.lang.Integer">
+        select count(*) as s from increase_money_config where increase_type= 2
+    </select>
+    
+    <select id="findMinLoanMoney" resultType="java.lang.Integer" parameterType="java.lang.Integer">
+        select apply_amount as currentMoney from order_borrow where user_id = #{userId} and status = 10 ORDER BY id ASC LIMIT 1
+    </select>
+    
+    <select id="findMaxLoanMoney" resultType="java.lang.Integer" parameterType="java.lang.Integer">
+        select max_amount as maxAmount from user_money_rate where user_id = #{userId}
+    </select>
+    
+    <select id="findOrderStatus" resultType="java.lang.Integer" parameterType="java.lang.Integer">
+        select case when status = 10 then 1 else 0 end as status from order_borrow where user_id = #{userId} ORDER BY id DESC LIMIT 1
+    </select>
+</mapper>

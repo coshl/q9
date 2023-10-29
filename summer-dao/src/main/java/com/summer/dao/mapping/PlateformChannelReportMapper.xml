@@ -1,0 +1,872 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.summer.dao.mapper.PlateformChannelReportDAO">
+    <resultMap id="BaseResultMap" type="com.summer.dao.entity.PlateformChannelReport">
+        <id column="id" jdbcType="INTEGER" property="id"/>
+        <result column="channelid" jdbcType="INTEGER" property="channelid"/>
+        <result column="report_time" property="reportTime"/>
+        <result column="down_count" jdbcType="INTEGER" property="downCount"/>
+        <result column="login_count" jdbcType="INTEGER" property="loginCount"/>
+        <result column="register_count" jdbcType="INTEGER" property="registerCount"/>
+        <result column="idcard_certification_count" jdbcType="INTEGER" property="idcardCertificationCount"/>
+        <result column="personal_information_count" jdbcType="INTEGER" property="personalInformationCount"/>
+        <result column="sesame_count" jdbcType="INTEGER" property="sesameCount"/>
+        <result column="operator_count" jdbcType="INTEGER" property="operatorCount"/>
+        <result column="company_count" jdbcType="INTEGER" property="companyCount"/>
+        <result column="borrow_apply_count" jdbcType="INTEGER" property="borrowApplyCount"/>
+        <result column="borrow_suc_count" jdbcType="INTEGER" property="borrowSucCount"/>
+        <result column="loan_count" jdbcType="INTEGER" property="loanCount"/>
+        <result column="dedution_coefficient" jdbcType="DECIMAL" property="dedutionCoefficient"/>
+        <result column="create_time" jdbcType="TIMESTAMP" property="createTime"/>
+        <result column="update_time" jdbcType="TIMESTAMP" property="updateTime"/>
+        <result column="auth_bank_count" property="authBankCount"/>
+        <result column="channel_register_count" property="channelRegisterCount"/>
+        <result column="channel_apply_count" property="channelApplyCount"/>
+        <result column="channel_loan_count" property="channelLoanCount"/>
+        <result column="hit_system_black" property="hitSystemBlack"/>
+        <result column="hit_out_black" property="hitOutBlack"/>
+        <result column="channel_system_black" property="channelSystemBlack"/>
+        <result column="channel_out_black" property="channelOutBlack"/>
+        <result column="channel_ios" property="channelIos"/>
+        <result column="channel_an_zuo" property="channelAnZuo"/>
+        <result column="channel_duan_xin" property="channelDuanXin"/>
+
+    </resultMap>
+    <sql id="Base_Column_List">
+    id,report_time, channelid, down_count, login_count, register_count, idcard_certification_count,
+    personal_information_count, sesame_count, operator_count, company_count, borrow_apply_count, 
+    borrow_suc_count, loan_count, dedution_coefficient, create_time, update_time,auth_bank_count,channel_register_count,channel_apply_count,channel_loan_count,
+    hit_system_black,hit_out_black,channel_system_black,channel_out_black,channel_ios,channel_an_zuo,channel_duan_xin
+  </sql>
+    <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from plateform_channel_report
+        where id = #{id,jdbcType=INTEGER}
+    </select>
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from plateform_channel_report
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+    <insert id="insert" parameterType="com.summer.dao.entity.PlateformChannelReport">
+    insert   into plateform_channel_report (id,report_time, channelid, down_count,
+      login_count, register_count, idcard_certification_count, 
+      personal_information_count, sesame_count, 
+      operator_count,auth_bank_count, company_count, borrow_apply_count,
+      borrow_suc_count, loan_count, dedution_coefficient, 
+      create_time, update_time,channel_register_count,channel_apply_count,channel_loan_count)
+    values (#{id,jdbcType=INTEGER},#{reportTime}, #{channelid,jdbcType=INTEGER}, #{downCount,jdbcType=INTEGER},
+      #{loginCount,jdbcType=INTEGER}, #{registerCount,jdbcType=INTEGER}, #{idcardCertificationCount,jdbcType=INTEGER}, 
+      #{personalInformationCount,jdbcType=INTEGER}, #{sesameCount,jdbcType=INTEGER}, 
+      #{operatorCount,jdbcType=INTEGER},#{authBankCount}, #{companyCount,jdbcType=INTEGER}, #{borrowApplyCount,jdbcType=INTEGER},
+      #{borrowSucCount,jdbcType=INTEGER}, #{loanCount,jdbcType=INTEGER}, #{dedutionCoefficient,jdbcType=DECIMAL}, 
+      #{createTime,jdbcType=TIMESTAMP}, #{updateTime,jdbcType=TIMESTAMP},#{channelRegisterCount},#{channelApplyCount},#{channelLoanCount})
+  </insert>
+    <insert id="insertSelective" parameterType="com.summer.dao.entity.PlateformChannelReport">
+        insert into plateform_channel_report
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                id,
+            </if>
+            <if test="reportTime != null ">
+                report_time,
+            </if>
+
+            <if test="channelid != null">
+                channelid,
+            </if>
+            <if test="downCount != null">
+                down_count,
+            </if>
+            <if test="loginCount != null">
+                login_count,
+            </if>
+            <if test="registerCount != null">
+                register_count,
+            </if>
+            <if test="idcardCertificationCount != null">
+                idcard_certification_count,
+            </if>
+            <if test="personalInformationCount != null">
+                personal_information_count,
+            </if>
+            <if test="sesameCount != null">
+                sesame_count,
+            </if>
+            <if test="operatorCount != null">
+                operator_count,
+            </if>
+            <if test="authBankCount != null">
+                auth_bank_count,
+            </if>
+            <if test="companyCount != null">
+                company_count,
+            </if>
+            <if test="borrowApplyCount != null">
+                borrow_apply_count,
+            </if>
+            <if test="borrowSucCount != null">
+                borrow_suc_count,
+            </if>
+            <if test="loanCount != null">
+                loan_count,
+            </if>
+            <if test="dedutionCoefficient != null">
+                dedution_coefficient,
+            </if>
+            <if test="createTime != null">
+                create_time,
+            </if>
+            <if test="updateTime != null">
+                update_time,
+            </if>
+            <if test="channelRegisterCount != null">
+                channel_register_count,
+            </if>
+            <if test="channelApplyCount != null">
+                channel_apply_count,
+            </if>
+            <if test="channelLoanCount != null">
+                channel_loan_count,
+            </if>
+            <if test="hitSystemBlack != null">
+                hit_system_black,
+            </if>
+            <if test="hitOutBlack != null">
+                hit_out_black,
+            </if>
+            <if test="channelSystemBlack != null">
+                channel_system_black,
+            </if>
+            <if test="channelOutBlack != null">
+                channel_out_black,
+            </if>
+
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                #{id,jdbcType=INTEGER},
+            </if>
+            <if test="reportTime != null ">
+                #{reportTime},
+            </if>
+            <if test="channelid != null">
+                #{channelid,jdbcType=INTEGER},
+            </if>
+            <if test="downCount != null">
+                #{downCount,jdbcType=INTEGER},
+            </if>
+            <if test="loginCount != null">
+                #{loginCount,jdbcType=INTEGER},
+            </if>
+            <if test="registerCount != null">
+                #{registerCount,jdbcType=INTEGER},
+            </if>
+            <if test="idcardCertificationCount != null">
+                #{idcardCertificationCount,jdbcType=INTEGER},
+            </if>
+            <if test="personalInformationCount != null">
+                #{personalInformationCount,jdbcType=INTEGER},
+            </if>
+            <if test="sesameCount != null">
+                #{sesameCount,jdbcType=INTEGER},
+            </if>
+            <if test="operatorCount != null">
+                #{operatorCount,jdbcType=INTEGER},
+            </if>
+            <if test="authBankCount != null">
+                #{authBankCount},
+            </if>
+            <if test="companyCount != null">
+                #{companyCount,jdbcType=INTEGER},
+            </if>
+            <if test="borrowApplyCount != null">
+                #{borrowApplyCount,jdbcType=INTEGER},
+            </if>
+            <if test="borrowSucCount != null">
+                #{borrowSucCount,jdbcType=INTEGER},
+            </if>
+            <if test="loanCount != null">
+                #{loanCount,jdbcType=INTEGER},
+            </if>
+            <if test="dedutionCoefficient != null">
+                #{dedutionCoefficient,jdbcType=DECIMAL},
+            </if>
+            <if test="createTime != null">
+                #{createTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="updateTime != null">
+                #{updateTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="channelRegisterCount != null">
+                #{channelRegisterCount},
+            </if>
+            <if test="channelApplyCount != null">
+                #{channelApplyCount},
+            </if>
+            <if test="channelLoanCount != null">
+                #{channelLoanCount},
+            </if>
+            <if test="hitSystemBlack != null">
+                #{hitSystemBlack},
+            </if>
+            <if test="hitOutBlack != null">
+                #{hitOutBlack},
+            </if>
+            <if test="channelSystemBlack != null">
+                #{channelSystemBlack},
+            </if>
+            <if test="channelSystemBlack != null">
+                #{channelSystemBlack},
+            </if>
+            <if test="channelOutBlack != null">
+                #{channelOutBlack},
+            </if>
+        </trim>
+    </insert>
+    <insert id="insertBatch" parameterType="java.util.List">
+        insert into plateform_channel_report (id, channelid, down_count,
+        login_count, register_count, idcard_certification_count,
+        personal_information_count, sesame_count,
+        operator_count, company_count,
+        borrow_apply_count, borrow_suc_count,
+        loan_count, dedution_coefficient,
+        create_time, update_time,channel_register_count)
+        values
+        <foreach collection="list" index="index" item="item" separator=",">
+            (#{item.id,jdbcType=INTEGER}, #{item.channelid,jdbcType=INTEGER}, #{item.downCount,jdbcType=INTEGER},
+            #{item.loginCount,jdbcType=INTEGER}, #{item.registerCount,jdbcType=INTEGER},
+            #{item.idcardCertificationCount,jdbcType=INTEGER},
+            #{item.personalInformationCount,jdbcType=INTEGER}, #{item.sesameCount,jdbcType=INTEGER},
+            #{item.operatorCount,jdbcType=INTEGER}, #{item.companyCount,jdbcType=INTEGER},
+            #{item.borrowApplyCount,jdbcType=INTEGER}, #{item.borrowSucCount,jdbcType=INTEGER},
+            #{item.loanCount,jdbcType=INTEGER}, #{item.dedutionCoefficient,jdbcType=DECIMAL},
+            #{item.createTime,jdbcType=TIMESTAMP}, #{item.updateTime,jdbcType=TIMESTAMP},#{channelRegisterCount})
+        </foreach>
+    </insert>
+    <insert id="insertBatchSelective" parameterType="java.util.List">
+        insert into plateform_channel_report
+        (id, channelid, down_count, login_count, register_count, idcard_certification_count,
+        personal_information_count, sesame_count, operator_count, company_count, borrow_apply_count,
+        borrow_suc_count, loan_count, dedution_coefficient, create_time, update_time,channel_register_count)
+        values
+        <foreach collection="list" index="index" item="item" separator=",">
+            <trim prefix="(" suffix=")" suffixOverrides=",">
+                <if test="item.id != null">
+                    #{item.id,jdbcType=INTEGER},
+                </if>
+                <if test="item.id == null">
+                    NULL,
+                </if>
+                <if test="item.channelid != null">
+                    #{item.channelid,jdbcType=INTEGER},
+                </if>
+                <if test="item.channelid == null">
+                    NULL,
+                </if>
+                <if test="item.downCount != null">
+                    #{item.downCount,jdbcType=INTEGER},
+                </if>
+                <if test="item.downCount == null">
+                    NULL,
+                </if>
+                <if test="item.loginCount != null">
+                    #{item.loginCount,jdbcType=INTEGER},
+                </if>
+                <if test="item.loginCount == null">
+                    NULL,
+                </if>
+                <if test="item.registerCount != null">
+                    #{item.registerCount,jdbcType=INTEGER},
+                </if>
+                <if test="item.registerCount == null">
+                    NULL,
+                </if>
+                <if test="item.idcardCertificationCount != null">
+                    #{item.idcardCertificationCount,jdbcType=INTEGER},
+                </if>
+                <if test="item.idcardCertificationCount == null">
+                    NULL,
+                </if>
+                <if test="item.personalInformationCount != null">
+                    #{item.personalInformationCount,jdbcType=INTEGER},
+                </if>
+                <if test="item.personalInformationCount == null">
+                    NULL,
+                </if>
+                <if test="item.sesameCount != null">
+                    #{item.sesameCount,jdbcType=INTEGER},
+                </if>
+                <if test="item.sesameCount == null">
+                    NULL,
+                </if>
+                <if test="item.operatorCount != null">
+                    #{item.operatorCount,jdbcType=INTEGER},
+                </if>
+                <if test="item.operatorCount == null">
+                    NULL,
+                </if>
+                <if test="item.companyCount != null">
+                    #{item.companyCount,jdbcType=INTEGER},
+                </if>
+                <if test="item.companyCount == null">
+                    NULL,
+                </if>
+                <if test="item.borrowApplyCount != null">
+                    #{item.borrowApplyCount,jdbcType=INTEGER},
+                </if>
+                <if test="item.borrowApplyCount == null">
+                    NULL,
+                </if>
+                <if test="item.borrowSucCount != null">
+                    #{item.borrowSucCount,jdbcType=INTEGER},
+                </if>
+                <if test="item.borrowSucCount == null">
+                    NULL,
+                </if>
+                <if test="item.loanCount != null">
+                    #{item.loanCount,jdbcType=INTEGER},
+                </if>
+                <if test="item.loanCount == null">
+                    NULL,
+                </if>
+                <if test="item.dedutionCoefficient != null">
+                    #{item.dedutionCoefficient,jdbcType=DECIMAL},
+                </if>
+                <if test="item.dedutionCoefficient == null">
+                    NULL,
+                </if>
+                <if test="item.createTime != null">
+                    #{item.createTime,jdbcType=TIMESTAMP},
+                </if>
+                <if test="item.createTime == null">
+                    NULL,
+                </if>
+                <if test="item.updateTime != null">
+                    #{item.updateTime,jdbcType=TIMESTAMP},
+                </if>
+                <if test="item.updateTime == null">
+                    NULL,
+                </if>
+                <if test="item.channelRegisterCount != null">
+                    #{item.channelRegisterCount},
+                </if>
+                <if test="item.channelRegisterCount == null">
+                    NULL,
+                </if>
+            </trim>
+        </foreach>
+    </insert>
+    <update id="updateByPrimaryKeySelective" parameterType="com.summer.dao.entity.PlateformChannelReport">
+        update plateform_channel_report
+        <set>
+            <if test="channelid != null">
+                channelid = #{channelid,jdbcType=INTEGER},
+            </if>
+            <if test="downCount != null">
+                down_count = #{downCount,jdbcType=INTEGER},
+            </if>
+            <if test="loginCount != null">
+                login_count = #{loginCount,jdbcType=INTEGER},
+            </if>
+            <if test="registerCount != null">
+                register_count = #{registerCount,jdbcType=INTEGER},
+            </if>
+            <if test="idcardCertificationCount != null">
+                idcard_certification_count = #{idcardCertificationCount,jdbcType=INTEGER},
+            </if>
+            <if test="personalInformationCount != null">
+                personal_information_count = #{personalInformationCount,jdbcType=INTEGER},
+            </if>
+            <if test="sesameCount != null">
+                sesame_count = #{sesameCount,jdbcType=INTEGER},
+            </if>
+            <if test="operatorCount != null">
+                operator_count = #{operatorCount,jdbcType=INTEGER},
+            </if>
+            <if test="authBankCount != null">
+                auth_bank_count =#{authBankCount},
+            </if>
+
+            <if test="companyCount != null">
+                company_count = #{companyCount,jdbcType=INTEGER},
+            </if>
+            <if test="borrowApplyCount != null">
+                borrow_apply_count = #{borrowApplyCount,jdbcType=INTEGER},
+            </if>
+            <if test="borrowSucCount != null">
+                borrow_suc_count = #{borrowSucCount,jdbcType=INTEGER},
+            </if>
+            <if test="loanCount != null">
+                loan_count = #{loanCount,jdbcType=INTEGER},
+            </if>
+            <if test="dedutionCoefficient != null">
+                dedution_coefficient = #{dedutionCoefficient,jdbcType=DECIMAL},
+            </if>
+            <if test="createTime != null">
+                create_time = #{createTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="updateTime != null">
+                update_time = #{updateTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="channelRegisterCount != null">
+                channel_register_count =#{channelRegisterCount},
+            </if>
+            <if test="channelApplyCount != null">
+                channel_apply_count=#{channelApplyCount},
+            </if>
+            <if test="channelLoanCount != null">
+                channel_loan_count=#{channelLoanCount},
+            </if>
+            <if test="hitSystemBlack != null">
+                hit_system_black=#{hitSystemBlack},
+            </if>
+            <if test="hitOutBlack != null">
+                hit_out_black=#{hitOutBlack},
+            </if>
+            <if test="channelSystemBlack != null">
+                channel_system_black=#{channelSystemBlack},
+            </if>
+            <if test="channelOutBlack != null">
+                channel_out_black=#{channelOutBlack},
+            </if>
+            <if test="channelAnZuo != null">
+                channel_an_zuo=#{channelAnZuo},
+            </if>
+            <if test="channelIos != null">
+                channel_ios=#{channelIos},
+            </if>
+            <if test="channelDuanXin != null">
+                channel_duan_xin=#{channelDuanXin},
+            </if>
+        </set>
+        where id = #{id,jdbcType=INTEGER}
+    </update>
+    <update id="updateByPrimaryKey" parameterType="com.summer.dao.entity.PlateformChannelReport">
+    update plateform_channel_report
+    set channelid = #{channelid,jdbcType=INTEGER},
+      down_count = #{downCount,jdbcType=INTEGER},
+      login_count = #{loginCount,jdbcType=INTEGER},
+      register_count = #{registerCount,jdbcType=INTEGER},
+      idcard_certification_count = #{idcardCertificationCount,jdbcType=INTEGER},
+      personal_information_count = #{personalInformationCount,jdbcType=INTEGER},
+      sesame_count = #{sesameCount,jdbcType=INTEGER},
+      operator_count = #{operatorCount,jdbcType=INTEGER},
+      auth_bank_count = #{authBankCount},
+      company_count = #{companyCount,jdbcType=INTEGER},
+      borrow_apply_count = #{borrowApplyCount,jdbcType=INTEGER},
+      borrow_suc_count = #{borrowSucCount,jdbcType=INTEGER},
+      loan_count = #{loanCount,jdbcType=INTEGER},
+      dedution_coefficient = #{dedutionCoefficient,jdbcType=DECIMAL},
+      create_time = #{createTime,jdbcType=TIMESTAMP},
+      update_time = #{updateTime,jdbcType=TIMESTAMP},
+      channel_register_count =#{channelRegisterCount},
+       channel_apply_count=#{channelApplyCount},
+       channel_loan_count=#{channelLoanCount}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+    <update id="updateBatchByPrimaryKey" parameterType="java.util.List">
+        update plateform_channel_report
+        <trim prefix="set" suffixOverrides=",">
+            <trim prefix="channelid =case id" suffix="end,">
+                <foreach collection="list" index="index" item="item" separator=" ">
+                    when #{item.id} then #{item.channelid}
+                </foreach>
+            </trim>
+            <trim prefix="downCount =case id" suffix="end,">
+                <foreach collection="list" index="index" item="item" separator=" ">
+                    when #{item.id} then #{item.downCount}
+                </foreach>
+            </trim>
+            <trim prefix="loginCount =case id" suffix="end,">
+                <foreach collection="list" index="index" item="item" separator=" ">
+                    when #{item.id} then #{item.loginCount}
+                </foreach>
+            </trim>
+            <trim prefix="registerCount =case id" suffix="end,">
+                <foreach collection="list" index="index" item="item" separator=" ">
+                    when #{item.id} then #{item.registerCount}
+                </foreach>
+            </trim>
+            <trim prefix="idcardCertificationCount =case id" suffix="end,">
+                <foreach collection="list" index="index" item="item" separator=" ">
+                    when #{item.id} then #{item.idcardCertificationCount}
+                </foreach>
+            </trim>
+            <trim prefix="personalInformationCount =case id" suffix="end,">
+                <foreach collection="list" index="index" item="item" separator=" ">
+                    when #{item.id} then #{item.personalInformationCount}
+                </foreach>
+            </trim>
+            <trim prefix="sesameCount =case id" suffix="end,">
+                <foreach collection="list" index="index" item="item" separator=" ">
+                    when #{item.id} then #{item.sesameCount}
+                </foreach>
+            </trim>
+            <trim prefix="operatorCount =case id" suffix="end,">
+                <foreach collection="list" index="index" item="item" separator=" ">
+                    when #{item.id} then #{item.operatorCount}
+                </foreach>
+            </trim>
+            <trim prefix="companyCount =case id" suffix="end,">
+                <foreach collection="list" index="index" item="item" separator=" ">
+                    when #{item.id} then #{item.companyCount}
+                </foreach>
+            </trim>
+            <trim prefix="borrowApplyCount =case id" suffix="end,">
+                <foreach collection="list" index="index" item="item" separator=" ">
+                    when #{item.id} then #{item.borrowApplyCount}
+                </foreach>
+            </trim>
+            <trim prefix="borrowSucCount =case id" suffix="end,">
+                <foreach collection="list" index="index" item="item" separator=" ">
+                    when #{item.id} then #{item.borrowSucCount}
+                </foreach>
+            </trim>
+            <trim prefix="loanCount =case id" suffix="end,">
+                <foreach collection="list" index="index" item="item" separator=" ">
+                    when #{item.id} then #{item.loanCount}
+                </foreach>
+            </trim>
+            <trim prefix="dedutionCoefficient =case id" suffix="end,">
+                <foreach collection="list" index="index" item="item" separator=" ">
+                    when #{item.id} then #{item.dedutionCoefficient}
+                </foreach>
+            </trim>
+            <trim prefix="createTime =case id" suffix="end,">
+                <foreach collection="list" index="index" item="item" separator=" ">
+                    when #{item.id} then #{item.createTime}
+                </foreach>
+            </trim>
+            <trim prefix="updateTime =case id" suffix="end,">
+                <foreach collection="list" index="index" item="item" separator=" ">
+                    when #{item.id} then #{item.updateTime}
+                </foreach>
+            </trim>
+        </trim>
+        where id in
+        <foreach close=")" collection="list" index="index" item="item" open="(" separator=",">
+            #{item.id}
+        </foreach>
+    </update>
+    <update id="updateBatchByPrimaryKeySelective" parameterType="java.util.List">
+        update plateform_channel_report
+        <trim prefix="set" suffixOverrides=",">
+            <trim prefix="channelid =case id" suffix="end,">
+                <foreach collection="list" index="index" item="item" separator=" ">
+                    <if test="item.channelid != null ">
+                        when #{item.id} then #{item.channelid}
+                    </if>
+                    <if test="item.channelid == null ">
+                        when #{item.id} then plateform_channel_report.channelid
+                    </if>
+                </foreach>
+            </trim>
+            <trim prefix="downCount =case id" suffix="end,">
+                <foreach collection="list" index="index" item="item" separator=" ">
+                    <if test="item.downCount != null ">
+                        when #{item.id} then #{item.downCount}
+                    </if>
+                    <if test="item.downCount == null ">
+                        when #{item.id} then plateform_channel_report.down_count
+                    </if>
+                </foreach>
+            </trim>
+            <trim prefix="loginCount =case id" suffix="end,">
+                <foreach collection="list" index="index" item="item" separator=" ">
+                    <if test="item.loginCount != null ">
+                        when #{item.id} then #{item.loginCount}
+                    </if>
+                    <if test="item.loginCount == null ">
+                        when #{item.id} then plateform_channel_report.login_count
+                    </if>
+                </foreach>
+            </trim>
+            <trim prefix="registerCount =case id" suffix="end,">
+                <foreach collection="list" index="index" item="item" separator=" ">
+                    <if test="item.registerCount != null ">
+                        when #{item.id} then #{item.registerCount}
+                    </if>
+                    <if test="item.registerCount == null ">
+                        when #{item.id} then plateform_channel_report.register_count
+                    </if>
+                </foreach>
+            </trim>
+            <trim prefix="idcardCertificationCount =case id" suffix="end,">
+                <foreach collection="list" index="index" item="item" separator=" ">
+                    <if test="item.idcardCertificationCount != null ">
+                        when #{item.id} then #{item.idcardCertificationCount}
+                    </if>
+                    <if test="item.idcardCertificationCount == null ">
+                        when #{item.id} then plateform_channel_report.idcard_certification_count
+                    </if>
+                </foreach>
+            </trim>
+            <trim prefix="personalInformationCount =case id" suffix="end,">
+                <foreach collection="list" index="index" item="item" separator=" ">
+                    <if test="item.personalInformationCount != null ">
+                        when #{item.id} then #{item.personalInformationCount}
+                    </if>
+                    <if test="item.personalInformationCount == null ">
+                        when #{item.id} then plateform_channel_report.personal_information_count
+                    </if>
+                </foreach>
+            </trim>
+            <trim prefix="sesameCount =case id" suffix="end,">
+                <foreach collection="list" index="index" item="item" separator=" ">
+                    <if test="item.sesameCount != null ">
+                        when #{item.id} then #{item.sesameCount}
+                    </if>
+                    <if test="item.sesameCount == null ">
+                        when #{item.id} then plateform_channel_report.sesame_count
+                    </if>
+                </foreach>
+            </trim>
+            <trim prefix="operatorCount =case id" suffix="end,">
+                <foreach collection="list" index="index" item="item" separator=" ">
+                    <if test="item.operatorCount != null ">
+                        when #{item.id} then #{item.operatorCount}
+                    </if>
+                    <if test="item.operatorCount == null ">
+                        when #{item.id} then plateform_channel_report.operator_count
+                    </if>
+                </foreach>
+            </trim>
+            <trim prefix="companyCount =case id" suffix="end,">
+                <foreach collection="list" index="index" item="item" separator=" ">
+                    <if test="item.companyCount != null ">
+                        when #{item.id} then #{item.companyCount}
+                    </if>
+                    <if test="item.companyCount == null ">
+                        when #{item.id} then plateform_channel_report.company_count
+                    </if>
+                </foreach>
+            </trim>
+            <trim prefix="borrowApplyCount =case id" suffix="end,">
+                <foreach collection="list" index="index" item="item" separator=" ">
+                    <if test="item.borrowApplyCount != null ">
+                        when #{item.id} then #{item.borrowApplyCount}
+                    </if>
+                    <if test="item.borrowApplyCount == null ">
+                        when #{item.id} then plateform_channel_report.borrow_apply_count
+                    </if>
+                </foreach>
+            </trim>
+            <trim prefix="borrowSucCount =case id" suffix="end,">
+                <foreach collection="list" index="index" item="item" separator=" ">
+                    <if test="item.borrowSucCount != null ">
+                        when #{item.id} then #{item.borrowSucCount}
+                    </if>
+                    <if test="item.borrowSucCount == null ">
+                        when #{item.id} then plateform_channel_report.borrow_suc_count
+                    </if>
+                </foreach>
+            </trim>
+            <trim prefix="loanCount =case id" suffix="end,">
+                <foreach collection="list" index="index" item="item" separator=" ">
+                    <if test="item.loanCount != null ">
+                        when #{item.id} then #{item.loanCount}
+                    </if>
+                    <if test="item.loanCount == null ">
+                        when #{item.id} then plateform_channel_report.loan_count
+                    </if>
+                </foreach>
+            </trim>
+            <trim prefix="dedutionCoefficient =case id" suffix="end,">
+                <foreach collection="list" index="index" item="item" separator=" ">
+                    <if test="item.dedutionCoefficient != null ">
+                        when #{item.id} then #{item.dedutionCoefficient}
+                    </if>
+                    <if test="item.dedutionCoefficient == null ">
+                        when #{item.id} then plateform_channel_report.dedution_coefficient
+                    </if>
+                </foreach>
+            </trim>
+            <trim prefix="createTime =case id" suffix="end,">
+                <foreach collection="list" index="index" item="item" separator=" ">
+                    <if test="item.createTime != null ">
+                        when #{item.id} then #{item.createTime}
+                    </if>
+                    <if test="item.createTime == null ">
+                        when #{item.id} then plateform_channel_report.create_time
+                    </if>
+                </foreach>
+            </trim>
+            <trim prefix="updateTime =case id" suffix="end,">
+                <foreach collection="list" index="index" item="item" separator=" ">
+                    <if test="item.updateTime != null ">
+                        when #{item.id} then #{item.updateTime}
+                    </if>
+                    <if test="item.updateTime == null ">
+                        when #{item.id} then plateform_channel_report.update_time
+                    </if>
+                </foreach>
+            </trim>
+        </trim>
+        where id in
+        <foreach close=")" collection="list" index="index" item="item" open="(" separator=",">
+            #{item.id}
+        </foreach>
+    </update>
+
+    <select id="findParams" resultType="com.summer.pojo.vo.PlateformChannelReportVo" parameterType="map">
+        SELECT
+        pcr.id,
+        down_count AS downCount,
+        channel_ios AS channelIos,
+        channel_an_zuo AS channelAnZuo,
+        channel_duan_xin AS channelDuanXin,
+        IFNULL( round( channel_ios / register_count, 4 ) * 100, 0 ) AS channelIosLv,
+        IFNULL( round( channel_an_zuo / register_count, 4 ) * 100, 0 ) AS channelAnZuoLv,
+        IFNULL( round( channel_duan_xin / register_count, 4 ) * 100, 0 ) AS channelDuanXinLv,
+
+        IFNULL( round( down_count / register_count, 4 ) * 100, 0 ) AS downConversion,
+        login_count AS loginCount,
+        IFNULL( round( login_count / register_count, 4 ) * 100, 0 ) AS loginConversion,
+        register_count AS registerCount,
+        IFNULL( round( idcard_certification_count / register_count, 4 ) * 100, 0 ) AS idcardCertificationCount,
+        IFNULL( round( personal_information_count / register_count, 4 ) * 100, 0 ) AS personalInformationCount,
+        IFNULL( round( sesame_count / register_count, 4 ) * 100, 0 ) AS sesameCount,
+        IFNULL( round( operator_count / register_count, 4 ) * 100, 0 ) AS operatorCount,
+        IFNULL( round( company_count / register_count, 4 ) * 100, 0 ) AS companyCount,
+        borrow_apply_count AS borrowApplyCount,
+        IFNULL( round( auth_bank_count / register_count, 4 ) * 100, 0 ) AS authBankCount,
+        IFNULL( round( borrow_apply_count / register_count, 4 ) * 100, 0 ) AS borrowApplyConversion,
+        loan_count AS loanCount,
+        IFNULL( round( loan_count / register_count, 4 ) * 100, 0 ) AS loanConversion,
+        dedution_coefficient AS dedutionCoefficient,
+        DATE_FORMAT(pcr.report_time,'%Y-%m-%d') AS reportTime,
+        pc.channel_name AS channelName,
+        IFNULL( round( idcard_certification_count / register_count, 4 ) * 100, 0 ) AS idcardCertificationConversion,
+        IFNULL( round( personal_information_count / register_count, 4 ) * 100, 0 ) AS personalInformationConversion,
+        IFNULL( round( sesame_count / register_count, 4 ) * 100, 0 ) AS sesameConversion,
+        IFNULL( round( operator_count / register_count, 4 ) * 100, 0 ) AS operatorConversion,
+        IFNULL( round( auth_bank_count / register_count, 4 ) * 100, 0 ) AS authBankConversion,
+        IFNULL( round( company_count / register_count, 4 ) * 100, 0 ) AS companyConversion,
+        IFNULL( round( hit_system_black / register_count, 4 ) * 100, 0 ) AS hitSystemBlackRate,
+        IFNULL( round( hit_out_black / register_count, 4 ) * 100, 0 ) AS hitOutBlackRate,
+        hit_system_black AS hitSystemBlack,
+        hit_out_black AS hitOutBlack,
+        IFNULL(hit_system_black + hit_out_black,0) as blackTotal,
+        IFNULL( round( (hit_system_black + hit_out_black )/ register_count, 4 ) * 100, 0 ) AS blackTotalRate
+        FROM
+        plateform_channel_report AS pcr
+        LEFT JOIN plateform_channel AS pc ON pc.id = pcr.channelid
+        <where>
+            <if test="channelName != null">
+                pc.channel_name =#{channelName,jdbcType=VARCHAR}
+            </if>
+
+            <if test="plateformUserId != null">
+                and pc.plateform_user_id =#{plateformUserId}
+            </if>
+
+            <if test="startTime != null and startTime != '' and endTime != null and endTime != ''">
+                and DATE_FORMAT(pcr.report_time,'%Y-%m-%d') BETWEEN #{startTime,jdbcType=TIMESTAMP} AND
+                #{endTime,jdbcType=TIMESTAMP}
+            </if>
+        </where>
+        order by pcr.report_time desc,pc.channel_name desc
+    </select>
+
+    <!-- <select id="findChannelSide" resultType="PlateformChannelSideVo" parameterType="map">
+       SELECT  pcr.id,pc.channel_name as channelName,register_count*(dedution_coefficient/100) as deductionRegisterCount,
+       round(borrow_suc_count/register_count*(dedution_coefficient/100),4)*100 as passRate ,
+       borrow_apply_count*(dedution_coefficient/100) as deductionBorrowApplyCount,borrow_suc_count*(dedution_coefficient/100) as deductionBorrowSucCount
+       FROM plateform_channel_report as pcr
+       LEFT JOIN plateform_channel as pc on pc.id=pcr.channelid
+       <where>
+         <if test="channelName != null" >
+           pc.channel_name like CONCAT('%',#{channelName,jdbcType=VARCHAR},'%')
+         </if>
+         <if test="startTime != null and startTime != '' and endTime != null and endTime != ''">
+           and DATE_FORMAT(pcr.create_time,'%Y-%m-%d')  BETWEEN #{startTime,jdbcType=TIMESTAMP} AND #{endTime,jdbcType=TIMESTAMP}
+         </if>
+       </where>
+     </select>-->
+    <update id="updateCoefficient" parameterType="com.summer.dao.entity.PlateformChannelReport">
+    UPDATE plateform_channel_report
+    SET dedution_coefficient = #{dedutionCoefficient,jdbcType=DECIMAL}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+
+    <select id="selectByParams" parameterType="java.util.Map" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from plateform_channel_report
+        <where>
+            <if test="nowTime != null">
+                <![CDATA[ report_time = DATE_FORMAT(#{nowTime},'%Y-%m-%d')]]>
+            </if>
+            <if test="channelId !=  null">
+                and channelid = #{channelId}
+            </if>
+        </where>
+    </select>
+    <select id="findChannelSide" resultType="com.summer.pojo.vo.PlateformChannelSideVo" parameterType="map">
+        SELECT
+        pcr.id AS id,
+        pcr.report_time AS reportTime,
+        pc.channel_name AS channelName,
+        pcr.channel_register_count AS deductionRegisterCount,
+        IFNULL(round( pcr.channel_loan_count / pcr.channel_register_count, 4 ) * 100,0)
+        AS passRate,
+        pcr.channel_apply_count AS deductionBorrowApplyCount,
+        pcr.channel_loan_count AS deductionBorrowSucCount,
+        pcr.dedution_coefficient AS dedutionCoefficient,
+        IFNULL( round( channel_system_black / pcr.channel_register_count, 4 ) * 100, 0 ) AS hitSystemBlackRate,
+        IFNULL( round( channel_out_black / pcr.channel_register_count, 4 ) * 100, 0 ) AS hitOutBlackRate,
+        channel_system_black AS hitSystemBlack,
+        channel_out_black AS hitOutBlack,
+        IFNULL(channel_system_black + channel_out_black,0) as blackTotal
+
+        FROM
+        plateform_channel_report AS pcr
+        LEFT JOIN plateform_channel AS pc ON pc.id = pcr.channelid
+        LEFT JOIN platform_user AS pu ON pc.account = pu.phone_number
+        <where>
+            <if test="channelName != null">
+                pc.channel_name = #{channelName,jdbcType=VARCHAR}
+            </if>
+            <if test="plateformUserId != null">
+                and pc.plateform_user_id =#{plateformUserId}
+            </if>
+            <if test="startTime != null and startTime != '' and endTime != null and endTime != ''">
+                and DATE_FORMAT(pcr.create_time,'%Y-%m-%d') BETWEEN #{startTime,jdbcType=TIMESTAMP} AND
+                #{endTime,jdbcType=TIMESTAMP}
+            </if>
+            <if test="roleId !=null">
+                and pu.role_id = #{roleId}
+            </if>
+            <if test="account != null and account != ''">
+                and pc.account = #{account}
+            </if>
+
+        </where>
+        order by pcr.create_time desc ,pc.channel_name desc
+    </select>
+
+    <select id="countBlackSysout" parameterType="java.util.Map" resultType="java.lang.Integer">
+        select ifnull(count(1),0) from order_borrow ob
+        left join user_info ui on ob.user_id=ui.id
+        <where>
+            <if test="channelId != null">
+                ui.channel_id =#{channelId}
+            </if>
+            <if test="createTime != null">
+                and DATE_FORMAT(ui.create_time,'%Y-%m-%d') = DATE_FORMAT(#{createTime},'%Y-%m-%d')
+            </if>
+            <if test="systemBlack != null">
+                and ob.trial_remark like concat('%',#{systemBlack},'%')
+            </if>
+            <if test="outBlack != null">
+                and ob.loan_review_remark like concat('%',#{outBlack},'%')
+            </if>
+            <if test="customerType != null">
+                and ob.customer_type =#{customerType}
+            </if>
+
+        </where>
+    </select>
+
+</mapper>

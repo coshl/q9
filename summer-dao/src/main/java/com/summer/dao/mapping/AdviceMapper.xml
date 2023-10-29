@@ -1,0 +1,211 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.summer.dao.mapper.AdviceDAO">
+    <resultMap id="BaseResultMap" type="com.summer.dao.entity.Advice">
+        <id column="id" jdbcType="INTEGER" property="id"/>
+        <result column="user_phone" jdbcType="VARCHAR" property="userPhone"/>
+        <result column="advice_info" jdbcType="VARCHAR" property="adviceInfo"/>
+        <result column="os_version" jdbcType="VARCHAR" property="osVersion"/>
+        <result column="app_version" jdbcType="VARCHAR" property="appVersion"/>
+        <result column="device_id" jdbcType="VARCHAR" property="deviceId"/>
+        <result column="device_name" jdbcType="VARCHAR" property="deviceName"/>
+        <result column="advice_addtime" jdbcType="TIMESTAMP" property="adviceAddtime"/>
+        <result column="handle_status" jdbcType="INTEGER" property="handleStatus"/>
+        <result column="handle_date" jdbcType="TIMESTAMP" property="handleDate"/>
+        <result column="hidden" jdbcType="INTEGER" property="hidden"/>
+        <result column="handle_person" jdbcType="VARCHAR" property="handlePerson"/>
+        <result column="handle_status_info" jdbcType="VARCHAR" property="handleStatusInfo"/>
+    </resultMap>
+    <sql id="Base_Column_List">
+    id, user_phone, advice_info, os_version, app_version, device_id, device_name, advice_addtime, 
+    handle_status, handle_date, hidden, handle_person, handle_status_info
+  </sql>
+    <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from platform_advice
+        where id = #{id,jdbcType=INTEGER}
+    </select>
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from platform_advice
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+    <insert id="insert" parameterType="com.summer.dao.entity.Advice">
+    insert into platform_advice (id, user_phone, advice_info, 
+      os_version, app_version, device_id, 
+      device_name, advice_addtime, handle_status, 
+      handle_date, hidden, handle_person, 
+      handle_status_info)
+    values (#{id,jdbcType=INTEGER}, #{userPhone,jdbcType=VARCHAR}, #{adviceInfo,jdbcType=VARCHAR}, 
+      #{osVersion,jdbcType=VARCHAR}, #{appVersion,jdbcType=VARCHAR}, #{deviceId,jdbcType=VARCHAR}, 
+      #{deviceName,jdbcType=VARCHAR}, #{adviceAddtime,jdbcType=TIMESTAMP}, #{handleStatus,jdbcType=INTEGER}, 
+      #{handleDate,jdbcType=TIMESTAMP}, #{hidden,jdbcType=INTEGER}, #{handlePerson,jdbcType=VARCHAR}, 
+      #{handleStatusInfo,jdbcType=VARCHAR})
+  </insert>
+    <insert id="insertSelective" parameterType="com.summer.dao.entity.Advice">
+        insert into platform_advice
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                id,
+            </if>
+            <if test="userPhone != null">
+                user_phone,
+            </if>
+            <if test="adviceInfo != null">
+                advice_info,
+            </if>
+            <if test="osVersion != null">
+                os_version,
+            </if>
+            <if test="appVersion != null">
+                app_version,
+            </if>
+            <if test="deviceId != null">
+                device_id,
+            </if>
+            <if test="deviceName != null">
+                device_name,
+            </if>
+            <if test="adviceAddtime != null">
+                advice_addtime,
+            </if>
+            <if test="handleStatus != null">
+                handle_status,
+            </if>
+            <if test="handleDate != null">
+                handle_date,
+            </if>
+            <if test="hidden != null">
+                hidden,
+            </if>
+            <if test="handlePerson != null">
+                handle_person,
+            </if>
+            <if test="handleStatusInfo != null">
+                handle_status_info,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                #{id,jdbcType=INTEGER},
+            </if>
+            <if test="userPhone != null">
+                #{userPhone,jdbcType=VARCHAR},
+            </if>
+            <if test="adviceInfo != null">
+                #{adviceInfo,jdbcType=VARCHAR},
+            </if>
+            <if test="osVersion != null">
+                #{osVersion,jdbcType=VARCHAR},
+            </if>
+            <if test="appVersion != null">
+                #{appVersion,jdbcType=VARCHAR},
+            </if>
+            <if test="deviceId != null">
+                #{deviceId,jdbcType=VARCHAR},
+            </if>
+            <if test="deviceName != null">
+                #{deviceName,jdbcType=VARCHAR},
+            </if>
+            <if test="adviceAddtime != null">
+                #{adviceAddtime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="handleStatus != null">
+                #{handleStatus,jdbcType=INTEGER},
+            </if>
+            <if test="handleDate != null">
+                #{handleDate,jdbcType=TIMESTAMP},
+            </if>
+            <if test="hidden != null">
+                #{hidden,jdbcType=INTEGER},
+            </if>
+            <if test="handlePerson != null">
+                #{handlePerson,jdbcType=VARCHAR},
+            </if>
+            <if test="handleStatusInfo != null">
+                #{handleStatusInfo,jdbcType=VARCHAR},
+            </if>
+        </trim>
+    </insert>
+    <update id="updateByPrimaryKeySelective" parameterType="com.summer.dao.entity.Advice">
+        update platform_advice
+        <set>
+            <if test="userPhone != null">
+                user_phone = #{userPhone,jdbcType=VARCHAR},
+            </if>
+            <if test="adviceInfo != null">
+                advice_info = #{adviceInfo,jdbcType=VARCHAR},
+            </if>
+            <if test="osVersion != null">
+                os_version = #{osVersion,jdbcType=VARCHAR},
+            </if>
+            <if test="appVersion != null">
+                app_version = #{appVersion,jdbcType=VARCHAR},
+            </if>
+            <if test="deviceId != null">
+                device_id = #{deviceId,jdbcType=VARCHAR},
+            </if>
+            <if test="deviceName != null">
+                device_name = #{deviceName,jdbcType=VARCHAR},
+            </if>
+            <if test="adviceAddtime != null">
+                advice_addtime = #{adviceAddtime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="handleStatus != null">
+                handle_status = #{handleStatus,jdbcType=INTEGER},
+            </if>
+            <if test="handleDate != null">
+                handle_date = #{handleDate,jdbcType=TIMESTAMP},
+            </if>
+            <if test="hidden != null">
+                hidden = #{hidden,jdbcType=INTEGER},
+            </if>
+            <if test="handlePerson != null">
+                handle_person = #{handlePerson,jdbcType=VARCHAR},
+            </if>
+            <if test="handleStatusInfo != null">
+                handle_status_info = #{handleStatusInfo,jdbcType=VARCHAR},
+            </if>
+        </set>
+        where id = #{id,jdbcType=INTEGER}
+    </update>
+    <update id="updateByPrimaryKey" parameterType="com.summer.dao.entity.Advice">
+    update platform_advice
+    set user_phone = #{userPhone,jdbcType=VARCHAR},
+      advice_info = #{adviceInfo,jdbcType=VARCHAR},
+      os_version = #{osVersion,jdbcType=VARCHAR},
+      app_version = #{appVersion,jdbcType=VARCHAR},
+      device_id = #{deviceId,jdbcType=VARCHAR},
+      device_name = #{deviceName,jdbcType=VARCHAR},
+      advice_addtime = #{adviceAddtime,jdbcType=TIMESTAMP},
+      handle_status = #{handleStatus,jdbcType=INTEGER},
+      handle_date = #{handleDate,jdbcType=TIMESTAMP},
+      hidden = #{hidden,jdbcType=INTEGER},
+      handle_person = #{handlePerson,jdbcType=VARCHAR},
+      handle_status_info = #{handleStatusInfo,jdbcType=VARCHAR}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+    <select id="selectByParams" parameterType="java.util.Map" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from platform_advice
+        <where>
+            <if test="userPhone != null and userPhone != '' ">
+                user_phone = #{userPhone,jdbcType=VARCHAR}
+            </if>
+            <if test="handleStatus != null ">
+                and handle_status = #{handleStatus,jdbcType=INTEGER}
+            </if>
+
+            <if test="startTime != null and startTime != ''">
+                <![CDATA[    and advice_addtime >= #{startTime}   ]]>
+            </if>
+            <if test="endTime != null and endTime != ''">
+                <![CDATA[    and advice_addtime < date_add(#{endTime},interval 1 day)   ]]>
+            </if>
+
+
+        </where>
+        order by handle_status asc, advice_addtime desc
+    </select>
+</mapper>

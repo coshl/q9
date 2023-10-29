@@ -1,0 +1,405 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.summer.dao.mapper.UserBlackListDAO">
+    <resultMap id="BaseResultMap" type="com.summer.dao.entity.UserBlackList">
+        <id column="id" jdbcType="INTEGER" property="id"/>
+        <result column="phone" jdbcType="VARCHAR" property="phone"/>
+        <result column="user_name" jdbcType="VARCHAR" property="userName"/>
+        <result column="id_card" jdbcType="VARCHAR" property="idCard"/>
+        <result column="user_create_time" jdbcType="TIMESTAMP" property="userCreateTime"/>
+        <result column="create_time" jdbcType="TIMESTAMP" property="createTime"/>
+        <result column="update_time" jdbcType="TIMESTAMP" property="updateTime"/>
+        <result column="status" jdbcType="INTEGER" property="status"/>
+        <result column="remark" property="remark"></result>
+        <result column="overdue_day" property="overdueDay"/>
+    </resultMap>
+    <sql id="Base_Column_List">
+    id, phone, user_name, id_card, user_create_time, create_time, update_time, status,remark,overdue_day
+  </sql>
+    <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from user_black_list
+        where id = #{id,jdbcType=INTEGER}
+    </select>
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from user_black_list
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+    <insert id="insert" parameterType="com.summer.dao.entity.UserBlackList">
+    insert into user_black_list (id, phone, user_name,
+      id_card, user_create_time, create_time,
+      update_time, status,remark)
+    values (#{id,jdbcType=INTEGER}, #{phone,jdbcType=VARCHAR}, #{userName,jdbcType=VARCHAR},
+      #{idCard,jdbcType=VARCHAR}, #{userCreateTime,jdbcType=TIMESTAMP}, #{createTime,jdbcType=TIMESTAMP},
+      #{updateTime,jdbcType=TIMESTAMP}, #{status,jdbcType=INTEGER},#{remark,jdbcType=VARCHAR})
+  </insert>
+    <insert id="insertSelective" parameterType="com.summer.dao.entity.UserBlackList">
+        insert IGNORE into user_black_list
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                id,
+            </if>
+            <if test="phone != null">
+                phone,
+            </if>
+            <if test="userName != null">
+                user_name,
+            </if>
+            <if test="idCard != null">
+                id_card,
+            </if>
+            <if test="userCreateTime != null">
+                user_create_time,
+            </if>
+            <if test="createTime != null">
+                create_time,
+            </if>
+            <if test="updateTime != null">
+                update_time,
+            </if>
+            <if test="status != null">
+                status,
+            </if>
+            <if test="remark != null">
+                remark,
+            </if>
+            <if test="overdueDay != null">
+                overdue_day
+            </if>
+
+
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                #{id,jdbcType=INTEGER},
+            </if>
+            <if test="phone != null">
+                #{phone,jdbcType=VARCHAR},
+            </if>
+            <if test="userName != null">
+                #{userName,jdbcType=VARCHAR},
+            </if>
+            <if test="idCard != null">
+                #{idCard,jdbcType=VARCHAR},
+            </if>
+            <if test="userCreateTime != null">
+                #{userCreateTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="createTime != null">
+                #{createTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="updateTime != null">
+                #{updateTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="status != null">
+                #{status,jdbcType=INTEGER},
+            </if>
+
+            <if test="remark != null">
+                #{remark},
+            </if>
+            <if test="overdueDay != null">
+                #{overdueDay}
+            </if>
+        </trim>
+    </insert>
+    <insert id="insertBatch" parameterType="java.util.List">
+        insert into user_black_list (id, phone, user_name,
+        id_card, user_create_time, create_time,
+        update_time, status)
+        values
+        <foreach collection="list" index="index" item="item" separator=",">
+            (#{item.id,jdbcType=INTEGER}, #{item.phone,jdbcType=VARCHAR}, #{item.userName,jdbcType=VARCHAR},
+            #{item.idCard,jdbcType=VARCHAR}, #{item.userCreateTime,jdbcType=TIMESTAMP},
+            #{item.createTime,jdbcType=TIMESTAMP},
+            #{item.updateTime,jdbcType=TIMESTAMP}, #{item.status,jdbcType=INTEGER})
+        </foreach>
+    </insert>
+    <insert id="insertBatchSelective" parameterType="java.util.List">
+        insert into user_black_list
+        (id, phone, user_name, id_card, user_create_time, create_time, update_time, status
+        )
+        values
+        <foreach collection="list" index="index" item="item" separator=",">
+            <trim prefix="(" suffix=")" suffixOverrides=",">
+                <if test="item.id != null">
+                    #{item.id,jdbcType=INTEGER},
+                </if>
+                <if test="item.id == null">
+                    NULL,
+                </if>
+                <if test="item.phone != null">
+                    #{item.phone,jdbcType=VARCHAR},
+                </if>
+                <if test="item.phone == null">
+                    NULL,
+                </if>
+                <if test="item.userName != null">
+                    #{item.userName,jdbcType=VARCHAR},
+                </if>
+                <if test="item.userName == null">
+                    NULL,
+                </if>
+                <if test="item.idCard != null">
+                    #{item.idCard,jdbcType=VARCHAR},
+                </if>
+                <if test="item.idCard == null">
+                    NULL,
+                </if>
+                <if test="item.userCreateTime != null">
+                    #{item.userCreateTime,jdbcType=TIMESTAMP},
+                </if>
+                <if test="item.userCreateTime == null">
+                    NULL,
+                </if>
+                <if test="item.createTime != null">
+                    #{item.createTime,jdbcType=TIMESTAMP},
+                </if>
+                <if test="item.createTime == null">
+                    NULL,
+                </if>
+                <if test="item.updateTime != null">
+                    #{item.updateTime,jdbcType=TIMESTAMP},
+                </if>
+                <if test="item.updateTime == null">
+                    NULL,
+                </if>
+                <if test="item.status != null">
+                    #{item.status,jdbcType=INTEGER},
+                </if>
+                <if test="item.status == null">
+                    NULL,
+                </if>
+            </trim>
+        </foreach>
+    </insert>
+    <update id="updateByPrimaryKeySelective" parameterType="com.summer.dao.entity.UserBlackList">
+        update user_black_list
+        <set>
+            <if test="phone != null">
+                phone = #{phone,jdbcType=VARCHAR},
+            </if>
+            <if test="userName != null">
+                user_name = #{userName,jdbcType=VARCHAR},
+            </if>
+            <if test="idCard != null">
+                id_card = #{idCard,jdbcType=VARCHAR},
+            </if>
+            <if test="userCreateTime != null">
+                user_create_time = #{userCreateTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="createTime != null">
+                create_time = #{createTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="updateTime != null">
+                update_time = #{updateTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="status != null">
+                status = #{status,jdbcType=INTEGER},
+            </if>
+            <if test="remark != null">
+                remark = #{remark},
+            </if>
+            <if test="overdueDay != null">
+                overdue_day =#{overdueDay}
+            </if>
+        </set>
+        where id = #{id,jdbcType=INTEGER}
+    </update>
+    <update id="updateByPrimaryKey" parameterType="com.summer.dao.entity.UserBlackList">
+    update user_black_list
+    set phone = #{phone,jdbcType=VARCHAR},
+      user_name = #{userName,jdbcType=VARCHAR},
+      id_card = #{idCard,jdbcType=VARCHAR},
+      user_create_time = #{userCreateTime,jdbcType=TIMESTAMP},
+      create_time = #{createTime,jdbcType=TIMESTAMP},
+      update_time = #{updateTime,jdbcType=TIMESTAMP},
+      status = #{status,jdbcType=INTEGER}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+    <update id="updateBatchByPrimaryKey" parameterType="java.util.List">
+        update user_black_list
+        <trim prefix="set" suffixOverrides=",">
+            <trim prefix="phone =case id" suffix="end,">
+                <foreach collection="list" index="index" item="item" separator=" ">
+                    when #{item.id} then #{item.phone}
+                </foreach>
+            </trim>
+            <trim prefix="userName =case id" suffix="end,">
+                <foreach collection="list" index="index" item="item" separator=" ">
+                    when #{item.id} then #{item.userName}
+                </foreach>
+            </trim>
+            <trim prefix="idCard =case id" suffix="end,">
+                <foreach collection="list" index="index" item="item" separator=" ">
+                    when #{item.id} then #{item.idCard}
+                </foreach>
+            </trim>
+            <trim prefix="userCreateTime =case id" suffix="end,">
+                <foreach collection="list" index="index" item="item" separator=" ">
+                    when #{item.id} then #{item.userCreateTime}
+                </foreach>
+            </trim>
+            <trim prefix="createTime =case id" suffix="end,">
+                <foreach collection="list" index="index" item="item" separator=" ">
+                    when #{item.id} then #{item.createTime}
+                </foreach>
+            </trim>
+            <trim prefix="updateTime =case id" suffix="end,">
+                <foreach collection="list" index="index" item="item" separator=" ">
+                    when #{item.id} then #{item.updateTime}
+                </foreach>
+            </trim>
+            <trim prefix="status =case id" suffix="end,">
+                <foreach collection="list" index="index" item="item" separator=" ">
+                    when #{item.id} then #{item.status}
+                </foreach>
+            </trim>
+        </trim>
+        where id in
+        <foreach close=")" collection="list" index="index" item="item" open="(" separator=",">
+            #{item.id}
+        </foreach>
+    </update>
+    <update id="updateBatchByPrimaryKeySelective" parameterType="java.util.List">
+        update user_black_list
+        <trim prefix="set" suffixOverrides=",">
+            <trim prefix="phone =case id" suffix="end,">
+                <foreach collection="list" index="index" item="item" separator=" ">
+                    <if test="item.phone != null ">
+                        when #{item.id} then #{item.phone}
+                    </if>
+                    <if test="item.phone == null ">
+                        when #{item.id} then user_black_list.phone
+                    </if>
+                </foreach>
+            </trim>
+            <trim prefix="userName =case id" suffix="end,">
+                <foreach collection="list" index="index" item="item" separator=" ">
+                    <if test="item.userName != null ">
+                        when #{item.id} then #{item.userName}
+                    </if>
+                    <if test="item.userName == null ">
+                        when #{item.id} then user_black_list.user_name
+                    </if>
+                </foreach>
+            </trim>
+            <trim prefix="idCard =case id" suffix="end,">
+                <foreach collection="list" index="index" item="item" separator=" ">
+                    <if test="item.idCard != null ">
+                        when #{item.id} then #{item.idCard}
+                    </if>
+                    <if test="item.idCard == null ">
+                        when #{item.id} then user_black_list.id_card
+                    </if>
+                </foreach>
+            </trim>
+            <trim prefix="userCreateTime =case id" suffix="end,">
+                <foreach collection="list" index="index" item="item" separator=" ">
+                    <if test="item.userCreateTime != null ">
+                        when #{item.id} then #{item.userCreateTime}
+                    </if>
+                    <if test="item.userCreateTime == null ">
+                        when #{item.id} then user_black_list.user_create_time
+                    </if>
+                </foreach>
+            </trim>
+            <trim prefix="createTime =case id" suffix="end,">
+                <foreach collection="list" index="index" item="item" separator=" ">
+                    <if test="item.createTime != null ">
+                        when #{item.id} then #{item.createTime}
+                    </if>
+                    <if test="item.createTime == null ">
+                        when #{item.id} then user_black_list.create_time
+                    </if>
+                </foreach>
+            </trim>
+            <trim prefix="updateTime =case id" suffix="end,">
+                <foreach collection="list" index="index" item="item" separator=" ">
+                    <if test="item.updateTime != null ">
+                        when #{item.id} then #{item.updateTime}
+                    </if>
+                    <if test="item.updateTime == null ">
+                        when #{item.id} then user_black_list.update_time
+                    </if>
+                </foreach>
+            </trim>
+            <trim prefix="status =case id" suffix="end,">
+                <foreach collection="list" index="index" item="item" separator=" ">
+                    <if test="item.status != null ">
+                        when #{item.id} then #{item.status}
+                    </if>
+                    <if test="item.status == null ">
+                        when #{item.id} then user_black_list.status
+                    </if>
+                </foreach>
+            </trim>
+        </trim>
+        where id in
+        <foreach close=")" collection="list" index="index" item="item" open="(" separator=",">
+            #{item.id}
+        </foreach>
+    </update>
+
+    <select id="findByPhone" parameterType="java.lang.String" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from user_black_list where phone=#{phone}
+    </select>
+    <sql id="black_list_column">
+    id, phone, user_name as realName, id_card as idCard,
+    date_format(user_create_time,'%Y-%m-%d %H:%i:%s' ) as createTimeChg,
+    date_format(create_time,'%Y-%m-%d %H:%i:%s' ) as createTime ,
+    date_format(update_time,'%Y-%m-%d %H:%i:%s' ) as updateTime, status,remark as blackReason
+  </sql>
+    <select id="findByParam" parameterType="java.util.Map" resultType="com.summer.pojo.vo.UserBlackListVo">
+        select
+        <include refid="black_list_column"/>
+        from user_black_list
+        <where>
+            <if test="realName != null and realName != ''">
+                user_name=#{realName}
+            </if>
+            <if test="phone != null and phone != ''">
+                and phone =#{phone}
+            </if>
+            <if test="idCard != null and idCard != ''">
+                and id_card=#{idCard}
+            </if>
+            <if test="sCreateTime != null and sCreateTime != ''">
+                <![CDATA[    and user_create_time >= #{sCreateTime}   ]]>
+            </if>
+            <if test="eCreateTime != null and eCreateTime != ''">
+                <![CDATA[    and user_create_time < date_add(#{eCreateTime},interval 1 day) ]]>
+            </if>
+            <if test="status != null">
+                and status =#{status}
+            </if>
+            order by create_time desc,user_name desc
+
+        </where>
+    </select>
+
+    <update id="deleteBlackUser" parameterType="java.lang.Integer">
+    update user_black_list set status = 1 where
+    <![CDATA[ overdue_day <= #{day}
+        ]]>
+    </update>
+    
+    <!--<select id="SyncBlackData" resultType="com.summer.black.common.entity.RiskBlackLists">
+    	select phone,user_name as name,id_card,user_create_time as registerTime,create_time,update_time,`status`,remark,overdue_day,(select sys_value from back_config_params where sys_key = 'appId') as appId from user_black_list where TO_DAYS( NOW() ) - TO_DAYS(DATE_FORMAT(create_time,'%Y-%m-%d')) = 1
+    </select>
+    
+    <select id="synchronizeOrderData" resultType="com.summer.black.common.entity.RiskOrderList">
+    	select ui.phone as phone, ui.real_name as 'name',ui.id_card as idCard,uc.card_no as bankCard,uc.bank_name as bankName,uc.bank_address as bankBranch,
+		orb.apply_amount as applyAmount,orb.loan_fee as loanFee,orb.into_money as receivedAmount,ort.paid_amount as paidAmount,ort.reduce_amount as reduceAmount,orb.loan_term as loanDays,
+		orl.renewal_day as renewalDays,ort.late_day as lateDays,orb.create_date as applyTime,orb.loan_time as lendingTime,ort.repayment_time as paybackTime,ort.paid_time as paidTime,
+		orb.`status` as 'status',ui.customer_type as customerType,(select sys_value from back_config_params where sys_key = 'appId') as merchant
+		from order_borrow orb INNER JOIN order_repayment ort ON orb.id = ort.borrow_id
+		INNER JOIN order_renewal orl ON orb.id = orl.borrow_id
+		INNER JOIN user_info ui ON orb.user_id = ui.id INNER JOIN user_card_info uc ON orb.user_id = uc.user_id
+		where orb.`status` IN (8,9,10,11,12,13) and TO_DAYS( NOW() ) - TO_DAYS(DATE_FORMAT(loan_time,'%Y-%m-%d')) = 1
+		GROUP BY orb.id
+    </select>-->
+</mapper>

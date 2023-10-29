@@ -1,0 +1,995 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.summer.dao.mapper.InfoIndexInfoDao">
+    <resultMap id="BaseResultMap" type="com.summer.dao.entity.InfoIndexInfo">
+        <id column="user_id" jdbcType="INTEGER" property="userId"/>
+        <result column="card_amount" jdbcType="VARCHAR" property="cardAmount"/>
+        <result column="amount_min" jdbcType="VARCHAR" property="amountMin"/>
+        <result column="rate" jdbcType="VARCHAR" property="rate"/>
+        <result column="auth_info" jdbcType="INTEGER" property="authInfo"/>
+        <result column="auth_info_time" jdbcType="TIMESTAMP" property="authInfoTime"/>
+        <result column="auth_contacts" jdbcType="INTEGER" property="authContacts"/>
+        <result column="auth_contacts_time" jdbcType="TIMESTAMP" property="authContactsTime"/>
+        <result column="auth_bank" jdbcType="INTEGER" property="authBank"/>
+        <result column="auth_bank_time" jdbcType="TIMESTAMP" property="authBankTime"/>
+        <result column="auth_sesame" jdbcType="INTEGER" property="authSesame"/>
+        <result column="auth_sesame_time" jdbcType="TIMESTAMP" property="authSesameTime"/>
+        <result column="auth_mobile" jdbcType="INTEGER" property="authMobile"/>
+        <result column="auth_count" jdbcType="INTEGER" property="authCount"/>
+        <result column="borrow_status" jdbcType="VARCHAR" property="borrowStatus"/>
+        <result column="bank_no" jdbcType="VARCHAR" property="bankNo"/>
+        <result column="status" jdbcType="VARCHAR" property="status"/>
+    </resultMap>
+    <sql id="Base_Column_List">
+    user_id, card_amount, amount_min, rate, auth_info, auth_info_time, auth_contacts, 
+    auth_contacts_time, auth_bank, auth_bank_time, auth_sesame, auth_sesame_time, auth_mobile, 
+    auth_count, borrow_status, bank_no, status
+  </sql>
+    <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from info_index_info
+        where user_id = #{userId,jdbcType=INTEGER}
+    </select>
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from info_index_info
+    where user_id = #{userId,jdbcType=INTEGER}
+  </delete>
+    <insert id="insert" parameterType="com.summer.dao.entity.InfoIndexInfo">
+    insert into info_index_info (user_id, card_amount, amount_min, 
+      rate, auth_info, auth_info_time, 
+      auth_contacts, auth_contacts_time, auth_bank, 
+      auth_bank_time, auth_sesame, auth_sesame_time, 
+      auth_mobile, auth_count, borrow_status, 
+      bank_no, status)
+    values (#{userId,jdbcType=INTEGER}, #{cardAmount,jdbcType=VARCHAR}, #{amountMin,jdbcType=VARCHAR}, 
+      #{rate,jdbcType=VARCHAR}, #{authInfo,jdbcType=INTEGER}, #{authInfoTime,jdbcType=TIMESTAMP}, 
+      #{authContacts,jdbcType=INTEGER}, #{authContactsTime,jdbcType=TIMESTAMP}, #{authBank,jdbcType=INTEGER}, 
+      #{authBankTime,jdbcType=TIMESTAMP}, #{authSesame,jdbcType=INTEGER}, #{authSesameTime,jdbcType=TIMESTAMP}, 
+      #{authMobile,jdbcType=INTEGER}, #{authCount,jdbcType=INTEGER}, #{borrowStatus,jdbcType=VARCHAR}, 
+      #{bankNo,jdbcType=VARCHAR}, #{status,jdbcType=VARCHAR})
+  </insert>
+    <insert id="insertSelective" parameterType="com.summer.dao.entity.InfoIndexInfo">
+        insert ignore into info_index_info
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="userId != null">
+                user_id,
+            </if>
+            <if test="cardAmount != null">
+                card_amount,
+            </if>
+            <if test="amountMin != null">
+                amount_min,
+            </if>
+            <if test="rate != null">
+                rate,
+            </if>
+            <if test="authInfo != null">
+                auth_info,
+            </if>
+            <if test="authInfoTime != null">
+                auth_info_time,
+            </if>
+            <if test="authContacts != null">
+                auth_contacts,
+            </if>
+            <if test="authContactsTime != null">
+                auth_contacts_time,
+            </if>
+            <if test="authBank != null">
+                auth_bank,
+            </if>
+            <if test="authBankTime != null">
+                auth_bank_time,
+            </if>
+            <if test="authSesame != null">
+                auth_sesame,
+            </if>
+            <if test="authSesameTime != null">
+                auth_sesame_time,
+            </if>
+            <if test="authMobile != null">
+                auth_mobile,
+            </if>
+            <if test="authCount != null">
+                auth_count,
+            </if>
+            <if test="borrowStatus != null">
+                borrow_status,
+            </if>
+            <if test="bankNo != null">
+                bank_no,
+            </if>
+            <if test="status != null">
+                status,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="userId != null">
+                #{userId,jdbcType=INTEGER},
+            </if>
+            <if test="cardAmount != null">
+                #{cardAmount,jdbcType=VARCHAR},
+            </if>
+            <if test="amountMin != null">
+                #{amountMin,jdbcType=VARCHAR},
+            </if>
+            <if test="rate != null">
+                #{rate,jdbcType=VARCHAR},
+            </if>
+            <if test="authInfo != null">
+                #{authInfo,jdbcType=INTEGER},
+            </if>
+            <if test="authInfoTime != null">
+                #{authInfoTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="authContacts != null">
+                #{authContacts,jdbcType=INTEGER},
+            </if>
+            <if test="authContactsTime != null">
+                #{authContactsTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="authBank != null">
+                #{authBank,jdbcType=INTEGER},
+            </if>
+            <if test="authBankTime != null">
+                #{authBankTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="authSesame != null">
+                #{authSesame,jdbcType=INTEGER},
+            </if>
+            <if test="authSesameTime != null">
+                #{authSesameTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="authMobile != null">
+                #{authMobile,jdbcType=INTEGER},
+            </if>
+            <if test="authCount != null">
+                #{authCount,jdbcType=INTEGER},
+            </if>
+            <if test="borrowStatus != null">
+                #{borrowStatus,jdbcType=VARCHAR},
+            </if>
+            <if test="bankNo != null">
+                #{bankNo,jdbcType=VARCHAR},
+            </if>
+            <if test="status != null">
+                #{status,jdbcType=VARCHAR},
+            </if>
+        </trim>
+    </insert>
+    <insert id="insertBatch" parameterType="java.util.List">
+        insert into info_index_info (user_id, card_amount, amount_min,
+        rate, auth_info, auth_info_time,
+        auth_contacts, auth_contacts_time,
+        auth_bank, auth_bank_time, auth_sesame,
+        auth_sesame_time, auth_mobile,
+        auth_count, borrow_status, bank_no,
+        status)
+        values
+        <foreach collection="list" index="index" item="item" separator=",">
+            (#{item.userId,jdbcType=INTEGER}, #{item.cardAmount,jdbcType=VARCHAR}, #{item.amountMin,jdbcType=VARCHAR},
+            #{item.rate,jdbcType=VARCHAR}, #{item.authInfo,jdbcType=INTEGER}, #{item.authInfoTime,jdbcType=TIMESTAMP},
+            #{item.authContacts,jdbcType=INTEGER}, #{item.authContactsTime,jdbcType=TIMESTAMP},
+            #{item.authBank,jdbcType=INTEGER}, #{item.authBankTime,jdbcType=TIMESTAMP},
+            #{item.authSesame,jdbcType=INTEGER},
+            #{item.authSesameTime,jdbcType=TIMESTAMP}, #{item.authMobile,jdbcType=INTEGER},
+            #{item.authCount,jdbcType=INTEGER}, #{item.borrowStatus,jdbcType=VARCHAR}, #{item.bankNo,jdbcType=VARCHAR},
+            #{item.status,jdbcType=VARCHAR})
+        </foreach>
+    </insert>
+    <insert id="insertBatchSelective" parameterType="java.util.List">
+        insert into info_index_info
+        (user_id, card_amount, amount_min, rate, auth_info, auth_info_time, auth_contacts,
+        auth_contacts_time, auth_bank, auth_bank_time, auth_sesame, auth_sesame_time, auth_mobile,
+        auth_count, borrow_status, bank_no, status)
+        values
+        <foreach collection="list" index="index" item="item" separator=",">
+            <trim prefix="(" suffix=")" suffixOverrides=",">
+                <if test="item.userId != null">
+                    #{item.userId,jdbcType=INTEGER},
+                </if>
+                <if test="item.userId == null">
+                    NULL,
+                </if>
+                <if test="item.cardAmount != null">
+                    #{item.cardAmount,jdbcType=VARCHAR},
+                </if>
+                <if test="item.cardAmount == null">
+                    NULL,
+                </if>
+                <if test="item.amountMin != null">
+                    #{item.amountMin,jdbcType=VARCHAR},
+                </if>
+                <if test="item.amountMin == null">
+                    NULL,
+                </if>
+                <if test="item.rate != null">
+                    #{item.rate,jdbcType=VARCHAR},
+                </if>
+                <if test="item.rate == null">
+                    NULL,
+                </if>
+                <if test="item.authInfo != null">
+                    #{item.authInfo,jdbcType=INTEGER},
+                </if>
+                <if test="item.authInfo == null">
+                    NULL,
+                </if>
+                <if test="item.authInfoTime != null">
+                    #{item.authInfoTime,jdbcType=TIMESTAMP},
+                </if>
+                <if test="item.authInfoTime == null">
+                    NULL,
+                </if>
+                <if test="item.authContacts != null">
+                    #{item.authContacts,jdbcType=INTEGER},
+                </if>
+                <if test="item.authContacts == null">
+                    NULL,
+                </if>
+                <if test="item.authContactsTime != null">
+                    #{item.authContactsTime,jdbcType=TIMESTAMP},
+                </if>
+                <if test="item.authContactsTime == null">
+                    NULL,
+                </if>
+                <if test="item.authBank != null">
+                    #{item.authBank,jdbcType=INTEGER},
+                </if>
+                <if test="item.authBank == null">
+                    NULL,
+                </if>
+                <if test="item.authBankTime != null">
+                    #{item.authBankTime,jdbcType=TIMESTAMP},
+                </if>
+                <if test="item.authBankTime == null">
+                    NULL,
+                </if>
+                <if test="item.authSesame != null">
+                    #{item.authSesame,jdbcType=INTEGER},
+                </if>
+                <if test="item.authSesame == null">
+                    NULL,
+                </if>
+                <if test="item.authSesameTime != null">
+                    #{item.authSesameTime,jdbcType=TIMESTAMP},
+                </if>
+                <if test="item.authSesameTime == null">
+                    NULL,
+                </if>
+                <if test="item.authMobile != null">
+                    #{item.authMobile,jdbcType=INTEGER},
+                </if>
+                <if test="item.authMobile == null">
+                    NULL,
+                </if>
+                <if test="item.authCount != null">
+                    #{item.authCount,jdbcType=INTEGER},
+                </if>
+                <if test="item.authCount == null">
+                    NULL,
+                </if>
+                <if test="item.borrowStatus != null">
+                    #{item.borrowStatus,jdbcType=VARCHAR},
+                </if>
+                <if test="item.borrowStatus == null">
+                    NULL,
+                </if>
+                <if test="item.bankNo != null">
+                    #{item.bankNo,jdbcType=VARCHAR},
+                </if>
+                <if test="item.bankNo == null">
+                    NULL,
+                </if>
+                <if test="item.status != null">
+                    #{item.status,jdbcType=VARCHAR},
+                </if>
+                <if test="item.status == null">
+                    NULL,
+                </if>
+            </trim>
+        </foreach>
+    </insert>
+    <update id="updateByPrimaryKeySelective" parameterType="com.summer.dao.entity.InfoIndexInfo">
+        update info_index_info
+        <set>
+            <if test="cardAmount != null">
+                card_amount = #{cardAmount,jdbcType=VARCHAR},
+            </if>
+            <if test="amountMin != null">
+                amount_min = #{amountMin,jdbcType=VARCHAR},
+            </if>
+            <if test="rate != null">
+                rate = #{rate,jdbcType=VARCHAR},
+            </if>
+            <if test="authInfo != null">
+                auth_info = #{authInfo,jdbcType=INTEGER},
+            </if>
+            <if test="authInfoTime != null">
+                auth_info_time = #{authInfoTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="authContacts != null">
+                auth_contacts = #{authContacts,jdbcType=INTEGER},
+            </if>
+            <if test="authContactsTime != null">
+                auth_contacts_time = #{authContactsTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="authBank != null">
+                auth_bank = #{authBank,jdbcType=INTEGER},
+            </if>
+            <if test="authBankTime != null">
+                auth_bank_time = #{authBankTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="authSesame != null">
+                auth_sesame = #{authSesame,jdbcType=INTEGER},
+            </if>
+            <if test="authSesameTime != null">
+                auth_sesame_time = #{authSesameTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="authMobile != null">
+                auth_mobile = #{authMobile,jdbcType=INTEGER},
+            </if>
+            <if test="authCount != null">
+                auth_count = #{authCount,jdbcType=INTEGER},
+            </if>
+            <if test="borrowStatus != null">
+                borrow_status = #{borrowStatus,jdbcType=VARCHAR},
+            </if>
+            <if test="bankNo != null">
+                bank_no = #{bankNo,jdbcType=VARCHAR},
+            </if>
+            <if test="status != null">
+                status = #{status,jdbcType=VARCHAR},
+            </if>
+        </set>
+        where user_id = #{userId,jdbcType=INTEGER}
+    </update>
+    <update id="updateByPrimaryKey" parameterType="com.summer.dao.entity.InfoIndexInfo">
+    update info_index_info
+    set card_amount = #{cardAmount,jdbcType=VARCHAR},
+      amount_min = #{amountMin,jdbcType=VARCHAR},
+      rate = #{rate,jdbcType=VARCHAR},
+      auth_info = #{authInfo,jdbcType=INTEGER},
+      auth_info_time = #{authInfoTime,jdbcType=TIMESTAMP},
+      auth_contacts = #{authContacts,jdbcType=INTEGER},
+      auth_contacts_time = #{authContactsTime,jdbcType=TIMESTAMP},
+      auth_bank = #{authBank,jdbcType=INTEGER},
+      auth_bank_time = #{authBankTime,jdbcType=TIMESTAMP},
+      auth_sesame = #{authSesame,jdbcType=INTEGER},
+      auth_sesame_time = #{authSesameTime,jdbcType=TIMESTAMP},
+      auth_mobile = #{authMobile,jdbcType=INTEGER},
+      auth_count = #{authCount,jdbcType=INTEGER},
+      borrow_status = #{borrowStatus,jdbcType=VARCHAR},
+      bank_no = #{bankNo,jdbcType=VARCHAR},
+      status = #{status,jdbcType=VARCHAR}
+    where user_id = #{userId,jdbcType=INTEGER}
+  </update>
+    <update id="updateBorrow" parameterType="java.util.Map">
+        update info_index_info
+        set
+        borrow_status = 0
+        where user_id in ( select distinct user_id from order_borrow where id in
+        <foreach collection="ids" open="(" separator="," close=")" item="id">
+            #{id}
+        </foreach>
+        and status =-1)
+    </update>
+    <update id="updateBatchByPrimaryKey" parameterType="java.util.List">
+        update info_index_info
+        <trim prefix="set" suffixOverrides=",">
+            <trim prefix="cardAmount =case userId" suffix="end,">
+                <foreach collection="list" index="index" item="item" separator=" ">
+                    when #{item.userId} then #{item.cardAmount}
+                </foreach>
+            </trim>
+            <trim prefix="amountMin =case userId" suffix="end,">
+                <foreach collection="list" index="index" item="item" separator=" ">
+                    when #{item.userId} then #{item.amountMin}
+                </foreach>
+            </trim>
+            <trim prefix="rate =case userId" suffix="end,">
+                <foreach collection="list" index="index" item="item" separator=" ">
+                    when #{item.userId} then #{item.rate}
+                </foreach>
+            </trim>
+            <trim prefix="authInfo =case userId" suffix="end,">
+                <foreach collection="list" index="index" item="item" separator=" ">
+                    when #{item.userId} then #{item.authInfo}
+                </foreach>
+            </trim>
+            <trim prefix="authInfoTime =case userId" suffix="end,">
+                <foreach collection="list" index="index" item="item" separator=" ">
+                    when #{item.userId} then #{item.authInfoTime}
+                </foreach>
+            </trim>
+            <trim prefix="authContacts =case userId" suffix="end,">
+                <foreach collection="list" index="index" item="item" separator=" ">
+                    when #{item.userId} then #{item.authContacts}
+                </foreach>
+            </trim>
+            <trim prefix="authContactsTime =case userId" suffix="end,">
+                <foreach collection="list" index="index" item="item" separator=" ">
+                    when #{item.userId} then #{item.authContactsTime}
+                </foreach>
+            </trim>
+            <trim prefix="authBank =case userId" suffix="end,">
+                <foreach collection="list" index="index" item="item" separator=" ">
+                    when #{item.userId} then #{item.authBank}
+                </foreach>
+            </trim>
+            <trim prefix="authBankTime =case userId" suffix="end,">
+                <foreach collection="list" index="index" item="item" separator=" ">
+                    when #{item.userId} then #{item.authBankTime}
+                </foreach>
+            </trim>
+            <trim prefix="authSesame =case userId" suffix="end,">
+                <foreach collection="list" index="index" item="item" separator=" ">
+                    when #{item.userId} then #{item.authSesame}
+                </foreach>
+            </trim>
+            <trim prefix="authSesameTime =case userId" suffix="end,">
+                <foreach collection="list" index="index" item="item" separator=" ">
+                    when #{item.userId} then #{item.authSesameTime}
+                </foreach>
+            </trim>
+            <trim prefix="authMobile =case userId" suffix="end,">
+                <foreach collection="list" index="index" item="item" separator=" ">
+                    when #{item.userId} then #{item.authMobile}
+                </foreach>
+            </trim>
+            <trim prefix="authCount =case userId" suffix="end,">
+                <foreach collection="list" index="index" item="item" separator=" ">
+                    when #{item.userId} then #{item.authCount}
+                </foreach>
+            </trim>
+            <trim prefix="borrowStatus =case userId" suffix="end,">
+                <foreach collection="list" index="index" item="item" separator=" ">
+                    when #{item.userId} then #{item.borrowStatus}
+                </foreach>
+            </trim>
+            <trim prefix="bankNo =case userId" suffix="end,">
+                <foreach collection="list" index="index" item="item" separator=" ">
+                    when #{item.userId} then #{item.bankNo}
+                </foreach>
+            </trim>
+            <trim prefix="status =case userId" suffix="end,">
+                <foreach collection="list" index="index" item="item" separator=" ">
+                    when #{item.userId} then #{item.status}
+                </foreach>
+            </trim>
+        </trim>
+        where user_id in
+        <foreach close=")" collection="list" index="index" item="item" open="(" separator=",">
+            #{item.userId}
+        </foreach>
+    </update>
+    <update id="updateBatchByPrimaryKeySelective" parameterType="java.util.List">
+        update info_index_info
+        <trim prefix="set" suffixOverrides=",">
+            <trim prefix="cardAmount =case userId" suffix="end,">
+                <foreach collection="list" index="index" item="item" separator=" ">
+                    <if test="item.cardAmount != null ">
+                        when #{item.userId} then #{item.cardAmount}
+                    </if>
+                    <if test="item.cardAmount == null ">
+                        when #{item.userId} then info_index_info.card_amount
+                    </if>
+                </foreach>
+            </trim>
+            <trim prefix="amountMin =case userId" suffix="end,">
+                <foreach collection="list" index="index" item="item" separator=" ">
+                    <if test="item.amountMin != null ">
+                        when #{item.userId} then #{item.amountMin}
+                    </if>
+                    <if test="item.amountMin == null ">
+                        when #{item.userId} then info_index_info.amount_min
+                    </if>
+                </foreach>
+            </trim>
+            <trim prefix="rate =case userId" suffix="end,">
+                <foreach collection="list" index="index" item="item" separator=" ">
+                    <if test="item.rate != null ">
+                        when #{item.userId} then #{item.rate}
+                    </if>
+                    <if test="item.rate == null ">
+                        when #{item.userId} then info_index_info.rate
+                    </if>
+                </foreach>
+            </trim>
+            <trim prefix="authInfo =case userId" suffix="end,">
+                <foreach collection="list" index="index" item="item" separator=" ">
+                    <if test="item.authInfo != null ">
+                        when #{item.userId} then #{item.authInfo}
+                    </if>
+                    <if test="item.authInfo == null ">
+                        when #{item.userId} then info_index_info.auth_info
+                    </if>
+                </foreach>
+            </trim>
+            <trim prefix="authInfoTime =case userId" suffix="end,">
+                <foreach collection="list" index="index" item="item" separator=" ">
+                    <if test="item.authInfoTime != null ">
+                        when #{item.userId} then #{item.authInfoTime}
+                    </if>
+                    <if test="item.authInfoTime == null ">
+                        when #{item.userId} then info_index_info.auth_info_time
+                    </if>
+                </foreach>
+            </trim>
+            <trim prefix="authContacts =case userId" suffix="end,">
+                <foreach collection="list" index="index" item="item" separator=" ">
+                    <if test="item.authContacts != null ">
+                        when #{item.userId} then #{item.authContacts}
+                    </if>
+                    <if test="item.authContacts == null ">
+                        when #{item.userId} then info_index_info.auth_contacts
+                    </if>
+                </foreach>
+            </trim>
+            <trim prefix="authContactsTime =case userId" suffix="end,">
+                <foreach collection="list" index="index" item="item" separator=" ">
+                    <if test="item.authContactsTime != null ">
+                        when #{item.userId} then #{item.authContactsTime}
+                    </if>
+                    <if test="item.authContactsTime == null ">
+                        when #{item.userId} then info_index_info.auth_contacts_time
+                    </if>
+                </foreach>
+            </trim>
+            <trim prefix="authBank =case userId" suffix="end,">
+                <foreach collection="list" index="index" item="item" separator=" ">
+                    <if test="item.authBank != null ">
+                        when #{item.userId} then #{item.authBank}
+                    </if>
+                    <if test="item.authBank == null ">
+                        when #{item.userId} then info_index_info.auth_bank
+                    </if>
+                </foreach>
+            </trim>
+            <trim prefix="authBankTime =case userId" suffix="end,">
+                <foreach collection="list" index="index" item="item" separator=" ">
+                    <if test="item.authBankTime != null ">
+                        when #{item.userId} then #{item.authBankTime}
+                    </if>
+                    <if test="item.authBankTime == null ">
+                        when #{item.userId} then info_index_info.auth_bank_time
+                    </if>
+                </foreach>
+            </trim>
+            <trim prefix="authSesame =case userId" suffix="end,">
+                <foreach collection="list" index="index" item="item" separator=" ">
+                    <if test="item.authSesame != null ">
+                        when #{item.userId} then #{item.authSesame}
+                    </if>
+                    <if test="item.authSesame == null ">
+                        when #{item.userId} then info_index_info.auth_sesame
+                    </if>
+                </foreach>
+            </trim>
+            <trim prefix="authSesameTime =case userId" suffix="end,">
+                <foreach collection="list" index="index" item="item" separator=" ">
+                    <if test="item.authSesameTime != null ">
+                        when #{item.userId} then #{item.authSesameTime}
+                    </if>
+                    <if test="item.authSesameTime == null ">
+                        when #{item.userId} then info_index_info.auth_sesame_time
+                    </if>
+                </foreach>
+            </trim>
+            <trim prefix="authMobile =case userId" suffix="end,">
+                <foreach collection="list" index="index" item="item" separator=" ">
+                    <if test="item.authMobile != null ">
+                        when #{item.userId} then #{item.authMobile}
+                    </if>
+                    <if test="item.authMobile == null ">
+                        when #{item.userId} then info_index_info.auth_mobile
+                    </if>
+                </foreach>
+            </trim>
+            <trim prefix="authCount =case userId" suffix="end,">
+                <foreach collection="list" index="index" item="item" separator=" ">
+                    <if test="item.authCount != null ">
+                        when #{item.userId} then #{item.authCount}
+                    </if>
+                    <if test="item.authCount == null ">
+                        when #{item.userId} then info_index_info.auth_count
+                    </if>
+                </foreach>
+            </trim>
+            <trim prefix="borrowStatus =case userId" suffix="end,">
+                <foreach collection="list" index="index" item="item" separator=" ">
+                    <if test="item.borrowStatus != null ">
+                        when #{item.userId} then #{item.borrowStatus}
+                    </if>
+                    <if test="item.borrowStatus == null ">
+                        when #{item.userId} then info_index_info.borrow_status
+                    </if>
+                </foreach>
+            </trim>
+            <trim prefix="bankNo =case userId" suffix="end,">
+                <foreach collection="list" index="index" item="item" separator=" ">
+                    <if test="item.bankNo != null ">
+                        when #{item.userId} then #{item.bankNo}
+                    </if>
+                    <if test="item.bankNo == null ">
+                        when #{item.userId} then info_index_info.bank_no
+                    </if>
+                </foreach>
+            </trim>
+            <trim prefix="status =case userId" suffix="end,">
+                <foreach collection="list" index="index" item="item" separator=" ">
+                    <if test="item.status != null ">
+                        when #{item.userId} then #{item.status}
+                    </if>
+                    <if test="item.status == null ">
+                        when #{item.userId} then info_index_info.status
+                    </if>
+                </foreach>
+            </trim>
+        </trim>
+        where user_id in
+        <foreach close=")" collection="list" index="index" item="item" open="(" separator=",">
+            #{item.userId}
+        </foreach>
+    </update>
+
+    <select id="selectByParam" parameterType="java.util.Map" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from info_index_info
+        <where>
+            <if test="userId != null">
+                user_id = #{userId}
+            </if>
+            <if test="borrowStatus != null and borrowStatus != '' ">
+                and borrow_status = #{borrowStatus}
+            </if>
+        </where>
+    </select>
+    <delete id="delIndexUser" parameterType="HashMap">
+        delete from info_index_info where user_id = ${userId}
+    </delete>
+
+    <select id="searchInfoIndex" parameterType="HashMap" resultType="com.summer.dao.entity.InfoIndexInfo">
+        <![CDATA[
+
+			select
+			id as id,
+			card_title as card_title,
+			card_amount as card_amount,
+			amount_max as amount_max,
+			amount_min as amount_min,
+			auth_min as auth_min,
+			auth_max as auth_max,
+			today_last_amount as today_last_amount,
+			notice_size as notice_size,
+			days as day,
+			amount as amount,
+			service_amount as service_amount,
+			rate as rate,
+			message_url as message_url,
+			bonus_url as bonus_url,
+			borrow_url as borrow_url,
+			status as status
+			from info_index
+			where status='1'
+			limit 1
+
+        ]]>
+    </select>
+    <select id="searchInfoNoticeByIndex" parameterType="HashMap" resultType="com.summer.dao.entity.InfoNotice">
+        <![CDATA[
+
+			select
+			id as id,
+			not_content as notContent,
+			link_url as linkUrl,
+			not_select as notSelect,
+			status as status
+			from info_notice
+			where status='1'
+			and not_select=#{NOT_SELECT}
+		]]>
+        <![CDATA[order by id desc limit #{COUNT_XJX}
+        ]]>
+    </select>
+    <!--<select id="searchIndexDto" parameterType="HashMap" resultType="com.vxianjin.gringotts.web.pojo.index.IndexDto">
+        <![CDATA[
+            select
+            id as id,
+            content as content,
+            status as status
+            from info_index_cache
+            where status='1'
+            order by id desc
+            limit 1
+        ]]>
+    </select>
+    <insert id="saveIndexDto" parameterType="com.vxianjin.gringotts.web.pojo.index.IndexDto" useGeneratedKeys="true" keyProperty="id">
+        <![CDATA[
+            insert into info_index_cache(
+                content,
+                status
+            )values(
+                #{content},
+                #{status}
+            )
+        ]]>
+    </insert>-->
+    <delete id="delIndexDto">
+        <![CDATA[
+
+			delete from info_index_cache
+
+        ]]>
+    </delete>
+    <update id="updateIndexInfoByUserIdOld" parameterType="com.summer.dao.entity.InfoIndexInfo">
+        update info_index_info
+        <set>
+            <if test="cardAmount != null and cardAmount !=''">
+                card_amount =#{cardAmount},
+            </if>
+            <if test="amountMin != null and amountMin != ''">
+                amount_min =#{amountMin},
+            </if>
+            <if test="authInfo != null">
+                auth_info =#{authInfo},
+            </if>
+            <if test="authContacts != null">
+                auth_contacts =#{authContacts},
+            </if>
+            <if test="authBank != null">
+                auth_bank =#{authBank},
+            </if>
+            <if test="authSesame != null">
+                auth_sesame =#{authSesame},
+            </if>
+            <if test="authMobile != null">
+                auth_mobile =#{authMobile},
+            </if>
+            <if test="borrowStatus != null and borrowStatus != ''">
+                borrow_status =#{borrowStatus},
+            </if>
+            <if test="bankNo != null and bankNo != ''">
+                bank_no =#{bankNo},
+            </if>
+            <if test="status != null ">
+                status =#{status},
+            </if>
+        </set>
+        where user_id =#{userId}
+    </update>
+    <update id="updateIndexInfoByUserId" parameterType="com.summer.dao.entity.InfoIndexInfo">
+        update info_index_info
+        <set>
+            <if test="cardAmount != null and cardAmount !=''">
+                card_amount =#{cardAmount},
+            </if>
+            <if test="amountMin != null and amountMin != ''">
+                amount_min =#{amountMin},
+            </if>
+            <if test="authInfo != null">
+                auth_info =#{authInfo}, auth_info_time=now(),
+            </if>
+            <if test="authContacts != null">
+                auth_contacts =#{authContacts}, auth_contacts_time=now(),
+            </if>
+            <if test="authBank != null">
+                auth_bank =#{authBank}, auth_bank_time=now(),
+            </if>
+            <if test="authSesame != null">
+                auth_sesame =#{authSesame}, auth_sesame_time=now(),
+            </if>
+            <if test="authMobile != null">
+                auth_mobile =#{authMobile},
+            </if>
+            <if test="borrowStatus != null and borrowStatus != ''">
+                borrow_status =#{borrowStatus},
+            </if>
+            <if test="bankNo != null and bankNo != ''">
+                bank_no =#{bankNo},
+            </if>
+            <if test="status != null ">
+                status =#{status},
+            </if>
+        </set>
+        where user_id =#{userId}
+        <if test="authInfo != null">
+            and auth_info =0
+        </if>
+        <if test="authContacts != null">
+            and auth_contacts =0
+        </if>
+        <if test="authBank != null">
+            and auth_bank =0
+        </if>
+        <if test="authSesame != null">
+            and auth_sesame =0
+        </if>
+    </update>
+    <select id="searchInfoIndexInfo" resultType="com.summer.dao.entity.InfoIndexInfo" parameterType="HashMap">
+        <![CDATA[
+
+			select
+			user_id as userId,
+			card_amount as cardAmount,
+			amount_min as amountMin,
+			rate as rate,
+			auth_info as authInfo,
+			auth_contacts as authContacts,
+			auth_bank as authBank,
+			auth_sesame as authSesame,
+			auth_mobile as authMobile,
+			auth_count as authCount,
+			(auth_info+auth_contacts+auth_bank+auth_sesame+auth_mobile)as authSum,
+			borrow_status as borrowStatus,
+			bank_no as bankNo,
+			status as status
+			from info_index_info
+			where status='1'
+			and user_id=#{USER_ID}
+
+        ]]>
+    </select>
+    <!--<select id="searchBorrowOrderByIndex" parameterType="HashMap" resultType="com.vxianjin.gringotts.web.pojo.BorrowOrder">
+        <![CDATA[
+            select
+            id as id,
+            user_id as userId,
+            out_trade_no as outTradeNo,
+            order_type as orderType,
+            money_amount as moneyAmount,
+            apr as apr,
+            loan_interests as loanInterests,
+            into_money as intoMoney,
+            loan_method as loanMethod,
+            loan_term as loanTerm,
+            operator_name as operatorName,
+            remark as remark,
+            created_at as createdAt,
+            updated_at as updatedAt,
+            order_time as orderTime,
+            loan_time as loanTime,
+            loan_end_time as loanEndTime,
+            late_fee_apr as lateFeeApr,
+            receive_card_id as receiveCardId,
+            debit_card_id as debitCardId,
+            verify_trial_time as verifyTrialTime,
+            verify_trial_remark as verifyTrialRemark,
+            verify_trial_user as verifyTrialUser,
+            verify_review_time as verifyReviewTime,
+            verify_review_remark as verifyReviewRemark,
+            verify_review_user as verifyReviewUser,
+            verify_loan_time as verifyLoanTime,
+            verify_loan_remark as verifyLoanRemark,
+            verify_loan_user as verifyLoanUser,
+            capital_type as capitalType,
+            reason_remark as reasonRemark,
+            credit_lv as creditLv,
+            is_hit_risk_rule as isHitRiskRule,
+            auto_risk_check_status as autoRiskCheckStatus,
+            status as status,
+            pay_status as paystatus
+            from asset_borrow_order
+            where user_id=#{USER_ID}
+            order by id desc limit 1
+        ]]>
+    </select>-->
+    <insert id="saveInfoIndexInfo" parameterType="com.summer.dao.entity.InfoIndexInfo">
+        <![CDATA[
+
+			insert into info_index_info (
+			user_id,
+			card_amount,
+			amount_min,
+			rate,
+			auth_info,
+			auth_contacts,
+			auth_bank,
+			auth_sesame,
+			auth_mobile,
+			bank_no
+			)values(
+			#{userId},
+			#{cardAmount},
+			#{amountMin},
+			#{rate},
+			#{authInfo},
+			#{authContacts},
+			#{authBank},
+			#{authSesame},
+			#{authMobile},
+			#{bankNo}
+			)
+
+        ]]>
+    </insert>
+    <!--<select id="searchUserCardInfo" parameterType="HashMap" resultType="com.vxianjin.gringotts.web.pojo.UserCardInfo">
+        <![CDATA[
+        select
+            id as id,
+            user_id as userId,
+            bank_id as bankId,
+            bank_name as bankName,
+            card_no as card_no,
+            phone as phone,
+            status as status
+            from user_card_info
+            where status=1
+            and user_id=#{USER_ID}  and card_default=1
+        ]]>
+    </select>-->
+    <update id="updateInfoUserInfoBorrowStatus" parameterType="HashMap">
+        <![CDATA[
+
+			update info_index_info set borrow_status = #{BORROW_STATUS} where user_id=#{USER_ID}
+
+        ]]>
+    </update>
+    <!--<select id="searchUserByIndex" parameterType="HashMap" resultType="com.vxianjin.gringotts.web.pojo.User">
+        <![CDATA[
+            select
+            id as id,
+            amount_min as amountMin,
+            amount_max as amountMax,
+            amount_available as amountAvailable,
+            amount_addsum as amountAddsum,
+            realname_status as realnameStatus,
+            id_number as idNumber,
+            first_contact_name as firstContactName,
+            second_contact_name as secondContactName,
+            zm_status as zmStatus,
+            jxl_status as jxlStatus,
+            td_status as tdStatus
+            from user_info
+            where id=#{USER_ID}
+            and status=1
+        ]]>
+    </select>-->
+    <!--<select id="searchUserInfoOld" parameterType="HashMap" resultType="com.vxianjin.gringotts.web.pojo.UserInfoOld">
+        <![CDATA[
+            select
+            id as id,
+            telephone as telephone,
+            card_number as cardNumber,
+            display as display,
+            user_status as userStatus
+            from user_info_old
+            where telephone=#{TELEPHONE}
+            and display=#{DISPLAY}
+            and user_status='1'
+        ]]>
+    </select>-->
+    <update id="updateUserInfoOld" parameterType="HashMap">
+        <![CDATA[
+
+			update user_info_old set display=#{DISPLAY} where telephone=#{TELEPHONE}
+
+        ]]>
+    </update>
+    <!--<select id="searchInfoImage" parameterType="HashMap" resultType="com.vxianjin.gringotts.web.pojo.InfoImage">
+        <![CDATA[
+            select
+            id as id,
+            url as url,
+            title as title,
+            reurl as reurl,
+            sort as sort,
+            status as status
+            from info_image
+            where status=#{STATUS} order by sort asc
+        ]]>
+    </select>-->
+    <update id="updateInfoUserInfoBankStatus" parameterType="HashMap">
+		<![CDATA[
+
+    update info_index_info set auth_bank = #{AUTH_BANK} where user_id=#{USER_ID}
+
+        ]]>
+	</update>
+	
+	<select id="selectMerchantFlag" resultType="java.lang.String">
+        select sys_value as s from back_config_params where sys_key = 'appId'
+    </select>
+</mapper>

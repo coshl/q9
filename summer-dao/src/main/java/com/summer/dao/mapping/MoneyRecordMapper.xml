@@ -1,0 +1,169 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.summer.dao.mapper.MoneyRecordMapper">
+    <resultMap id="BaseResultMap" type="com.summer.dao.entity.MoneyRecord">
+        <id column="id" property="id" jdbcType="INTEGER"/>
+        <result column="user_id" property="userId" jdbcType="INTEGER"/>
+        <result column="type" property="type" jdbcType="INTEGER"/>
+        <result column="phone" property="phone" jdbcType="VARCHAR"/>
+        <result column="money" property="money" jdbcType="DECIMAL"/>
+        <result column="remark" property="remark" jdbcType="VARCHAR"/>
+        <result column="create_date" property="createDate" jdbcType="TIMESTAMP"/>
+        <result column="update_date" property="updateDate" jdbcType="TIMESTAMP"/>
+    </resultMap>
+    <resultMap id="TotalExpensesMap" type="com.summer.pojo.vo.TotalExpensesVO">
+        <id column="id" property="id" jdbcType="INTEGER"/>
+        <result column="time" property="reportTime" jdbcType="DATE"/>
+        <result column="registered_Number" property="registerCount" jdbcType="INTEGER"/>
+        <result column="registered_Amount" property="registrationUnitPrice" jdbcType="DECIMAL"/>
+        <result column="registeredConsumption_Amount" property="registeredConsumptionAmount" jdbcType="DECIMAL"/>
+        <result column="wind_Control_Number" property="windControlCount" jdbcType="INTEGER"/>
+        <result column="wind_Control_Amout" property="unitPriceOfRiskControl" jdbcType="DECIMAL"/>
+        <result column="wind_ControlConsumption_Amout" property="riskControlConsumptionAmount" jdbcType="DECIMAL"/>
+        <result column="totalConsumption" property="totalConsumption" jdbcType="DECIMAL"/>
+    </resultMap>
+    
+    <resultMap id="TotalMoneyMap" type="com.summer.pojo.vo.TotalAmountVO">
+        <result column="currentMmoney" property="currentMmoney" jdbcType="DECIMAL"/>
+        <result column="totalConsumption" property="totalConsumption" jdbcType="DECIMAL"/>
+        <result column="totalMoney" property="totalMoney" jdbcType="DECIMAL"/>
+    </resultMap>
+    
+    <sql id="Base_Column_List">
+    id, user_id, type,phone,money,remark,create_date,update_date
+  </sql>
+    <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer">
+        select
+        <include refid="Base_Column_List"/>
+        from order_borrow
+        where id = #{id,jdbcType=INTEGER}
+    </select>
+
+    <insert id="insert" parameterType="com.summer.dao.entity.MoneyRecord">
+    insert into money_record (id, user_id, type,phone,money,remark,create_date,update_date)
+    values (#{id,jdbcType=INTEGER}, #{userId,jdbcType=INTEGER}, #{type,jdbcType=INTEGER},#{phone,jdbcType=VARCHAR},
+      #{money,jdbcType=DECIMAL},#{remark,jdbcType=VARCHAR}, #{createDate,jdbcType=TIMESTAMP},#{updateDate,jdbcType=TIMESTAMP} )
+  </insert>
+
+    <select id="pageByCondition" parameterType="java.util.Map" resultMap="BaseResultMap">
+        select
+       mr.id,mr.user_id,mr.type,mr.phone,mr.money,mr.remark,mr.create_date,mr.update_date
+       from money_record mr
+        <where> 1=1
+            <if test="id != null">
+                and mr.id = #{id,jdbcType=Integer}
+            </if>
+            <if test="userId != null ">
+                and mr.user_id = #{userId}
+            </if>
+            <if test="type != null ">
+                and mr.type = #{type}
+            </if>
+            <if test="phone != null ">
+                and mr.phone = #{phone}
+            </if>
+        </where>
+    </select>
+    
+    <select id="selectTotalExpenses" resultType="com.summer.pojo.vo.TotalExpensesVO">
+        SELECT report_time as reportTime,(SELECT count(0) from user_info where TO_DAYS(create_time) = TO_DAYS(report_time)) AS registerCount,sum(idcard_certification_count) AS windControlCount,
+		(select sys_value from back_config_params where sys_key='register_money') AS registrationUnitPrice,
+		IFNULL((SELECT count(0) from user_info where TO_DAYS(create_time) = TO_DAYS(report_time)) * (select convert(sys_value,decimal(18,2)) FROM back_config_params where sys_key = 'register_money'),0)  AS registeredConsumptionAmount,
+		(select sys_value from back_config_params where sys_key='management_money') AS unitPriceOfRiskControl,
+		IFNULL(sum(idcard_certification_count) * (select convert(sys_value,decimal(18,2)) FROM back_config_params where sys_key = 'management_money'),0)  AS riskControlConsumptionAmount,
+		IFNULL((SELECT count(0) from user_info where TO_DAYS(create_time) = TO_DAYS(report_time)) * (select convert(sys_value,decimal(18,2)) FROM back_config_params where sys_key = 'register_money'),0) + IFNULL(sum(idcard_certification_count) * (select convert(sys_value,decimal(18,2)) FROM back_config_params where sys_key = 'management_money'),0) AS totalConsumption 
+		FROM 
+		plateform_channel_report
+		where report_time = DATE_FORMAT(NOW(),'%Y-%m-%d')
+<!-- 		TO_DAYS( NOW( ) ) - TO_DAYS(report_time) = 1  -->
+        <!-- <where>
+           <if test="startTime != null and startTime != '' and endTime != null and endTime != ''">
+                and DATE_FORMAT(report_time,'%Y-%m-%d') BETWEEN #{startTime,jdbcType=TIMESTAMP} AND
+                #{endTime,jdbcType=TIMESTAMP}
+            </if>
+        </where> -->
+        GROUP BY report_time 
+		ORDER BY report_time DESC
+    </select>
+    
+    <select id="selectTotalAmout" resultType="com.summer.pojo.vo.TotalAmountVO">
+    	SELECT (select sum(recharge_amount) from recharge_record) - (select sum(totalConsumption) from total_expenses) AS currentMmoney,(select sum(totalConsumption) from total_expenses) as totalConsumption,(select sum(recharge_amount) from recharge_record) AS totalMoney,(select convert(sys_value,decimal(18,2)) from back_config_params where sys_key = 'register_money') 
+		AS registrationUnitPrice,(select convert(sys_value,decimal(18,2)) from back_config_params where sys_key = 'management_money') AS unitPriceOfRiskControl
+    </select>
+    
+    <select id="fidTotalExpenses" resultMap="TotalExpensesMap" parameterType="map">
+    	select * from total_expenses
+		<where>
+           <if test="startTime != null and startTime != '' and endTime != null and endTime != ''">
+                and DATE_FORMAT(time,'%Y-%m-%d') BETWEEN #{startTime,jdbcType=TIMESTAMP} AND
+                #{endTime,jdbcType=TIMESTAMP}
+            </if>
+        </where>
+        ORDER BY time DESC
+    </select>
+    
+    
+    <select id="selectRechargeRecord" resultType="com.summer.pojo.vo.RechargeRecordVO" parameterType="map">
+    	select * from recharge_record
+		<where>
+           <if test="startTime != null and startTime != '' and endTime != null and endTime != ''">
+                and DATE_FORMAT(recharge_time,'%Y-%m-%d') BETWEEN #{startTime,jdbcType=TIMESTAMP} AND
+                #{endTime,jdbcType=TIMESTAMP}
+            </if>
+        </where>
+        ORDER BY recharge_time DESC
+    </select>
+    
+    
+    <insert id="insertBatchtotalExpenses" parameterType="java.util.List">
+        insert into total_expenses
+        (time,registered_Number,registered_Amount,registeredConsumption_Amount,wind_Control_Number,wind_Control_Amout,wind_ControlConsumption_Amout,totalConsumption)
+        values
+        <foreach collection="list" index="index" item="item" separator=",">
+            <trim prefix="(" suffix=")" suffixOverrides=",">
+                <if test="item.reportTime != null">
+                    #{item.reportTime,jdbcType=DATE},
+                </if>
+                <if test="item.registerCount != null">
+                    #{item.registerCount,jdbcType=INTEGER},
+                </if>
+                <if test="item.registrationUnitPrice != null">
+                    #{item.registrationUnitPrice,jdbcType=DECIMAL},
+                </if>
+                <if test="item.registeredConsumptionAmount != null">
+                    #{item.registeredConsumptionAmount,jdbcType=DECIMAL},
+                </if>
+                <if test="item.windControlCount != null">
+                    #{item.windControlCount,jdbcType=INTEGER},
+                </if>
+                <if test="item.unitPriceOfRiskControl != null">
+                    #{item.unitPriceOfRiskControl,jdbcType=DECIMAL},
+                </if>
+                <if test="item.riskControlConsumptionAmount != null">
+                    #{item.riskControlConsumptionAmount,jdbcType=DECIMAL},
+                </if>
+                <if test="item.totalConsumption != null">
+                    #{item.totalConsumption,jdbcType=DECIMAL}
+                </if>
+            </trim>    
+        </foreach>
+    </insert>
+    
+    
+    <select id="findMoneyRecord" resultType="com.summer.pojo.vo.TotalMoneyRecordVO" parameterType="map">
+    	select * from total_money
+		<where>
+           <if test="startTime != null and startTime != '' and endTime != null and endTime != ''">
+                and DATE_FORMAT(time,'%Y-%m-%d') BETWEEN #{startTime,jdbcType=TIMESTAMP} AND
+                #{endTime,jdbcType=TIMESTAMP}
+            </if>
+        </where>
+        ORDER BY time DESC
+    </select>
+    
+    <select id="findTotalMoney" resultMap="TotalMoneyMap">
+    	SELECT (select sum(recharge_amount) from recharge_record) - (select sum(totalMoney) from total_money) AS currentMmoney,(select sum(totalMoney) from total_money) as totalConsumption,(select sum(recharge_amount) from recharge_record) AS totalMoney
+    </select>
+    
+</mapper>

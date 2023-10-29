@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.summer.dao.mapper.PlatformRoleAuthorityMapper">
+    <resultMap id="BaseResultMap" type="com.summer.dao.entity.PlatformRoleAuthority">
+        <id column="id" property="id" jdbcType="INTEGER"/>
+        <result column="role_Id" property="roleId" jdbcType="INTEGER"/>
+        <result column="authority_Id" property="authorityId" jdbcType="INTEGER"/>
+        <result column="create_date" property="createDate" jdbcType="TIMESTAMP"/>
+    </resultMap>
+    <sql id="Base_Column_List">
+    id, role_Id, authority_Id, create_date
+  </sql>
+    <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer">
+        select
+        <include refid="Base_Column_List"/>
+        from platform_role_authority
+        where id = #{id,jdbcType=INTEGER}
+    </select>
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from platform_role_authority
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+    <insert id="insert" parameterType="com.summer.dao.entity.PlatformRoleAuthority">
+    insert into platform_role_authority (id, role_Id, authority_Id, 
+      create_date)
+    values (#{id,jdbcType=INTEGER}, #{roleId,jdbcType=INTEGER}, #{authorityId,jdbcType=INTEGER}, 
+      #{createDate,jdbcType=TIMESTAMP})
+  </insert>
+    <insert id="insertSelective" parameterType="com.summer.dao.entity.PlatformRoleAuthority">
+        insert into platform_role_authority
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                id,
+            </if>
+            <if test="roleId != null">
+                role_Id,
+            </if>
+            <if test="authorityId != null">
+                authority_Id,
+            </if>
+            <if test="createDate != null">
+                create_date,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                #{id,jdbcType=INTEGER},
+            </if>
+            <if test="roleId != null">
+                #{roleId,jdbcType=INTEGER},
+            </if>
+            <if test="authorityId != null">
+                #{authorityId,jdbcType=INTEGER},
+            </if>
+            <if test="createDate != null">
+                #{createDate,jdbcType=TIMESTAMP},
+            </if>
+        </trim>
+    </insert>
+    <update id="updateByPrimaryKeySelective" parameterType="com.summer.dao.entity.PlatformRoleAuthority">
+        update platform_role_authority
+        <set>
+            <if test="roleId != null">
+                role_Id = #{roleId,jdbcType=INTEGER},
+            </if>
+            <if test="authorityId != null">
+                authority_Id = #{authorityId,jdbcType=INTEGER},
+            </if>
+            <if test="createDate != null">
+                create_date = #{createDate,jdbcType=TIMESTAMP},
+            </if>
+        </set>
+        where id = #{id,jdbcType=INTEGER}
+    </update>
+    <update id="updateByPrimaryKey" parameterType="com.summer.dao.entity.PlatformRoleAuthority">
+    update platform_role_authority
+    set role_Id = #{roleId,jdbcType=INTEGER},
+      authority_Id = #{authorityId,jdbcType=INTEGER},
+      create_date = #{createDate,jdbcType=TIMESTAMP}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+    <!--根据角色id查询权限-->
+    <select id="findByRoleId" resultMap="BaseResultMap" parameterType="java.lang.Integer">
+        SELECT
+        <include refid="Base_Column_List"/>
+        FROM platform_role_authority
+        where role_Id = #{roleId,jdbcType=INTEGER}
+    </select>
+    <!--根据角色id删除角色权限记录-->
+    <delete id="deleteByRoleId" parameterType="java.lang.Integer">
+       DELETE FROM  platform_role_authority
+       where role_Id = #{roleId,jdbcType=INTEGER}
+   </delete>
+    <!-- 查询角色下的权限列表-->
+    <select id="findRoleAuthority" resultType="com.summer.pojo.vo.PlatformRoleAuthorityVo" parameterType="java.lang.Integer">
+    SELECT pa.id,pa.`name`,pr.name as roleName,pr.status FROM platform_authority pa
+    LEFT JOIN platform_role_authority pra on pra.authority_Id=pa.id
+    LEFT join platform_role pr on pr.id=pra.role_Id
+    where pr.id=#{id,jdbcType=INTEGER}
+  </select>
+</mapper>

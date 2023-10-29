@@ -1,0 +1,531 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.summer.dao.mapper.OrderCollectionReductionDAO">
+    <resultMap id="BaseResultMap" type="com.summer.dao.entity.OrderCollectionReduction">
+        <id column="id" jdbcType="BIGINT" property="id"/>
+        <result column="collection_id" jdbcType="INTEGER" property="collectionId"/>
+        <result column="repayment_id" jdbcType="INTEGER" property="repaymentId"/>
+        <result column="operator_user_id" jdbcType="INTEGER" property="operatorUserId"/>
+        <result column="user_id" jdbcType="INTEGER" property="userId"/>
+        <result column="reduction" jdbcType="INTEGER" property="reductionAmount"/>
+        <result column="audit_status" jdbcType="TINYINT" property="auditStatus"/>
+        <result column="create_time" jdbcType="TIMESTAMP" property="createTime"/>
+        <result column="create_time_chg" jdbcType="VARCHAR" property="createTimeChg"/>
+        <result column="update_time" jdbcType="TIMESTAMP" property="updateTime"/>
+        <result column="remark" jdbcType="VARCHAR" property="remark"/>
+    </resultMap>
+    <resultMap id="ReductionUserMap" type="com.summer.pojo.vo.CollectionUserVO" extends="BaseResultMap">
+        <result column="phone" property="phone" jdbcType="VARCHAR"/>
+        <result column="real_name" property="realName" jdbcType="VARCHAR"/>
+        <result column="reviewer" property="userName" jdbcType="VARCHAR"/>
+        <result column="group_level" property="groupLevel" jdbcType="VARCHAR"/>
+        <result column="apply_amount" property="applyAmount" jdbcType="INTEGER"/>
+        <result column="to_pay" property="principalAmount" jdbcType="INTEGER"/>
+        <result column="late" property="lateFee" jdbcType="INTEGER"/>
+        <result column="overdue_day" property="lateDay" jdbcType="INTEGER"/>
+        <result column="loan_term" property="loanTerm" jdbcType="INTEGER"/>
+        <result column="overdue_count" property="overdueCount" jdbcType="INTEGER"/>
+        <result column="status" property="payStatus" jdbcType="TINYINT"/>
+    </resultMap>
+    <sql id="Base_Column_List">
+        id,
+        collection_id,repayment_id,
+        operator_user_id,
+        user_id,
+        reduction_amount
+        reduction,
+        audit_status,
+        create_time,
+        date_format
+        (
+        create_time,
+        '%Y-%m-%d %H:%i:%s'
+        )
+        create_time_chg,
+        update_time,
+        remark
+    </sql>
+    <sql id="User_Column_List">
+        ocr
+        .
+        id,ocr.remark,
+        ocr
+        .
+        reduction_amount
+        reduction,
+        ocr
+        .
+        audit_status,
+        (
+        orp
+        .
+        principal_amount
+        +
+        orp
+        .
+        fee_amount
+        )
+        apply_amount,
+        (
+        orp
+        .
+        repayment_amount
+        -
+        orp
+        .
+        paid_amount
+        )
+        to_pay,
+        orp
+        .
+        late_fee
+        late,
+        oc
+        .
+        overdue_day,
+        ob
+        .
+        loan_term,
+        orp
+        .
+        status,
+        ui
+        .
+        real_name,
+        ui
+        .
+        phone,
+        pu
+        .
+        user_name
+        reviewer,
+        pu
+        .
+        group_level,
+        overdue
+        .
+        overdue_count
+    </sql>
+    <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from order_collection_reduction
+        where id = #{id,jdbcType=BIGINT}
+    </select>
+    <select id="selectSimple" parameterType="java.util.Map" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from order_collection_reduction
+        <where>
+            <if test="collectionId != null ">
+                and collection_id = #{collectionId}
+            </if>
+            <if test="repaymentId != null ">
+                and repayment_id = #{repaymentId}
+            </if>
+            <if test="auditStatus != null ">
+                and audit_status = #{auditStatus}
+            </if>
+        </where>
+        ORDER BY id DESC
+    </select>
+    <select id="findParams" parameterType="java.util.Map" resultMap="ReductionUserMap">
+        select
+        <include refid="User_Column_List"/>
+        from order_collection_reduction ocr INNER join user_info ui on ocr.user_id=ui.id
+
+        left join order_collection oc on ocr.collection_id=oc.id
+        left join platform_user pu on oc.current_collection_user_id = pu.id
+
+        left join order_repayment orp on ocr.repayment_id=orp.id
+        left join order_borrow ob on orp.borrow_id=ob.id
+
+        left join (SELECT ui.id ,count(orp.id) overdue_count FROM user_info ui left join
+        order_repayment orp on ui.id = orp.user_id and orp.collected = 1
+        GROUP BY ui.id) overdue on ui.id = overdue.id
+        <where>
+            ui.status != 2
+            <if test="auditStatus != null ">
+                and ocr.audit_status = #{auditStatus}
+            </if>
+            <if test="payStatus == 0 ">
+                and orp.status in (0,3,5)
+            </if>
+            <if test="payStatus == 1 ">
+                and orp.status =1
+            </if>
+            <if test="payStatus == 2 ">
+                and orp.status in (2,4,6)
+            </if>
+            <if test="realName != null and realName != ''">
+                and ui.real_name like concat('%',#{realName},'%')
+            </if>
+            <if test="phone != null and phone != ''">
+                and ui.phone = #{phone}
+            </if>
+            <if test="platformUserId != null ">
+                and pu.id = #{platformUserId}
+            </if>
+            <if test="payStatus != null ">
+                and orp.status = #{payStatus}
+            </if>
+        </where>
+        order by ocr.id desc
+    </select>
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+        delete
+        from order_collection_reduction
+        where id = #{id,jdbcType=BIGINT}
+    </delete>
+    <insert id="insert" parameterType="com.summer.dao.entity.OrderCollectionReduction">
+        insert into order_collection_reduction (id, collection_id,repayment_id, operator_user_id,
+                                                user_id, reduction_amount, audit_status,
+                                                create_time, update_time, remark)
+        values (#{id,jdbcType=BIGINT}, #{collectionId,jdbcType=INTEGER},#{repaymentId,jdbcType=INTEGER}, #{operatorUserId,jdbcType=INTEGER},
+                #{userId,jdbcType=INTEGER}, #{reductionAmount,jdbcType=INTEGER}, #{auditStatus,jdbcType=TINYINT},
+                #{createTime,jdbcType=TIMESTAMP}, #{updateTime,jdbcType=TIMESTAMP}, #{remark,jdbcType=VARCHAR})
+    </insert>
+    <insert id="insertSelective" parameterType="com.summer.dao.entity.OrderCollectionReduction">
+        insert into order_collection_reduction
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                id,
+            </if>
+            <if test="collectionId != null">
+                collection_id,
+            </if>
+            <if test="repaymentId != null">
+                repayment_id,
+            </if>
+            <if test="operatorUserId != null">
+                operator_user_id,
+            </if>
+            <if test="userId != null">
+                user_id,
+            </if>
+            <if test="reductionAmount != null">
+                reduction_amount,
+            </if>
+            <if test="auditStatus != null">
+                audit_status,
+            </if>
+            <if test="createTime != null">
+                create_time,
+            </if>
+            <if test="updateTime != null">
+                update_time,
+            </if>
+            <if test="remark != null">
+                remark,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                #{id,jdbcType=BIGINT},
+            </if>
+            <if test="collectionId != null">
+                #{collectionId,jdbcType=INTEGER},
+            </if>
+            <if test="repaymentId != null">
+                #{repaymentId,jdbcType=INTEGER},
+            </if>
+            <if test="operatorUserId != null">
+                #{operatorUserId,jdbcType=INTEGER},
+            </if>
+            <if test="userId != null">
+                #{userId,jdbcType=INTEGER},
+            </if>
+            <if test="reductionAmount != null">
+                #{reductionAmount,jdbcType=INTEGER},
+            </if>
+            <if test="auditStatus != null">
+                #{auditStatus,jdbcType=TINYINT},
+            </if>
+            <if test="createTime != null">
+                #{createTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="updateTime != null">
+                #{updateTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="remark != null">
+                #{remark,jdbcType=VARCHAR},
+            </if>
+        </trim>
+    </insert>
+    <insert id="insertBatch" parameterType="java.util.List">
+        insert into order_collection_reduction (id, collection_id,repayment_id, operator_user_id,
+        user_id, reduction_amount, audit_status,
+        create_time, update_time, remark
+        )
+        values
+        <foreach collection="list" index="index" item="item" separator=",">
+            (#{item.id,jdbcType=BIGINT}, #{item.collectionId,jdbcType=INTEGER}, #{item.repaymentId,jdbcType=INTEGER},
+            #{item.operatorUserId,jdbcType=INTEGER},
+            #{item.userId,jdbcType=INTEGER}, #{item.reductionAmount,jdbcType=INTEGER},
+            #{item.auditStatus,jdbcType=TINYINT},
+            #{item.createTime,jdbcType=TIMESTAMP}, #{item.updateTime,jdbcType=TIMESTAMP},
+            #{item.remark,jdbcType=VARCHAR}
+            )
+        </foreach>
+    </insert>
+    <insert id="insertBatchSelective" parameterType="java.util.List">
+        insert into order_collection_reduction
+        (id, collection_id, operator_user_id, user_id, reduction_amount, audit_status, create_time,
+        update_time, remark)
+        values
+        <foreach collection="list" index="index" item="item" separator=",">
+            <trim prefix="(" suffix=")" suffixOverrides=",">
+                <if test="item.id != null">
+                    #{item.id,jdbcType=BIGINT},
+                </if>
+                <if test="item.id == null">
+                    NULL,
+                </if>
+                <if test="item.collectionId != null">
+                    #{item.collectionId,jdbcType=INTEGER},
+                </if>
+                <if test="item.collectionId == null">
+                    NULL,
+                </if>
+                <if test="item.operatorUserId != null">
+                    #{item.operatorUserId,jdbcType=INTEGER},
+                </if>
+                <if test="item.operatorUserId == null">
+                    NULL,
+                </if>
+                <if test="item.userId != null">
+                    #{item.userId,jdbcType=INTEGER},
+                </if>
+                <if test="item.userId == null">
+                    NULL,
+                </if>
+                <if test="item.reductionAmount != null">
+                    #{item.reductionAmount,jdbcType=INTEGER},
+                </if>
+                <if test="item.reductionAmount == null">
+                    NULL,
+                </if>
+                <if test="item.auditStatus != null">
+                    #{item.auditStatus,jdbcType=TINYINT},
+                </if>
+                <if test="item.auditStatus == null">
+                    NULL,
+                </if>
+                <if test="item.createTime != null">
+                    #{item.createTime,jdbcType=TIMESTAMP},
+                </if>
+                <if test="item.createTime == null">
+                    NULL,
+                </if>
+                <if test="item.updateTime != null">
+                    #{item.updateTime,jdbcType=TIMESTAMP},
+                </if>
+                <if test="item.updateTime == null">
+                    NULL,
+                </if>
+                <if test="item.remark != null">
+                    #{item.remark,jdbcType=VARCHAR},
+                </if>
+                <if test="item.remark == null">
+                    NULL,
+                </if>
+            </trim>
+        </foreach>
+    </insert>
+    <update id="updateByPrimaryKeySelective" parameterType="com.summer.dao.entity.OrderCollectionReduction">
+        update order_collection_reduction
+        <set>
+            <if test="collectionId != null">
+                collection_id = #{collectionId,jdbcType=INTEGER},
+            </if>
+            <if test="repaymentId != null">
+                repayment_id = #{repaymentId,jdbcType=INTEGER},
+            </if>
+            <if test="operatorUserId != null">
+                operator_user_id = #{operatorUserId,jdbcType=INTEGER},
+            </if>
+            <if test="userId != null">
+                user_id = #{userId,jdbcType=INTEGER},
+            </if>
+            <if test="reductionAmount != null">
+                reduction_amount = #{reductionAmount,jdbcType=INTEGER},
+            </if>
+            <if test="auditStatus != null">
+                audit_status = #{auditStatus,jdbcType=TINYINT},
+            </if>
+            <if test="createTime != null">
+                create_time = #{createTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="updateTime != null">
+                update_time = #{updateTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="remark != null">
+                remark = #{remark,jdbcType=VARCHAR},
+            </if>
+        </set>
+        where id = #{id,jdbcType=BIGINT}
+    </update>
+    <update id="updateByPrimaryKey" parameterType="com.summer.dao.entity.OrderCollectionReduction">
+        update order_collection_reduction
+        set collection_id    = #{collectionId,jdbcType=INTEGER},
+            repayment_id = #{repaymentId,jdbcType=INTEGER},
+            operator_user_id = #{operatorUserId,jdbcType=INTEGER},
+            user_id          = #{userId,jdbcType=INTEGER},
+            reduction_amount = #{reductionAmount,jdbcType=INTEGER},
+            audit_status     = #{auditStatus,jdbcType=TINYINT},
+            create_time      = #{createTime,jdbcType=TIMESTAMP},
+            update_time      = #{updateTime,jdbcType=TIMESTAMP},
+            remark           = #{remark,jdbcType=VARCHAR}
+        where id = #{id,jdbcType=BIGINT}
+    </update>
+    <update id="updateBatchByPrimaryKey" parameterType="java.util.List">
+        update order_collection_reduction
+        <trim prefix="set" suffixOverrides=",">
+            <trim prefix="collectionId =case id" suffix="end,">
+                <foreach collection="list" index="index" item="item" separator=" ">
+                    when #{item.id} then #{item.collectionId}
+                </foreach>
+            </trim>
+            <trim prefix="operatorUserId =case id" suffix="end,">
+                <foreach collection="list" index="index" item="item" separator=" ">
+                    when #{item.id} then #{item.operatorUserId}
+                </foreach>
+            </trim>
+            <trim prefix="userId =case id" suffix="end,">
+                <foreach collection="list" index="index" item="item" separator=" ">
+                    when #{item.id} then #{item.userId}
+                </foreach>
+            </trim>
+            <trim prefix="reductionAmount =case id" suffix="end,">
+                <foreach collection="list" index="index" item="item" separator=" ">
+                    when #{item.id} then #{item.reductionAmount}
+                </foreach>
+            </trim>
+            <trim prefix="auditStatus =case id" suffix="end,">
+                <foreach collection="list" index="index" item="item" separator=" ">
+                    when #{item.id} then #{item.auditStatus}
+                </foreach>
+            </trim>
+            <trim prefix="createTime =case id" suffix="end,">
+                <foreach collection="list" index="index" item="item" separator=" ">
+                    when #{item.id} then #{item.createTime}
+                </foreach>
+            </trim>
+            <trim prefix="updateTime =case id" suffix="end,">
+                <foreach collection="list" index="index" item="item" separator=" ">
+                    when #{item.id} then #{item.updateTime}
+                </foreach>
+            </trim>
+            <trim prefix="remark =case id" suffix="end,">
+                <foreach collection="list" index="index" item="item" separator=" ">
+                    when #{item.id} then #{item.remark}
+                </foreach>
+            </trim>
+        </trim>
+        where id in
+        <foreach close=")" collection="list" index="index" item="item" open="(" separator=",">
+            #{item.id}
+        </foreach>
+    </update>
+    <update id="updateBatchByPrimaryKeySelective" parameterType="java.util.List">
+        update order_collection_reduction
+        <trim prefix="set" suffixOverrides=",">
+            <trim prefix="collectionId =case id" suffix="end,">
+                <foreach collection="list" index="index" item="item" separator=" ">
+                    <if test="item.collectionId != null ">
+                        when #{item.id} then #{item.collectionId}
+                    </if>
+                    <if test="item.collectionId == null ">
+                        when #{item.id} then order_collection_reduction.collection_id
+                    </if>
+                </foreach>
+            </trim>
+            <trim prefix="operatorUserId =case id" suffix="end,">
+                <foreach collection="list" index="index" item="item" separator=" ">
+                    <if test="item.operatorUserId != null ">
+                        when #{item.id} then #{item.operatorUserId}
+                    </if>
+                    <if test="item.operatorUserId == null ">
+                        when #{item.id} then order_collection_reduction.operator_user_id
+                    </if>
+                </foreach>
+            </trim>
+            <trim prefix="userId =case id" suffix="end,">
+                <foreach collection="list" index="index" item="item" separator=" ">
+                    <if test="item.userId != null ">
+                        when #{item.id} then #{item.userId}
+                    </if>
+                    <if test="item.userId == null ">
+                        when #{item.id} then order_collection_reduction.user_id
+                    </if>
+                </foreach>
+            </trim>
+            <trim prefix="reductionAmount =case id" suffix="end,">
+                <foreach collection="list" index="index" item="item" separator=" ">
+                    <if test="item.reductionAmount != null ">
+                        when #{item.id} then #{item.reductionAmount}
+                    </if>
+                    <if test="item.reductionAmount == null ">
+                        when #{item.id} then order_collection_reduction.reduction_amount
+                    </if>
+                </foreach>
+            </trim>
+            <trim prefix="auditStatus =case id" suffix="end,">
+                <foreach collection="list" index="index" item="item" separator=" ">
+                    <if test="item.auditStatus != null ">
+                        when #{item.id} then #{item.auditStatus}
+                    </if>
+                    <if test="item.auditStatus == null ">
+                        when #{item.id} then order_collection_reduction.audit_status
+                    </if>
+                </foreach>
+            </trim>
+            <trim prefix="createTime =case id" suffix="end,">
+                <foreach collection="list" index="index" item="item" separator=" ">
+                    <if test="item.createTime != null ">
+                        when #{item.id} then #{item.createTime}
+                    </if>
+                    <if test="item.createTime == null ">
+                        when #{item.id} then order_collection_reduction.create_time
+                    </if>
+                </foreach>
+            </trim>
+            <trim prefix="updateTime =case id" suffix="end,">
+                <foreach collection="list" index="index" item="item" separator=" ">
+                    <if test="item.updateTime != null ">
+                        when #{item.id} then #{item.updateTime}
+                    </if>
+                    <if test="item.updateTime == null ">
+                        when #{item.id} then order_collection_reduction.update_time
+                    </if>
+                </foreach>
+            </trim>
+            <trim prefix="remark =case id" suffix="end,">
+                <foreach collection="list" index="index" item="item" separator=" ">
+                    <if test="item.remark != null ">
+                        when #{item.id} then #{item.remark}
+                    </if>
+                    <if test="item.remark == null ">
+                        when #{item.id} then order_collection_reduction.remark
+                    </if>
+                </foreach>
+            </trim>
+        </trim>
+        where id in
+        <foreach close=")" collection="list" index="index" item="item" open="(" separator=",">
+            #{item.id}
+        </foreach>
+    </update>
+
+    <select id="findByRepaymentId" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from order_collection_reduction where repayment_id=#{repaymentId} order by id desc limit 1
+    </select>
+
+    <select id="findByRepayIdAsc" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from order_collection_reduction where repayment_id=#{repaymentId} order by id limit 1
+    </select>
+</mapper>

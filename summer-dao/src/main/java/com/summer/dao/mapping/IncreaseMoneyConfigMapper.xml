@@ -1,0 +1,501 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.summer.dao.mapper.IncreaseMoneyConfigDAO">
+    <resultMap id="BaseResultMap" type="com.summer.dao.entity.IncreaseMoneyConfig">
+        <id column="id" jdbcType="INTEGER" property="id"/>
+        <result column="product_name" jdbcType="VARCHAR" property="productName"/>
+        <result column="achieve_times" jdbcType="INTEGER" property="achieveTimes"/>
+        <result column="increase_money" jdbcType="DOUBLE" property="increaseMoney"/>
+        <result column="reduction_money" jdbcType="DOUBLE" property="reductionMoney"/>
+        <result column="repetition_inrease_money" jdbcType="INTEGER" property="repetitionInreaseMoney"/>
+        <result column="reduce_interest" jdbcType="DOUBLE" property="reduceInterest"/>
+        <result column="increase_type" jdbcType="TINYINT" property="increaseType"/>
+        <result column="create_time" jdbcType="TIMESTAMP" property="createTime"/>
+        <result column="update_time" jdbcType="TIMESTAMP" property="updateTime"/>
+        <result column="status" jdbcType="INTEGER" property="status"/>
+        <result column="risk_score" property="riskScore"/>
+        <result column="service_money" jdbcType="DOUBLE" property="serviceMoney"/>
+        <result column="loan_term" jdbcType="INTEGER" property="loanTerm"/>
+    </resultMap>
+    <sql id="Base_Column_List">
+    id, product_name, achieve_times, increase_money, reduction_money,  repetition_inrease_money,
+    reduce_interest, increase_type, create_time, update_time, status,risk_score,service_money,loan_term
+  </sql>
+    <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from increase_money_config
+        where id = #{id,jdbcType=INTEGER}
+    </select>
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from increase_money_config
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+    <insert id="insert" parameterType="com.summer.dao.entity.IncreaseMoneyConfig">
+    insert into increase_money_config (id, product_name, achieve_times, 
+      increase_money, reduction_money, repetition_inrease_money, 
+      reduce_interest, increase_type, create_time, 
+      update_time, status,risk_score,service_money)
+    values (#{id,jdbcType=INTEGER}, #{productName,jdbcType=VARCHAR}, #{achieveTimes,jdbcType=INTEGER}, 
+      #{increaseMoney,jdbcType=DOUBLE}, #{reductionMoney,jdbcType=DOUBLE}, #{repetitionInreaseMoney,jdbcType=INTEGER}, 
+      #{reduceInterest,jdbcType=DOUBLE}, #{increaseType,jdbcType=TINYINT}, #{createTime,jdbcType=TIMESTAMP}, 
+      #{updateTime,jdbcType=TIMESTAMP}, #{status,jdbcType=INTEGER},#{riskScore},#{serviceMoney})
+  </insert>
+    <insert id="insertSelective" parameterType="com.summer.dao.entity.IncreaseMoneyConfig">
+        insert into increase_money_config
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                id,
+            </if>
+            <if test="productName != null">
+                product_name,
+            </if>
+            <if test="achieveTimes != null">
+                achieve_times,
+            </if>
+            <if test="increaseMoney != null">
+                increase_money,
+            </if>
+            <if test="reductionMoney != null">
+                reduction_money,
+            </if>
+            <if test="repetitionInreaseMoney != null">
+                repetition_inrease_money,
+            </if>
+            <if test="reduceInterest != null">
+                reduce_interest,
+            </if>
+            <if test="increaseType != null">
+                increase_type,
+            </if>
+            <if test="createTime != null">
+                create_time,
+            </if>
+            <if test="updateTime != null">
+                update_time,
+            </if>
+            <if test="status != null">
+                status,
+            </if>
+            <if test="riskScore != null">
+                risk_score,
+            </if>
+            <if test="serviceMoney != null">
+                service_money,
+            </if>
+            <if test="loanTerm != null">
+                loan_term,
+            </if>
+
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                #{id,jdbcType=INTEGER},
+            </if>
+            <if test="productName != null">
+                #{productName,jdbcType=VARCHAR},
+            </if>
+            <if test="achieveTimes != null">
+                #{achieveTimes,jdbcType=INTEGER},
+            </if>
+            <if test="increaseMoney != null">
+                #{increaseMoney,jdbcType=DOUBLE},
+            </if>
+            <if test="reductionMoney != null">
+                #{reductionMoney,jdbcType=DOUBLE},
+            </if>
+            <if test="repetitionInreaseMoney != null">
+                #{repetitionInreaseMoney,jdbcType=INTEGER},
+            </if>
+            <if test="reduceInterest != null">
+                #{reduceInterest,jdbcType=DOUBLE},
+            </if>
+            <if test="increaseType != null">
+                #{increaseType,jdbcType=TINYINT},
+            </if>
+            <if test="createTime != null">
+                #{createTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="updateTime != null">
+                #{updateTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="status != null">
+                #{status,jdbcType=INTEGER},
+            </if>
+            <if test="riskScore != null">
+                #{riskScore},
+            </if>
+            <if test="serviceMoney != null">
+                #{serviceMoney},
+            </if>
+            <if test="loanTerm != null">
+                #{loanTerm},
+            </if>
+        </trim>
+    </insert>
+    <insert id="insertBatch" parameterType="java.util.List">
+        insert into increase_money_config (id, product_name, achieve_times,
+        increase_money, reduction_money,
+        repetition_inrease_money, reduce_interest,
+        increase_type, create_time, update_time,
+        status,risk_score,service_money)
+        values
+        <foreach collection="list" index="index" item="item" separator=",">
+            (#{item.id,jdbcType=INTEGER}, #{item.productName,jdbcType=VARCHAR}, #{item.achieveTimes,jdbcType=INTEGER},
+            #{item.increaseMoney,jdbcType=DOUBLE}, #{item.reductionMoney,jdbcType=DOUBLE},
+            #{item.repetitionInreaseMoney,jdbcType=INTEGER}, #{item.reduceInterest,jdbcType=DOUBLE},
+            #{item.increaseType,jdbcType=TINYINT}, #{item.createTime,jdbcType=TIMESTAMP},
+            #{item.updateTime,jdbcType=TIMESTAMP},
+            #{item.status,jdbcType=INTEGER},#{riskScore},#{serviceMoney})
+        </foreach>
+    </insert>
+    <insert id="insertBatchSelective" parameterType="java.util.List">
+        insert into increase_money_config
+        (id, product_name, achieve_times, increase_money, reduction_money, repetition_inrease_money,
+        reduce_interest, increase_type, create_time, update_time, status,service_money)
+        values
+        <foreach collection="list" index="index" item="item" separator=",">
+            <trim prefix="(" suffix=")" suffixOverrides=",">
+                <if test="item.id != null">
+                    #{item.id,jdbcType=INTEGER},
+                </if>
+                <if test="item.id == null">
+                    NULL,
+                </if>
+                <if test="item.productName != null">
+                    #{item.productName,jdbcType=VARCHAR},
+                </if>
+                <if test="item.productName == null">
+                    NULL,
+                </if>
+                <if test="item.achieveTimes != null">
+                    #{item.achieveTimes,jdbcType=INTEGER},
+                </if>
+                <if test="item.achieveTimes == null">
+                    NULL,
+                </if>
+                <if test="item.increaseMoney != null">
+                    #{item.increaseMoney,jdbcType=DOUBLE},
+                </if>
+                <if test="item.increaseMoney == null">
+                    NULL,
+                </if>
+                <if test="item.reductionMoney != null">
+                    #{item.reductionMoney,jdbcType=DOUBLE},
+                </if>
+                <if test="item.reductionMoney == null">
+                    NULL,
+                </if>
+                <if test="item.repetitionInreaseMoney != null">
+                    #{item.repetitionInreaseMoney,jdbcType=INTEGER},
+                </if>
+                <if test="item.repetitionInreaseMoney == null">
+                    NULL,
+                </if>
+                <if test="item.reduceInterest != null">
+                    #{item.reduceInterest,jdbcType=DOUBLE},
+                </if>
+                <if test="item.reduceInterest == null">
+                    NULL,
+                </if>
+                <if test="item.increaseType != null">
+                    #{item.increaseType,jdbcType=TINYINT},
+                </if>
+                <if test="item.increaseType == null">
+                    NULL,
+                </if>
+                <if test="item.createTime != null">
+                    #{item.createTime,jdbcType=TIMESTAMP},
+                </if>
+                <if test="item.createTime == null">
+                    NULL,
+                </if>
+                <if test="item.updateTime != null">
+                    #{item.updateTime,jdbcType=TIMESTAMP},
+                </if>
+                <if test="item.updateTime == null">
+                    NULL,
+                </if>
+                <if test="item.status != null">
+                    #{item.status,jdbcType=INTEGER},
+                </if>
+                <if test="item.status == null">
+                    NULL,
+                </if>
+                <if test="item.serviceMoney != null">
+                    #{item.serviceMoney,jdbcType=DOUBLE},
+                </if>
+                <if test="item.serviceMoney == null">
+                    NULL,
+                </if>
+            </trim>
+        </foreach>
+    </insert>
+    <update id="updateByPrimaryKeySelective" parameterType="com.summer.dao.entity.IncreaseMoneyConfig">
+        update increase_money_config
+        <set>
+            <if test="productName != null">
+                product_name = #{productName,jdbcType=VARCHAR},
+            </if>
+            <if test="achieveTimes != null">
+                achieve_times = #{achieveTimes,jdbcType=INTEGER},
+            </if>
+            <if test="increaseMoney != null">
+                increase_money = #{increaseMoney,jdbcType=DOUBLE},
+            </if>
+            <if test="reductionMoney != null">
+                reduction_money = #{reductionMoney,jdbcType=DOUBLE},
+            </if>
+            <if test="repetitionInreaseMoney != null">
+                repetition_inrease_money = #{repetitionInreaseMoney,jdbcType=INTEGER},
+            </if>
+            <if test="reduceInterest != null">
+                reduce_interest = #{reduceInterest,jdbcType=DOUBLE},
+            </if>
+            <if test="increaseType != null">
+                increase_type = #{increaseType,jdbcType=TINYINT},
+            </if>
+            <if test="updateTime != null">
+                create_time = #{createTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="updateTime != null">
+                update_time = NOW(),
+            </if>
+            <if test="status != null">
+                status = #{status,jdbcType=INTEGER},
+            </if>
+            <if test="riskScore != null">
+                risk_score=#{riskScore},
+            </if>
+            <if test="serviceMoney != null">
+                service_money=#{serviceMoney},
+            </if>
+            <if test="loanTerm != null">
+                loan_term=#{loanTerm},
+            </if>
+
+        </set>
+        where id = #{id,jdbcType=INTEGER}
+    </update>
+    <update id="updateByPrimaryKey" parameterType="com.summer.dao.entity.IncreaseMoneyConfig">
+    update increase_money_config
+    set product_name = #{productName,jdbcType=VARCHAR},
+      achieve_times = #{achieveTimes,jdbcType=INTEGER},
+      increase_money = #{increaseMoney,jdbcType=DOUBLE},
+      reduction_money = #{reductionMoney,jdbcType=DOUBLE},
+      repetition_inrease_money = #{repetitionInreaseMoney,jdbcType=INTEGER},
+      reduce_interest = #{reduceInterest,jdbcType=DOUBLE},
+      increase_type = #{increaseType,jdbcType=TINYINT},
+      create_time = #{createTime,jdbcType=TIMESTAMP},
+      update_time = #{updateTime,jdbcType=TIMESTAMP},
+      status = #{status,jdbcType=INTEGER},
+       risk_score=#{riskScore},
+        service_money=#{serviceMoney}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+    <update id="updateBatchByPrimaryKey" parameterType="java.util.List">
+        update increase_money_config
+        <trim prefix="set" suffixOverrides=",">
+            <trim prefix="productName =case id" suffix="end,">
+                <foreach collection="list" index="index" item="item" separator=" ">
+                    when #{item.id} then #{item.productName}
+                </foreach>
+            </trim>
+            <trim prefix="achieveTimes =case id" suffix="end,">
+                <foreach collection="list" index="index" item="item" separator=" ">
+                    when #{item.id} then #{item.achieveTimes}
+                </foreach>
+            </trim>
+            <trim prefix="increaseMoney =case id" suffix="end,">
+                <foreach collection="list" index="index" item="item" separator=" ">
+                    when #{item.id} then #{item.increaseMoney}
+                </foreach>
+            </trim>
+            <trim prefix="reductionMoney =case id" suffix="end,">
+                <foreach collection="list" index="index" item="item" separator=" ">
+                    when #{item.id} then #{item.reductionMoney}
+                </foreach>
+            </trim>
+            <trim prefix="repetitionInreaseMoney =case id" suffix="end,">
+                <foreach collection="list" index="index" item="item" separator=" ">
+                    when #{item.id} then #{item.repetitionInreaseMoney}
+                </foreach>
+            </trim>
+            <trim prefix="reduceInterest =case id" suffix="end,">
+                <foreach collection="list" index="index" item="item" separator=" ">
+                    when #{item.id} then #{item.reduceInterest}
+                </foreach>
+            </trim>
+            <trim prefix="increaseType =case id" suffix="end,">
+                <foreach collection="list" index="index" item="item" separator=" ">
+                    when #{item.id} then #{item.increaseType}
+                </foreach>
+            </trim>
+            <trim prefix="createTime =case id" suffix="end,">
+                <foreach collection="list" index="index" item="item" separator=" ">
+                    when #{item.id} then #{item.createTime}
+                </foreach>
+            </trim>
+            <trim prefix="updateTime =case id" suffix="end,">
+                <foreach collection="list" index="index" item="item" separator=" ">
+                    when #{item.id} then #{item.updateTime}
+                </foreach>
+            </trim>
+            <trim prefix="status =case id" suffix="end,">
+                <foreach collection="list" index="index" item="item" separator=" ">
+                    when #{item.id} then #{item.status}
+                </foreach>
+            </trim>
+        </trim>
+        where id in
+        <foreach close=")" collection="list" index="index" item="item" open="(" separator=",">
+            #{item.id}
+        </foreach>
+    </update>
+    <update id="updateBatchByPrimaryKeySelective" parameterType="java.util.List">
+        update increase_money_config
+        <trim prefix="set" suffixOverrides=",">
+            <trim prefix="productName =case id" suffix="end,">
+                <foreach collection="list" index="index" item="item" separator=" ">
+                    <if test="item.productName != null ">
+                        when #{item.id} then #{item.productName}
+                    </if>
+                    <if test="item.productName == null ">
+                        when #{item.id} then increase_money_config.product_name
+                    </if>
+                </foreach>
+            </trim>
+            <trim prefix="achieveTimes =case id" suffix="end,">
+                <foreach collection="list" index="index" item="item" separator=" ">
+                    <if test="item.achieveTimes != null ">
+                        when #{item.id} then #{item.achieveTimes}
+                    </if>
+                    <if test="item.achieveTimes == null ">
+                        when #{item.id} then increase_money_config.achieve_times
+                    </if>
+                </foreach>
+            </trim>
+            <trim prefix="increaseMoney =case id" suffix="end,">
+                <foreach collection="list" index="index" item="item" separator=" ">
+                    <if test="item.increaseMoney != null ">
+                        when #{item.id} then #{item.increaseMoney}
+                    </if>
+                    <if test="item.increaseMoney == null ">
+                        when #{item.id} then increase_money_config.increase_money
+                    </if>
+                </foreach>
+            </trim>
+            <trim prefix="reductionMoney =case id" suffix="end,">
+                <foreach collection="list" index="index" item="item" separator=" ">
+                    <if test="item.reductionMoney != null ">
+                        when #{item.id} then #{item.reductionMoney}
+                    </if>
+                    <if test="item.reductionMoney == null ">
+                        when #{item.id} then increase_money_config.reduction_money
+                    </if>
+                </foreach>
+            </trim>
+            <trim prefix="repetitionInreaseMoney =case id" suffix="end,">
+                <foreach collection="list" index="index" item="item" separator=" ">
+                    <if test="item.repetitionInreaseMoney != null ">
+                        when #{item.id} then #{item.repetitionInreaseMoney}
+                    </if>
+                    <if test="item.repetitionInreaseMoney == null ">
+                        when #{item.id} then increase_money_config.repetition_inrease_money
+                    </if>
+                </foreach>
+            </trim>
+            <trim prefix="reduceInterest =case id" suffix="end,">
+                <foreach collection="list" index="index" item="item" separator=" ">
+                    <if test="item.reduceInterest != null ">
+                        when #{item.id} then #{item.reduceInterest}
+                    </if>
+                    <if test="item.reduceInterest == null ">
+                        when #{item.id} then increase_money_config.reduce_interest
+                    </if>
+                </foreach>
+            </trim>
+            <trim prefix="increaseType =case id" suffix="end,">
+                <foreach collection="list" index="index" item="item" separator=" ">
+                    <if test="item.increaseType != null ">
+                        when #{item.id} then #{item.increaseType}
+                    </if>
+                    <if test="item.increaseType == null ">
+                        when #{item.id} then increase_money_config.increase_type
+                    </if>
+                </foreach>
+            </trim>
+            <trim prefix="createTime =case id" suffix="end,">
+                <foreach collection="list" index="index" item="item" separator=" ">
+                    <if test="item.createTime != null ">
+                        when #{item.id} then #{item.createTime}
+                    </if>
+                    <if test="item.createTime == null ">
+                        when #{item.id} then increase_money_config.create_time
+                    </if>
+                </foreach>
+            </trim>
+            <trim prefix="updateTime =case id" suffix="end,">
+                <foreach collection="list" index="index" item="item" separator=" ">
+                    <if test="item.updateTime != null ">
+                        when #{item.id} then #{item.updateTime}
+                    </if>
+                    <if test="item.updateTime == null ">
+                        when #{item.id} then increase_money_config.update_time
+                    </if>
+                </foreach>
+            </trim>
+            <trim prefix="status =case id" suffix="end,">
+                <foreach collection="list" index="index" item="item" separator=" ">
+                    <if test="item.status != null ">
+                        when #{item.id} then #{item.status}
+                    </if>
+                    <if test="item.status == null ">
+                        when #{item.id} then increase_money_config.status
+                    </if>
+                </foreach>
+            </trim>
+        </trim>
+        where id in
+        <foreach close=")" collection="list" index="index" item="item" open="(" separator=",">
+            #{item.id}
+        </foreach>
+
+    </update>
+
+    <resultMap id="IncreaseResultMap" type="com.summer.pojo.vo.IncreaseMoneyConfigVo">
+        <id column="id" jdbcType="INTEGER" property="id"/>
+        <result column="achieve_times" jdbcType="INTEGER" property="achieveTimes"/>
+        <result column="repetition_inrease_money" property="repetitionInreaseMoney"/>
+        <result column="reduce_interest" jdbcType="DOUBLE" property="reduceInterest"/>
+        <result column="increase_type" jdbcType="TINYINT" property="increaseType"/>
+        <result column="status" jdbcType="INTEGER" property="status"/>
+        <result column="loan_term" jdbcType="INTEGER" property="loanTerm"/>
+        <result column="risk_score" property="riskScore"/>
+        <result column="service_money" jdbcType="DOUBLE" property="serviceMoney"/>
+    </resultMap>
+    <select id="findAllIncreaseConfig" parameterType="java.lang.Byte" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from increase_money_config where increase_type=#{increaseType}
+    </select>
+    <sql id="Column_List">
+    id, achieve_times, ROUND(repetition_inrease_money /100.0,2) as repetition_inrease_money,loan_term,
+    ROUND(reduce_interest*100,2) as reduce_interest, increase_type,status,risk_score,ROUND(service_money*100,2) as service_money
+  </sql>
+    <select id="findAllIncrease" parameterType="java.lang.Byte" resultMap="IncreaseResultMap">
+        select
+        <include refid="Column_List"/>
+        from increase_money_config where increase_type=#{increaseType} ORDER BY achieve_times
+    </select>
+
+    <update id="updateByStatus" parameterType="java.lang.Integer">
+     update increase_money_config set status = #{status}
+  </update>
+
+    <select id="selectByTimes" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from increase_money_config where achieve_times=#{times}
+    </select>
+</mapper>

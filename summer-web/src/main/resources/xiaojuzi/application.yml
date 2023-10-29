@@ -1,0 +1,38 @@
+server:
+  port: 8076
+  custom:
+    # http 端口
+    httpPort: 8077
+  ssl:
+    key-store: classpath:fullchain.pfx
+    key-store-password: g9VIfC9kO0n9PXm8
+    keyStoreType: PKCS12
+
+spring:
+  profiles:
+    active: xiaojuzi
+  application:
+    name: xiaojuzi
+
+
+nacos:
+  config:
+    # nacos
+    server-addr: 47.74.48.135:8848
+    data-ids: xiaojuzi,xiaojuzi-bs,xiaojuzi-sms,xiaojuzi-ocr,xiaojuzi-mobile,xiaojuzi-oss,xiaojuzi-fk,xiaojuzi-pay
+    type: YAML
+    auto-refresh: true
+    namespace: d372ee5e-e511-4c98-8a43-e08177f402f8
+    bootstrap:
+      enable: true
+
+#    ext-config:
+#      - server-addr: 8.210.166.87:82 # Nacos 服务器地址
+#        data-id: dev-sms # 使用的 Nacos 配置集的 dataId。
+#        # data-ids: dev-sms
+#        type: properties # 使用的 Nacos 配置集的配置格式。默认为 PROPERTIES。
+#        namespace: a31478cc-37f4-48e6-a75f-c3dede11eb03 # 使用的 Nacos 的命名空间，默认为 null。
+#        auto-refresh: true # 是否自动刷新，默认为 false。
+#        bootstrap:
+#          enable: true
+    #      - # 这里，可以继续添加。

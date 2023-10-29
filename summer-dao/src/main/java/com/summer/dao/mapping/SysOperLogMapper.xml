@@ -1,0 +1,592 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.summer.dao.mapper.SysOperLogDAO">
+    <resultMap id="BaseResultMap" type="com.summer.dao.entity.SysOperLog">
+        <id column="oper_id" jdbcType="BIGINT" property="operId"/>
+        <result column="title" jdbcType="VARCHAR" property="title"/>
+        <result column="business_type" jdbcType="INTEGER" property="businessType"/>
+        <result column="method" jdbcType="VARCHAR" property="method"/>
+        <result column="request_method" jdbcType="VARCHAR" property="requestMethod"/>
+        <result column="operator_type" jdbcType="INTEGER" property="operatorType"/>
+        <result column="oper_name" jdbcType="VARCHAR" property="operName"/>
+        <result column="dept_name" jdbcType="VARCHAR" property="deptName"/>
+        <result column="oper_url" jdbcType="VARCHAR" property="operUrl"/>
+        <result column="oper_ip" jdbcType="VARCHAR" property="operIp"/>
+        <result column="oper_location" jdbcType="VARCHAR" property="operLocation"/>
+        <result column="oper_param" jdbcType="VARCHAR" property="operParam"/>
+        <result column="json_result" jdbcType="VARCHAR" property="jsonResult"/>
+        <result column="status" jdbcType="INTEGER" property="status"/>
+        <result column="error_msg" jdbcType="VARCHAR" property="errorMsg"/>
+        <result column="oper_time" jdbcType="TIMESTAMP" property="operTime"/>
+    </resultMap>
+    <sql id="Base_Column_List">
+    oper_id, title, business_type, method, request_method, operator_type, oper_name, 
+    dept_name, oper_url, oper_ip, oper_location, oper_param, json_result, status, error_msg, 
+    oper_time
+  </sql>
+    <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from sys_oper_log
+        where oper_id = #{operId,jdbcType=BIGINT}
+    </select>
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+    delete from sys_oper_log
+    where oper_id = #{operId,jdbcType=BIGINT}
+  </delete>
+    <insert id="insert" parameterType="com.summer.dao.entity.SysOperLog">
+    insert into sys_oper_log (oper_id, title, business_type, 
+      method, request_method, operator_type, 
+      oper_name, dept_name, oper_url, 
+      oper_ip, oper_location, oper_param, 
+      json_result, status, error_msg, 
+      oper_time)
+    values (#{operId,jdbcType=BIGINT}, #{title,jdbcType=VARCHAR}, #{businessType,jdbcType=INTEGER}, 
+      #{method,jdbcType=VARCHAR}, #{requestMethod,jdbcType=VARCHAR}, #{operatorType,jdbcType=INTEGER}, 
+      #{operName,jdbcType=VARCHAR}, #{deptName,jdbcType=VARCHAR}, #{operUrl,jdbcType=VARCHAR}, 
+      #{operIp,jdbcType=VARCHAR}, #{operLocation,jdbcType=VARCHAR}, #{operParam,jdbcType=VARCHAR}, 
+      #{jsonResult,jdbcType=VARCHAR}, #{status,jdbcType=INTEGER}, #{errorMsg,jdbcType=VARCHAR}, 
+      #{operTime,jdbcType=TIMESTAMP})
+  </insert>
+    <insert id="insertSelective" parameterType="com.summer.dao.entity.SysOperLog">
+        insert into sys_oper_log
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="operId != null">
+                oper_id,
+            </if>
+            <if test="title != null">
+                title,
+            </if>
+            <if test="businessType != null">
+                business_type,
+            </if>
+            <if test="method != null">
+                method,
+            </if>
+            <if test="requestMethod != null">
+                request_method,
+            </if>
+            <if test="operatorType != null">
+                operator_type,
+            </if>
+            <if test="operName != null">
+                oper_name,
+            </if>
+            <if test="deptName != null">
+                dept_name,
+            </if>
+            <if test="operUrl != null">
+                oper_url,
+            </if>
+            <if test="operIp != null">
+                oper_ip,
+            </if>
+            <if test="operLocation != null">
+                oper_location,
+            </if>
+            <if test="operParam != null">
+                oper_param,
+            </if>
+            <if test="jsonResult != null">
+                json_result,
+            </if>
+            <if test="status != null">
+                status,
+            </if>
+            <if test="errorMsg != null">
+                error_msg,
+            </if>
+            <if test="operTime != null">
+                oper_time,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="operId != null">
+                #{operId,jdbcType=BIGINT},
+            </if>
+            <if test="title != null">
+                #{title,jdbcType=VARCHAR},
+            </if>
+            <if test="businessType != null">
+                #{businessType,jdbcType=INTEGER},
+            </if>
+            <if test="method != null">
+                #{method,jdbcType=VARCHAR},
+            </if>
+            <if test="requestMethod != null">
+                #{requestMethod,jdbcType=VARCHAR},
+            </if>
+            <if test="operatorType != null">
+                #{operatorType,jdbcType=INTEGER},
+            </if>
+            <if test="operName != null">
+                #{operName,jdbcType=VARCHAR},
+            </if>
+            <if test="deptName != null">
+                #{deptName,jdbcType=VARCHAR},
+            </if>
+            <if test="operUrl != null">
+                #{operUrl,jdbcType=VARCHAR},
+            </if>
+            <if test="operIp != null">
+                #{operIp,jdbcType=VARCHAR},
+            </if>
+            <if test="operLocation != null">
+                #{operLocation,jdbcType=VARCHAR},
+            </if>
+            <if test="operParam != null">
+                #{operParam,jdbcType=VARCHAR},
+            </if>
+            <if test="jsonResult != null">
+                #{jsonResult,jdbcType=VARCHAR},
+            </if>
+            <if test="status != null">
+                #{status,jdbcType=INTEGER},
+            </if>
+            <if test="errorMsg != null">
+                #{errorMsg,jdbcType=VARCHAR},
+            </if>
+            <if test="operTime != null">
+                #{operTime,jdbcType=TIMESTAMP},
+            </if>
+        </trim>
+    </insert>
+    <insert id="insertBatch" parameterType="java.util.List">
+        insert into sys_oper_log (oper_id, title, business_type,
+        method, request_method, operator_type,
+        oper_name, dept_name, oper_url,
+        oper_ip, oper_location, oper_param,
+        json_result, status, error_msg,
+        oper_time)
+        values
+        <foreach collection="list" index="index" item="item" separator=",">
+            (#{item.operId,jdbcType=BIGINT}, #{item.title,jdbcType=VARCHAR}, #{item.businessType,jdbcType=INTEGER},
+            #{item.method,jdbcType=VARCHAR}, #{item.requestMethod,jdbcType=VARCHAR},
+            #{item.operatorType,jdbcType=INTEGER},
+            #{item.operName,jdbcType=VARCHAR}, #{item.deptName,jdbcType=VARCHAR}, #{item.operUrl,jdbcType=VARCHAR},
+            #{item.operIp,jdbcType=VARCHAR}, #{item.operLocation,jdbcType=VARCHAR}, #{item.operParam,jdbcType=VARCHAR},
+            #{item.jsonResult,jdbcType=VARCHAR}, #{item.status,jdbcType=INTEGER}, #{item.errorMsg,jdbcType=VARCHAR},
+            #{item.operTime,jdbcType=TIMESTAMP})
+        </foreach>
+    </insert>
+    <insert id="insertBatchSelective" parameterType="java.util.List">
+        insert into sys_oper_log
+        (oper_id, title, business_type, method, request_method, operator_type, oper_name,
+        dept_name, oper_url, oper_ip, oper_location, oper_param, json_result, status, error_msg,
+        oper_time)
+        values
+        <foreach collection="list" index="index" item="item" separator=",">
+            <trim prefix="(" suffix=")" suffixOverrides=",">
+                <if test="item.operId != null">
+                    #{item.operId,jdbcType=BIGINT},
+                </if>
+                <if test="item.operId == null">
+                    NULL,
+                </if>
+                <if test="item.title != null">
+                    #{item.title,jdbcType=VARCHAR},
+                </if>
+                <if test="item.title == null">
+                    NULL,
+                </if>
+                <if test="item.businessType != null">
+                    #{item.businessType,jdbcType=INTEGER},
+                </if>
+                <if test="item.businessType == null">
+                    NULL,
+                </if>
+                <if test="item.method != null">
+                    #{item.method,jdbcType=VARCHAR},
+                </if>
+                <if test="item.method == null">
+                    NULL,
+                </if>
+                <if test="item.requestMethod != null">
+                    #{item.requestMethod,jdbcType=VARCHAR},
+                </if>
+                <if test="item.requestMethod == null">
+                    NULL,
+                </if>
+                <if test="item.operatorType != null">
+                    #{item.operatorType,jdbcType=INTEGER},
+                </if>
+                <if test="item.operatorType == null">
+                    NULL,
+                </if>
+                <if test="item.operName != null">
+                    #{item.operName,jdbcType=VARCHAR},
+                </if>
+                <if test="item.operName == null">
+                    NULL,
+                </if>
+                <if test="item.deptName != null">
+                    #{item.deptName,jdbcType=VARCHAR},
+                </if>
+                <if test="item.deptName == null">
+                    NULL,
+                </if>
+                <if test="item.operUrl != null">
+                    #{item.operUrl,jdbcType=VARCHAR},
+                </if>
+                <if test="item.operUrl == null">
+                    NULL,
+                </if>
+                <if test="item.operIp != null">
+                    #{item.operIp,jdbcType=VARCHAR},
+                </if>
+                <if test="item.operIp == null">
+                    NULL,
+                </if>
+                <if test="item.operLocation != null">
+                    #{item.operLocation,jdbcType=VARCHAR},
+                </if>
+                <if test="item.operLocation == null">
+                    NULL,
+                </if>
+                <if test="item.operParam != null">
+                    #{item.operParam,jdbcType=VARCHAR},
+                </if>
+                <if test="item.operParam == null">
+                    NULL,
+                </if>
+                <if test="item.jsonResult != null">
+                    #{item.jsonResult,jdbcType=VARCHAR},
+                </if>
+                <if test="item.jsonResult == null">
+                    NULL,
+                </if>
+                <if test="item.status != null">
+                    #{item.status,jdbcType=INTEGER},
+                </if>
+                <if test="item.status == null">
+                    NULL,
+                </if>
+                <if test="item.errorMsg != null">
+                    #{item.errorMsg,jdbcType=VARCHAR},
+                </if>
+                <if test="item.errorMsg == null">
+                    NULL,
+                </if>
+                <if test="item.operTime != null">
+                    #{item.operTime,jdbcType=TIMESTAMP},
+                </if>
+                <if test="item.operTime == null">
+                    NULL,
+                </if>
+            </trim>
+        </foreach>
+    </insert>
+    <update id="updateByPrimaryKeySelective" parameterType="com.summer.dao.entity.SysOperLog">
+        update sys_oper_log
+        <set>
+            <if test="title != null">
+                title = #{title,jdbcType=VARCHAR},
+            </if>
+            <if test="businessType != null">
+                business_type = #{businessType,jdbcType=INTEGER},
+            </if>
+            <if test="method != null">
+                method = #{method,jdbcType=VARCHAR},
+            </if>
+            <if test="requestMethod != null">
+                request_method = #{requestMethod,jdbcType=VARCHAR},
+            </if>
+            <if test="operatorType != null">
+                operator_type = #{operatorType,jdbcType=INTEGER},
+            </if>
+            <if test="operName != null">
+                oper_name = #{operName,jdbcType=VARCHAR},
+            </if>
+            <if test="deptName != null">
+                dept_name = #{deptName,jdbcType=VARCHAR},
+            </if>
+            <if test="operUrl != null">
+                oper_url = #{operUrl,jdbcType=VARCHAR},
+            </if>
+            <if test="operIp != null">
+                oper_ip = #{operIp,jdbcType=VARCHAR},
+            </if>
+            <if test="operLocation != null">
+                oper_location = #{operLocation,jdbcType=VARCHAR},
+            </if>
+            <if test="operParam != null">
+                oper_param = #{operParam,jdbcType=VARCHAR},
+            </if>
+            <if test="jsonResult != null">
+                json_result = #{jsonResult,jdbcType=VARCHAR},
+            </if>
+            <if test="status != null">
+                status = #{status,jdbcType=INTEGER},
+            </if>
+            <if test="errorMsg != null">
+                error_msg = #{errorMsg,jdbcType=VARCHAR},
+            </if>
+            <if test="operTime != null">
+                oper_time = #{operTime,jdbcType=TIMESTAMP},
+            </if>
+        </set>
+        where oper_id = #{operId,jdbcType=BIGINT}
+    </update>
+    <update id="updateByPrimaryKey" parameterType="com.summer.dao.entity.SysOperLog">
+    update sys_oper_log
+    set title = #{title,jdbcType=VARCHAR},
+      business_type = #{businessType,jdbcType=INTEGER},
+      method = #{method,jdbcType=VARCHAR},
+      request_method = #{requestMethod,jdbcType=VARCHAR},
+      operator_type = #{operatorType,jdbcType=INTEGER},
+      oper_name = #{operName,jdbcType=VARCHAR},
+      dept_name = #{deptName,jdbcType=VARCHAR},
+      oper_url = #{operUrl,jdbcType=VARCHAR},
+      oper_ip = #{operIp,jdbcType=VARCHAR},
+      oper_location = #{operLocation,jdbcType=VARCHAR},
+      oper_param = #{operParam,jdbcType=VARCHAR},
+      json_result = #{jsonResult,jdbcType=VARCHAR},
+      status = #{status,jdbcType=INTEGER},
+      error_msg = #{errorMsg,jdbcType=VARCHAR},
+      oper_time = #{operTime,jdbcType=TIMESTAMP}
+    where oper_id = #{operId,jdbcType=BIGINT}
+  </update>
+    <update id="updateBatchByPrimaryKey" parameterType="java.util.List">
+        update sys_oper_log
+        <trim prefix="set" suffixOverrides=",">
+            <trim prefix="title =case operId" suffix="end,">
+                <foreach collection="list" index="index" item="item" separator=" ">
+                    when #{item.operId} then #{item.title}
+                </foreach>
+            </trim>
+            <trim prefix="businessType =case operId" suffix="end,">
+                <foreach collection="list" index="index" item="item" separator=" ">
+                    when #{item.operId} then #{item.businessType}
+                </foreach>
+            </trim>
+            <trim prefix="method =case operId" suffix="end,">
+                <foreach collection="list" index="index" item="item" separator=" ">
+                    when #{item.operId} then #{item.method}
+                </foreach>
+            </trim>
+            <trim prefix="requestMethod =case operId" suffix="end,">
+                <foreach collection="list" index="index" item="item" separator=" ">
+                    when #{item.operId} then #{item.requestMethod}
+                </foreach>
+            </trim>
+            <trim prefix="operatorType =case operId" suffix="end,">
+                <foreach collection="list" index="index" item="item" separator=" ">
+                    when #{item.operId} then #{item.operatorType}
+                </foreach>
+            </trim>
+            <trim prefix="operName =case operId" suffix="end,">
+                <foreach collection="list" index="index" item="item" separator=" ">
+                    when #{item.operId} then #{item.operName}
+                </foreach>
+            </trim>
+            <trim prefix="deptName =case operId" suffix="end,">
+                <foreach collection="list" index="index" item="item" separator=" ">
+                    when #{item.operId} then #{item.deptName}
+                </foreach>
+            </trim>
+            <trim prefix="operUrl =case operId" suffix="end,">
+                <foreach collection="list" index="index" item="item" separator=" ">
+                    when #{item.operId} then #{item.operUrl}
+                </foreach>
+            </trim>
+            <trim prefix="operIp =case operId" suffix="end,">
+                <foreach collection="list" index="index" item="item" separator=" ">
+                    when #{item.operId} then #{item.operIp}
+                </foreach>
+            </trim>
+            <trim prefix="operLocation =case operId" suffix="end,">
+                <foreach collection="list" index="index" item="item" separator=" ">
+                    when #{item.operId} then #{item.operLocation}
+                </foreach>
+            </trim>
+            <trim prefix="operParam =case operId" suffix="end,">
+                <foreach collection="list" index="index" item="item" separator=" ">
+                    when #{item.operId} then #{item.operParam}
+                </foreach>
+            </trim>
+            <trim prefix="jsonResult =case operId" suffix="end,">
+                <foreach collection="list" index="index" item="item" separator=" ">
+                    when #{item.operId} then #{item.jsonResult}
+                </foreach>
+            </trim>
+            <trim prefix="status =case operId" suffix="end,">
+                <foreach collection="list" index="index" item="item" separator=" ">
+                    when #{item.operId} then #{item.status}
+                </foreach>
+            </trim>
+            <trim prefix="errorMsg =case operId" suffix="end,">
+                <foreach collection="list" index="index" item="item" separator=" ">
+                    when #{item.operId} then #{item.errorMsg}
+                </foreach>
+            </trim>
+            <trim prefix="operTime =case operId" suffix="end,">
+                <foreach collection="list" index="index" item="item" separator=" ">
+                    when #{item.operId} then #{item.operTime}
+                </foreach>
+            </trim>
+        </trim>
+        where oper_id in
+        <foreach close=")" collection="list" index="index" item="item" open="(" separator=",">
+            #{item.operId}
+        </foreach>
+    </update>
+    <update id="updateBatchByPrimaryKeySelective" parameterType="java.util.List">
+        update sys_oper_log
+        <trim prefix="set" suffixOverrides=",">
+            <trim prefix="title =case operId" suffix="end,">
+                <foreach collection="list" index="index" item="item" separator=" ">
+                    <if test="item.title != null ">
+                        when #{item.operId} then #{item.title}
+                    </if>
+                    <if test="item.title == null ">
+                        when #{item.operId} then sys_oper_log.title
+                    </if>
+                </foreach>
+            </trim>
+            <trim prefix="businessType =case operId" suffix="end,">
+                <foreach collection="list" index="index" item="item" separator=" ">
+                    <if test="item.businessType != null ">
+                        when #{item.operId} then #{item.businessType}
+                    </if>
+                    <if test="item.businessType == null ">
+                        when #{item.operId} then sys_oper_log.business_type
+                    </if>
+                </foreach>
+            </trim>
+            <trim prefix="method =case operId" suffix="end,">
+                <foreach collection="list" index="index" item="item" separator=" ">
+                    <if test="item.method != null ">
+                        when #{item.operId} then #{item.method}
+                    </if>
+                    <if test="item.method == null ">
+                        when #{item.operId} then sys_oper_log.method
+                    </if>
+                </foreach>
+            </trim>
+            <trim prefix="requestMethod =case operId" suffix="end,">
+                <foreach collection="list" index="index" item="item" separator=" ">
+                    <if test="item.requestMethod != null ">
+                        when #{item.operId} then #{item.requestMethod}
+                    </if>
+                    <if test="item.requestMethod == null ">
+                        when #{item.operId} then sys_oper_log.request_method
+                    </if>
+                </foreach>
+            </trim>
+            <trim prefix="operatorType =case operId" suffix="end,">
+                <foreach collection="list" index="index" item="item" separator=" ">
+                    <if test="item.operatorType != null ">
+                        when #{item.operId} then #{item.operatorType}
+                    </if>
+                    <if test="item.operatorType == null ">
+                        when #{item.operId} then sys_oper_log.operator_type
+                    </if>
+                </foreach>
+            </trim>
+            <trim prefix="operName =case operId" suffix="end,">
+                <foreach collection="list" index="index" item="item" separator=" ">
+                    <if test="item.operName != null ">
+                        when #{item.operId} then #{item.operName}
+                    </if>
+                    <if test="item.operName == null ">
+                        when #{item.operId} then sys_oper_log.oper_name
+                    </if>
+                </foreach>
+            </trim>
+            <trim prefix="deptName =case operId" suffix="end,">
+                <foreach collection="list" index="index" item="item" separator=" ">
+                    <if test="item.deptName != null ">
+                        when #{item.operId} then #{item.deptName}
+                    </if>
+                    <if test="item.deptName == null ">
+                        when #{item.operId} then sys_oper_log.dept_name
+                    </if>
+                </foreach>
+            </trim>
+            <trim prefix="operUrl =case operId" suffix="end,">
+                <foreach collection="list" index="index" item="item" separator=" ">
+                    <if test="item.operUrl != null ">
+                        when #{item.operId} then #{item.operUrl}
+                    </if>
+                    <if test="item.operUrl == null ">
+                        when #{item.operId} then sys_oper_log.oper_url
+                    </if>
+                </foreach>
+            </trim>
+            <trim prefix="operIp =case operId" suffix="end,">
+                <foreach collection="list" index="index" item="item" separator=" ">
+                    <if test="item.operIp != null ">
+                        when #{item.operId} then #{item.operIp}
+                    </if>
+                    <if test="item.operIp == null ">
+                        when #{item.operId} then sys_oper_log.oper_ip
+                    </if>
+                </foreach>
+            </trim>
+            <trim prefix="operLocation =case operId" suffix="end,">
+                <foreach collection="list" index="index" item="item" separator=" ">
+                    <if test="item.operLocation != null ">
+                        when #{item.operId} then #{item.operLocation}
+                    </if>
+                    <if test="item.operLocation == null ">
+                        when #{item.operId} then sys_oper_log.oper_location
+                    </if>
+                </foreach>
+            </trim>
+            <trim prefix="operParam =case operId" suffix="end,">
+                <foreach collection="list" index="index" item="item" separator=" ">
+                    <if test="item.operParam != null ">
+                        when #{item.operId} then #{item.operParam}
+                    </if>
+                    <if test="item.operParam == null ">
+                        when #{item.operId} then sys_oper_log.oper_param
+                    </if>
+                </foreach>
+            </trim>
+            <trim prefix="jsonResult =case operId" suffix="end,">
+                <foreach collection="list" index="index" item="item" separator=" ">
+                    <if test="item.jsonResult != null ">
+                        when #{item.operId} then #{item.jsonResult}
+                    </if>
+                    <if test="item.jsonResult == null ">
+                        when #{item.operId} then sys_oper_log.json_result
+                    </if>
+                </foreach>
+            </trim>
+            <trim prefix="status =case operId" suffix="end,">
+                <foreach collection="list" index="index" item="item" separator=" ">
+                    <if test="item.status != null ">
+                        when #{item.operId} then #{item.status}
+                    </if>
+                    <if test="item.status == null ">
+                        when #{item.operId} then sys_oper_log.status
+                    </if>
+                </foreach>
+            </trim>
+            <trim prefix="errorMsg =case operId" suffix="end,">
+                <foreach collection="list" index="index" item="item" separator=" ">
+                    <if test="item.errorMsg != null ">
+                        when #{item.operId} then #{item.errorMsg}
+                    </if>
+                    <if test="item.errorMsg == null ">
+                        when #{item.operId} then sys_oper_log.error_msg
+                    </if>
+                </foreach>
+            </trim>
+            <trim prefix="operTime =case operId" suffix="end,">
+                <foreach collection="list" index="index" item="item" separator=" ">
+                    <if test="item.operTime != null ">
+                        when #{item.operId} then #{item.operTime}
+                    </if>
+                    <if test="item.operTime == null ">
+                        when #{item.operId} then sys_oper_log.oper_time
+                    </if>
+                </foreach>
+            </trim>
+        </trim>
+        where oper_id in
+        <foreach close=")" collection="list" index="index" item="item" open="(" separator=",">
+            #{item.operId}
+        </foreach>
+    </update>
+</mapper>

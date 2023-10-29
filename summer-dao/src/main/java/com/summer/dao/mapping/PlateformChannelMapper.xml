@@ -1,0 +1,622 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.summer.dao.mapper.PlateformChannelMapper">
+    <resultMap id="BaseResultMap" type="com.summer.dao.entity.PlateformChannel">
+        <id column="id" property="id" jdbcType="INTEGER"/>
+        <result column="account" property="account" jdbcType="VARCHAR"/>
+        <result column="password" property="password" jdbcType="VARCHAR"/>
+        <result column="salt" property="salt" jdbcType="VARCHAR"/>
+        <result column="channel_name" property="channelName" jdbcType="VARCHAR"/>
+        <result column="manager_phone" property="managerPhone" jdbcType="VARCHAR"/>
+        <result column="manager_name" property="managerName" jdbcType="VARCHAR"/>
+        <result column="plateform_user_id" property="plateformUserId" jdbcType="INTEGER"/>
+        <result column="company_name" property="companyName" jdbcType="VARCHAR"/>
+        <result column="price" property="price" jdbcType="INTEGER"/>
+        <result column="payment_mode" property="paymentMode" jdbcType="INTEGER"/>
+        <result column="payment_type" property="paymentType" jdbcType="INTEGER"/>
+        <result column="cooperation_mode" property="cooperationMode" jdbcType="INTEGER"/>
+        <result column="decrease_percentage" property="decreasePercentage" jdbcType="DECIMAL"/>
+        <result column="status" property="status" jdbcType="TINYINT"/>
+        <result column="remark" property="remark" jdbcType="VARCHAR"/>
+        <result column="create_time" property="createTime" jdbcType="TIMESTAMP"/>
+        <result column="update_time" property="updateTime" jdbcType="TIMESTAMP"/>
+        <result column="link" property="link" jdbcType="VARCHAR"/>
+        <result column="back_stage" property="backStage" jdbcType="VARCHAR"/>
+        <result column="freeze_status" property="freezeStatus"/>
+        <result column="forbidden_status" property="forbiddenStatus"/>
+        <result column="channel_code" property="channelCode"></result>
+        <result column="wechat_switch" property="wechatSwitch"/>
+        <result column="credit_super_switch" property="creditSuperSwitch"/>
+        <result column="browser_switch" property="browserSwitch"/>
+        <result column="risk_type" property="riskType"/>
+        <result column="risk_score" property="riskScore"/>
+        <result column="pc_switch" property="pcSwitch"/>
+        <result column="risk_switch" property="riskSwitch"/>
+        <result column="strip_switch" property="stripSwitch"/>
+        <result column="audit_switch" property="auditSwitch"/>
+
+    </resultMap>
+    <sql id="Base_Column_List">
+    id, account, password, salt, channel_name, manager_phone, manager_name,
+    plateform_user_id, company_name, price, payment_mode, payment_type, cooperation_mode,
+    decrease_percentage, status, remark, create_time, update_time,link,back_stage,freeze_status,forbidden_status,channel_code,
+    wechat_switch,credit_super_switch,browser_switch,risk_type,risk_score,pc_switch,risk_switch,strip_switch,audit_switch
+  </sql>
+    <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer">
+        select
+        <include refid="Base_Column_List"/>
+        from plateform_channel
+        where id = #{id,jdbcType=INTEGER}
+    </select>
+    <select id="selectByPrimaryKeyToUpdate" resultMap="BaseResultMap" parameterType="java.lang.Integer">
+        select
+        <include refid="Base_Column_List"/>
+        from plateform_channel
+        where id = #{id,jdbcType=INTEGER}
+    </select>
+    <select id="selectSimple" parameterType="java.util.Map" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from plateform_channel
+        ORDER BY id DESC
+    </select>
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from plateform_channel
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+    <insert id="insert" parameterType="com.summer.dao.entity.PlateformChannel" useGeneratedKeys="true" keyProperty="id">
+        insert into plateform_channel (id, account,
+        password, salt, channel_name,
+        manager_phone, manager_name, plateform_user_id,
+        company_name, price, payment_mode,
+        payment_type, cooperation_mode, decrease_percentage,
+        status, remark, create_time,
+        update_time,link,back_stage,freeze_status,forbidden_status,channel_code,wechat_switch,credit_super_switch,browser_switch)
+        values (#{id,jdbcType=INTEGER}, #{account,jdbcType=VARCHAR},
+        #{password,jdbcType=VARCHAR}, #{salt,jdbcType=VARCHAR}, #{channelName,jdbcType=VARCHAR},
+        #{managerPhone,jdbcType=VARCHAR}, #{managerName,jdbcType=VARCHAR}, #{plateformUserId,jdbcType=INTEGER},
+        #{companyName,jdbcType=VARCHAR}, #{price,jdbcType=INTEGER}, #{paymentMode,jdbcType=INTEGER},
+        #{paymentType,jdbcType=INTEGER}, #{cooperationMode,jdbcType=INTEGER}, #{decreasePercentage,jdbcType=DECIMAL},
+        #{status,jdbcType=TINYINT}, #{remark,jdbcType=VARCHAR}, #{createTime,jdbcType=TIMESTAMP},
+        #{updateTime,jdbcType=TIMESTAMP},
+        #{link,jdbcType=VARCHAR},#{backStage,jdbcType=VARCHAR},#{freezeStatus},#{forbiddenStatus},#{channelCode},
+        #{wechatSwitch},#{creditSuperSwitch},#{browserSwitch})
+        <selectKey keyProperty="id" order="AFTER" resultType="int">
+            select LAST_INSERT_ID()
+        </selectKey>
+    </insert>
+    <insert id="insertSelective" parameterType="com.summer.pojo.dto.PlateformChannelParamDto"
+            useGeneratedKeys="true" keyProperty="id">
+        insert into plateform_channel
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                id,
+            </if>
+            <if test="account != null">
+                account,
+            </if>
+            <if test="password != null">
+                password,
+            </if>
+            <if test="salt != null">
+                salt,
+            </if>
+            <if test="channelName != null">
+                channel_name,
+            </if>
+            <if test="managerPhone != null">
+                manager_phone,
+            </if>
+            <if test="managerName != null">
+                manager_name,
+            </if>
+            <if test="plateformUserId != null">
+                plateform_user_id,
+            </if>
+            <if test="companyName != null">
+                company_name,
+            </if>
+            <if test="priceInt != null">
+                price,
+            </if>
+            <if test="paymentMode != null">
+                payment_mode,
+            </if>
+            <if test="paymentType != null">
+                payment_type,
+            </if>
+            <if test="cooperationMode != null">
+                cooperation_mode,
+            </if>
+            <if test="decreasePercentage != null">
+                decrease_percentage,
+            </if>
+            <if test="status != null">
+                status,
+            </if>
+            <if test="remark != null">
+                remark,
+            </if>
+            <if test="createTime != null">
+                create_time,
+            </if>
+            <if test="updateTime != null">
+                update_time,
+            </if>
+            <if test="link != null">
+                link,
+            </if>
+            <if test="backStage != null">
+                back_stage,
+            </if>
+            <if test="freezeStatus != null">
+                freeze_status,
+            </if>
+            <if test="forbiddenStatus != null">
+                forbidden_status,
+            </if>
+            <if test="channelCode != null">
+                channel_code ,
+            </if>
+            <if test="wechatSwitch != null">
+                wechat_switch,
+            </if>
+            <if test="creditSuperSwitch != null">
+                credit_super_switch,
+            </if>
+            <if test="browserSwitch != null">
+                browser_switch,
+            </if>
+            <if test="riskType != null">
+                risk_type,
+            </if>
+            <if test="riskScore != null">
+                risk_score,
+            </if>
+            <if test="pcSwitch != null">
+                pc_switch,
+            </if>
+            <if test="riskSwitch != null">
+                risk_switch,
+            </if>
+
+            <if test="stripSwitch != null">
+                strip_switch,
+            </if>
+            <if test="auditSwitch != null">
+                audit_switch
+            </if>
+
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                #{id,jdbcType=INTEGER},
+            </if>
+            <if test="account != null">
+                #{account,jdbcType=VARCHAR},
+            </if>
+            <if test="password != null">
+                #{password,jdbcType=VARCHAR},
+            </if>
+            <if test="salt != null">
+                #{salt,jdbcType=VARCHAR},
+            </if>
+            <if test="channelName != null">
+                #{channelName,jdbcType=VARCHAR},
+            </if>
+            <if test="managerPhone != null">
+                #{managerPhone,jdbcType=VARCHAR},
+            </if>
+            <if test="managerName != null">
+                #{managerName,jdbcType=VARCHAR},
+            </if>
+            <if test="plateformUserId != null">
+                #{plateformUserId,jdbcType=INTEGER},
+            </if>
+            <if test="companyName != null">
+                #{companyName,jdbcType=VARCHAR},
+            </if>
+            <if test="priceInt != null">
+                #{priceInt,jdbcType=INTEGER},
+            </if>
+            <if test="paymentMode != null">
+                #{paymentMode,jdbcType=INTEGER},
+            </if>
+            <if test="paymentType != null">
+                #{paymentType,jdbcType=INTEGER},
+            </if>
+            <if test="cooperationMode != null">
+                #{cooperationMode,jdbcType=INTEGER},
+            </if>
+            <if test="decreasePercentage != null">
+                #{decreasePercentage,jdbcType=DECIMAL},
+            </if>
+            <if test="status != null">
+                #{status,jdbcType=TINYINT},
+            </if>
+            <if test="remark != null">
+                #{remark,jdbcType=VARCHAR},
+            </if>
+            <if test="createTime != null">
+                #{createTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="updateTime != null">
+                #{updateTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="link != null">
+                #{link,jdbcType=VARCHAR},
+            </if>
+            <if test="backStage != null">
+                #{backStage,jdbcType=VARCHAR},
+            </if>
+            <if test="freezeStatus != null">
+                #{freezeStatus},
+            </if>
+
+            <if test="forbiddenStatus != null">
+                #{forbiddenStatus},
+            </if>
+            <if test="channelCode != null">
+                #{channelCode} ,
+            </if>
+            <if test="wechatSwitch != null">
+                #{wechatSwitch},
+            </if>
+            <if test="creditSuperSwitch != null">
+                #{creditSuperSwitch},
+            </if>
+            <if test="browserSwitch != null">
+                #{browserSwitch},
+            </if>
+            <if test="riskType != null">
+                #{riskType},
+            </if>
+            <if test="riskScore != null">
+                #{riskScore},
+            </if>
+            <if test="pcSwitch != null">
+                #{pcSwitch},
+            </if>
+
+            <if test="riskSwitch != null">
+                #{riskSwitch},
+            </if>
+
+            <if test="stripSwitch != null">
+                #{stripSwitch},
+            </if>
+            <if test="auditSwitch != null">
+                #{auditSwitch}
+            </if>
+
+        </trim>
+    </insert>
+    <update id="updateByPrimaryKeySelective" parameterType="com.summer.pojo.dto.PlateformChannelParamDto">
+        update plateform_channel
+        <set>
+            <if test="account != null and account != ''">
+                account = #{account,jdbcType=VARCHAR},
+            </if>
+            <if test="password != null and password != ''">
+                password = #{password,jdbcType=VARCHAR},
+            </if>
+            <if test="salt != null">
+                salt = #{salt,jdbcType=VARCHAR},
+            </if>
+            <if test="channelName != null and channelName != ''">
+                channel_name = #{channelName,jdbcType=VARCHAR},
+            </if>
+            <if test="managerPhone != null and managerPhone != ''">
+                manager_phone = #{managerPhone,jdbcType=VARCHAR},
+            </if>
+            <if test="managerName != null and managerName != ''">
+                manager_name = #{managerName,jdbcType=VARCHAR},
+            </if>
+            <if test="plateformUserId != null">
+                plateform_user_id = #{plateformUserId,jdbcType=INTEGER},
+            </if>
+            <if test="companyName != null and companyName != ''">
+                company_name = #{companyName,jdbcType=VARCHAR},
+            </if>
+            <if test="priceInt != null">
+                price = #{priceInt,jdbcType=INTEGER},
+            </if>
+            <if test="paymentMode != null">
+                payment_mode = #{paymentMode,jdbcType=INTEGER},
+            </if>
+            <if test="paymentType != null">
+                payment_type = #{paymentType,jdbcType=INTEGER},
+            </if>
+            <if test="cooperationMode != null">
+                cooperation_mode = #{cooperationMode,jdbcType=INTEGER},
+            </if>
+            <if test="decreasePercentage != null">
+                decrease_percentage = #{decreasePercentage,jdbcType=DECIMAL},
+            </if>
+            <if test="status != null">
+                status = #{status,jdbcType=TINYINT},
+            </if>
+            <if test="remark != null and remark != ''">
+                remark = #{remark,jdbcType=VARCHAR},
+            </if>
+            <if test="createTime != null">
+                create_time = #{createTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="updateTime != null">
+                update_time = #{updateTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="link != null and link != ''">
+                link = #{link,jdbcType=VARCHAR},
+            </if>
+            <if test="backStage != null and backStage != ''">
+                back_stage = #{backStage,jdbcType=VARCHAR},
+            </if>
+            <if test="freezeStatus != null">
+                freeze_status = #{freezeStatus},
+            </if>
+            <if test="forbiddenStatus != null">
+                forbidden_status = #{forbiddenStatus},
+            </if>
+            <if test="channelCode != null and channelCode != ''">
+                channel_code =#{channelCode},
+            </if>
+            <if test="wechatSwitch != null">
+                wechat_switch = #{wechatSwitch},
+            </if>
+            <if test="creditSuperSwitch != null">
+                credit_super_switch = #{creditSuperSwitch},
+            </if>
+            <if test="browserSwitch != null">
+                browser_switch = #{browserSwitch},
+            </if>
+            <if test="riskType != null">
+                risk_type = #{riskType},
+            </if>
+            <if test="riskScore != null">
+                risk_score =#{riskScore},
+            </if>
+            <if test="pcSwitch != null">
+                pc_switch =#{pcSwitch},
+            </if>
+            <if test="riskSwitch != null">
+                risk_switch=#{riskSwitch},
+            </if>
+            <if test="stripSwitch != null">
+                strip_switch=#{stripSwitch},
+            </if>
+            <if test="auditSwitch != null">
+                audit_switch=#{auditSwitch}
+            </if>
+        </set>
+        where id = #{id,jdbcType=INTEGER}
+    </update>
+    <update id="updateByPrimaryKey" parameterType="com.summer.dao.entity.PlateformChannel">
+    update plateform_channel
+    set
+      account = #{account,jdbcType=VARCHAR},
+      password = #{password,jdbcType=VARCHAR},
+      salt = #{salt,jdbcType=VARCHAR},
+      channel_name = #{channelName,jdbcType=VARCHAR},
+      manager_phone = #{managerPhone,jdbcType=VARCHAR},
+      manager_name = #{managerName,jdbcType=VARCHAR},
+      plateform_user_id = #{plateformUserId,jdbcType=INTEGER},
+      company_name = #{companyName,jdbcType=VARCHAR},
+      price = #{price,jdbcType=INTEGER},
+      payment_mode = #{paymentMode,jdbcType=INTEGER},
+      payment_type = #{paymentType,jdbcType=INTEGER},
+      cooperation_mode = #{cooperationMode,jdbcType=INTEGER},
+      decrease_percentage = #{decreasePercentage,jdbcType=DECIMAL},
+      status = #{status,jdbcType=TINYINT},
+      remark = #{remark,jdbcType=VARCHAR},
+      create_time = #{createTime,jdbcType=TIMESTAMP},
+      update_time = #{updateTime,jdbcType=TIMESTAMP},
+      link = #{link,jdbcType=VARCHAR},
+      back_stage = #{backStage,jdbcType=VARCHAR},
+      freeze_status =#{freezeStatus},
+      forbidden_status = #{forbiddenStatus},
+      channel_code = #{channelCode},
+      wechat_switch = #{wechatSwitch},
+      credit_super_switch = #{creditSuperSwitch},
+      browser_switch = #{browserSwitch}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+    <!--分页查询渠道列表-->
+    <select id="findParams" resultMap="BaseResultMap" parameterType="java.util.Map">
+        select
+        <include refid="Base_Column_List"/>
+        from plateform_channel
+        <where>
+            <if test="channelName != null and channelName != ''">
+                and channel_name =#{channelName}
+            </if>
+            <if test="plateformUserId != null and plateformUserId != ''">
+                and plateform_user_id = #{plateformUserId}
+            </if>
+            <if test="startTime != null and startTime != ''">
+                <![CDATA[    and create_time >= #{startTime}   ]]>
+            </if>
+            <if test="endTime != null and endTime != ''">
+                <![CDATA[    and create_time < #{endTime}   ]]>
+            </if>
+            <if test="id != null and id !='' ">
+                and id=#{id}
+            </if>
+            <if test="status != null ">
+                and status= #{status}
+            </if>
+        </where>
+
+    </select>
+    <!--更新渠道状态-->
+    <update id="updateByStatus" parameterType="java.lang.Integer">
+        update plateform_channel
+        <set>
+            <if test="status != null">
+                status = #{status,jdbcType=TINYINT},
+            </if>
+        </set>
+        where id = #{id,jdbcType=INTEGER}
+    </update>
+    <!--<update id="updateLink" parameterType="java.lang.Integer">
+        update plateform_channel
+        <set>
+            <if test="status != null">
+                status = #{status,jdbcType=TINYINT},
+            </if>
+        </set>
+        where id = #{id,jdbcType=INTEGER}
+    </update>-->
+
+    <select id="selectByChannelName" parameterType="java.lang.String" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from plateform_channel where channel_name=#{channelName}
+    </select>
+
+    <select id="selectByAccount" parameterType="java.lang.String" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from plateform_channel where account=#{account}
+    </select>
+
+    <select id="findByChannelLink" parameterType="java.lang.Integer" resultType="com.summer.pojo.vo.ChannelLinkVO">
+    select id as id,link as dropLink ,short_url as shortUrl ,back_stage as backstageLink,account as account,password as password,channel_code as channelCode from plateform_channel where id=#{id}
+  </select>
+
+    <update id="updateShortLink" parameterType="com.summer.pojo.vo.ChannelLinkVO">
+        update plateform_channel
+        <set>
+            <if test="shortUrl != null">
+                short_url = #{shortUrl},
+            </if>
+        </set>
+        where id = #{id}
+    </update>
+
+    <resultMap id="BaseResultMapChannel" type="com.summer.pojo.vo.PlateformChannelListVo">
+        <id column="id" property="id" jdbcType="INTEGER"/>
+        <result column="account" property="account" jdbcType="VARCHAR"/>
+        <result column="password" property="password" jdbcType="VARCHAR"/>
+        <result column="salt" property="salt" jdbcType="VARCHAR"/>
+        <result column="channel_name" property="channelName" jdbcType="VARCHAR"/>
+        <result column="manager_phone" property="managerPhone" jdbcType="VARCHAR"/>
+        <result column="manager_name" property="managerName" jdbcType="VARCHAR"/>
+        <result column="plateform_user_id" property="plateformUserId" jdbcType="INTEGER"/>
+        <result column="company_name" property="companyName" jdbcType="VARCHAR"/>
+        <result column="price" property="price"/>
+        <result column="payment_mode" property="paymentMode" jdbcType="INTEGER"/>
+        <result column="payment_type" property="paymentType" jdbcType="INTEGER"/>
+        <result column="cooperation_mode" property="cooperationMode" jdbcType="INTEGER"/>
+        <result column="decrease_percentage" property="decreasePercentage" jdbcType="DECIMAL"/>
+        <result column="status" property="status" jdbcType="TINYINT"/>
+        <result column="remark" property="remark" jdbcType="VARCHAR"/>
+        <result column="create_time" property="createTime" jdbcType="TIMESTAMP"/>
+        <result column="update_time" property="updateTime" jdbcType="TIMESTAMP"/>
+        <result column="link" property="link" jdbcType="VARCHAR"/>
+        <result column="short_url" property="shortUrl" jdbcType="VARCHAR"/>
+        <result column="back_stage" property="backStage" jdbcType="VARCHAR"/>
+        <result column="freeze_status" property="freezeStatus"/>
+        <result column="forbidden_status" property="forbiddenStatus"/>
+        <result column="channel_code" property="channelCode"/>
+        <result column="wechat_switch" property="wechatSwitch"/>
+        <result column="credit_super_switch" property="creditSuperSwitch"/>
+        <result column="browser_switch" property="browserSwitch"/>
+        <result column="risk_type" property="riskType"/>
+        <result column="risk_score" property="riskScore"/>
+        <result column="expire" property="expire"/>
+        <result column="service_charge" property="serviceCharge"/>
+        <result column="borrow_interest" property="borrowInterest"/>
+        <result column="renewal_expire" property="renewalExpire"/>
+        <result column="pc_switch" property="pcSwitch"/>
+        <result column="risk_switch" property="riskSwitch"/>
+        <result column="loan_amount" property="loanAmount"/>
+        <result column="strip_switch" property="stripSwitch"/>
+        <result column="audit_switch" property="auditSwitch"/>
+    </resultMap>
+    <sql id="channel_List">
+    pc.id, account, password, salt, channel_name, manager_phone, manager_name,
+    plateform_user_id,company_name,  Round(price/100,2)  as price , payment_mode, payment_type, cooperation_mode,
+    decrease_percentage, pc.status, remark, pc.create_time, pc.update_time,link,short_url,back_stage,freeze_status,forbidden_status,
+    channel_code,wechat_switch,credit_super_switch,browser_switch,risk_type,risk_score,pc_switch,risk_switch,
+    strip_switch,audit_switch,
+    CASE  WHEN expire IS NULL THEN
+	     ( SELECT expire FROM loan_rule_config WHERE channel_id = 0 )
+	     ELSE expire 	END expire,
+    CASE  WHEN service_charge IS NULL THEN
+		 ( SELECT service_charge FROM loan_rule_config WHERE channel_id = 0 )
+		ELSE service_charge	END service_charge,
+    CASE WHEN borrow_interest IS NULL THEN
+		 ( SELECT borrow_interest FROM loan_rule_config WHERE channel_id = 0 )
+		  ELSE borrow_interest	END borrow_interest,
+    CASE WHEN renewal_expire IS NULL THEN
+         ( SELECT renewal_expire FROM loan_rule_config WHERE channel_id = 0 )
+          ELSE renewal_expire	END renewal_expire,
+     CASE WHEN loan_amount IS NULL THEN
+         ( SELECT loan_amount FROM loan_rule_config WHERE channel_id = 0 )
+          ELSE loan_amount	END loan_amount
+
+  </sql>
+
+    <select id="findListParams" resultMap="BaseResultMapChannel" parameterType="java.util.Map">
+        select
+        <include refid="channel_List"/>
+        from plateform_channel pc
+        left join loan_rule_config rc on pc.id = rc.channel_id
+
+        <where>
+            <if test="channelName != null and channelName != ''">
+                and channel_name =#{channelName}
+            </if>
+            <if test="plateformUserId != null">
+                and plateform_user_id = #{plateformUserId}
+            </if>
+            <if test="startTime != null and startTime != ''">
+                <![CDATA[    and pc.create_time >= #{startTime}   ]]>
+            </if>
+            <if test="endTime != null and endTime != ''">
+                <![CDATA[    and pc.create_time < date_add(#{endTime},interval 1 day)   ]]>
+            </if>
+            <if test="id != null">
+                and id=#{id}
+            </if>
+            <if test="status != null ">
+                and status= #{status}
+            </if>
+            <if test="riskType != null">
+                and risk_type = #{riskType}
+            </if>
+            <if test="riskScoreSt != null">
+                <![CDATA[  and risk_score >= #{riskScoreSt}   ]]>
+            </if>
+
+            <if test="riskScoreEn != null">
+                <![CDATA[  and risk_score < #{riskScoreEn} ]]>
+            </if>
+
+        </where>
+        order by pc.create_time desc,channel_name desc
+    </select>
+
+    <select id="findByChannelCode" parameterType="java.lang.String" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from plateform_channel where channel_code =#{channelCode}
+    </select>
+
+    <select id="findByChannelName" parameterType="java.util.Map" resultType="com.summer.pojo.vo.ChannelNameListVo">
+  SELECT
+	pc.id AS channelId,
+	pc.channel_name AS channelName
+FROM
+	plateform_channel pc
+ORDER BY
+	create_time DESC
+
+  </select>
+    
+    <select id="findUnionLink"  resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from plateform_channel where status = 1 and wechat_switch = 0 limit 1
+    </select>
+</mapper>

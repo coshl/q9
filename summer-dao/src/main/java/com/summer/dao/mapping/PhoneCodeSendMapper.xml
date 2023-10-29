@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.summer.dao.mapper.PhoneCodeSendDAO">
+	<resultMap id="BaseResultMap" type="com.summer.dao.entity.PhoneCodeSend">
+		<id column="id" jdbcType="INTEGER" property="id"/>
+		<result column="phone" jdbcType="VARCHAR" property="phone"/>
+		<result column="content" jdbcType="VARCHAR" property="content"/>
+		<result column="code" jdbcType="VARCHAR" property="code"/>
+		<result column="create_time" jdbcType="VARCHAR" property="createTime"/>
+	</resultMap>
+	
+	<insert id="insert" parameterType="com.summer.dao.entity.PhoneCodeSend">
+		insert into phone_code_send ( phone,content,code,create_time)
+		values ( #{phone,jdbcType=VARCHAR},#{content,jdbcType=VARCHAR}, #{code,jdbcType=VARCHAR},  NOW())
+	</insert>
+	
+	<select id="selectCode" parameterType="java.lang.String" resultMap="BaseResultMap">
+		select id,phone,code,content,create_time
+		from phone_code_send where phone = #{phone} ORDER BY id DESC
+	</select>
+	
+</mapper>

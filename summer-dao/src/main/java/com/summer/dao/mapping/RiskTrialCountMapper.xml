@@ -1,0 +1,416 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.summer.dao.mapper.RiskTrialCountDAO">
+    <resultMap id="BaseResultMap" type="com.summer.dao.entity.RiskTrialCount">
+        <id column="id" jdbcType="INTEGER" property="id"/>
+        <result column="rule_id" jdbcType="INTEGER" property="ruleId"/>
+        <result column="hit_count" jdbcType="INTEGER" property="hitCount"/>
+        <result column="count_type" jdbcType="TINYINT" property="countType"/>
+        <result column="rule_descript" jdbcType="VARCHAR" property="ruleDescript"/>
+        <result column="create_time" jdbcType="TIMESTAMP" property="createTime"/>
+        <result column="update_time" jdbcType="TIMESTAMP" property="updateTime"/>
+        <result column="status" jdbcType="TINYINT" property="status"/>
+    </resultMap>
+    <sql id="Base_Column_List">
+    id, rule_id, hit_count, count_type, rule_descript, create_time, update_time, status
+  </sql>
+    <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from risk_trial_count
+        where id = #{id,jdbcType=INTEGER}
+    </select>
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from risk_trial_count
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+    <insert id="insert" parameterType="com.summer.dao.entity.RiskTrialCount">
+    insert into risk_trial_count (id, rule_id, hit_count, 
+      count_type, rule_descript, create_time, 
+      update_time, status)
+    values (#{id,jdbcType=INTEGER}, #{ruleId,jdbcType=INTEGER}, #{hitCount,jdbcType=INTEGER}, 
+      #{countType,jdbcType=TINYINT}, #{ruleDescript,jdbcType=VARCHAR}, #{createTime,jdbcType=TIMESTAMP}, 
+      #{updateTime,jdbcType=TIMESTAMP}, #{status,jdbcType=TINYINT})
+  </insert>
+    <insert id="insertSelective" parameterType="com.summer.dao.entity.RiskTrialCount">
+        insert into risk_trial_count
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                id,
+            </if>
+            <if test="ruleId != null">
+                rule_id,
+            </if>
+            <if test="hitCount != null">
+                hit_count,
+            </if>
+            <if test="countType != null">
+                count_type,
+            </if>
+            <if test="ruleDescript != null">
+                rule_descript,
+            </if>
+            <if test="createTime != null">
+                create_time,
+            </if>
+            <if test="updateTime != null">
+                update_time,
+            </if>
+            <if test="status != null">
+                status,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                #{id,jdbcType=INTEGER},
+            </if>
+            <if test="ruleId != null">
+                #{ruleId,jdbcType=INTEGER},
+            </if>
+            <if test="hitCount != null">
+                #{hitCount,jdbcType=INTEGER},
+            </if>
+            <if test="countType != null">
+                #{countType,jdbcType=TINYINT},
+            </if>
+            <if test="ruleDescript != null">
+                #{ruleDescript,jdbcType=VARCHAR},
+            </if>
+            <if test="createTime != null">
+                #{createTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="updateTime != null">
+                #{updateTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="status != null">
+                #{status,jdbcType=TINYINT},
+            </if>
+        </trim>
+    </insert>
+    <insert id="insertBatch" parameterType="java.util.List">
+        insert into risk_trial_count (id, rule_id, hit_count,
+        count_type, rule_descript, create_time,
+        update_time, status)
+        values
+        <foreach collection="list" index="index" item="item" separator=",">
+            (#{item.id,jdbcType=INTEGER}, #{item.ruleId,jdbcType=INTEGER}, #{item.hitCount,jdbcType=INTEGER},
+            #{item.countType,jdbcType=TINYINT}, #{item.ruleDescript,jdbcType=VARCHAR},
+            #{item.createTime,jdbcType=TIMESTAMP},
+            #{item.updateTime,jdbcType=TIMESTAMP}, #{item.status,jdbcType=TINYINT})
+        </foreach>
+    </insert>
+    <insert id="insertBatchSelective" parameterType="java.util.List">
+        insert into risk_trial_count
+        (id, rule_id, hit_count, count_type, rule_descript, create_time, update_time, status
+        )
+        values
+        <foreach collection="list" index="index" item="item" separator=",">
+            <trim prefix="(" suffix=")" suffixOverrides=",">
+                <if test="item.id != null">
+                    #{item.id,jdbcType=INTEGER},
+                </if>
+                <if test="item.id == null">
+                    NULL,
+                </if>
+                <if test="item.ruleId != null">
+                    #{item.ruleId,jdbcType=INTEGER},
+                </if>
+                <if test="item.ruleId == null">
+                    NULL,
+                </if>
+                <if test="item.hitCount != null">
+                    #{item.hitCount,jdbcType=INTEGER},
+                </if>
+                <if test="item.hitCount == null">
+                    NULL,
+                </if>
+                <if test="item.countType != null">
+                    #{item.countType,jdbcType=TINYINT},
+                </if>
+                <if test="item.countType == null">
+                    NULL,
+                </if>
+                <if test="item.ruleDescript != null">
+                    #{item.ruleDescript,jdbcType=VARCHAR},
+                </if>
+                <if test="item.ruleDescript == null">
+                    NULL,
+                </if>
+                <if test="item.createTime != null">
+                    #{item.createTime,jdbcType=TIMESTAMP},
+                </if>
+                <if test="item.createTime == null">
+                    NULL,
+                </if>
+                <if test="item.updateTime != null">
+                    #{item.updateTime,jdbcType=TIMESTAMP},
+                </if>
+                <if test="item.updateTime == null">
+                    NULL,
+                </if>
+                <if test="item.status != null">
+                    #{item.status,jdbcType=TINYINT},
+                </if>
+                <if test="item.status == null">
+                    NULL,
+                </if>
+            </trim>
+        </foreach>
+    </insert>
+    <update id="updateByPrimaryKeySelective" parameterType="com.summer.dao.entity.RiskTrialCount">
+        update risk_trial_count
+        <set>
+            <if test="ruleId != null">
+                rule_id = #{ruleId,jdbcType=INTEGER},
+            </if>
+            <if test="hitCount != null">
+                hit_count = #{hitCount,jdbcType=INTEGER},
+            </if>
+            <if test="countType != null">
+                count_type = #{countType,jdbcType=TINYINT},
+            </if>
+            <if test="ruleDescript != null">
+                rule_descript = #{ruleDescript,jdbcType=VARCHAR},
+            </if>
+            <if test="createTime != null">
+                create_time = #{createTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="updateTime != null">
+                update_time = #{updateTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="status != null">
+                status = #{status,jdbcType=TINYINT},
+            </if>
+        </set>
+        where id = #{id,jdbcType=INTEGER}
+    </update>
+    <update id="updateByPrimaryKey" parameterType="com.summer.dao.entity.RiskTrialCount">
+    update risk_trial_count
+    set rule_id = #{ruleId,jdbcType=INTEGER},
+      hit_count = #{hitCount,jdbcType=INTEGER},
+      count_type = #{countType,jdbcType=TINYINT},
+      rule_descript = #{ruleDescript,jdbcType=VARCHAR},
+      create_time = #{createTime,jdbcType=TIMESTAMP},
+      update_time = #{updateTime,jdbcType=TIMESTAMP},
+      status = #{status,jdbcType=TINYINT}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+    <update id="updateBatchByPrimaryKey" parameterType="java.util.List">
+        update risk_trial_count
+        <trim prefix="set" suffixOverrides=",">
+            <trim prefix="ruleId =case id" suffix="end,">
+                <foreach collection="list" index="index" item="item" separator=" ">
+                    when #{item.id} then #{item.ruleId}
+                </foreach>
+            </trim>
+            <trim prefix="hitCount =case id" suffix="end,">
+                <foreach collection="list" index="index" item="item" separator=" ">
+                    when #{item.id} then #{item.hitCount}
+                </foreach>
+            </trim>
+            <trim prefix="countType =case id" suffix="end,">
+                <foreach collection="list" index="index" item="item" separator=" ">
+                    when #{item.id} then #{item.countType}
+                </foreach>
+            </trim>
+            <trim prefix="ruleDescript =case id" suffix="end,">
+                <foreach collection="list" index="index" item="item" separator=" ">
+                    when #{item.id} then #{item.ruleDescript}
+                </foreach>
+            </trim>
+            <trim prefix="createTime =case id" suffix="end,">
+                <foreach collection="list" index="index" item="item" separator=" ">
+                    when #{item.id} then #{item.createTime}
+                </foreach>
+            </trim>
+            <trim prefix="updateTime =case id" suffix="end,">
+                <foreach collection="list" index="index" item="item" separator=" ">
+                    when #{item.id} then #{item.updateTime}
+                </foreach>
+            </trim>
+            <trim prefix="status =case id" suffix="end,">
+                <foreach collection="list" index="index" item="item" separator=" ">
+                    when #{item.id} then #{item.status}
+                </foreach>
+            </trim>
+        </trim>
+        where id in
+        <foreach close=")" collection="list" index="index" item="item" open="(" separator=",">
+            #{item.id}
+        </foreach>
+    </update>
+    <update id="updateBatchByPrimaryKeySelective" parameterType="java.util.List">
+        update risk_trial_count
+        <trim prefix="set" suffixOverrides=",">
+            <trim prefix="ruleId =case id" suffix="end,">
+                <foreach collection="list" index="index" item="item" separator=" ">
+                    <if test="item.ruleId != null ">
+                        when #{item.id} then #{item.ruleId}
+                    </if>
+                    <if test="item.ruleId == null ">
+                        when #{item.id} then risk_trial_count.rule_id
+                    </if>
+                </foreach>
+            </trim>
+            <trim prefix="hitCount =case id" suffix="end,">
+                <foreach collection="list" index="index" item="item" separator=" ">
+                    <if test="item.hitCount != null ">
+                        when #{item.id} then #{item.hitCount}
+                    </if>
+                    <if test="item.hitCount == null ">
+                        when #{item.id} then risk_trial_count.hit_count
+                    </if>
+                </foreach>
+            </trim>
+            <trim prefix="countType =case id" suffix="end,">
+                <foreach collection="list" index="index" item="item" separator=" ">
+                    <if test="item.countType != null ">
+                        when #{item.id} then #{item.countType}
+                    </if>
+                    <if test="item.countType == null ">
+                        when #{item.id} then risk_trial_count.count_type
+                    </if>
+                </foreach>
+            </trim>
+            <trim prefix="ruleDescript =case id" suffix="end,">
+                <foreach collection="list" index="index" item="item" separator=" ">
+                    <if test="item.ruleDescript != null ">
+                        when #{item.id} then #{item.ruleDescript}
+                    </if>
+                    <if test="item.ruleDescript == null ">
+                        when #{item.id} then risk_trial_count.rule_descript
+                    </if>
+                </foreach>
+            </trim>
+            <trim prefix="createTime =case id" suffix="end,">
+                <foreach collection="list" index="index" item="item" separator=" ">
+                    <if test="item.createTime != null ">
+                        when #{item.id} then #{item.createTime}
+                    </if>
+                    <if test="item.createTime == null ">
+                        when #{item.id} then risk_trial_count.create_time
+                    </if>
+                </foreach>
+            </trim>
+            <trim prefix="updateTime =case id" suffix="end,">
+                <foreach collection="list" index="index" item="item" separator=" ">
+                    <if test="item.updateTime != null ">
+                        when #{item.id} then #{item.updateTime}
+                    </if>
+                    <if test="item.updateTime == null ">
+                        when #{item.id} then risk_trial_count.update_time
+                    </if>
+                </foreach>
+            </trim>
+            <trim prefix="status =case id" suffix="end,">
+                <foreach collection="list" index="index" item="item" separator=" ">
+                    <if test="item.status != null ">
+                        when #{item.id} then #{item.status}
+                    </if>
+                    <if test="item.status == null ">
+                        when #{item.id} then risk_trial_count.status
+                    </if>
+                </foreach>
+            </trim>
+        </trim>
+        where id in
+        <foreach close=")" collection="list" index="index" item="item" open="(" separator=",">
+            #{item.id}
+        </foreach>
+    </update>
+
+    <select id="findByCountType" parameterType="java.util.Map" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from risk_trial_count
+        <where>
+            <if test="countType != null">
+                count_type=#{countType}
+            </if>
+            <if test="ruleId != null">
+                and rule_id=#{ruleId}
+            </if>
+            <if test="updateTime != null ">
+                <![CDATA[ and DATE_FORMAT(update_time,'%Y-%m-%d ') = DATE_FORMAT(NOW(),'%Y-%m-%d ')  ]]>
+            </if>
+        </where>
+
+    </select>
+
+    <resultMap id="riskCount" type="com.summer.pojo.vo.RiskTrialCountVo">
+        <result column="hit_count" jdbcType="INTEGER" property="hitCount"/>
+        <result column="rule_descript" jdbcType="VARCHAR" property="ruleDescript"/>
+        <result column="create_time" property="createTime"/>
+    </resultMap>
+    <sql id="Risk_Column_List">
+    id, rule_id, hit_count, count_type, rule_descript, DATE_FORMAT(create_time,'%Y-%m-%d ') create_time ,  DATE_FORMAT(update_time,'%Y-%m-%d ') update_time, status
+  </sql>
+
+    <select id="findByParam" parameterType="java.util.Map" resultMap="riskCount">
+        SELECT
+        ifnull(rt.hit_count,0) as hit_count,
+        DATE_FORMAT( rt.create_time, '%Y-%m-%d ' ) create_time,
+        r.rule_descript rule_descript
+        FROM
+        risk_rule_config r
+        LEFT JOIN risk_trial_count rt ON r.id = rt.rule_id
+        <where>
+            <if test="countType != null">
+                rt.count_type=#{countType}
+            </if>
+            <if test="ruleId != null">
+                and rt.rule_id=#{ruleId}
+            </if>
+            <if test="updateTime != null ">
+                <![CDATA[ and DATE_FORMAT(rt.update_time,'%Y-%m-%d ') = DATE_FORMAT(NOW(),'%Y-%m-%d ')  ]]>
+            </if>
+            <if test="startTime != null and startTime != ''">
+                <![CDATA[    and rt.create_time >= #{startTime}   ]]>
+            </if>
+            <if test="endTime != null and endTime != ''">
+                <![CDATA[    and rt.create_time < date_add(#{endTime},interval 1 day)   ]]>
+            </if>
+
+        </where>
+        order by rt.create_time desc
+    </select>
+
+
+    <select id="selectRuleCount" resultType="com.summer.pojo.vo.RiskTrialCountVo" parameterType="java.util.HashMap">
+        SELECT
+        ifnull( rt.count1, 0 ) AS hitCount, r.rule_descript ruleDescript, DATE_FORMAT( rt.create_time, '%Y-%m-%d ' )
+        createTime
+        FROM
+        risk_rule_config r
+        LEFT JOIN (
+        SELECT
+        sum( hit_count ) AS count1,
+        rule_id,
+        count_type,
+        rule_descript,
+        create_time
+        FROM
+        risk_trial_count
+        <where>
+            <if test="countType != null">
+                count_type=#{countType}
+            </if>
+            <if test="ruleId != null">
+                and rule_id=#{ruleId}
+            </if>
+
+            <if test="startTime != null and startTime != ''">
+                <![CDATA[    and create_time >= #{startTime}   ]]>
+            </if>
+            <if test="endTime != null and endTime != ''">
+                <![CDATA[    and create_time < date_add(#{endTime},interval 1 day)   ]]>
+            </if>
+
+        </where>
+        GROUP BY
+        rule_id
+        ) rt ON r.id = rt.rule_id
+
+    </select>
+
+</mapper>

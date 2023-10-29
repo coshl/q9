@@ -1,0 +1,782 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.summer.dao.mapper.dailystatistics.DailyStatisticsChannelLendDAO">
+    <resultMap id="BaseResultMap" type="com.summer.dao.entity.dailystatics.DailyStatisticsChannelLend">
+        <id column="id" jdbcType="INTEGER" property="id"/>
+        <result column="channel_id" jdbcType="INTEGER" property="channelId"/>
+        <result column="repayment_time" property="repaymentTime"/>
+        <result column="sum_number" jdbcType="INTEGER" property="sumNumber"/>
+        <result column="repayment_number" jdbcType="INTEGER" property="repaymentNumber"/>
+        <result column="overdue_number" jdbcType="INTEGER" property="overdueNumber"/>
+        <result column="first_borrow" jdbcType="INTEGER" property="firstBorrow"/>
+        <result column="first_borrow_overdue" jdbcType="INTEGER" property="firstBorrowOverdue"/>
+        <result column="old_number" jdbcType="INTEGER" property="oldNumber"/>
+        <result column="old_overdue_number" jdbcType="INTEGER" property="oldOverdueNumber"/>
+        <result column="total_overdue_count" property="totalOverdueCount"/>
+        <result column="new_total_overdue_count" property="newTotalOverdueCount"/>
+        <result column="old_total_overdue_count" property="oldTotalOverdueCount"/>
+        <result column="new_repayment_number" property="newRepaymentNumber"/>
+        <result column="old_repayment_number" property="oldRepaymentNumber"/>
+        <result column="renewal_number" property="renewalNumber"/>
+        <result column="new_renewal_number" property="newRenewalNumber"/>
+        <result column="old_renewal_number" property="oldRenewalNumber"/>
+        <result column="today_renewal_number" property="todayRenewalNumber"/>
+        <result column="ahead_renewal_number" property="aheadRenewalNumber"/>
+        <result column="new_today_renewal_number" property="newTodayRenewalNumber"/>
+        <result column="old_today_renewal_number" property="oldTodayRenewalNumber"/>
+        <result column="new_ahead_renewal_number" property="newAheadRenewalNumber"/>
+        <result column="old_ahead_renewal_number" property="oldAheadRenewalNumber"/>
+    </resultMap>
+    <sql id="Base_Column_List">
+    id, channel_id, repayment_time, sum_number, repayment_number, overdue_number, first_borrow, 
+    first_borrow_overdue, old_number, old_overdue_number,total_overdue_count,new_total_overdue_count,old_total_overdue_count,new_repayment_number,old_repayment_number,
+    renewal_number,new_renewal_number,old_renewal_number,today_renewal_number,ahead_renewal_number,new_today_renewal_number,old_today_renewal_number,new_ahead_renewal_number,old_ahead_renewal_number
+  </sql>
+    <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from daily_statistics_channel_lend
+        where id = #{id,jdbcType=INTEGER}
+    </select>
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from daily_statistics_channel_lend
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+    <insert id="insert" parameterType="com.summer.dao.entity.dailystatics.DailyStatisticsChannelLend">
+    insert ignore into daily_statistics_channel_lend (id, channel_id, repayment_time,
+      sum_number, repayment_number, overdue_number, 
+      first_borrow, first_borrow_overdue, old_number, 
+      old_overdue_number,total_overdue_count,new_total_overdue_count,old_total_overdue_count,new_repayment_number,old_repayment_number,
+      renewal_number,new_renewal_number,old_renewal_number,today_renewal_number,ahead_renewal_number)
+    values (#{id,jdbcType=INTEGER}, #{channelId,jdbcType=INTEGER}, #{repaymentTime},
+      #{sumNumber,jdbcType=INTEGER}, #{repaymentNumber,jdbcType=INTEGER}, #{overdueNumber,jdbcType=INTEGER}, 
+      #{firstBorrow,jdbcType=INTEGER}, #{firstBorrowOverdue,jdbcType=INTEGER}, #{oldNumber,jdbcType=INTEGER}, 
+      #{oldOverdueNumber,jdbcType=INTEGER},#{totalOverdueCount},#{newTotalOverdueCount},#{oldTotalOverdueCount},#{newRepaymentNumber},#{oldRepaymentNumber},
+      #{renewalNumber},#{newRenewalNumber},#{oldRenewalNumber},#{todayRenewalNumber},#{aheadRenewalNumber})
+  </insert>
+    <insert id="insertSelective" parameterType="com.summer.dao.entity.dailystatics.DailyStatisticsChannelLend">
+        insert ignore into daily_statistics_channel_lend
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                id,
+            </if>
+            <if test="channelId != null">
+                channel_id,
+            </if>
+            <if test="repaymentTime != null">
+                repayment_time,
+            </if>
+            <if test="sumNumber != null">
+                sum_number,
+            </if>
+            <if test="repaymentNumber != null">
+                repayment_number,
+            </if>
+            <if test="overdueNumber != null">
+                overdue_number,
+            </if>
+            <if test="firstBorrow != null">
+                first_borrow,
+            </if>
+            <if test="firstBorrowOverdue != null">
+                first_borrow_overdue,
+            </if>
+            <if test="oldNumber != null">
+                old_number,
+            </if>
+            <if test="oldOverdueNumber != null">
+                old_overdue_number,
+            </if>
+            <if test="totalOverdueCount != null">
+                total_overdue_count,
+            </if>
+            <if test="newTotalOverdueCount != null">
+                new_total_overdue_count,
+            </if>
+            <if test="oldTotalOverdueCount != null">
+                old_total_overdue_count,
+            </if>
+            <if test="newRepaymentNumber != null">
+                new_repayment_number,
+            </if>
+            <if test="oldRepaymentNumber != null">
+                old_repayment_number,
+            </if>
+            <if test="renewalNumber != null">
+                renewal_number,
+            </if>
+            <if test="newRenewalNumber != null">
+                new_renewal_number,
+            </if>
+            <if test="oldRenewalNumber != null">
+                old_renewal_number,
+            </if>
+            <if test="todayRenewalNumber != null">
+                today_renewal_number,
+            </if>
+            <if test="aheadRenewalNumber != null">
+                ahead_renewal_number,
+            </if>
+            <if test="newTodayRenewalNumber != null">
+                new_today_renewal_number,
+            </if>
+            <if test="oldTodayRenewalNumber != null">
+                old_today_renewal_number,
+            </if>
+            <if test="newAheadRenewalNumber != null">
+                new_ahead_renewal_number,
+            </if>
+            <if test="oldAheadRenewalNumber != null">
+                old_ahead_renewal_number
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                #{id,jdbcType=INTEGER},
+            </if>
+            <if test="channelId != null">
+                #{channelId,jdbcType=INTEGER},
+            </if>
+            <if test="repaymentTime != null">
+                #{repaymentTime},
+            </if>
+            <if test="sumNumber != null">
+                #{sumNumber,jdbcType=INTEGER},
+            </if>
+            <if test="repaymentNumber != null">
+                #{repaymentNumber,jdbcType=INTEGER},
+            </if>
+            <if test="overdueNumber != null">
+                #{overdueNumber,jdbcType=INTEGER},
+            </if>
+            <if test="firstBorrow != null">
+                #{firstBorrow,jdbcType=INTEGER},
+            </if>
+            <if test="firstBorrowOverdue != null">
+                #{firstBorrowOverdue,jdbcType=INTEGER},
+            </if>
+            <if test="oldNumber != null">
+                #{oldNumber,jdbcType=INTEGER},
+            </if>
+            <if test="oldOverdueNumber != null">
+                #{oldOverdueNumber,jdbcType=INTEGER},
+            </if>
+            <if test="totalOverdueCount != null">
+                #{totalOverdueCount},
+            </if>
+            <if test="newTotalOverdueCount != null">
+                #{newTotalOverdueCount},
+            </if>
+            <if test="oldTotalOverdueCount != null">
+                #{oldTotalOverdueCount},
+            </if>
+            <if test="newRepaymentNumber != null">
+                #{newRepaymentNumber},
+            </if>
+            <if test="oldRepaymentNumber != null">
+                #{oldRepaymentNumber},
+            </if>
+            <if test="renewalNumber != null">
+                #{renewalNumber},
+            </if>
+            <if test="newRenewalNumber != null">
+                #{newRenewalNumber},
+            </if>
+            <if test="oldRenewalNumber != null">
+                #{oldRenewalNumber},
+            </if>
+            <if test="todayRenewalNumber != null">
+                #{todayRenewalNumber},
+            </if>
+            <if test="aheadRenewalNumber != null">
+                #{aheadRenewalNumber},
+            </if>
+            <if test="newTodayRenewalNumber != null">
+                #{newTodayRenewalNumber},
+            </if>
+            <if test="oldTodayRenewalNumber != null">
+                #{oldTodayRenewalNumber},
+            </if>
+            <if test="newAheadRenewalNumber != null">
+                #{newAheadRenewalNumber},
+            </if>
+            <if test="oldAheadRenewalNumber != null">
+                #{oldAheadRenewalNumber}
+            </if>
+        </trim>
+    </insert>
+    <insert id="insertBatch" parameterType="java.util.List">
+        insert ignore into daily_statistics_channel_lend (id, channel_id, repayment_time,
+        sum_number, repayment_number, overdue_number,
+        first_borrow, first_borrow_overdue,
+        old_number,
+        old_overdue_number,total_overdue_count,new_total_overdue_count,old_total_overdue_count,new_repayment_number,old_repayment_number,renewal_number,
+        new_renewal_number,old_renewal_number,today_renewal_number,ahead_renewal_number
+        )
+        values
+        <foreach collection="list" index="index" item="item" separator=",">
+            (#{item.id,jdbcType=INTEGER}, #{item.channelId,jdbcType=INTEGER}, #{item.repaymentTime},
+            #{item.sumNumber,jdbcType=INTEGER}, #{item.repaymentNumber,jdbcType=INTEGER},
+            #{item.overdueNumber,jdbcType=INTEGER},
+            #{item.firstBorrow,jdbcType=INTEGER}, #{item.firstBorrowOverdue,jdbcType=INTEGER},
+            #{item.oldNumber,jdbcType=INTEGER},
+            #{item.oldOverdueNumber,jdbcType=INTEGER},#{totalOverdueCount},#{newTotalOverdueCount},#{oldTotalOverdueCount},#{newRepaymentNumber},#{oldRepaymentNumber},
+            #{renewalNumber},#{newRenewalNumber},#{oldRenewalNumber},#{todayRenewalNumber},#{aheadRenewalNumber}
+            )
+        </foreach>
+    </insert>
+    <insert id="insertBatchSelective" parameterType="java.util.List">
+        insert ignore into daily_statistics_channel_lend
+        (id, channel_id, repayment_time, sum_number, repayment_number, overdue_number, first_borrow,
+        first_borrow_overdue, old_number,
+        old_overdue_number,total_overdue_count,new_total_overdue_count,old_total_overdue_count,new_repayment_number,old_repayment_number,
+        renewal_number,new_renewal_number,old_renewal_number,today_renewal_number,ahead_renewal_number,new_today_renewal_number,old_today_renewal_number,
+        new_ahead_renewal_number,old_ahead_renewal_number
+        )
+        values
+        <foreach collection="list" index="index" item="item" separator=",">
+            <trim prefix="(" suffix=")" suffixOverrides=",">
+                <if test="item.id != null">
+                    #{item.id,jdbcType=INTEGER},
+                </if>
+                <if test="item.id == null">
+                    NULL,
+                </if>
+                <if test="item.channelId != null">
+                    #{item.channelId,jdbcType=INTEGER},
+                </if>
+                <if test="item.channelId == null">
+                    NULL,
+                </if>
+                <if test="item.repaymentTime != null">
+                    #{item.repaymentTime},
+                </if>
+                <if test="item.repaymentTime == null">
+                    NULL,
+                </if>
+                <if test="item.sumNumber != null">
+                    #{item.sumNumber,jdbcType=INTEGER},
+                </if>
+                <if test="item.sumNumber == null">
+                    NULL,
+                </if>
+                <if test="item.repaymentNumber != null">
+                    #{item.repaymentNumber,jdbcType=INTEGER},
+                </if>
+                <if test="item.repaymentNumber == null">
+                    NULL,
+                </if>
+                <if test="item.overdueNumber != null">
+                    #{item.overdueNumber,jdbcType=INTEGER},
+                </if>
+                <if test="item.overdueNumber == null">
+                    NULL,
+                </if>
+                <if test="item.firstBorrow != null">
+                    #{item.firstBorrow,jdbcType=INTEGER},
+                </if>
+                <if test="item.firstBorrow == null">
+                    NULL,
+                </if>
+                <if test="item.firstBorrowOverdue != null">
+                    #{item.firstBorrowOverdue,jdbcType=INTEGER},
+                </if>
+                <if test="item.firstBorrowOverdue == null">
+                    NULL,
+                </if>
+                <if test="item.oldNumber != null">
+                    #{item.oldNumber,jdbcType=INTEGER},
+                </if>
+                <if test="item.oldNumber == null">
+                    NULL,
+                </if>
+                <if test="item.oldOverdueNumber != null">
+                    #{item.oldOverdueNumber,jdbcType=INTEGER},
+                </if>
+                <if test="item.oldOverdueNumber == null">
+                    NULL,
+                </if>
+
+                <if test="item.totalOverdueCount != null">
+                    #{item.totalOverdueCount},
+                </if>
+                <if test="item.totalOverdueCount == null">
+                    NULL,
+                </if>
+                <if test="item.newTotalOverdueCount != null">
+                    #{item.newTotalOverdueCount},
+                </if>
+                <if test="item.newTotalOverdueCount == null">
+                    NULL,
+                </if>
+                <if test="item.oldTotalOverdueCount != null">
+                    #{item.oldTotalOverdueCount},
+                </if>
+                <if test="item.oldTotalOverdueCount == null">
+                    NULL,
+                </if>
+                <if test="item.newRepaymentNumber != null">
+                    #{item.newRepaymentNumber},
+                </if>
+                <if test="item.newRepaymentNumber == null">
+                    NULL,
+                </if>
+                <if test="item.oldRepaymentNumber != null">
+                    #{item.oldRepaymentNumber},
+                </if>
+                <if test="item.oldRepaymentNumber == null">
+                    NULL,
+                </if>
+                <if test="item.renewalNumber != null">
+                    #{item.renewalNumber},
+                </if>
+                <if test="item.renewalNumber == null">
+                    NULL,
+                </if>
+
+                <if test="item.newRenewalNumber != null">
+                    #{item.newRenewalNumber},
+                </if>
+                <if test="item.newRenewalNumber == null">
+                    NULL,
+                </if>
+
+                <if test="item.oldRenewalNumber != null">
+                    #{item.oldRenewalNumber},
+                </if>
+                <if test="item.oldRenewalNumber == null">
+                    NULL,
+                </if>
+
+                <if test="item.todayRenewalNumber != null">
+                    #{item.todayRenewalNumber},
+                </if>
+                <if test="item.todayRenewalNumber == null">
+                    NULL,
+                </if>
+                <if test="item.aheadRenewalNumber != null">
+                    #{item.aheadRenewalNumber},
+                </if>
+                <if test="item.aheadRenewalNumber == null">
+                    NULL,
+                </if>
+                <if test="item.newTodayRenewalNumber != null">
+                    #{item.newTodayRenewalNumber},
+                </if>
+                <if test="item.newTodayRenewalNumber == null">
+                    NULL,
+                </if>
+
+                <if test="item.oldTodayRenewalNumber != null">
+                    #{item.oldTodayRenewalNumber},
+                </if>
+                <if test="item.oldTodayRenewalNumber == null">
+                    NULL,
+                </if>
+                <if test="item.newAheadRenewalNumber != null">
+                    #{item.newAheadRenewalNumber},
+                </if>
+                <if test="item.newAheadRenewalNumber == null">
+                    NULL,
+                </if>
+
+                <if test="item.oldAheadRenewalNumber != null">
+                    #{item.oldAheadRenewalNumber},
+                </if>
+                <if test="item.oldAheadRenewalNumber == null">
+                    NULL,
+                </if>
+
+            </trim>
+        </foreach>
+    </insert>
+    <update id="updateByPrimaryKeySelective" parameterType="com.summer.dao.entity.dailystatics.DailyStatisticsChannelLend">
+        update daily_statistics_channel_lend
+        <set>
+            <if test="channelId != null">
+                channel_id = #{channelId,jdbcType=INTEGER},
+            </if>
+            <if test="repaymentTime != null">
+                repayment_time = #{repaymentTime},
+            </if>
+            <if test="sumNumber != null">
+                sum_number = #{sumNumber,jdbcType=INTEGER},
+            </if>
+            <if test="repaymentNumber != null">
+                repayment_number = #{repaymentNumber,jdbcType=INTEGER},
+            </if>
+            <if test="overdueNumber != null">
+                overdue_number = #{overdueNumber,jdbcType=INTEGER},
+            </if>
+            <if test="firstBorrow != null">
+                first_borrow = #{firstBorrow,jdbcType=INTEGER},
+            </if>
+            <if test="firstBorrowOverdue != null">
+                first_borrow_overdue = #{firstBorrowOverdue,jdbcType=INTEGER},
+            </if>
+            <if test="oldNumber != null">
+                old_number = #{oldNumber,jdbcType=INTEGER},
+            </if>
+            <if test="oldOverdueNumber != null">
+                old_overdue_number = #{oldOverdueNumber,jdbcType=INTEGER},
+            </if>
+            <if test="totalOverdueCount != null">
+                total_overdue_count =#{totalOverdueCount},
+            </if>
+            <if test="newTotalOverdueCount != null">
+                new_total_overdue_count = #{newTotalOverdueCount},
+            </if>
+            <if test="oldTotalOverdueCount != null">
+                old_total_overdue_count = #{oldTotalOverdueCount},
+            </if>
+            <if test="newRepaymentNumber != null">
+                new_repayment_number = #{newRepaymentNumber},
+            </if>
+            <if test="oldRepaymentNumber != null">
+                old_repayment_number = #{oldRepaymentNumber},
+            </if>
+            <if test="renewalNumber != null">
+                renewal_number = #{renewalNumber},
+            </if>
+
+            <if test="newRenewalNumber != null ">
+                new_renewal_number = #{newRenewalNumber},
+            </if>
+            <if test="oldRenewalNumber != null">
+                old_renewal_number = #{oldRenewalNumber},
+            </if>
+            <if test="todayRenewalNumber != null">
+                today_renewal_number = #{todayRenewalNumber},
+            </if>
+            <if test="aheadRenewalNumber != null">
+                ahead_renewal_number = #{aheadRenewalNumber},
+            </if>
+            <if test="newTodayRenewalNumber != null">
+                new_today_renewal_number = #{newTodayRenewalNumber},
+            </if>
+            <if test="oldTodayRenewalNumber != null">
+                old_today_renewal_number = #{oldTodayRenewalNumber},
+            </if>
+            <if test="newAheadRenewalNumber != null">
+                new_ahead_renewal_number = #{newAheadRenewalNumber},
+            </if>
+            <if test="oldAheadRenewalNumber != null">
+                old_ahead_renewal_number = #{oldAheadRenewalNumber}
+            </if>
+        </set>
+        where id = #{id,jdbcType=INTEGER}
+    </update>
+    <update id="updateByPrimaryKey" parameterType="com.summer.dao.entity.dailystatics.DailyStatisticsChannelLend">
+    update daily_statistics_channel_lend
+    set channel_id = #{channelId,jdbcType=INTEGER},
+      repayment_time = #{repaymentTime},
+      sum_number = #{sumNumber,jdbcType=INTEGER},
+      repayment_number = #{repaymentNumber,jdbcType=INTEGER},
+      overdue_number = #{overdueNumber,jdbcType=INTEGER},
+      first_borrow = #{firstBorrow,jdbcType=INTEGER},
+      first_borrow_overdue = #{firstBorrowOverdue,jdbcType=INTEGER},
+      old_number = #{oldNumber,jdbcType=INTEGER},
+      old_overdue_number = #{oldOverdueNumber,jdbcType=INTEGER},
+      total_overdue_count =#{totalOverdueCount},
+       new_total_overdue_count = #{newTotalOverdueCount},
+       old_total_overdue_count = #{oldTotalOverdueCount},
+       new_repayment_number = #{newRepaymentNumber},
+       old_repayment_number = #{oldRepaymentNumber},
+       renewal_number = #{renewalNumber},
+       new_renewal_number = #{newRenewalNumber},
+       old_renewal_number = #{oldRenewalNumber},
+       today_renewal_number = #{todayRenewalNumber},
+       ahead_renewal_number = #{aheadRenewalNumber}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+    <update id="updateBatchByPrimaryKey" parameterType="java.util.List">
+        update daily_statistics_channel_lend
+        <trim prefix="set" suffixOverrides=",">
+            <trim prefix="channelId =case id" suffix="end,">
+                <foreach collection="list" index="index" item="item" separator=" ">
+                    when #{item.id} then #{item.channelId}
+                </foreach>
+            </trim>
+            <trim prefix="repaymentTime =case id" suffix="end,">
+                <foreach collection="list" index="index" item="item" separator=" ">
+                    when #{item.id} then #{item.repaymentTime}
+                </foreach>
+            </trim>
+            <trim prefix="sumNumber =case id" suffix="end,">
+                <foreach collection="list" index="index" item="item" separator=" ">
+                    when #{item.id} then #{item.sumNumber}
+                </foreach>
+            </trim>
+            <trim prefix="repaymentNumber =case id" suffix="end,">
+                <foreach collection="list" index="index" item="item" separator=" ">
+                    when #{item.id} then #{item.repaymentNumber}
+                </foreach>
+            </trim>
+            <trim prefix="overdueNumber =case id" suffix="end,">
+                <foreach collection="list" index="index" item="item" separator=" ">
+                    when #{item.id} then #{item.overdueNumber}
+                </foreach>
+            </trim>
+            <trim prefix="firstBorrow =case id" suffix="end,">
+                <foreach collection="list" index="index" item="item" separator=" ">
+                    when #{item.id} then #{item.firstBorrow}
+                </foreach>
+            </trim>
+            <trim prefix="firstBorrowOverdue =case id" suffix="end,">
+                <foreach collection="list" index="index" item="item" separator=" ">
+                    when #{item.id} then #{item.firstBorrowOverdue}
+                </foreach>
+            </trim>
+            <trim prefix="oldNumber =case id" suffix="end,">
+                <foreach collection="list" index="index" item="item" separator=" ">
+                    when #{item.id} then #{item.oldNumber}
+                </foreach>
+            </trim>
+            <trim prefix="oldOverdueNumber =case id" suffix="end,">
+                <foreach collection="list" index="index" item="item" separator=" ">
+                    when #{item.id} then #{item.oldOverdueNumber}
+                </foreach>
+            </trim>
+        </trim>
+        where id in
+        <foreach close=")" collection="list" index="index" item="item" open="(" separator=",">
+            #{item.id}
+        </foreach>
+    </update>
+    <update id="updateBatchByPrimaryKeySelective" parameterType="java.util.List">
+        update daily_statistics_channel_lend
+        <trim prefix="set" suffixOverrides=",">
+            <trim prefix="channelId =case id" suffix="end,">
+                <foreach collection="list" index="index" item="item" separator=" ">
+                    <if test="item.channelId != null ">
+                        when #{item.id} then #{item.channelId}
+                    </if>
+                    <if test="item.channelId == null ">
+                        when #{item.id} then daily_statistics_channel_lend.channel_id
+                    </if>
+                </foreach>
+            </trim>
+            <trim prefix="repaymentTime =case id" suffix="end,">
+                <foreach collection="list" index="index" item="item" separator=" ">
+                    <if test="item.repaymentTime != null ">
+                        when #{item.id} then #{item.repaymentTime}
+                    </if>
+                    <if test="item.repaymentTime == null ">
+                        when #{item.id} then daily_statistics_channel_lend.repayment_time
+                    </if>
+                </foreach>
+            </trim>
+            <trim prefix="sumNumber =case id" suffix="end,">
+                <foreach collection="list" index="index" item="item" separator=" ">
+                    <if test="item.sumNumber != null ">
+                        when #{item.id} then #{item.sumNumber}
+                    </if>
+                    <if test="item.sumNumber == null ">
+                        when #{item.id} then daily_statistics_channel_lend.sum_number
+                    </if>
+                </foreach>
+            </trim>
+            <trim prefix="repaymentNumber =case id" suffix="end,">
+                <foreach collection="list" index="index" item="item" separator=" ">
+                    <if test="item.repaymentNumber != null ">
+                        when #{item.id} then #{item.repaymentNumber}
+                    </if>
+                    <if test="item.repaymentNumber == null ">
+                        when #{item.id} then daily_statistics_channel_lend.repayment_number
+                    </if>
+                </foreach>
+            </trim>
+            <trim prefix="overdueNumber =case id" suffix="end,">
+                <foreach collection="list" index="index" item="item" separator=" ">
+                    <if test="item.overdueNumber != null ">
+                        when #{item.id} then #{item.overdueNumber}
+                    </if>
+                    <if test="item.overdueNumber == null ">
+                        when #{item.id} then daily_statistics_channel_lend.overdue_number
+                    </if>
+                </foreach>
+            </trim>
+            <trim prefix="firstBorrow =case id" suffix="end,">
+                <foreach collection="list" index="index" item="item" separator=" ">
+                    <if test="item.firstBorrow != null ">
+                        when #{item.id} then #{item.firstBorrow}
+                    </if>
+                    <if test="item.firstBorrow == null ">
+                        when #{item.id} then daily_statistics_channel_lend.first_borrow
+                    </if>
+                </foreach>
+            </trim>
+            <trim prefix="firstBorrowOverdue =case id" suffix="end,">
+                <foreach collection="list" index="index" item="item" separator=" ">
+                    <if test="item.firstBorrowOverdue != null ">
+                        when #{item.id} then #{item.firstBorrowOverdue}
+                    </if>
+                    <if test="item.firstBorrowOverdue == null ">
+                        when #{item.id} then daily_statistics_channel_lend.first_borrow_overdue
+                    </if>
+                </foreach>
+            </trim>
+            <trim prefix="oldNumber =case id" suffix="end,">
+                <foreach collection="list" index="index" item="item" separator=" ">
+                    <if test="item.oldNumber != null ">
+                        when #{item.id} then #{item.oldNumber}
+                    </if>
+                    <if test="item.oldNumber == null ">
+                        when #{item.id} then daily_statistics_channel_lend.old_number
+                    </if>
+                </foreach>
+            </trim>
+            <trim prefix="oldOverdueNumber =case id" suffix="end,">
+                <foreach collection="list" index="index" item="item" separator=" ">
+                    <if test="item.oldOverdueNumber != null ">
+                        when #{item.id} then #{item.oldOverdueNumber}
+                    </if>
+                    <if test="item.oldOverdueNumber == null ">
+                        when #{item.id} then daily_statistics_channel_lend.old_overdue_number
+                    </if>
+                </foreach>
+            </trim>
+        </trim>
+        where id in
+        <foreach close=")" collection="list" index="index" item="item" open="(" separator=",">
+            #{item.id}
+        </foreach>
+    </update>
+    <select id="findParams" resultType="com.summer.pojo.vo.DailyStatisticsChannelLendVo" parameterType="map">
+        SELECT
+        dscl.id as id,
+        channel_name as channelName,
+        repayment_time as repaymentTime,
+        IFNULL(dscl.sum_number,0) + IFNULL(dscl.ahead_renewal_number,0) as sumNumber ,
+        IFNULL(repayment_number,0) + IFNULL(dscl.renewal_number,0) as repaymentNumber ,
+        overdue_number AS overdueNumber,
+        IFNULL(first_borrow,0) + IFNULL(dscl.new_ahead_renewal_number,0) AS firstBorrow,
+        first_borrow_overdue AS firstBorrowOverdue,
+        IFNULL(old_number,0) + IFNULL(dscl.old_ahead_renewal_number,0) AS oldNumber,
+        old_overdue_number AS oldOverdueNumber,
+        IFNULL(round(overdue_number/(IFNULL(dscl.sum_number,0) + IFNULL(dscl.ahead_renewal_number,0)),4)*100,0) as
+        overdueRate,
+        IFNULL(round(first_borrow_overdue/(IFNULL(first_borrow,0) + IFNULL(dscl.new_ahead_renewal_number,0)),4)*100,0)
+        as firstOverdueRate,
+        IFNULL(round(old_overdue_number/(IFNULL(old_number,0) + IFNULL(dscl.old_ahead_renewal_number,0)),4)*100,0) as
+        oldOverdueRate,
+        IFNULL(round(total_overdue_count/(IFNULL(dscl.sum_number,0) + IFNULL(dscl.ahead_renewal_number,0)),4)*100,0) as
+        overdueSumRate,
+        IFNULL(round(new_total_overdue_count/(IFNULL(first_borrow,0) +
+        IFNULL(dscl.new_ahead_renewal_number,0)),4)*100,0) as firstOverdueSumRate,
+        IFNULL(round(old_total_overdue_count/(IFNULL(old_number,0) + IFNULL(dscl.old_ahead_renewal_number,0)),4)*100,0)
+        as oldOverdueSumRate,
+        dscl.total_overdue_count as overdueNumberSum,
+        dscl.new_total_overdue_count as firstBorrowOverdueSum,
+        dscl.old_total_overdue_count as oldOverdueNumberSum,
+        IFNULL(dscl.new_repayment_number,0) + IFNULL(dscl.new_renewal_number,0) as newRepaymentNumber,
+        IFNULL(dscl.old_repayment_number,0) + IFNULL(dscl.old_renewal_number,0) as oldRepaymentNumber,
+        IFNULL(round( ( IFNULL(dscl.new_repayment_number,0) + IFNULL(dscl.new_renewal_number,0)) /
+        (IFNULL(dscl.sum_number,0) + IFNULL(dscl.ahead_renewal_number,0)),4)*100,0) as newRepaymentRate,
+        IFNULL(round( ( IFNULL(dscl.old_repayment_number,0) + IFNULL(dscl.old_renewal_number,0)) /
+        (IFNULL(dscl.sum_number,0) + IFNULL(dscl.ahead_renewal_number,0)),4)*100,0) as oldRepaymentRate,
+        dscl.renewal_number as renewalNumber,
+        dscl.new_renewal_number as newRenewalNumber,
+        dscl.old_renewal_number as oldRenewalNumber,
+        dscl.today_renewal_number as todayRenewalNumber,
+        dscl.ahead_renewal_number as aheadRenewalNumber,
+        dscl.new_today_renewal_number as newTodayRenewalNumber,
+        dscl.old_today_renewal_number as oldTodayRenewalNumber,
+        dscl.new_ahead_renewal_number as newAheadRenewalNumber,
+        dscl.old_ahead_renewal_number as oldAheadRenewalNumber
+        FROM daily_statistics_channel_lend as dscl
+        LEFT JOIN plateform_channel as pc on pc.id=dscl.channel_id
+        <where>
+            dscl.sum_number !=0
+            <if test="channelName != null and channelName != ''">
+                and pc.channel_name =#{channelName,jdbcType=VARCHAR}
+            </if>
+            <if test="plateformUserId != null">
+                and pc.plateform_user_id =#{plateformUserId}
+            </if>
+
+            <if test="startTime != null and startTime != ''">
+                and  <![CDATA[ DATE_FORMAT(repayment_time,'%Y-%m-%d')  >= #{startTime} ]]>
+            </if>
+            <if test="endTime != null and endTime != ''">
+                and <![CDATA[ DATE_FORMAT(repayment_time,'%Y-%m-%d') < date_add(#{endTime},interval 1 day)]]>
+            </if>
+
+        </where>
+        order by dscl.repayment_time desc,pc.channel_name desc
+    </select>
+
+    <select id="selectByParams" parameterType="java.util.Map" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from daily_statistics_channel_lend
+        <where>
+            <if test="repaymentTime != null and repaymentTime != ''">
+                <![CDATA[DATE_FORMAT(repayment_time,'%Y-%m-%d')= #{repaymentTime}]]>
+            </if>
+            <if test="channelId != null">
+                and channel_id =#{channelId}
+            </if>
+        </where>
+    </select>
+
+
+    <select id="findStayTotal" resultType="com.summer.pojo.vo.ChannelLendTotalVO">
+    SELECT sum(sum_number) as repaymentSum,
+            sum(first_borrow) as firstBorrowSum,
+            sum(old_number) as oldNumberSum
+    FROM daily_statistics_channel_lend
+  </select>
+    <select id="findOverdueTotal" resultType="java.lang.Integer">
+    SELECT sum(total_overdue_count)
+    FROM daily_statistics_channel_lend
+  </select>
+
+    <select id="findNewOverdueTotal" resultType="java.lang.Integer">
+    SELECT sum(new_total_overdue_count)
+    FROM daily_statistics_channel_lend
+  </select>
+
+    <select id="findOldOverdueTotal" resultType="java.lang.Integer">
+    SELECT sum(old_total_overdue_count)
+    FROM daily_statistics_channel_lend
+  </select>
+
+    <select id="findAllStayCount" resultType="java.lang.Integer">
+    select COUNT(b.id)
+    from order_repayment b
+    inner join order_borrow o on  b.borrow_id=o.id
+    where  b.status in (0,1,3,5)
+
+  </select>
+
+    <select id="findAllStayCountOld" resultType="java.lang.Integer">
+select COUNT(b.id)
+    from order_repayment b
+    inner join order_borrow o on  b.borrow_id=o.id
+    where  b.status in (0,1,3,5)
+    and o.customer_type=1
+  </select>
+    <!--and <![CDATA[ DATE_FORMAT(b.repayment_time,'%Y-%m-%d') = DATE_FORMAT(NOW(),'%Y-%m-%d') ]]>-->
+    <select id="findAllStayCountNew" resultType="java.lang.Integer">
+select COUNT(b.id)
+    from order_repayment b
+    inner join order_borrow o on  b.borrow_id=o.id
+    where  b.status in (0,1,3,5)
+    and o.customer_type=0
+  </select>
+
+    <select id="selectAllByParams" parameterType="java.util.Map" resultMap="BaseResultMap">
+        select
+        id, channel_id,repayment_time
+        from daily_statistics_channel_lend
+        <where>
+            <if test="repaymentTime != null and repaymentTime != ''">
+                <![CDATA[DATE_FORMAT(repayment_time,'%Y-%m-%d') = DATE_FORMAT(#{repaymentTime},'%Y-%m-%d')]]>
+            </if>
+            <if test="channelId != null">
+                and channel_id =#{channelId}
+            </if>
+        </where>
+    </select>
+</mapper>

@@ -1,0 +1,380 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.summer.dao.mapper.RiskRuleConfigDAO">
+    <resultMap id="BaseResultMap" type="com.summer.dao.entity.RiskRuleConfig">
+        <id column="id" jdbcType="INTEGER" property="id"/>
+        <result column="rule_key" jdbcType="VARCHAR" property="ruleKey"/>
+        <result column="rule_value" jdbcType="VARCHAR" property="ruleValue"/>
+        <result column="risk_decision" jdbcType="TINYINT" property="riskDecision"/>
+        <result column="rule_descript" jdbcType="VARCHAR" property="ruleDescript"/>
+        <result column="rule_type" jdbcType="TINYINT" property="ruleType"/>
+        <result column="create_time" jdbcType="TIMESTAMP" property="createTime"/>
+        <result column="update_time" jdbcType="TIMESTAMP" property="updateTime"/>
+        <result column="status" jdbcType="TINYINT" property="status"/>
+    </resultMap>
+    <sql id="Base_Column_List">
+    id, rule_key, rule_value, risk_decision, rule_descript, rule_type, create_time, update_time,
+    status
+  </sql>
+    <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from risk_rule_config
+        where id = #{id,jdbcType=INTEGER}
+    </select>
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from risk_rule_config
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+    <insert id="insert" parameterType="com.summer.dao.entity.RiskRuleConfig">
+    insert into risk_rule_config (id, rule_key, rule_value,
+      risk_decision, rule_descript, rule_type,
+      create_time, update_time, status
+      )
+    values (#{id,jdbcType=INTEGER}, #{ruleKey,jdbcType=VARCHAR}, #{ruleValue,jdbcType=VARCHAR},
+      #{riskDecision,jdbcType=TINYINT}, #{ruleDescript,jdbcType=VARCHAR}, #{ruleType,jdbcType=TINYINT},
+      #{createTime,jdbcType=TIMESTAMP}, #{updateTime,jdbcType=TIMESTAMP}, #{status,jdbcType=TINYINT}
+      )
+  </insert>
+    <insert id="insertSelective" parameterType="com.summer.dao.entity.RiskRuleConfig">
+        insert into risk_rule_config
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                id,
+            </if>
+            <if test="ruleKey != null">
+                rule_key,
+            </if>
+            <if test="ruleValue != null">
+                rule_value,
+            </if>
+            <if test="riskDecision != null">
+                risk_decision,
+            </if>
+            <if test="ruleDescript != null">
+                rule_descript,
+            </if>
+            <if test="ruleType != null">
+                rule_type,
+            </if>
+            <if test="createTime != null">
+                create_time,
+            </if>
+            <if test="updateTime != null">
+                update_time,
+            </if>
+            <if test="status != null">
+                status,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                #{id,jdbcType=INTEGER},
+            </if>
+            <if test="ruleKey != null">
+                #{ruleKey,jdbcType=VARCHAR},
+            </if>
+            <if test="ruleValue != null">
+                #{ruleValue,jdbcType=VARCHAR},
+            </if>
+            <if test="riskDecision != null">
+                #{riskDecision,jdbcType=TINYINT},
+            </if>
+            <if test="ruleDescript != null">
+                #{ruleDescript,jdbcType=VARCHAR},
+            </if>
+            <if test="ruleType != null">
+                #{ruleType,jdbcType=TINYINT},
+            </if>
+            <if test="createTime != null">
+                #{createTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="updateTime != null">
+                #{updateTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="status != null">
+                #{status,jdbcType=TINYINT},
+            </if>
+        </trim>
+    </insert>
+    <insert id="insertBatch" parameterType="java.util.List">
+        insert into risk_rule_config (id, rule_key, rule_value,
+        risk_decision, rule_descript, rule_type,
+        create_time, update_time, status
+        )
+        values
+        <foreach collection="list" index="index" item="item" separator=",">
+            (#{item.id,jdbcType=INTEGER}, #{item.ruleKey,jdbcType=VARCHAR}, #{item.ruleValue,jdbcType=VARCHAR},
+            #{item.riskDecision,jdbcType=TINYINT}, #{item.ruleDescript,jdbcType=VARCHAR},
+            #{item.ruleType,jdbcType=TINYINT},
+            #{item.createTime,jdbcType=TIMESTAMP}, #{item.updateTime,jdbcType=TIMESTAMP},
+            #{item.status,jdbcType=TINYINT}
+            )
+        </foreach>
+    </insert>
+    <insert id="insertBatchSelective" parameterType="java.util.List">
+        insert into risk_rule_config
+        (id, rule_key, rule_value, risk_decision, rule_descript, rule_type, create_time,
+        update_time, status)
+        values
+        <foreach collection="list" index="index" item="item" separator=",">
+            <trim prefix="(" suffix=")" suffixOverrides=",">
+                <if test="item.id != null">
+                    #{item.id,jdbcType=INTEGER},
+                </if>
+                <if test="item.id == null">
+                    NULL,
+                </if>
+                <if test="item.ruleKey != null">
+                    #{item.ruleKey,jdbcType=VARCHAR},
+                </if>
+                <if test="item.ruleKey == null">
+                    NULL,
+                </if>
+                <if test="item.ruleValue != null">
+                    #{item.ruleValue,jdbcType=VARCHAR},
+                </if>
+                <if test="item.ruleValue == null">
+                    NULL,
+                </if>
+                <if test="item.riskDecision != null">
+                    #{item.riskDecision,jdbcType=TINYINT},
+                </if>
+                <if test="item.riskDecision == null">
+                    NULL,
+                </if>
+                <if test="item.ruleDescript != null">
+                    #{item.ruleDescript,jdbcType=VARCHAR},
+                </if>
+                <if test="item.ruleDescript == null">
+                    NULL,
+                </if>
+                <if test="item.ruleType != null">
+                    #{item.ruleType,jdbcType=TINYINT},
+                </if>
+                <if test="item.ruleType == null">
+                    NULL,
+                </if>
+                <if test="item.createTime != null">
+                    #{item.createTime,jdbcType=TIMESTAMP},
+                </if>
+                <if test="item.createTime == null">
+                    NULL,
+                </if>
+                <if test="item.updateTime != null">
+                    #{item.updateTime,jdbcType=TIMESTAMP},
+                </if>
+                <if test="item.updateTime == null">
+                    NULL,
+                </if>
+                <if test="item.status != null">
+                    #{item.status,jdbcType=TINYINT},
+                </if>
+                <if test="item.status == null">
+                    NULL,
+                </if>
+            </trim>
+        </foreach>
+    </insert>
+    <update id="updateByPrimaryKeySelective" parameterType="com.summer.dao.entity.RiskRuleConfig">
+        update risk_rule_config
+        <set>
+            <if test="ruleKey != null">
+                rule_key = #{ruleKey,jdbcType=VARCHAR},
+            </if>
+            <if test="ruleValue != null">
+                rule_value = #{ruleValue,jdbcType=VARCHAR},
+            </if>
+            <if test="riskDecision != null">
+                risk_decision = #{riskDecision,jdbcType=TINYINT},
+            </if>
+            <if test="ruleDescript != null">
+                rule_descript = #{ruleDescript,jdbcType=VARCHAR},
+            </if>
+            <if test="ruleType != null">
+                rule_type = #{ruleType,jdbcType=TINYINT},
+            </if>
+            <if test="createTime != null">
+                create_time = #{createTime,jdbcType=TIMESTAMP},
+            </if>
+            update_time = NOW(),
+            <if test="status != null">
+                status = #{status,jdbcType=TINYINT},
+            </if>
+        </set>
+        where id = #{id,jdbcType=INTEGER}
+    </update>
+    <update id="updateByPrimaryKey" parameterType="com.summer.dao.entity.RiskRuleConfig">
+    update risk_rule_config
+    set rule_key = #{ruleKey,jdbcType=VARCHAR},
+      rule_value = #{ruleValue,jdbcType=VARCHAR},
+      risk_decision = #{riskDecision,jdbcType=TINYINT},
+      rule_descript = #{ruleDescript,jdbcType=VARCHAR},
+      rule_type = #{ruleType,jdbcType=TINYINT},
+      create_time = #{createTime,jdbcType=TIMESTAMP},
+      update_time = #{updateTime,jdbcType=TIMESTAMP},
+      status = #{status,jdbcType=TINYINT}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+    <update id="updateBatchByPrimaryKey" parameterType="java.util.List">
+        update risk_rule_config
+        <trim prefix="set" suffixOverrides=",">
+            <trim prefix="ruleKey =case id" suffix="end,">
+                <foreach collection="list" index="index" item="item" separator=" ">
+                    when #{item.id} then #{item.ruleKey}
+                </foreach>
+            </trim>
+            <trim prefix="ruleValue =case id" suffix="end,">
+                <foreach collection="list" index="index" item="item" separator=" ">
+                    when #{item.id} then #{item.ruleValue}
+                </foreach>
+            </trim>
+            <trim prefix="riskDecision =case id" suffix="end,">
+                <foreach collection="list" index="index" item="item" separator=" ">
+                    when #{item.id} then #{item.riskDecision}
+                </foreach>
+            </trim>
+            <trim prefix="ruleDescript =case id" suffix="end,">
+                <foreach collection="list" index="index" item="item" separator=" ">
+                    when #{item.id} then #{item.ruleDescript}
+                </foreach>
+            </trim>
+            <trim prefix="ruleType =case id" suffix="end,">
+                <foreach collection="list" index="index" item="item" separator=" ">
+                    when #{item.id} then #{item.ruleType}
+                </foreach>
+            </trim>
+            <trim prefix="createTime =case id" suffix="end,">
+                <foreach collection="list" index="index" item="item" separator=" ">
+                    when #{item.id} then #{item.createTime}
+                </foreach>
+            </trim>
+            <trim prefix="updateTime =case id" suffix="end,">
+                <foreach collection="list" index="index" item="item" separator=" ">
+                    when #{item.id} then #{item.updateTime}
+                </foreach>
+            </trim>
+            <trim prefix="status =case id" suffix="end,">
+                <foreach collection="list" index="index" item="item" separator=" ">
+                    when #{item.id} then #{item.status}
+                </foreach>
+            </trim>
+        </trim>
+        where id in
+        <foreach close=")" collection="list" index="index" item="item" open="(" separator=",">
+            #{item.id}
+        </foreach>
+    </update>
+    <update id="updateBatchByPrimaryKeySelective" parameterType="java.util.List">
+        update risk_rule_config
+        <trim prefix="set" suffixOverrides=",">
+            <trim prefix="ruleKey =case id" suffix="end,">
+                <foreach collection="list" index="index" item="item" separator=" ">
+                    <if test="item.ruleKey != null ">
+                        when #{item.id} then #{item.ruleKey}
+                    </if>
+                    <if test="item.ruleKey == null ">
+                        when #{item.id} then risk_rule_config.rule_key
+                    </if>
+                </foreach>
+            </trim>
+            <trim prefix="ruleValue =case id" suffix="end,">
+                <foreach collection="list" index="index" item="item" separator=" ">
+                    <if test="item.ruleValue != null ">
+                        when #{item.id} then #{item.ruleValue}
+                    </if>
+                    <if test="item.ruleValue == null ">
+                        when #{item.id} then risk_rule_config.rule_value
+                    </if>
+                </foreach>
+            </trim>
+            <trim prefix="riskDecision =case id" suffix="end,">
+                <foreach collection="list" index="index" item="item" separator=" ">
+                    <if test="item.riskDecision != null ">
+                        when #{item.id} then #{item.riskDecision}
+                    </if>
+                    <if test="item.riskDecision == null ">
+                        when #{item.id} then risk_rule_config.risk_decision
+                    </if>
+                </foreach>
+            </trim>
+            <trim prefix="ruleDescript =case id" suffix="end,">
+                <foreach collection="list" index="index" item="item" separator=" ">
+                    <if test="item.ruleDescript != null ">
+                        when #{item.id} then #{item.ruleDescript}
+                    </if>
+                    <if test="item.ruleDescript == null ">
+                        when #{item.id} then risk_rule_config.rule_descript
+                    </if>
+                </foreach>
+            </trim>
+            <trim prefix="ruleType =case id" suffix="end,">
+                <foreach collection="list" index="index" item="item" separator=" ">
+                    <if test="item.ruleType != null ">
+                        when #{item.id} then #{item.ruleType}
+                    </if>
+                    <if test="item.ruleType == null ">
+                        when #{item.id} then risk_rule_config.rule_type
+                    </if>
+                </foreach>
+            </trim>
+            <trim prefix="createTime =case id" suffix="end,">
+                <foreach collection="list" index="index" item="item" separator=" ">
+                    <if test="item.createTime != null ">
+                        when #{item.id} then #{item.createTime}
+                    </if>
+                    <if test="item.createTime == null ">
+                        when #{item.id} then risk_rule_config.create_time
+                    </if>
+                </foreach>
+            </trim>
+            <trim prefix="updateTime =case id" suffix="end,">
+                <foreach collection="list" index="index" item="item" separator=" ">
+                    <if test="item.updateTime != null ">
+                        when #{item.id} then #{item.updateTime}
+                    </if>
+                    <if test="item.updateTime == null ">
+                        when #{item.id} then risk_rule_config.update_time
+                    </if>
+                </foreach>
+            </trim>
+            <trim prefix="status =case id" suffix="end,">
+                <foreach collection="list" index="index" item="item" separator=" ">
+                    <if test="item.status != null ">
+                        when #{item.id} then #{item.status}
+                    </if>
+                    <if test="item.status == null ">
+                        when #{item.id} then risk_rule_config.status
+                    </if>
+                </foreach>
+            </trim>
+        </trim>
+        where id in
+        <foreach close=")" collection="list" index="index" item="item" open="(" separator=",">
+            #{item.id}
+        </foreach>
+    </update>
+    <select id="findAllRiskRule" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from risk_rule_config where status in (0,1)
+    </select>
+
+    <select id="findRiskRuleByStatus" parameterType="java.lang.Byte" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from risk_rule_config where status=#{status}
+    </select>
+
+    <update id="updateAllState" parameterType="java.lang.Byte">
+    update   risk_rule_config set status=#{status} where status!=2
+  </update>
+
+    <select id="findByKey" parameterType="java.lang.String" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from risk_rule_config where rule_key=#{key}
+    </select>
+    
+   
+</mapper>

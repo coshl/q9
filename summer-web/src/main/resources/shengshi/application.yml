@@ -1,0 +1,34 @@
+server:
+  port: 8088
+  custom:
+    # http 端口
+    httpPort: 8087
+
+spring:
+  profiles:
+    active: shengshi
+  application:
+    name: shengshi
+
+
+nacos:
+  config:
+    # nacos
+    server-addr: 47.74.48.135:8848
+    data-ids: shengshi,shengshi-bs,shengshi-sms,shengshi-ocr,shengshi-mobile,shengshi-oss,shengshi-fk,shengshi-pay
+    type: YAML
+    auto-refresh: true
+    namespace: b21880db-ceb0-46c9-b3d2-13ca59716686
+    bootstrap:
+      enable: true
+
+#    ext-config:
+#      - server-addr: 8.210.166.87:82 # Nacos 服务器地址
+#        data-id: dev-sms # 使用的 Nacos 配置集的 dataId。
+#        # data-ids: dev-sms
+#        type: properties # 使用的 Nacos 配置集的配置格式。默认为 PROPERTIES。
+#        namespace: a31478cc-37f4-48e6-a75f-c3dede11eb03 # 使用的 Nacos 的命名空间，默认为 null。
+#        auto-refresh: true # 是否自动刷新，默认为 false。
+#        bootstrap:
+#          enable: true
+    #      - # 这里，可以继续添加。

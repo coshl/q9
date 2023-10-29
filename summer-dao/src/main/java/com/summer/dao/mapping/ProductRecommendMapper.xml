@@ -1,0 +1,273 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.summer.dao.mapper.ProductRecommendDAO">
+  <resultMap id="BaseResultMap" type="com.summer.dao.entity.ProductRecommend">
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="app_name" jdbcType="VARCHAR" property="appName" />
+    <result column="logo_url" jdbcType="VARCHAR" property="logoUrl" />
+    <result column="app_descriptoin" jdbcType="VARCHAR" property="appDescription" />
+    <result column="down_url" jdbcType="VARCHAR" property="downUrl" />
+    <result column="remark" jdbcType="VARCHAR" property="remark" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    id, app_name, logo_url, app_descriptoin, down_url, remark
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from product_recommend
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from product_recommend
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.summer.dao.entity.ProductRecommend">
+    insert into product_recommend (id, app_name, logo_url, 
+      app_descriptoin, down_url, remark
+      )
+    values (#{id,jdbcType=INTEGER}, #{appName,jdbcType=VARCHAR}, #{logoUrl,jdbcType=VARCHAR}, 
+      #{appDescription,jdbcType=VARCHAR}, #{downUrl,jdbcType=VARCHAR}, #{remark,jdbcType=VARCHAR}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="java.util.Map">
+    insert into product_recommend
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        id,
+      </if>
+      <if test="appName != null">
+        app_name,
+      </if>
+      <if test="logoUrl != null">
+        logo_url,
+      </if>
+      <if test="appDescription != null">
+        app_descriptoin,
+      </if>
+      <if test="downUrl != null">
+        down_url,
+      </if>
+      <if test="remark != null">
+        remark,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="appName != null">
+        #{appName,jdbcType=VARCHAR},
+      </if>
+      <if test="logoUrl != null">
+        #{logoUrl,jdbcType=VARCHAR},
+      </if>
+      <if test="appDescription != null">
+        #{appDescription,jdbcType=VARCHAR},
+      </if>
+      <if test="downUrl != null">
+        #{downUrl,jdbcType=VARCHAR},
+      </if>
+      <if test="remark != null">
+        #{remark,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <insert id="insertBatch" parameterType="java.util.List">
+    insert into product_recommend (id, app_name, logo_url, 
+      app_descriptoin, down_url, remark
+      )
+    values 
+    <foreach collection="list" index="index" item="item" separator=",">
+      (#{item.id,jdbcType=INTEGER}, #{item.appName,jdbcType=VARCHAR}, #{item.logoUrl,jdbcType=VARCHAR}, 
+        #{item.appDescription,jdbcType=VARCHAR}, #{item.downUrl,jdbcType=VARCHAR}, #{item.remark,jdbcType=VARCHAR}
+        )
+    </foreach>
+  </insert>
+  <insert id="insertBatchSelective" parameterType="java.util.List">
+    insert into product_recommend
+    (id, app_name, logo_url, app_descriptoin, down_url, remark)
+    values 
+    <foreach collection="list" index="index" item="item" separator=",">
+      <trim prefix="(" suffix=")" suffixOverrides=",">
+        <if test="item.id != null">
+          #{item.id,jdbcType=INTEGER},
+        </if>
+        <if test="item.id == null">
+          NULL,
+        </if>
+        <if test="item.appName != null">
+          #{item.appName,jdbcType=VARCHAR},
+        </if>
+        <if test="item.appName == null">
+          NULL,
+        </if>
+        <if test="item.logoUrl != null">
+          #{item.logoUrl,jdbcType=VARCHAR},
+        </if>
+        <if test="item.logoUrl == null">
+          NULL,
+        </if>
+        <if test="item.appDescription != null">
+          #{item.appDescription,jdbcType=VARCHAR},
+        </if>
+        <if test="item.appDescription == null">
+          NULL,
+        </if>
+        <if test="item.downUrl != null">
+          #{item.downUrl,jdbcType=VARCHAR},
+        </if>
+        <if test="item.downUrl == null">
+          NULL,
+        </if>
+        <if test="item.remark != null">
+          #{item.remark,jdbcType=VARCHAR},
+        </if>
+        <if test="item.remark == null">
+          NULL,
+        </if>
+      </trim>
+    </foreach>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="java.util.Map">
+    update product_recommend
+    <set>
+      <if test="appName != null">
+        app_name = #{appName,jdbcType=VARCHAR},
+      </if>
+      <if test="logoUrl != null">
+        logo_url = #{logoUrl,jdbcType=VARCHAR},
+      </if>
+      <if test="appDescription != null">
+        app_descriptoin = #{appDescription,jdbcType=VARCHAR},
+      </if>
+      <if test="downUrl != null">
+        down_url = #{downUrl,jdbcType=VARCHAR},
+      </if>
+      <if test="remark != null">
+        remark = #{remark,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.summer.dao.entity.ProductRecommend">
+    update product_recommend
+    set app_name = #{appName,jdbcType=VARCHAR},
+      logo_url = #{logoUrl,jdbcType=VARCHAR},
+      app_descriptoin = #{appDescription,jdbcType=VARCHAR},
+      down_url = #{downUrl,jdbcType=VARCHAR},
+      remark = #{remark,jdbcType=VARCHAR}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateBatchByPrimaryKey" parameterType="java.util.List">
+    update product_recommend
+    <trim prefix="set" suffixOverrides=",">
+      <trim prefix="appName =case id" suffix="end,">
+        <foreach collection="list" index="index" item="item" separator=" ">
+          when  #{item.id} then #{item.appName}
+        </foreach>
+      </trim>
+      <trim prefix="logoUrl =case id" suffix="end,">
+        <foreach collection="list" index="index" item="item" separator=" ">
+          when  #{item.id} then #{item.logoUrl}
+        </foreach>
+      </trim>
+      <trim prefix="appDescription =case id" suffix="end,">
+        <foreach collection="list" index="index" item="item" separator=" ">
+          when  #{item.id} then #{item.appDescription}
+        </foreach>
+      </trim>
+      <trim prefix="downUrl =case id" suffix="end,">
+        <foreach collection="list" index="index" item="item" separator=" ">
+          when  #{item.id} then #{item.downUrl}
+        </foreach>
+      </trim>
+      <trim prefix="remark =case id" suffix="end,">
+        <foreach collection="list" index="index" item="item" separator=" ">
+          when  #{item.id} then #{item.remark}
+        </foreach>
+      </trim>
+    </trim>
+    where id in 
+    <foreach close=")" collection="list" index="index" item="item" open="(" separator=",">
+       #{item.id} 
+    </foreach>
+  </update>
+  <update id="updateBatchByPrimaryKeySelective" parameterType="java.util.List">
+    update product_recommend
+    <trim prefix="set" suffixOverrides=",">
+      <trim prefix="appName =case id" suffix="end,">
+        <foreach collection="list" index="index" item="item" separator=" ">
+          <if test="item.appName != null ">
+            when  #{item.id} then #{item.appName}
+          </if>
+          <if test="item.appName == null ">
+            when  #{item.id} then product_recommend.app_name
+          </if>
+        </foreach>
+      </trim>
+      <trim prefix="logoUrl =case id" suffix="end,">
+        <foreach collection="list" index="index" item="item" separator=" ">
+          <if test="item.logoUrl != null ">
+            when  #{item.id} then #{item.logoUrl}
+          </if>
+          <if test="item.logoUrl == null ">
+            when  #{item.id} then product_recommend.logo_url
+          </if>
+        </foreach>
+      </trim>
+      <trim prefix="appDescription =case id" suffix="end,">
+        <foreach collection="list" index="index" item="item" separator=" ">
+          <if test="item.appDescription != null ">
+            when  #{item.id} then #{item.appDescription}
+          </if>
+          <if test="item.appDescription == null ">
+            when  #{item.id} then product_recommend.app_descriptoin
+          </if>
+        </foreach>
+      </trim>
+      <trim prefix="downUrl =case id" suffix="end,">
+        <foreach collection="list" index="index" item="item" separator=" ">
+          <if test="item.downUrl != null ">
+            when  #{item.id} then #{item.downUrl}
+          </if>
+          <if test="item.downUrl == null ">
+            when  #{item.id} then product_recommend.down_url
+          </if>
+        </foreach>
+      </trim>
+      <trim prefix="remark =case id" suffix="end,">
+        <foreach collection="list" index="index" item="item" separator=" ">
+          <if test="item.remark != null ">
+            when  #{item.id} then #{item.remark}
+          </if>
+          <if test="item.remark == null ">
+            when  #{item.id} then product_recommend.remark
+          </if>
+        </foreach>
+      </trim>
+    </trim>
+    where id in 
+    <foreach close=")" collection="list" index="index" item="item" open="(" separator=",">
+       #{item.id} 
+    </foreach>
+  </update>
+
+  <sql id="Base_Column">
+    id as id, app_name as appName, logo_url as logoUrl , app_descriptoin as appDescription,
+     down_url as    downUrl , remark as remark
+  </sql>
+  <select id="findByParam" parameterType="java.util.Map" resultType="com.summer.dao.entity.ProductRecommend">
+
+    select <include refid="Base_Column"/> from product_recommend
+    <where>
+      <if test="id != null">
+        id=#{id}
+      </if>
+      <if test="appName != null and appName != ''">
+        and app_name=#{appName}
+      </if>
+
+    </where>
+  </select>
+</mapper>

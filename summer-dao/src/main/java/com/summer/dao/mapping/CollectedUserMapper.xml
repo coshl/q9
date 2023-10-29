@@ -1,0 +1,302 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.summer.dao.mapper.CollectedUserDAO">
+    <resultMap id="BaseResultMap" type="com.summer.dao.entity.CollectedUser">
+        <id column="id" jdbcType="INTEGER" property="id"/>
+        <result column="realname" jdbcType="VARCHAR" property="realname"/>
+        <result column="id_number" jdbcType="VARCHAR" property="idNumber"/>
+        <result column="user_phone" jdbcType="VARCHAR" property="userPhone"/>
+        <result column="overdueDays" jdbcType="INTEGER" property="overduedays"/>
+        <result column="create_time" jdbcType="TIMESTAMP" property="createTime"/>
+        <result column="status" jdbcType="INTEGER" property="status"/>
+    </resultMap>
+    <sql id="Base_Column_List">
+    id, realname, id_number, user_phone, overdueDays, create_time, status
+  </sql>
+    <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from collected_user
+        where id = #{id,jdbcType=INTEGER}
+    </select>
+    <select id="selectSimple" parameterType="java.util.Map" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from collected_user
+        <where>
+            status = 0
+            <if test="idNum != null and idNum != ''">
+                and id_number = #{idNum}
+            </if>
+            <if test="createTime != null and createTime != ''">
+
+                <![CDATA[    and create_time >= #{createTime}   ]]>
+            </if>
+            <if test="overdueDays != null ">
+
+                <![CDATA[    and overdueDays >= #{overdueDays}   ]]>
+            </if>
+        </where>
+    </select>
+
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from collected_user
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+    <insert id="insert" parameterType="com.summer.dao.entity.CollectedUser">
+    insert into collected_user (id, realname, id_number, 
+      user_phone, overdueDays, create_time, status
+      )
+    values (#{id,jdbcType=INTEGER}, #{realname,jdbcType=VARCHAR}, #{idNumber,jdbcType=VARCHAR}, 
+      #{userPhone,jdbcType=VARCHAR}, #{overduedays,jdbcType=INTEGER}, #{createTime,jdbcType=TIMESTAMP}, #{status,jdbcType=INTEGER}
+      )
+  </insert>
+    <insert id="insertSelective" parameterType="com.summer.dao.entity.CollectedUser">
+        insert into collected_user
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                id,
+            </if>
+            <if test="realname != null">
+                realname,
+            </if>
+            <if test="idNumber != null">
+                id_number,
+            </if>
+            <if test="userPhone != null">
+                user_phone,
+            </if>
+            <if test="overduedays != null">
+                overdueDays,
+            </if>
+            <if test="createTime != null">
+                create_time,
+            </if>
+            <if test="status != null">
+                status,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                #{id,jdbcType=INTEGER},
+            </if>
+            <if test="realname != null">
+                #{realname,jdbcType=VARCHAR},
+            </if>
+            <if test="idNumber != null">
+                #{idNumber,jdbcType=VARCHAR},
+            </if>
+            <if test="userPhone != null">
+                #{userPhone,jdbcType=VARCHAR},
+            </if>
+            <if test="overduedays != null">
+                #{overduedays,jdbcType=INTEGER},
+            </if>
+            <if test="createTime != null">
+                #{createTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="status != null">
+                #{status,jdbcType=INTEGER},
+            </if>
+        </trim>
+    </insert>
+    <insert id="insertBatch" parameterType="java.util.List">
+        insert into collected_user (id, realname, id_number,
+        user_phone, overdueDays, create_time
+        )
+        values
+        <foreach collection="list" index="index" item="item" separator=",">
+            (#{item.id,jdbcType=INTEGER}, #{item.realname,jdbcType=VARCHAR}, #{item.idNumber,jdbcType=VARCHAR},
+            #{item.userPhone,jdbcType=VARCHAR}, #{item.overduedays,jdbcType=INTEGER},
+            #{item.createTime,jdbcType=TIMESTAMP}
+            )
+        </foreach>
+    </insert>
+    <insert id="insertBatchSelective" parameterType="java.util.List">
+        insert into collected_user
+        (id, realname, id_number, user_phone, overdueDays, create_time)
+        values
+        <foreach collection="list" index="index" item="item" separator=",">
+            <trim prefix="(" suffix=")" suffixOverrides=",">
+                <if test="item.id != null">
+                    #{item.id,jdbcType=INTEGER},
+                </if>
+                <if test="item.id == null">
+                    NULL,
+                </if>
+                <if test="item.realname != null">
+                    #{item.realname,jdbcType=VARCHAR},
+                </if>
+                <if test="item.realname == null">
+                    NULL,
+                </if>
+                <if test="item.idNumber != null">
+                    #{item.idNumber,jdbcType=VARCHAR},
+                </if>
+                <if test="item.idNumber == null">
+                    NULL,
+                </if>
+                <if test="item.userPhone != null">
+                    #{item.userPhone,jdbcType=VARCHAR},
+                </if>
+                <if test="item.userPhone == null">
+                    NULL,
+                </if>
+                <if test="item.overduedays != null">
+                    #{item.overduedays,jdbcType=INTEGER},
+                </if>
+                <if test="item.overduedays == null">
+                    NULL,
+                </if>
+                <if test="item.createTime != null">
+                    #{item.createTime,jdbcType=TIMESTAMP},
+                </if>
+                <if test="item.createTime == null">
+                    NULL,
+                </if>
+            </trim>
+        </foreach>
+    </insert>
+    <update id="updateByPrimaryKeySelective" parameterType="com.summer.dao.entity.CollectedUser">
+        update collected_user
+        <set>
+            <if test="realname != null">
+                realname = #{realname,jdbcType=VARCHAR},
+            </if>
+            <if test="idNumber != null">
+                id_number = #{idNumber,jdbcType=VARCHAR},
+            </if>
+            <if test="userPhone != null">
+                user_phone = #{userPhone,jdbcType=VARCHAR},
+            </if>
+            <if test="overduedays != null">
+                overdueDays = #{overduedays,jdbcType=INTEGER},
+            </if>
+            <if test="createTime != null">
+                create_time = #{createTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="status != null">
+                status = #{status,jdbcType=INTEGER},
+            </if>
+        </set>
+        where id = #{id,jdbcType=INTEGER}
+    </update>
+    <update id="updateByPrimaryKey" parameterType="com.summer.dao.entity.CollectedUser">
+    update collected_user
+    set realname = #{realname,jdbcType=VARCHAR},
+      id_number = #{idNumber,jdbcType=VARCHAR},
+      user_phone = #{userPhone,jdbcType=VARCHAR},
+      overdueDays = #{overduedays,jdbcType=INTEGER},
+      create_time = #{createTime,jdbcType=TIMESTAMP},
+      status = #{status,jdbcType=INTEGER}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+
+    <select id="selectByUserPhone" parameterType="java.util.Map" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from collected_user
+        <where>
+            <if test="phone != null">
+                and user_phone = #{phone,jdbcType=VARCHAR}
+            </if>
+            <if test="idCard != null">
+                and id_number = #{idCard,jdbcType=VARCHAR}
+            </if>
+        </where>
+    </select>
+
+    <update id="updateBatchByPrimaryKey" parameterType="java.util.List">
+        update collected_user
+        <trim prefix="set" suffixOverrides=",">
+            <trim prefix="realname =case id" suffix="end,">
+                <foreach collection="list" index="index" item="item" separator=" ">
+                    when #{item.id} then #{item.realname}
+                </foreach>
+            </trim>
+            <trim prefix="idNumber =case id" suffix="end,">
+                <foreach collection="list" index="index" item="item" separator=" ">
+                    when #{item.id} then #{item.idNumber}
+                </foreach>
+            </trim>
+            <trim prefix="userPhone =case id" suffix="end,">
+                <foreach collection="list" index="index" item="item" separator=" ">
+                    when #{item.id} then #{item.userPhone}
+                </foreach>
+            </trim>
+            <trim prefix="overduedays =case id" suffix="end,">
+                <foreach collection="list" index="index" item="item" separator=" ">
+                    when #{item.id} then #{item.overduedays}
+                </foreach>
+            </trim>
+            <trim prefix="createTime =case id" suffix="end,">
+                <foreach collection="list" index="index" item="item" separator=" ">
+                    when #{item.id} then #{item.createTime}
+                </foreach>
+            </trim>
+        </trim>
+        where id in
+        <foreach close=")" collection="list" index="index" item="item" open="(" separator=",">
+            #{item.id}
+        </foreach>
+    </update>
+    <update id="updateBatchByPrimaryKeySelective" parameterType="java.util.List">
+        update collected_user
+        <trim prefix="set" suffixOverrides=",">
+            <trim prefix="realname =case id" suffix="end,">
+                <foreach collection="list" index="index" item="item" separator=" ">
+                    <if test="item.realname != null ">
+                        when #{item.id} then #{item.realname}
+                    </if>
+                    <if test="item.realname == null ">
+                        when #{item.id} then collected_user.realname
+                    </if>
+                </foreach>
+            </trim>
+            <trim prefix="idNumber =case id" suffix="end,">
+                <foreach collection="list" index="index" item="item" separator=" ">
+                    <if test="item.idNumber != null ">
+                        when #{item.id} then #{item.idNumber}
+                    </if>
+                    <if test="item.idNumber == null ">
+                        when #{item.id} then collected_user.id_number
+                    </if>
+                </foreach>
+            </trim>
+            <trim prefix="userPhone =case id" suffix="end,">
+                <foreach collection="list" index="index" item="item" separator=" ">
+                    <if test="item.userPhone != null ">
+                        when #{item.id} then #{item.userPhone}
+                    </if>
+                    <if test="item.userPhone == null ">
+                        when #{item.id} then collected_user.user_phone
+                    </if>
+                </foreach>
+            </trim>
+            <trim prefix="overduedays =case id" suffix="end,">
+                <foreach collection="list" index="index" item="item" separator=" ">
+                    <if test="item.overduedays != null ">
+                        when #{item.id} then #{item.overduedays}
+                    </if>
+                    <if test="item.overduedays == null ">
+                        when #{item.id} then collected_user.overdueDays
+                    </if>
+                </foreach>
+            </trim>
+            <trim prefix="createTime =case id" suffix="end,">
+                <foreach collection="list" index="index" item="item" separator=" ">
+                    <if test="item.createTime != null ">
+                        when #{item.id} then #{item.createTime}
+                    </if>
+                    <if test="item.createTime == null ">
+                        when #{item.id} then collected_user.create_time
+                    </if>
+                </foreach>
+            </trim>
+        </trim>
+        where id in
+        <foreach close=")" collection="list" index="index" item="item" open="(" separator=",">
+            #{item.id}
+        </foreach>
+    </update>
+</mapper>

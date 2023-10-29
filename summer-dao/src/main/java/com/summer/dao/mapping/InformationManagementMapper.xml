@@ -1,0 +1,184 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.summer.dao.mapper.InformationManagementDAO">
+    <resultMap id="BaseResultMap" type="com.summer.dao.entity.InformationManagement">
+        <id column="id" jdbcType="INTEGER" property="id"/>
+        <result column="title" jdbcType="VARCHAR" property="title"/>
+        <result column="add_person" jdbcType="VARCHAR" property="addPerson"/>
+        <result column="content" jdbcType="VARCHAR" property="content"/>
+        <result column="type" jdbcType="INTEGER" property="type"/>
+        <result column="modify_person" jdbcType="VARCHAR" property="modifyPerson"/>
+        <result column="views" jdbcType="INTEGER" property="views"/>
+        <result column="order_by" jdbcType="INTEGER" property="orderBy"/>
+        <result column="create_time" jdbcType="TIMESTAMP" property="createTime"/>
+        <result column="update_time" jdbcType="TIMESTAMP" property="updateTime"/>
+    </resultMap>
+    <resultMap extends="BaseResultMap" id="ResultMapWithBLOBs" type="com.summer.dao.entity.InformationManagement">
+        <result column="content" jdbcType="LONGVARCHAR" property="content"/>
+    </resultMap>
+    <sql id="Base_Column_List">
+    id, title, add_person, type, modify_person, views, order_by, create_time, update_time,content
+  </sql>
+    <sql id="Blob_Column_List">
+    content
+  </sql>
+    <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="ResultMapWithBLOBs">
+        select
+        <include refid="Base_Column_List"/>
+        ,
+        <include refid="Blob_Column_List"/>
+        from platform_information_management
+        where id = #{id,jdbcType=INTEGER}
+    </select>
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from platform_information_management
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+    <insert id="insert" parameterType="com.summer.dao.entity.InformationManagement" keyProperty="id"
+            useGeneratedKeys="true">
+    insert into platform_information_management (id, title, add_person, 
+      type, modify_person, views, 
+      order_by, create_time, update_time, 
+      content)
+    values (#{id,jdbcType=INTEGER}, #{title,jdbcType=VARCHAR}, #{addPerson,jdbcType=VARCHAR}, 
+      #{type,jdbcType=INTEGER}, #{modifyPerson,jdbcType=VARCHAR}, #{views,jdbcType=INTEGER},
+      #{orderBy,jdbcType=INTEGER}, #{createTime,jdbcType=TIMESTAMP}, #{updateTime,jdbcType=TIMESTAMP},
+      #{content,jdbcType=LONGVARCHAR})
+  </insert>
+    <insert id="insertSelective" parameterType="com.summer.dao.entity.InformationManagement" keyProperty="id"
+            useGeneratedKeys="true">
+        insert into platform_information_management
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                id,
+            </if>
+            <if test="title != null">
+                title,
+            </if>
+            <if test="addPerson != null">
+                add_person,
+            </if>
+            <if test="type != null">
+                type,
+            </if>
+            <if test="modifyPerson != null">
+                modify_person,
+            </if>
+            <if test="views != null">
+                views,
+            </if>
+            <if test="orderBy != null">
+                order_by,
+            </if>
+            <if test="createTime != null">
+                create_time,
+            </if>
+            <if test="updateTime != null">
+                update_time,
+            </if>
+            <if test="content != null">
+                content,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                #{id,jdbcType=INTEGER},
+            </if>
+            <if test="title != null">
+                #{title,jdbcType=VARCHAR},
+            </if>
+            <if test="addPerson != null">
+                #{addPerson,jdbcType=VARCHAR},
+            </if>
+            <if test="type != null">
+                #{type,jdbcType=INTEGER},
+            </if>
+            <if test="modifyPerson != null">
+                #{modifyPerson,jdbcType=VARCHAR},
+            </if>
+            <if test="views != null">
+                #{views,jdbcType=INTEGER},
+            </if>
+            <if test="orderBy != null">
+                #{orderBy,jdbcType=INTEGER},
+            </if>
+            <if test="createTime != null">
+                #{createTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="updateTime != null">
+                #{updateTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="content != null">
+                #{content,jdbcType=LONGVARCHAR},
+            </if>
+        </trim>
+    </insert>
+    <update id="updateByPrimaryKeySelective" parameterType="com.summer.dao.entity.InformationManagement">
+        update platform_information_management
+        <set>
+            <if test="title != null">
+                title = #{title,jdbcType=VARCHAR},
+            </if>
+            <if test="type != null">
+                type = #{type,jdbcType=INTEGER},
+            </if>
+            <if test="orderBy != null">
+                order_by = #{orderBy,jdbcType=INTEGER},
+            </if>
+            <if test="content != null">
+                content = #{content,jdbcType=LONGVARCHAR},
+            </if>
+            update_time = NOW()
+        </set>
+        where id = #{id,jdbcType=INTEGER}
+    </update>
+    <update id="updateByPrimaryKeyWithBLOBs" parameterType="com.summer.dao.entity.InformationManagement">
+    update platform_information_management
+    set title = #{title,jdbcType=VARCHAR},
+      add_person = #{addPerson,jdbcType=VARCHAR},
+      type = #{type,jdbcType=INTEGER},
+      modify_person = #{modifyPerson,jdbcType=VARCHAR},
+      views = #{views,jdbcType=INTEGER},
+      order_by = #{orderBy,jdbcType=INTEGER},
+      create_time = #{createTime,jdbcType=TIMESTAMP},
+      update_time = #{updateTime,jdbcType=TIMESTAMP},
+      content = #{content,jdbcType=LONGVARCHAR}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+    <update id="updateByPrimaryKey" parameterType="com.summer.dao.entity.InformationManagement">
+    update platform_information_management
+    set title = #{title,jdbcType=VARCHAR},
+      add_person = #{addPerson,jdbcType=VARCHAR},
+      type = #{type,jdbcType=INTEGER},
+      modify_person = #{modifyPerson,jdbcType=VARCHAR},
+      views = #{views,jdbcType=INTEGER},
+      order_by = #{orderBy,jdbcType=INTEGER},
+      create_time = #{createTime,jdbcType=TIMESTAMP},
+      update_time = NOW()
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+
+    <select id="selectByParams" parameterType="java.util.Map" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from platform_information_management
+        <where>
+            <if test="title != null and title != '' ">
+                and title like concat('%',#{title},'%')
+            </if>
+            <if test="content != null and content != '' ">
+                and content = #{content,jdbcType = LONGVARCHAR}
+            </if>
+            <if test="addPerson != null and addPerson != '' ">
+                and add_person = #{addPerson,jdbcType=VARCHAR}
+            </if>
+            <if test="type != null">
+                and type = #{type,jdbcType=INTEGER}
+            </if>
+            <if test="startTime != null and startTime != '' and endTime != null and endTime != ''">
+                and create_time between #{startTime,jdbcType=TIMESTAMP} and #{endTime,jdbcType=TIMESTAMP}
+            </if>
+        </where>
+        order by update_time desc
+    </select>
+</mapper>

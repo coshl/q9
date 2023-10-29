@@ -1,0 +1,715 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.summer.dao.mapper.LoanReportDAO">
+    <resultMap id="BaseResultMap" type="com.summer.dao.entity.LoanReport">
+        <id column="id" jdbcType="INTEGER" property="id"/>
+        <result column="loan_order_count" jdbcType="INTEGER" property="loanOrderCount"/>
+        <result column="money_amount_count" jdbcType="BIGINT" property="moneyAmountCount"/>
+        <result column="old_loan_order_count" jdbcType="INTEGER" property="oldLoanOrderCount"/>
+        <result column="old_loan_money_count" jdbcType="BIGINT" property="oldLoanMoneyCount"/>
+        <result column="new_loan_order_count" jdbcType="INTEGER" property="newLoanOrderCount"/>
+        <result column="new_loan_money_count" jdbcType="BIGINT" property="newLoanMoneyCount"/>
+        <result column="loan_sevenday_count" jdbcType="INTEGER" property="loanSevendayCount"/>
+        <result column="loan_fourteenday_count" jdbcType="INTEGER" property="loanFourteendayCount"/>
+        <result column="loan_twentyOne_count" jdbcType="INTEGER" property="loanTwentyoneCount"/>
+        <result column="sevenday_moeny_count" jdbcType="BIGINT" property="sevendayMoenyCount"/>
+        <result column="fourteenday_money_count" jdbcType="BIGINT" property="fourteendayMoneyCount"/>
+        <result column="twentyOneday_money_count" jdbcType="INTEGER" property="twentyonedayMoneyCount"/>
+        <result column="report_date" jdbcType="DATE" property="reportDate"/>
+        <result column="created_at" jdbcType="TIMESTAMP" property="createdAt"/>
+        <result column="borrow_suc_count" jdbcType="INTEGER" property="borrowSucCount"/>
+        <result column="register_count" jdbcType="INTEGER" property="registerCount"/>
+        <result column="borrow_apply_count" jdbcType="INTEGER" property="borrowApplyCount"/>
+    </resultMap>
+    <sql id="Base_Column_List">
+    id, loan_order_count, money_amount_count, old_loan_order_count, old_loan_money_count, 
+    new_loan_order_count, new_loan_money_count, loan_sevenday_count, loan_fourteenday_count, 
+    loan_twentyOne_count, sevenday_moeny_count, fourteenday_money_count, twentyOneday_money_count, 
+    report_date, created_at, borrow_suc_count, register_count, borrow_apply_count
+  </sql>
+
+    <sql id="Sql">
+        <where>
+            <if test="reportDateStart !=null and reportDateStart !=''">
+                <![CDATA[	and DATE_FORMAT(a.report_date,'%Y-%m-%d') >=  #{reportDateStart}  ]]>
+            </if>
+            <if test="reportDateEnd !=null and reportDateEnd !=''">
+                <![CDATA[	and DATE_FORMAT(a.report_date,'%Y-%m-%d') <=  #{reportDateEnd}  ]]>
+            </if>
+        </where>
+    </sql>
+
+    <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from loan_report
+        where id = #{id,jdbcType=INTEGER}
+    </select>
+
+    <select id="findParams" parameterType="java.util.Map" resultType="com.summer.pojo.vo.LoanReportVO">
+        select
+        ROUND(money_amount_count/100,2) moneyAmountCount,
+        report_date reportDate,
+        borrow_suc_count borrowSucCount,
+        register_count registerCount,
+        borrow_apply_count borrowApplyCount,
+        loan_order_count loanOrderCount,
+        ifnull(ROUND(CONVERT(borrow_apply_count*100,SIGNED)/CONVERT(register_count,SIGNED),2),0) applyRate,
+        ifNull(ROUND(CONVERT(new_loan_order_count*100,SIGNED)/CONVERT(register_count,SIGNED),2),0) borrowRate,
+        a.old_loan_order_count as oldLoanOrderCount,
+        a.new_loan_order_count as newLoanOrderCount
+        from loan_report a
+        <include refid="Sql"/>
+        ORDER BY a.report_date DESC
+    </select>
+
+    <select id="findLoanMoneySum" parameterType="java.util.Map" resultType="java.util.Map">
+        select SUM(a.money_amount_count)/100.0 as moneyCount, SUM(a.borrow_apply_count) as borrowApplyCount,
+        ROUND(CONVERT(SUM(new_loan_order_count*100),SIGNED)/CONVERT(SUM(register_count),SIGNED),2) as borrowRate
+        from loan_report a
+        <include refid="Sql"/>
+    </select>
+
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from loan_report
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+    <insert id="insert" parameterType="com.summer.dao.entity.LoanReport">
+    insert into loan_report (id, loan_order_count, money_amount_count, 
+      old_loan_order_count, old_loan_money_count, new_loan_order_count, 
+      new_loan_money_count, loan_sevenday_count, loan_fourteenday_count, 
+      loan_twentyOne_count, sevenday_moeny_count, 
+      fourteenday_money_count, twentyOneday_money_count, 
+      report_date, created_at, borrow_suc_count, 
+      register_count, borrow_apply_count)
+    values (#{id,jdbcType=INTEGER}, #{loanOrderCount,jdbcType=INTEGER}, #{moneyAmountCount,jdbcType=BIGINT}, 
+      #{oldLoanOrderCount,jdbcType=INTEGER}, #{oldLoanMoneyCount,jdbcType=BIGINT}, #{newLoanOrderCount,jdbcType=INTEGER}, 
+      #{newLoanMoneyCount,jdbcType=BIGINT}, #{loanSevendayCount,jdbcType=INTEGER}, #{loanFourteendayCount,jdbcType=INTEGER}, 
+      #{loanTwentyoneCount,jdbcType=INTEGER}, #{sevendayMoenyCount,jdbcType=BIGINT}, 
+      #{fourteendayMoneyCount,jdbcType=BIGINT}, #{twentyonedayMoneyCount,jdbcType=INTEGER}, 
+      #{reportDate,jdbcType=DATE}, #{createdAt,jdbcType=TIMESTAMP}, #{borrowSucCount,jdbcType=INTEGER}, 
+      #{registerCount,jdbcType=INTEGER}, #{borrowApplyCount,jdbcType=INTEGER})
+  </insert>
+    <insert id="insertSelective" parameterType="com.summer.dao.entity.LoanReport">
+        insert into loan_report
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                id,
+            </if>
+            <if test="loanOrderCount != null">
+                loan_order_count,
+            </if>
+            <if test="moneyAmountCount != null">
+                money_amount_count,
+            </if>
+            <if test="oldLoanOrderCount != null">
+                old_loan_order_count,
+            </if>
+            <if test="oldLoanMoneyCount != null">
+                old_loan_money_count,
+            </if>
+            <if test="newLoanOrderCount != null">
+                new_loan_order_count,
+            </if>
+            <if test="newLoanMoneyCount != null">
+                new_loan_money_count,
+            </if>
+            <if test="loanSevendayCount != null">
+                loan_sevenday_count,
+            </if>
+            <if test="loanFourteendayCount != null">
+                loan_fourteenday_count,
+            </if>
+            <if test="loanTwentyoneCount != null">
+                loan_twentyOne_count,
+            </if>
+            <if test="sevendayMoenyCount != null">
+                sevenday_moeny_count,
+            </if>
+            <if test="fourteendayMoneyCount != null">
+                fourteenday_money_count,
+            </if>
+            <if test="twentyonedayMoneyCount != null">
+                twentyOneday_money_count,
+            </if>
+            <if test="reportDate != null">
+                report_date,
+            </if>
+            <if test="createdAt != null">
+                created_at,
+            </if>
+            <if test="borrowSucCount != null">
+                borrow_suc_count,
+            </if>
+            <if test="registerCount != null">
+                register_count,
+            </if>
+            <if test="borrowApplyCount != null">
+                borrow_apply_count,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                #{id,jdbcType=INTEGER},
+            </if>
+            <if test="loanOrderCount != null">
+                #{loanOrderCount,jdbcType=INTEGER},
+            </if>
+            <if test="moneyAmountCount != null">
+                #{moneyAmountCount,jdbcType=BIGINT},
+            </if>
+            <if test="oldLoanOrderCount != null">
+                #{oldLoanOrderCount,jdbcType=INTEGER},
+            </if>
+            <if test="oldLoanMoneyCount != null">
+                #{oldLoanMoneyCount,jdbcType=BIGINT},
+            </if>
+            <if test="newLoanOrderCount != null">
+                #{newLoanOrderCount,jdbcType=INTEGER},
+            </if>
+            <if test="newLoanMoneyCount != null">
+                #{newLoanMoneyCount,jdbcType=BIGINT},
+            </if>
+            <if test="loanSevendayCount != null">
+                #{loanSevendayCount,jdbcType=INTEGER},
+            </if>
+            <if test="loanFourteendayCount != null">
+                #{loanFourteendayCount,jdbcType=INTEGER},
+            </if>
+            <if test="loanTwentyoneCount != null">
+                #{loanTwentyoneCount,jdbcType=INTEGER},
+            </if>
+            <if test="sevendayMoenyCount != null">
+                #{sevendayMoenyCount,jdbcType=BIGINT},
+            </if>
+            <if test="fourteendayMoneyCount != null">
+                #{fourteendayMoneyCount,jdbcType=BIGINT},
+            </if>
+            <if test="twentyonedayMoneyCount != null">
+                #{twentyonedayMoneyCount,jdbcType=INTEGER},
+            </if>
+            <if test="reportDate != null">
+                #{reportDate,jdbcType=DATE},
+            </if>
+            <if test="createdAt != null">
+                #{createdAt,jdbcType=TIMESTAMP},
+            </if>
+            <if test="borrowSucCount != null">
+                #{borrowSucCount,jdbcType=INTEGER},
+            </if>
+            <if test="registerCount != null">
+                #{registerCount,jdbcType=INTEGER},
+            </if>
+            <if test="borrowApplyCount != null">
+                #{borrowApplyCount,jdbcType=INTEGER},
+            </if>
+        </trim>
+    </insert>
+    <insert id="insertBatch" parameterType="java.util.List">
+        insert into loan_report (id, loan_order_count, money_amount_count,
+        old_loan_order_count, old_loan_money_count,
+        new_loan_order_count, new_loan_money_count,
+        loan_sevenday_count, loan_fourteenday_count,
+        loan_twentyOne_count, sevenday_moeny_count,
+        fourteenday_money_count, twentyOneday_money_count,
+        report_date, created_at, borrow_suc_count,
+        register_count, borrow_apply_count
+        )
+        values
+        <foreach collection="list" index="index" item="item" separator=",">
+            (#{item.id,jdbcType=INTEGER}, #{item.loanOrderCount,jdbcType=INTEGER},
+            #{item.moneyAmountCount,jdbcType=BIGINT},
+            #{item.oldLoanOrderCount,jdbcType=INTEGER}, #{item.oldLoanMoneyCount,jdbcType=BIGINT},
+            #{item.newLoanOrderCount,jdbcType=INTEGER}, #{item.newLoanMoneyCount,jdbcType=BIGINT},
+            #{item.loanSevendayCount,jdbcType=INTEGER}, #{item.loanFourteendayCount,jdbcType=INTEGER},
+            #{item.loanTwentyoneCount,jdbcType=INTEGER}, #{item.sevendayMoenyCount,jdbcType=BIGINT},
+            #{item.fourteendayMoneyCount,jdbcType=BIGINT}, #{item.twentyonedayMoneyCount,jdbcType=INTEGER},
+            #{item.reportDate,jdbcType=DATE}, #{item.createdAt,jdbcType=TIMESTAMP},
+            #{item.borrowSucCount,jdbcType=INTEGER},
+            #{item.registerCount,jdbcType=INTEGER}, #{item.borrowApplyCount,jdbcType=INTEGER}
+            )
+        </foreach>
+    </insert>
+    <insert id="insertBatchSelective" parameterType="java.util.List">
+        insert into loan_report
+        (id, loan_order_count, money_amount_count, old_loan_order_count, old_loan_money_count,
+        new_loan_order_count, new_loan_money_count, loan_sevenday_count, loan_fourteenday_count,
+        loan_twentyOne_count, sevenday_moeny_count, fourteenday_money_count, twentyOneday_money_count,
+        report_date, created_at, borrow_suc_count, register_count, borrow_apply_count)
+        values
+        <foreach collection="list" index="index" item="item" separator=",">
+            <trim prefix="(" suffix=")" suffixOverrides=",">
+                <if test="item.id != null">
+                    #{item.id,jdbcType=INTEGER},
+                </if>
+                <if test="item.id == null">
+                    NULL,
+                </if>
+                <if test="item.loanOrderCount != null">
+                    #{item.loanOrderCount,jdbcType=INTEGER},
+                </if>
+                <if test="item.loanOrderCount == null">
+                    NULL,
+                </if>
+                <if test="item.moneyAmountCount != null">
+                    #{item.moneyAmountCount,jdbcType=BIGINT},
+                </if>
+                <if test="item.moneyAmountCount == null">
+                    NULL,
+                </if>
+                <if test="item.oldLoanOrderCount != null">
+                    #{item.oldLoanOrderCount,jdbcType=INTEGER},
+                </if>
+                <if test="item.oldLoanOrderCount == null">
+                    NULL,
+                </if>
+                <if test="item.oldLoanMoneyCount != null">
+                    #{item.oldLoanMoneyCount,jdbcType=BIGINT},
+                </if>
+                <if test="item.oldLoanMoneyCount == null">
+                    NULL,
+                </if>
+                <if test="item.newLoanOrderCount != null">
+                    #{item.newLoanOrderCount,jdbcType=INTEGER},
+                </if>
+                <if test="item.newLoanOrderCount == null">
+                    NULL,
+                </if>
+                <if test="item.newLoanMoneyCount != null">
+                    #{item.newLoanMoneyCount,jdbcType=BIGINT},
+                </if>
+                <if test="item.newLoanMoneyCount == null">
+                    NULL,
+                </if>
+                <if test="item.loanSevendayCount != null">
+                    #{item.loanSevendayCount,jdbcType=INTEGER},
+                </if>
+                <if test="item.loanSevendayCount == null">
+                    NULL,
+                </if>
+                <if test="item.loanFourteendayCount != null">
+                    #{item.loanFourteendayCount,jdbcType=INTEGER},
+                </if>
+                <if test="item.loanFourteendayCount == null">
+                    NULL,
+                </if>
+                <if test="item.loanTwentyoneCount != null">
+                    #{item.loanTwentyoneCount,jdbcType=INTEGER},
+                </if>
+                <if test="item.loanTwentyoneCount == null">
+                    NULL,
+                </if>
+                <if test="item.sevendayMoenyCount != null">
+                    #{item.sevendayMoenyCount,jdbcType=BIGINT},
+                </if>
+                <if test="item.sevendayMoenyCount == null">
+                    NULL,
+                </if>
+                <if test="item.fourteendayMoneyCount != null">
+                    #{item.fourteendayMoneyCount,jdbcType=BIGINT},
+                </if>
+                <if test="item.fourteendayMoneyCount == null">
+                    NULL,
+                </if>
+                <if test="item.twentyonedayMoneyCount != null">
+                    #{item.twentyonedayMoneyCount,jdbcType=INTEGER},
+                </if>
+                <if test="item.twentyonedayMoneyCount == null">
+                    NULL,
+                </if>
+                <if test="item.reportDate != null">
+                    #{item.reportDate,jdbcType=DATE},
+                </if>
+                <if test="item.reportDate == null">
+                    NULL,
+                </if>
+                <if test="item.createdAt != null">
+                    #{item.createdAt,jdbcType=TIMESTAMP},
+                </if>
+                <if test="item.createdAt == null">
+                    NULL,
+                </if>
+                <if test="item.borrowSucCount != null">
+                    #{item.borrowSucCount,jdbcType=INTEGER},
+                </if>
+                <if test="item.borrowSucCount == null">
+                    NULL,
+                </if>
+                <if test="item.registerCount != null">
+                    #{item.registerCount,jdbcType=INTEGER},
+                </if>
+                <if test="item.registerCount == null">
+                    NULL,
+                </if>
+                <if test="item.borrowApplyCount != null">
+                    #{item.borrowApplyCount,jdbcType=INTEGER},
+                </if>
+                <if test="item.borrowApplyCount == null">
+                    NULL,
+                </if>
+            </trim>
+        </foreach>
+    </insert>
+    <update id="updateByPrimaryKeySelective" parameterType="com.summer.dao.entity.LoanReport">
+        update loan_report
+        <set>
+            <if test="loanOrderCount != null">
+                loan_order_count = #{loanOrderCount,jdbcType=INTEGER},
+            </if>
+            <if test="moneyAmountCount != null">
+                money_amount_count = #{moneyAmountCount,jdbcType=BIGINT},
+            </if>
+            <if test="oldLoanOrderCount != null">
+                old_loan_order_count = #{oldLoanOrderCount,jdbcType=INTEGER},
+            </if>
+            <if test="oldLoanMoneyCount != null">
+                old_loan_money_count = #{oldLoanMoneyCount,jdbcType=BIGINT},
+            </if>
+            <if test="newLoanOrderCount != null">
+                new_loan_order_count = #{newLoanOrderCount,jdbcType=INTEGER},
+            </if>
+            <if test="newLoanMoneyCount != null">
+                new_loan_money_count = #{newLoanMoneyCount,jdbcType=BIGINT},
+            </if>
+            <if test="loanSevendayCount != null">
+                loan_sevenday_count = #{loanSevendayCount,jdbcType=INTEGER},
+            </if>
+            <if test="loanFourteendayCount != null">
+                loan_fourteenday_count = #{loanFourteendayCount,jdbcType=INTEGER},
+            </if>
+            <if test="loanTwentyoneCount != null">
+                loan_twentyOne_count = #{loanTwentyoneCount,jdbcType=INTEGER},
+            </if>
+            <if test="sevendayMoenyCount != null">
+                sevenday_moeny_count = #{sevendayMoenyCount,jdbcType=BIGINT},
+            </if>
+            <if test="fourteendayMoneyCount != null">
+                fourteenday_money_count = #{fourteendayMoneyCount,jdbcType=BIGINT},
+            </if>
+            <if test="twentyonedayMoneyCount != null">
+                twentyOneday_money_count = #{twentyonedayMoneyCount,jdbcType=INTEGER},
+            </if>
+            <if test="reportDate != null">
+                report_date = #{reportDate,jdbcType=DATE},
+            </if>
+            <if test="createdAt != null">
+                created_at = #{createdAt,jdbcType=TIMESTAMP},
+            </if>
+            <if test="borrowSucCount != null">
+                borrow_suc_count = #{borrowSucCount,jdbcType=INTEGER},
+            </if>
+            <if test="registerCount != null">
+                register_count = #{registerCount,jdbcType=INTEGER},
+            </if>
+            <if test="borrowApplyCount != null">
+                borrow_apply_count = #{borrowApplyCount,jdbcType=INTEGER},
+            </if>
+        </set>
+        where id = #{id,jdbcType=INTEGER}
+    </update>
+    <update id="updateByPrimaryKey" parameterType="com.summer.dao.entity.LoanReport">
+    update loan_report
+    set loan_order_count = #{loanOrderCount,jdbcType=INTEGER},
+      money_amount_count = #{moneyAmountCount,jdbcType=BIGINT},
+      old_loan_order_count = #{oldLoanOrderCount,jdbcType=INTEGER},
+      old_loan_money_count = #{oldLoanMoneyCount,jdbcType=BIGINT},
+      new_loan_order_count = #{newLoanOrderCount,jdbcType=INTEGER},
+      new_loan_money_count = #{newLoanMoneyCount,jdbcType=BIGINT},
+      loan_sevenday_count = #{loanSevendayCount,jdbcType=INTEGER},
+      loan_fourteenday_count = #{loanFourteendayCount,jdbcType=INTEGER},
+      loan_twentyOne_count = #{loanTwentyoneCount,jdbcType=INTEGER},
+      sevenday_moeny_count = #{sevendayMoenyCount,jdbcType=BIGINT},
+      fourteenday_money_count = #{fourteendayMoneyCount,jdbcType=BIGINT},
+      twentyOneday_money_count = #{twentyonedayMoneyCount,jdbcType=INTEGER},
+      report_date = #{reportDate,jdbcType=DATE},
+      created_at = #{createdAt,jdbcType=TIMESTAMP},
+      borrow_suc_count = #{borrowSucCount,jdbcType=INTEGER},
+      register_count = #{registerCount,jdbcType=INTEGER},
+      borrow_apply_count = #{borrowApplyCount,jdbcType=INTEGER}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+
+    <select id="selectByReportDate" parameterType="java.lang.String" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from loan_report
+        where report_date = #{reportDate}
+    </select>
+
+    <update id="updateBatchByPrimaryKey" parameterType="java.util.List">
+        update loan_report
+        <trim prefix="set" suffixOverrides=",">
+            <trim prefix="loanOrderCount =case id" suffix="end,">
+                <foreach collection="list" index="index" item="item" separator=" ">
+                    when #{item.id} then #{item.loanOrderCount}
+                </foreach>
+            </trim>
+            <trim prefix="moneyAmountCount =case id" suffix="end,">
+                <foreach collection="list" index="index" item="item" separator=" ">
+                    when #{item.id} then #{item.moneyAmountCount}
+                </foreach>
+            </trim>
+            <trim prefix="oldLoanOrderCount =case id" suffix="end,">
+                <foreach collection="list" index="index" item="item" separator=" ">
+                    when #{item.id} then #{item.oldLoanOrderCount}
+                </foreach>
+            </trim>
+            <trim prefix="oldLoanMoneyCount =case id" suffix="end,">
+                <foreach collection="list" index="index" item="item" separator=" ">
+                    when #{item.id} then #{item.oldLoanMoneyCount}
+                </foreach>
+            </trim>
+            <trim prefix="newLoanOrderCount =case id" suffix="end,">
+                <foreach collection="list" index="index" item="item" separator=" ">
+                    when #{item.id} then #{item.newLoanOrderCount}
+                </foreach>
+            </trim>
+            <trim prefix="newLoanMoneyCount =case id" suffix="end,">
+                <foreach collection="list" index="index" item="item" separator=" ">
+                    when #{item.id} then #{item.newLoanMoneyCount}
+                </foreach>
+            </trim>
+            <trim prefix="loanSevendayCount =case id" suffix="end,">
+                <foreach collection="list" index="index" item="item" separator=" ">
+                    when #{item.id} then #{item.loanSevendayCount}
+                </foreach>
+            </trim>
+            <trim prefix="loanFourteendayCount =case id" suffix="end,">
+                <foreach collection="list" index="index" item="item" separator=" ">
+                    when #{item.id} then #{item.loanFourteendayCount}
+                </foreach>
+            </trim>
+            <trim prefix="loanTwentyoneCount =case id" suffix="end,">
+                <foreach collection="list" index="index" item="item" separator=" ">
+                    when #{item.id} then #{item.loanTwentyoneCount}
+                </foreach>
+            </trim>
+            <trim prefix="sevendayMoenyCount =case id" suffix="end,">
+                <foreach collection="list" index="index" item="item" separator=" ">
+                    when #{item.id} then #{item.sevendayMoenyCount}
+                </foreach>
+            </trim>
+            <trim prefix="fourteendayMoneyCount =case id" suffix="end,">
+                <foreach collection="list" index="index" item="item" separator=" ">
+                    when #{item.id} then #{item.fourteendayMoneyCount}
+                </foreach>
+            </trim>
+            <trim prefix="twentyonedayMoneyCount =case id" suffix="end,">
+                <foreach collection="list" index="index" item="item" separator=" ">
+                    when #{item.id} then #{item.twentyonedayMoneyCount}
+                </foreach>
+            </trim>
+            <trim prefix="reportDate =case id" suffix="end,">
+                <foreach collection="list" index="index" item="item" separator=" ">
+                    when #{item.id} then #{item.reportDate}
+                </foreach>
+            </trim>
+            <trim prefix="createdAt =case id" suffix="end,">
+                <foreach collection="list" index="index" item="item" separator=" ">
+                    when #{item.id} then #{item.createdAt}
+                </foreach>
+            </trim>
+            <trim prefix="borrowSucCount =case id" suffix="end,">
+                <foreach collection="list" index="index" item="item" separator=" ">
+                    when #{item.id} then #{item.borrowSucCount}
+                </foreach>
+            </trim>
+            <trim prefix="registerCount =case id" suffix="end,">
+                <foreach collection="list" index="index" item="item" separator=" ">
+                    when #{item.id} then #{item.registerCount}
+                </foreach>
+            </trim>
+            <trim prefix="borrowApplyCount =case id" suffix="end,">
+                <foreach collection="list" index="index" item="item" separator=" ">
+                    when #{item.id} then #{item.borrowApplyCount}
+                </foreach>
+            </trim>
+        </trim>
+        where id in
+        <foreach close=")" collection="list" index="index" item="item" open="(" separator=",">
+            #{item.id}
+        </foreach>
+    </update>
+    <update id="updateBatchByPrimaryKeySelective" parameterType="java.util.List">
+        update loan_report
+        <trim prefix="set" suffixOverrides=",">
+            <trim prefix="loanOrderCount =case id" suffix="end,">
+                <foreach collection="list" index="index" item="item" separator=" ">
+                    <if test="item.loanOrderCount != null ">
+                        when #{item.id} then #{item.loanOrderCount}
+                    </if>
+                    <if test="item.loanOrderCount == null ">
+                        when #{item.id} then loan_report.loan_order_count
+                    </if>
+                </foreach>
+            </trim>
+            <trim prefix="moneyAmountCount =case id" suffix="end,">
+                <foreach collection="list" index="index" item="item" separator=" ">
+                    <if test="item.moneyAmountCount != null ">
+                        when #{item.id} then #{item.moneyAmountCount}
+                    </if>
+                    <if test="item.moneyAmountCount == null ">
+                        when #{item.id} then loan_report.money_amount_count
+                    </if>
+                </foreach>
+            </trim>
+            <trim prefix="oldLoanOrderCount =case id" suffix="end,">
+                <foreach collection="list" index="index" item="item" separator=" ">
+                    <if test="item.oldLoanOrderCount != null ">
+                        when #{item.id} then #{item.oldLoanOrderCount}
+                    </if>
+                    <if test="item.oldLoanOrderCount == null ">
+                        when #{item.id} then loan_report.old_loan_order_count
+                    </if>
+                </foreach>
+            </trim>
+            <trim prefix="oldLoanMoneyCount =case id" suffix="end,">
+                <foreach collection="list" index="index" item="item" separator=" ">
+                    <if test="item.oldLoanMoneyCount != null ">
+                        when #{item.id} then #{item.oldLoanMoneyCount}
+                    </if>
+                    <if test="item.oldLoanMoneyCount == null ">
+                        when #{item.id} then loan_report.old_loan_money_count
+                    </if>
+                </foreach>
+            </trim>
+            <trim prefix="newLoanOrderCount =case id" suffix="end,">
+                <foreach collection="list" index="index" item="item" separator=" ">
+                    <if test="item.newLoanOrderCount != null ">
+                        when #{item.id} then #{item.newLoanOrderCount}
+                    </if>
+                    <if test="item.newLoanOrderCount == null ">
+                        when #{item.id} then loan_report.new_loan_order_count
+                    </if>
+                </foreach>
+            </trim>
+            <trim prefix="newLoanMoneyCount =case id" suffix="end,">
+                <foreach collection="list" index="index" item="item" separator=" ">
+                    <if test="item.newLoanMoneyCount != null ">
+                        when #{item.id} then #{item.newLoanMoneyCount}
+                    </if>
+                    <if test="item.newLoanMoneyCount == null ">
+                        when #{item.id} then loan_report.new_loan_money_count
+                    </if>
+                </foreach>
+            </trim>
+            <trim prefix="loanSevendayCount =case id" suffix="end,">
+                <foreach collection="list" index="index" item="item" separator=" ">
+                    <if test="item.loanSevendayCount != null ">
+                        when #{item.id} then #{item.loanSevendayCount}
+                    </if>
+                    <if test="item.loanSevendayCount == null ">
+                        when #{item.id} then loan_report.loan_sevenday_count
+                    </if>
+                </foreach>
+            </trim>
+            <trim prefix="loanFourteendayCount =case id" suffix="end,">
+                <foreach collection="list" index="index" item="item" separator=" ">
+                    <if test="item.loanFourteendayCount != null ">
+                        when #{item.id} then #{item.loanFourteendayCount}
+                    </if>
+                    <if test="item.loanFourteendayCount == null ">
+                        when #{item.id} then loan_report.loan_fourteenday_count
+                    </if>
+                </foreach>
+            </trim>
+            <trim prefix="loanTwentyoneCount =case id" suffix="end,">
+                <foreach collection="list" index="index" item="item" separator=" ">
+                    <if test="item.loanTwentyoneCount != null ">
+                        when #{item.id} then #{item.loanTwentyoneCount}
+                    </if>
+                    <if test="item.loanTwentyoneCount == null ">
+                        when #{item.id} then loan_report.loan_twentyOne_count
+                    </if>
+                </foreach>
+            </trim>
+            <trim prefix="sevendayMoenyCount =case id" suffix="end,">
+                <foreach collection="list" index="index" item="item" separator=" ">
+                    <if test="item.sevendayMoenyCount != null ">
+                        when #{item.id} then #{item.sevendayMoenyCount}
+                    </if>
+                    <if test="item.sevendayMoenyCount == null ">
+                        when #{item.id} then loan_report.sevenday_moeny_count
+                    </if>
+                </foreach>
+            </trim>
+            <trim prefix="fourteendayMoneyCount =case id" suffix="end,">
+                <foreach collection="list" index="index" item="item" separator=" ">
+                    <if test="item.fourteendayMoneyCount != null ">
+                        when #{item.id} then #{item.fourteendayMoneyCount}
+                    </if>
+                    <if test="item.fourteendayMoneyCount == null ">
+                        when #{item.id} then loan_report.fourteenday_money_count
+                    </if>
+                </foreach>
+            </trim>
+            <trim prefix="twentyonedayMoneyCount =case id" suffix="end,">
+                <foreach collection="list" index="index" item="item" separator=" ">
+                    <if test="item.twentyonedayMoneyCount != null ">
+                        when #{item.id} then #{item.twentyonedayMoneyCount}
+                    </if>
+                    <if test="item.twentyonedayMoneyCount == null ">
+                        when #{item.id} then loan_report.twentyOneday_money_count
+                    </if>
+                </foreach>
+            </trim>
+            <trim prefix="reportDate =case id" suffix="end,">
+                <foreach collection="list" index="index" item="item" separator=" ">
+                    <if test="item.reportDate != null ">
+                        when #{item.id} then #{item.reportDate}
+                    </if>
+                    <if test="item.reportDate == null ">
+                        when #{item.id} then loan_report.report_date
+                    </if>
+                </foreach>
+            </trim>
+            <trim prefix="createdAt =case id" suffix="end,">
+                <foreach collection="list" index="index" item="item" separator=" ">
+                    <if test="item.createdAt != null ">
+                        when #{item.id} then #{item.createdAt}
+                    </if>
+                    <if test="item.createdAt == null ">
+                        when #{item.id} then loan_report.created_at
+                    </if>
+                </foreach>
+            </trim>
+            <trim prefix="borrowSucCount =case id" suffix="end,">
+                <foreach collection="list" index="index" item="item" separator=" ">
+                    <if test="item.borrowSucCount != null ">
+                        when #{item.id} then #{item.borrowSucCount}
+                    </if>
+                    <if test="item.borrowSucCount == null ">
+                        when #{item.id} then loan_report.borrow_suc_count
+                    </if>
+                </foreach>
+            </trim>
+            <trim prefix="registerCount =case id" suffix="end,">
+                <foreach collection="list" index="index" item="item" separator=" ">
+                    <if test="item.registerCount != null ">
+                        when #{item.id} then #{item.registerCount}
+                    </if>
+                    <if test="item.registerCount == null ">
+                        when #{item.id} then loan_report.register_count
+                    </if>
+                </foreach>
+            </trim>
+            <trim prefix="borrowApplyCount =case id" suffix="end,">
+                <foreach collection="list" index="index" item="item" separator=" ">
+                    <if test="item.borrowApplyCount != null ">
+                        when #{item.id} then #{item.borrowApplyCount}
+                    </if>
+                    <if test="item.borrowApplyCount == null ">
+                        when #{item.id} then loan_report.borrow_apply_count
+                    </if>
+                </foreach>
+            </trim>
+        </trim>
+        where id in
+        <foreach close=")" collection="list" index="index" item="item" open="(" separator=",">
+            #{item.id}
+        </foreach>
+    </update>
+    <select id="getReport" parameterType="java.lang.String" resultType="java.util.HashMap">
+        CALL repay_count(#{begin},#{end});
+    </select>
+</mapper>

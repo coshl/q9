@@ -1,0 +1,175 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.summer.dao.mapper.UserShortMessageDAO">
+    <resultMap id="BaseResultMap" type="com.summer.dao.entity.UserShortMessage">
+        <id column="id" jdbcType="INTEGER" property="id"/>
+        <result column="message_content" jdbcType="VARCHAR" property="messageContent"/>
+        <result column="message_date" jdbcType="VARCHAR" property="messageDate"/>
+        <result column="phone" jdbcType="VARCHAR" property="phone"/>
+        <result column="user_id" jdbcType="INTEGER" property="userId"/>
+        <result column="creat_time" jdbcType="TIMESTAMP" property="creatTime"/>
+    </resultMap>
+    <sql id="Base_Column_List">
+    id, message_content, message_date, phone, user_id, creat_time
+  </sql>
+    <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from user_short_message
+        where id = #{id,jdbcType=INTEGER}
+    </select>
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from user_short_message
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+    <insert id="insert" parameterType="com.summer.dao.entity.UserShortMessage">
+    insert into user_short_message (id, message_content, message_date, 
+      phone, user_id, creat_time
+      )
+    values (#{id,jdbcType=INTEGER}, #{messageContent,jdbcType=VARCHAR}, #{messageDate,jdbcType=VARCHAR}, 
+      #{phone,jdbcType=VARCHAR}, #{userId,jdbcType=INTEGER}, #{creatTime,jdbcType=TIMESTAMP}
+      )
+  </insert>
+    <insert id="insertSelective" parameterType="com.summer.dao.entity.UserShortMessage">
+        insert into user_short_message
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                id,
+            </if>
+            <if test="messageContent != null">
+                message_content,
+            </if>
+            <if test="messageDate != null">
+                message_date,
+            </if>
+            <if test="phone != null">
+                phone,
+            </if>
+            <if test="userId != null">
+                user_id,
+            </if>
+            <if test="creatTime != null">
+                creat_time,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                #{id,jdbcType=INTEGER},
+            </if>
+            <if test="messageContent != null">
+                #{messageContent,jdbcType=VARCHAR},
+            </if>
+            <if test="messageDate != null">
+                #{messageDate,jdbcType=VARCHAR},
+            </if>
+            <if test="phone != null">
+                #{phone,jdbcType=VARCHAR},
+            </if>
+            <if test="userId != null">
+                #{userId,jdbcType=INTEGER},
+            </if>
+            <if test="creatTime != null">
+                #{creatTime,jdbcType=TIMESTAMP},
+            </if>
+        </trim>
+    </insert>
+    <insert id="insertBatchSelective" parameterType="java.util.List">
+        insert into user_short_message
+        (id, message_content, message_date, phone, user_id, creat_time)
+        values
+        <foreach collection="list" index="index" item="item" separator=",">
+            <trim prefix="(" suffix=")" suffixOverrides=",">
+                <if test="item.id != null">
+                    #{item.id,jdbcType=INTEGER},
+                </if>
+                <if test="item.id == null">
+                    NULL,
+                </if>
+                <if test="item.messageContent != null">
+                    #{item.messageContent,jdbcType=VARCHAR},
+                </if>
+                <if test="item.messageContent == null">
+                    NULL,
+                </if>
+                <if test="item.messageDate != null">
+                    #{item.messageDate,jdbcType=VARCHAR},
+                </if>
+                <if test="item.messageDate == null">
+                    NULL,
+                </if>
+                <if test="item.phone != null">
+                    #{item.phone,jdbcType=VARCHAR},
+                </if>
+                <if test="item.phone == null">
+                    NULL,
+                </if>
+                <if test="item.userId != null">
+                    #{item.userId,jdbcType=INTEGER},
+                </if>
+                <if test="item.userId == null">
+                    NULL,
+                </if>
+                <if test="item.creatTime != null">
+                    #{item.creatTime,jdbcType=TIMESTAMP},
+                </if>
+                <if test="item.creatTime == null">
+                    NULL,
+                </if>
+            </trim>
+        </foreach>
+    </insert>
+    <update id="updateByPrimaryKeySelective" parameterType="com.summer.dao.entity.UserShortMessage">
+        update user_short_message
+        <set>
+            <if test="messageContent != null">
+                message_content = #{messageContent,jdbcType=VARCHAR},
+            </if>
+            <if test="messageDate != null">
+                message_date = #{messageDate,jdbcType=VARCHAR},
+            </if>
+            <if test="phone != null">
+                phone = #{phone,jdbcType=VARCHAR},
+            </if>
+            <if test="userId != null">
+                user_id = #{userId,jdbcType=INTEGER},
+            </if>
+            <if test="creatTime != null">
+                creat_time = #{creatTime,jdbcType=TIMESTAMP},
+            </if>
+        </set>
+        where id = #{id,jdbcType=INTEGER}
+    </update>
+    <update id="updateByPrimaryKey" parameterType="com.summer.dao.entity.UserShortMessage">
+    update user_short_message
+    set message_content = #{messageContent,jdbcType=VARCHAR},
+      message_date = #{messageDate,jdbcType=VARCHAR},
+      phone = #{phone,jdbcType=VARCHAR},
+      user_id = #{userId,jdbcType=INTEGER},
+      creat_time = #{creatTime,jdbcType=TIMESTAMP}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+
+    <select id="findByUserId" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from user_short_message where user_id=#{userId}
+    </select>
+    <delete id="deleteByUserId" parameterType="java.lang.Integer">
+    delete from user_short_message where user_id=#{userId}
+  </delete>
+
+    <select id="selectByPhone" parameterType="java.util.Map" resultType="com.summer.pojo.vo.UserShortMessageVo">
+        select id, message_content as messageContent, message_date as messageDate, phone
+        from user_short_message
+        <where>
+            <if test="phone != null and phone != ''">
+                phone = #{phone,jdbcType=VARCHAR}
+            </if>
+            <if test="userId != null">
+                and user_id =#{userId}
+            </if>
+
+        </where>
+        order by message_date DESC
+    </select>
+</mapper>

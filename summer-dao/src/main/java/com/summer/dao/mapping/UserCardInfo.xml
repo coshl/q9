@@ -1,0 +1,193 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.summer.dao.mapper.IUserCardInfoDao">
+    <resultMap id="BaseResultMap" type="com.summer.dao.entity.UserCardInfo">
+        <id column="id" property="id"/>
+        <result column="user_id" property="userId"/>
+        <result column="bank_id" property="bankId"/>
+        <result column="bank_name" property="bankName"/>
+        <result column="card_no" property="cardNo"/>
+        <result column="credit_amount" property="creditAmount"/>
+        <result column="valid_period" property="validPeriod"/>
+        <result column="phone" property="phone"/>
+        <result column="status" property="status"/>
+        <result column="main_card" property="mainCard"/>
+        <result column="open_name" property="openName"/>
+        <result column="bank_address" property="bankAddress"/>
+        <result column="type" property="type"/>
+        <result column="create_time" property="createTime"/>
+        <result column="update_time" property="updateTime"/>
+        <result column="mchntssn" property="mchntSsn"/>
+        <result column="binding_status" property="bindingStatus"/>
+    </resultMap>
+
+    <select id="selectUserBankCard" parameterType="Integer" resultType="com.summer.dao.entity.UserCardInfo">
+        select
+        b.id,
+        b.user_id userId,
+        b.bank_name bankName,
+        b.card_no cardNo,
+        b.phone phone,
+        b.bank_id bankId,
+        b.type type,
+        b.create_time createTime,
+        b.open_name openName,
+        b.main_card  mainCard,
+        b.agreeno,
+        b.bank_address bankAddress,
+        b.mchntssn mchntSsn,
+        b.binding_status as bindingStatus,
+        b.credit_amount as creditAmount
+        from user_card_info b where user_id = #{id,jdbcType=INTEGER} AND status=1
+    </select>
+    <select id="searchUserCardInfo" parameterType="HashMap" resultType="com.summer.dao.entity.UserCardInfo">
+		<![CDATA[
+
+        select
+            id as id,
+            user_id as userId,
+            bank_id as bankId,
+            bank_name as bankName,
+            card_no as cardNo,
+            phone as phone,
+            status as status
+        from user_card_info
+        where status=1
+          and user_id=#{USER_ID}
+
+        ]]>
+	</select>
+    <update id="updateUserCardInfo" parameterType="com.summer.dao.entity.UserCardInfo">
+        update user_card_info
+        <set>
+            <if test="bank_id != null ">
+                <![CDATA[bank_id = #{bank_id},]]>
+            </if>
+            <if test="bankName != null and bankName !=''">
+                <![CDATA[bank_name = #{bankName},]]>
+            </if>
+            <if test="cardNo != null and cardNo !=''">
+                <![CDATA[card_no = #{cardNo},]]>
+            </if>
+            <if test="creditAmount != null ">
+                <![CDATA[credit_amount = #{creditAmount},]]>
+            </if>
+            <if test="validPeriod != null and validPeriod !=''">
+                <![CDATA[valid_period = #{validPeriod},]]>
+            </if>
+            <if test="phone != null and phone !=''">
+                <![CDATA[phone = #{phone},]]>
+            </if>
+            <if test="mainCard != null ">
+                <![CDATA[main_card = #{mainCard},]]>
+            </if>
+            <if test="openName != null and openName !=''">
+                <![CDATA[open_name = #{openName},]]>
+            </if>
+            <if test="bankAddress != null and bankAddress !=''">
+                <![CDATA[bank_address = #{bankAddress},]]>
+            </if>
+            <if test="type != null">
+                <![CDATA[type = #{type},]]>
+            </if>
+
+            <if test="updateTime != null and updateTime !=''">
+                <![CDATA[update_time = now(),]]>
+            </if>
+            <if test="status != null">
+                <![CDATA[status = #{status},]]>
+            </if>
+            <if test="agreeno != null and agreeno !=''">
+                <![CDATA[agreeno = #{agreeno},]]>
+            </if>
+            <if test="mchntSsn != null and mchntSsn !=''">
+                <![CDATA[mchntssn = #{mchntSsn},]]>
+            </if>
+        </set>
+        where user_id = #{userId}
+    </update>
+    <insert id="saveUserCardInfo" parameterType="com.summer.dao.entity.UserCardInfo">
+        <![CDATA[
+
+			insert into user_card_info (
+				user_id,
+				bank_id,
+				bank_name,
+				card_no,
+				credit_amount,
+				valid_period,
+				phone,
+				status,
+				main_card,
+				open_name,
+				bank_address,
+				type,
+				create_time,
+				update_time,
+                mchntssn,
+                binding_status,
+				agreeno
+			)values(
+                #{userId},
+                #{bankId},
+                #{bankName},
+                #{cardNo},
+                #{creditAmount},
+                #{validPeriod},
+                #{phone},
+                #{status},
+                #{mainCard},
+                #{openName},
+                #{bankAddress},
+                #{type},
+                #{createTime},
+                #{updateTime},
+                #{mchntSsn},
+                #{bindingStatus},
+                #{agreeno}
+			)
+
+        ]]>
+    </insert>
+    <select id="findUserCardByUserId" parameterType="map" resultMap="BaseResultMap">
+        select
+        b.id,
+        b.bank_name,
+        b.user_id,
+        b.card_no,
+        b.phone,
+        b.bank_id,
+        b.type,
+        b.bank_address,
+        b.create_time,
+        b.open_name,
+        b.main_card,
+        b.agreeno,
+        b.mchntssn,
+        b.binding_status
+        from user_card_info b where user_id=#{userId}
+        <if test="type != null and type != ''">
+            and type = #{type}
+        </if>
+        <if test="status != null ">
+            and status = #{status}
+        </if>
+        <if test="limit != null and limit != ''">
+            limit #{limit}
+        </if>
+    </select>
+    <delete id="deleteUserCardInfo" parameterType="Integer">
+        delete from user_card_info	 where user_id = #{id}
+    </delete>
+
+
+
+    <select id="findAllBank" resultType="com.summer.dao.entity.UserCardInfoUpdate">
+         SELECT
+         user_id userId,
+        open_name openName,
+        phone phone,
+        card_no cardNo
+        from user_card_info
+    </select>
+</mapper>

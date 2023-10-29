@@ -1,0 +1,1067 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.summer.dao.mapper.CountCollectionAssessmentDAO">
+    <resultMap id="BaseResultMap" type="com.summer.dao.entity.CountCollectionAssessment">
+        <id column="id" jdbcType="BIGINT" property="id"/>
+        <result column="person_id" jdbcType="VARCHAR" property="personId"/>
+        <result column="person_name" jdbcType="VARCHAR" property="personName"/>
+        <result column="company_id" jdbcType="VARCHAR" property="companyId"/>
+        <result column="company_title" jdbcType="VARCHAR" property="companyTitle"/>
+        <result column="group_id" jdbcType="VARCHAR" property="groupId"/>
+        <result column="group_name" jdbcType="VARCHAR" property="groupName"/>
+        <result column="order_group_id" jdbcType="VARCHAR" property="orderGroupId"/>
+        <result column="order_group_name" jdbcType="VARCHAR" property="orderGroupName"/>
+        <result column="loan_money" jdbcType="DECIMAL" property="loanMoney"/>
+        <result column="repayment_money" jdbcType="DECIMAL" property="repaymentMoney"/>
+        <result column="not_yet_repayment_money" jdbcType="DECIMAL" property="notYetRepaymentMoney"/>
+        <result column="repayment_rate" jdbcType="DECIMAL" property="repaymentRate"/>
+        <result column="migrate_rate" jdbcType="DECIMAL" property="migrateRate"/>
+        <result column="penalty" jdbcType="DECIMAL" property="penalty"/>
+        <result column="repayment_penalty" jdbcType="DECIMAL" property="repaymentPenalty"/>
+        <result column="not_repayment_penalty" jdbcType="DECIMAL" property="notRepaymentPenalty"/>
+        <result column="penalty_repayment_rate" jdbcType="DECIMAL" property="penaltyRepaymentRate"/>
+        <result column="interest" jdbcType="DECIMAL" property="interest"/>
+        <result column="repayment_interest" jdbcType="DECIMAL" property="repaymentInterest"/>
+        <result column="not_repayment_interest" jdbcType="DECIMAL" property="notRepaymentInterest"/>
+        <result column="interest_repayment_rate" jdbcType="DECIMAL" property="interestRepaymentRate"/>
+        <result column="order_total" jdbcType="INTEGER" property="orderTotal"/>
+        <result column="dispose_order_num" jdbcType="INTEGER" property="disposeOrderNum"/>
+        <result column="risk_order_num" jdbcType="INTEGER" property="riskOrderNum"/>
+        <result column="repayment_order_num" jdbcType="INTEGER" property="repaymentOrderNum"/>
+        <result column="repayment_order_rate" jdbcType="DECIMAL" property="repaymentOrderRate"/>
+        <result column="count_date" jdbcType="DATE" property="countDate"/>
+    </resultMap>
+    <sql id="Base_Column_List">
+    id, person_id, person_name, company_id, company_title, group_id, group_name, order_group_id,
+    order_group_name, loan_money, repayment_money, not_yet_repayment_money, repayment_rate,
+    migrate_rate, penalty, repayment_penalty, not_repayment_penalty, penalty_repayment_rate,
+    interest, repayment_interest, not_repayment_interest, interest_repayment_rate, order_total,
+    dispose_order_num, risk_order_num, repayment_order_num, repayment_order_rate, count_date
+  </sql>
+
+    <sql id="Sql">
+        <where>
+
+            <if test="platformUserId != null ">
+                and person_id = #{platformUserId}
+            </if>
+
+            <if test="beginTime != null and beginTime != ''">
+                <![CDATA[    and count_date >= #{beginTime}   ]]>
+            </if>
+            <if test="endTime != null and endTime != ''">
+                <![CDATA[    and count_date < date_add(#{endTime},interval 1 day)  ]]>
+            </if>
+        </where>
+    </sql>
+
+    <select id="findParams" parameterType="java.util.Map" resultType="com.summer.dao.entity.CountCollectionAssessment">
+
+        select
+        person_name personName,sum(order_total) orderTotal,sum(loan_money) loanMoney,sum(repayment_order_num)
+        repaymentOrderNum,sum(repayment_money)
+        repaymentMoney,sum(repayment_penalty) repaymentPenalty, count_date countDate
+        from count_collection_assessment
+        <include refid="Sql"/>
+        group by person_id
+    </select>
+
+    <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from count_collection_assessment
+        where id = #{id,jdbcType=BIGINT}
+    </select>
+
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+    delete from count_collection_assessment
+    where id = #{id,jdbcType=BIGINT}
+  </delete>
+    <insert id="insert" parameterType="com.summer.dao.entity.CountCollectionAssessment">
+    insert into count_collection_assessment (id, person_id, person_name,
+      company_id, company_title, group_id,
+      group_name, order_group_id, order_group_name,
+      loan_money, repayment_money, not_yet_repayment_money,
+      repayment_rate, migrate_rate, penalty,
+      repayment_penalty, not_repayment_penalty,
+      penalty_repayment_rate, interest, repayment_interest,
+      not_repayment_interest, interest_repayment_rate,
+      order_total, dispose_order_num, risk_order_num,
+      repayment_order_num, repayment_order_rate,
+      count_date)
+    values (#{id,jdbcType=BIGINT}, #{personId,jdbcType=VARCHAR}, #{personName,jdbcType=VARCHAR},
+      #{companyId,jdbcType=VARCHAR}, #{companyTitle,jdbcType=VARCHAR}, #{groupId,jdbcType=VARCHAR},
+      #{groupName,jdbcType=VARCHAR}, #{orderGroupId,jdbcType=VARCHAR}, #{orderGroupName,jdbcType=VARCHAR},
+      #{loanMoney,jdbcType=DECIMAL}, #{repaymentMoney,jdbcType=DECIMAL}, #{notYetRepaymentMoney,jdbcType=DECIMAL},
+      #{repaymentRate,jdbcType=DECIMAL}, #{migrateRate,jdbcType=DECIMAL}, #{penalty,jdbcType=DECIMAL},
+      #{repaymentPenalty,jdbcType=DECIMAL}, #{notRepaymentPenalty,jdbcType=DECIMAL},
+      #{penaltyRepaymentRate,jdbcType=DECIMAL}, #{interest,jdbcType=DECIMAL}, #{repaymentInterest,jdbcType=DECIMAL},
+      #{notRepaymentInterest,jdbcType=DECIMAL}, #{interestRepaymentRate,jdbcType=DECIMAL},
+      #{orderTotal,jdbcType=INTEGER}, #{disposeOrderNum,jdbcType=INTEGER}, #{riskOrderNum,jdbcType=INTEGER},
+      #{repaymentOrderNum,jdbcType=INTEGER}, #{repaymentOrderRate,jdbcType=DECIMAL},
+      #{countDate,jdbcType=DATE})
+  </insert>
+    <insert id="insertList">
+        insert into count_collection_assessment (id, person_id, person_name,
+        company_id, company_title, group_id,
+        group_name, order_group_id, order_group_name,
+        loan_money, repayment_money, not_yet_repayment_money,
+        repayment_rate, migrate_rate, penalty,
+        repayment_penalty, not_repayment_penalty,
+        penalty_repayment_rate, interest, repayment_interest,
+        not_repayment_interest, interest_repayment_rate,
+        order_total, dispose_order_num, risk_order_num,
+        repayment_order_num, repayment_order_rate,
+        count_date)
+        VALUES
+        <foreach collection="list" item="record" separator=",">
+            (#{record.id,jdbcType=BIGINT}, #{record.personId,jdbcType=VARCHAR}, #{record.personName,jdbcType=VARCHAR},
+            #{record.companyId,jdbcType=VARCHAR}, #{record.companyTitle,jdbcType=VARCHAR},
+            #{record.groupId,jdbcType=VARCHAR},
+            #{record.groupName,jdbcType=VARCHAR}, #{record.orderGroupId,jdbcType=VARCHAR},
+            #{record.orderGroupName,jdbcType=VARCHAR},
+            #{record.loanMoney,jdbcType=DECIMAL}, #{record.repaymentMoney,jdbcType=DECIMAL},
+            #{record.notYetRepaymentMoney,jdbcType=DECIMAL},
+            #{record.repaymentRate,jdbcType=DECIMAL}, #{record.migrateRate,jdbcType=DECIMAL},
+            #{record.penalty,jdbcType=DECIMAL},
+            #{record.repaymentPenalty,jdbcType=DECIMAL}, #{record.notRepaymentPenalty,jdbcType=DECIMAL},
+            #{record.penaltyRepaymentRate,jdbcType=DECIMAL}, #{record.interest,jdbcType=DECIMAL},
+            #{record.repaymentInterest,jdbcType=DECIMAL},
+            #{record.notRepaymentInterest,jdbcType=DECIMAL}, #{record.interestRepaymentRate,jdbcType=DECIMAL},
+            #{record.orderTotal,jdbcType=INTEGER}, #{record.disposeOrderNum,jdbcType=INTEGER},
+            #{record.riskOrderNum,jdbcType=INTEGER},
+            #{record.repaymentOrderNum,jdbcType=INTEGER}, #{record.repaymentOrderRate,jdbcType=DECIMAL},
+            #{record.countDate,jdbcType=DATE})
+        </foreach>
+    </insert>
+    <insert id="insertSelective" parameterType="com.summer.dao.entity.CountCollectionAssessment">
+        insert into count_collection_assessment
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                id,
+            </if>
+            <if test="personId != null">
+                person_id,
+            </if>
+            <if test="personName != null">
+                person_name,
+            </if>
+            <if test="companyId != null">
+                company_id,
+            </if>
+            <if test="companyTitle != null">
+                company_title,
+            </if>
+            <if test="groupId != null">
+                group_id,
+            </if>
+            <if test="groupName != null">
+                group_name,
+            </if>
+            <if test="orderGroupId != null">
+                order_group_id,
+            </if>
+            <if test="orderGroupName != null">
+                order_group_name,
+            </if>
+            <if test="loanMoney != null">
+                loan_money,
+            </if>
+            <if test="repaymentMoney != null">
+                repayment_money,
+            </if>
+            <if test="notYetRepaymentMoney != null">
+                not_yet_repayment_money,
+            </if>
+            <if test="repaymentRate != null">
+                repayment_rate,
+            </if>
+            <if test="migrateRate != null">
+                migrate_rate,
+            </if>
+            <if test="penalty != null">
+                penalty,
+            </if>
+            <if test="repaymentPenalty != null">
+                repayment_penalty,
+            </if>
+            <if test="notRepaymentPenalty != null">
+                not_repayment_penalty,
+            </if>
+            <if test="penaltyRepaymentRate != null">
+                penalty_repayment_rate,
+            </if>
+            <if test="interest != null">
+                interest,
+            </if>
+            <if test="repaymentInterest != null">
+                repayment_interest,
+            </if>
+            <if test="notRepaymentInterest != null">
+                not_repayment_interest,
+            </if>
+            <if test="interestRepaymentRate != null">
+                interest_repayment_rate,
+            </if>
+            <if test="orderTotal != null">
+                order_total,
+            </if>
+            <if test="disposeOrderNum != null">
+                dispose_order_num,
+            </if>
+            <if test="riskOrderNum != null">
+                risk_order_num,
+            </if>
+            <if test="repaymentOrderNum != null">
+                repayment_order_num,
+            </if>
+            <if test="repaymentOrderRate != null">
+                repayment_order_rate,
+            </if>
+            <if test="countDate != null">
+                count_date,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                #{id,jdbcType=BIGINT},
+            </if>
+            <if test="personId != null">
+                #{personId,jdbcType=VARCHAR},
+            </if>
+            <if test="personName != null">
+                #{personName,jdbcType=VARCHAR},
+            </if>
+            <if test="companyId != null">
+                #{companyId,jdbcType=VARCHAR},
+            </if>
+            <if test="companyTitle != null">
+                #{companyTitle,jdbcType=VARCHAR},
+            </if>
+            <if test="groupId != null">
+                #{groupId,jdbcType=VARCHAR},
+            </if>
+            <if test="groupName != null">
+                #{groupName,jdbcType=VARCHAR},
+            </if>
+            <if test="orderGroupId != null">
+                #{orderGroupId,jdbcType=VARCHAR},
+            </if>
+            <if test="orderGroupName != null">
+                #{orderGroupName,jdbcType=VARCHAR},
+            </if>
+            <if test="loanMoney != null">
+                #{loanMoney,jdbcType=DECIMAL},
+            </if>
+            <if test="repaymentMoney != null">
+                #{repaymentMoney,jdbcType=DECIMAL},
+            </if>
+            <if test="notYetRepaymentMoney != null">
+                #{notYetRepaymentMoney,jdbcType=DECIMAL},
+            </if>
+            <if test="repaymentRate != null">
+                #{repaymentRate,jdbcType=DECIMAL},
+            </if>
+            <if test="migrateRate != null">
+                #{migrateRate,jdbcType=DECIMAL},
+            </if>
+            <if test="penalty != null">
+                #{penalty,jdbcType=DECIMAL},
+            </if>
+            <if test="repaymentPenalty != null">
+                #{repaymentPenalty,jdbcType=DECIMAL},
+            </if>
+            <if test="notRepaymentPenalty != null">
+                #{notRepaymentPenalty,jdbcType=DECIMAL},
+            </if>
+            <if test="penaltyRepaymentRate != null">
+                #{penaltyRepaymentRate,jdbcType=DECIMAL},
+            </if>
+            <if test="interest != null">
+                #{interest,jdbcType=DECIMAL},
+            </if>
+            <if test="repaymentInterest != null">
+                #{repaymentInterest,jdbcType=DECIMAL},
+            </if>
+            <if test="notRepaymentInterest != null">
+                #{notRepaymentInterest,jdbcType=DECIMAL},
+            </if>
+            <if test="interestRepaymentRate != null">
+                #{interestRepaymentRate,jdbcType=DECIMAL},
+            </if>
+            <if test="orderTotal != null">
+                #{orderTotal,jdbcType=INTEGER},
+            </if>
+            <if test="disposeOrderNum != null">
+                #{disposeOrderNum,jdbcType=INTEGER},
+            </if>
+            <if test="riskOrderNum != null">
+                #{riskOrderNum,jdbcType=INTEGER},
+            </if>
+            <if test="repaymentOrderNum != null">
+                #{repaymentOrderNum,jdbcType=INTEGER},
+            </if>
+            <if test="repaymentOrderRate != null">
+                #{repaymentOrderRate,jdbcType=DECIMAL},
+            </if>
+            <if test="countDate != null">
+                #{countDate,jdbcType=DATE},
+            </if>
+        </trim>
+    </insert>
+    <insert id="insertBatch" parameterType="java.util.List">
+        insert into count_collection_assessment (id, person_id, person_name,
+        company_id, company_title, group_id,
+        group_name, order_group_id, order_group_name,
+        loan_money, repayment_money, not_yet_repayment_money,
+        repayment_rate, migrate_rate, penalty,
+        repayment_penalty, not_repayment_penalty,
+        penalty_repayment_rate, interest,
+        repayment_interest, not_repayment_interest,
+        interest_repayment_rate, order_total,
+        dispose_order_num, risk_order_num,
+        repayment_order_num, repayment_order_rate,
+        count_date)
+        values
+        <foreach collection="list" index="index" item="item" separator=",">
+            (#{item.id,jdbcType=BIGINT}, #{item.personId,jdbcType=VARCHAR}, #{item.personName,jdbcType=VARCHAR},
+            #{item.companyId,jdbcType=VARCHAR}, #{item.companyTitle,jdbcType=VARCHAR}, #{item.groupId,jdbcType=VARCHAR},
+            #{item.groupName,jdbcType=VARCHAR}, #{item.orderGroupId,jdbcType=VARCHAR},
+            #{item.orderGroupName,jdbcType=VARCHAR},
+            #{item.loanMoney,jdbcType=DECIMAL}, #{item.repaymentMoney,jdbcType=DECIMAL},
+            #{item.notYetRepaymentMoney,jdbcType=DECIMAL},
+            #{item.repaymentRate,jdbcType=DECIMAL}, #{item.migrateRate,jdbcType=DECIMAL},
+            #{item.penalty,jdbcType=DECIMAL},
+            #{item.repaymentPenalty,jdbcType=DECIMAL}, #{item.notRepaymentPenalty,jdbcType=DECIMAL},
+            #{item.penaltyRepaymentRate,jdbcType=DECIMAL}, #{item.interest,jdbcType=DECIMAL},
+            #{item.repaymentInterest,jdbcType=DECIMAL}, #{item.notRepaymentInterest,jdbcType=DECIMAL},
+            #{item.interestRepaymentRate,jdbcType=DECIMAL}, #{item.orderTotal,jdbcType=INTEGER},
+            #{item.disposeOrderNum,jdbcType=INTEGER}, #{item.riskOrderNum,jdbcType=INTEGER},
+            #{item.repaymentOrderNum,jdbcType=INTEGER}, #{item.repaymentOrderRate,jdbcType=DECIMAL},
+            #{item.countDate,jdbcType=DATE})
+        </foreach>
+    </insert>
+    <insert id="insertBatchSelective" parameterType="java.util.List">
+        insert into count_collection_assessment
+        (id, person_id, person_name, company_id, company_title, group_id, group_name, order_group_id,
+        order_group_name, loan_money, repayment_money, not_yet_repayment_money, repayment_rate,
+        migrate_rate, penalty, repayment_penalty, not_repayment_penalty, penalty_repayment_rate,
+        interest, repayment_interest, not_repayment_interest, interest_repayment_rate,
+        order_total, dispose_order_num, risk_order_num, repayment_order_num, repayment_order_rate,
+        count_date)
+        values
+        <foreach collection="list" index="index" item="item" separator=",">
+            <trim prefix="(" suffix=")" suffixOverrides=",">
+                <if test="item.id != null">
+                    #{item.id,jdbcType=BIGINT},
+                </if>
+                <if test="item.id == null">
+                    NULL,
+                </if>
+                <if test="item.personId != null">
+                    #{item.personId,jdbcType=VARCHAR},
+                </if>
+                <if test="item.personId == null">
+                    NULL,
+                </if>
+                <if test="item.personName != null">
+                    #{item.personName,jdbcType=VARCHAR},
+                </if>
+                <if test="item.personName == null">
+                    NULL,
+                </if>
+                <if test="item.companyId != null">
+                    #{item.companyId,jdbcType=VARCHAR},
+                </if>
+                <if test="item.companyId == null">
+                    NULL,
+                </if>
+                <if test="item.companyTitle != null">
+                    #{item.companyTitle,jdbcType=VARCHAR},
+                </if>
+                <if test="item.companyTitle == null">
+                    NULL,
+                </if>
+                <if test="item.groupId != null">
+                    #{item.groupId,jdbcType=VARCHAR},
+                </if>
+                <if test="item.groupId == null">
+                    NULL,
+                </if>
+                <if test="item.groupName != null">
+                    #{item.groupName,jdbcType=VARCHAR},
+                </if>
+                <if test="item.groupName == null">
+                    NULL,
+                </if>
+                <if test="item.orderGroupId != null">
+                    #{item.orderGroupId,jdbcType=VARCHAR},
+                </if>
+                <if test="item.orderGroupId == null">
+                    NULL,
+                </if>
+                <if test="item.orderGroupName != null">
+                    #{item.orderGroupName,jdbcType=VARCHAR},
+                </if>
+                <if test="item.orderGroupName == null">
+                    NULL,
+                </if>
+                <if test="item.loanMoney != null">
+                    #{item.loanMoney,jdbcType=DECIMAL},
+                </if>
+                <if test="item.loanMoney == null">
+                    NULL,
+                </if>
+                <if test="item.repaymentMoney != null">
+                    #{item.repaymentMoney,jdbcType=DECIMAL},
+                </if>
+                <if test="item.repaymentMoney == null">
+                    NULL,
+                </if>
+                <if test="item.notYetRepaymentMoney != null">
+                    #{item.notYetRepaymentMoney,jdbcType=DECIMAL},
+                </if>
+                <if test="item.notYetRepaymentMoney == null">
+                    NULL,
+                </if>
+                <if test="item.repaymentRate != null">
+                    #{item.repaymentRate,jdbcType=DECIMAL},
+                </if>
+                <if test="item.repaymentRate == null">
+                    NULL,
+                </if>
+                <if test="item.migrateRate != null">
+                    #{item.migrateRate,jdbcType=DECIMAL},
+                </if>
+                <if test="item.migrateRate == null">
+                    NULL,
+                </if>
+                <if test="item.penalty != null">
+                    #{item.penalty,jdbcType=DECIMAL},
+                </if>
+                <if test="item.penalty == null">
+                    NULL,
+                </if>
+                <if test="item.repaymentPenalty != null">
+                    #{item.repaymentPenalty,jdbcType=DECIMAL},
+                </if>
+                <if test="item.repaymentPenalty == null">
+                    NULL,
+                </if>
+                <if test="item.notRepaymentPenalty != null">
+                    #{item.notRepaymentPenalty,jdbcType=DECIMAL},
+                </if>
+                <if test="item.notRepaymentPenalty == null">
+                    NULL,
+                </if>
+                <if test="item.penaltyRepaymentRate != null">
+                    #{item.penaltyRepaymentRate,jdbcType=DECIMAL},
+                </if>
+                <if test="item.penaltyRepaymentRate == null">
+                    NULL,
+                </if>
+                <if test="item.interest != null">
+                    #{item.interest,jdbcType=DECIMAL},
+                </if>
+                <if test="item.interest == null">
+                    NULL,
+                </if>
+                <if test="item.repaymentInterest != null">
+                    #{item.repaymentInterest,jdbcType=DECIMAL},
+                </if>
+                <if test="item.repaymentInterest == null">
+                    NULL,
+                </if>
+                <if test="item.notRepaymentInterest != null">
+                    #{item.notRepaymentInterest,jdbcType=DECIMAL},
+                </if>
+                <if test="item.notRepaymentInterest == null">
+                    NULL,
+                </if>
+                <if test="item.interestRepaymentRate != null">
+                    #{item.interestRepaymentRate,jdbcType=DECIMAL},
+                </if>
+                <if test="item.interestRepaymentRate == null">
+                    NULL,
+                </if>
+                <if test="item.orderTotal != null">
+                    #{item.orderTotal,jdbcType=INTEGER},
+                </if>
+                <if test="item.orderTotal == null">
+                    NULL,
+                </if>
+                <if test="item.disposeOrderNum != null">
+                    #{item.disposeOrderNum,jdbcType=INTEGER},
+                </if>
+                <if test="item.disposeOrderNum == null">
+                    NULL,
+                </if>
+                <if test="item.riskOrderNum != null">
+                    #{item.riskOrderNum,jdbcType=INTEGER},
+                </if>
+                <if test="item.riskOrderNum == null">
+                    NULL,
+                </if>
+                <if test="item.repaymentOrderNum != null">
+                    #{item.repaymentOrderNum,jdbcType=INTEGER},
+                </if>
+                <if test="item.repaymentOrderNum == null">
+                    NULL,
+                </if>
+                <if test="item.repaymentOrderRate != null">
+                    #{item.repaymentOrderRate,jdbcType=DECIMAL},
+                </if>
+                <if test="item.repaymentOrderRate == null">
+                    NULL,
+                </if>
+                <if test="item.countDate != null">
+                    #{item.countDate,jdbcType=DATE},
+                </if>
+                <if test="item.countDate == null">
+                    NULL,
+                </if>
+            </trim>
+        </foreach>
+    </insert>
+    <update id="updateByPrimaryKeySelective" parameterType="com.summer.dao.entity.CountCollectionAssessment">
+        update count_collection_assessment
+        <set>
+            <if test="personId != null">
+                person_id = #{personId,jdbcType=VARCHAR},
+            </if>
+            <if test="personName != null">
+                person_name = #{personName,jdbcType=VARCHAR},
+            </if>
+            <if test="companyId != null">
+                company_id = #{companyId,jdbcType=VARCHAR},
+            </if>
+            <if test="companyTitle != null">
+                company_title = #{companyTitle,jdbcType=VARCHAR},
+            </if>
+            <if test="groupId != null">
+                group_id = #{groupId,jdbcType=VARCHAR},
+            </if>
+            <if test="groupName != null">
+                group_name = #{groupName,jdbcType=VARCHAR},
+            </if>
+            <if test="orderGroupId != null">
+                order_group_id = #{orderGroupId,jdbcType=VARCHAR},
+            </if>
+            <if test="orderGroupName != null">
+                order_group_name = #{orderGroupName,jdbcType=VARCHAR},
+            </if>
+            <if test="loanMoney != null">
+                loan_money = #{loanMoney,jdbcType=DECIMAL},
+            </if>
+            <if test="repaymentMoney != null">
+                repayment_money = #{repaymentMoney,jdbcType=DECIMAL},
+            </if>
+            <if test="notYetRepaymentMoney != null">
+                not_yet_repayment_money = #{notYetRepaymentMoney,jdbcType=DECIMAL},
+            </if>
+            <if test="repaymentRate != null">
+                repayment_rate = #{repaymentRate,jdbcType=DECIMAL},
+            </if>
+            <if test="migrateRate != null">
+                migrate_rate = #{migrateRate,jdbcType=DECIMAL},
+            </if>
+            <if test="penalty != null">
+                penalty = #{penalty,jdbcType=DECIMAL},
+            </if>
+            <if test="repaymentPenalty != null">
+                repayment_penalty = #{repaymentPenalty,jdbcType=DECIMAL},
+            </if>
+            <if test="notRepaymentPenalty != null">
+                not_repayment_penalty = #{notRepaymentPenalty,jdbcType=DECIMAL},
+            </if>
+            <if test="penaltyRepaymentRate != null">
+                penalty_repayment_rate = #{penaltyRepaymentRate,jdbcType=DECIMAL},
+            </if>
+            <if test="interest != null">
+                interest = #{interest,jdbcType=DECIMAL},
+            </if>
+            <if test="repaymentInterest != null">
+                repayment_interest = #{repaymentInterest,jdbcType=DECIMAL},
+            </if>
+            <if test="notRepaymentInterest != null">
+                not_repayment_interest = #{notRepaymentInterest,jdbcType=DECIMAL},
+            </if>
+            <if test="interestRepaymentRate != null">
+                interest_repayment_rate = #{interestRepaymentRate,jdbcType=DECIMAL},
+            </if>
+            <if test="orderTotal != null">
+                order_total = #{orderTotal,jdbcType=INTEGER},
+            </if>
+            <if test="disposeOrderNum != null">
+                dispose_order_num = #{disposeOrderNum,jdbcType=INTEGER},
+            </if>
+            <if test="riskOrderNum != null">
+                risk_order_num = #{riskOrderNum,jdbcType=INTEGER},
+            </if>
+            <if test="repaymentOrderNum != null">
+                repayment_order_num = #{repaymentOrderNum,jdbcType=INTEGER},
+            </if>
+            <if test="repaymentOrderRate != null">
+                repayment_order_rate = #{repaymentOrderRate,jdbcType=DECIMAL},
+            </if>
+            <if test="countDate != null">
+                count_date = #{countDate,jdbcType=DATE},
+            </if>
+        </set>
+        where id = #{id,jdbcType=BIGINT}
+    </update>
+    <update id="updateByPrimaryKey" parameterType="com.summer.dao.entity.CountCollectionAssessment">
+    update count_collection_assessment
+    set person_id = #{personId,jdbcType=VARCHAR},
+      person_name = #{personName,jdbcType=VARCHAR},
+      company_id = #{companyId,jdbcType=VARCHAR},
+      company_title = #{companyTitle,jdbcType=VARCHAR},
+      group_id = #{groupId,jdbcType=VARCHAR},
+      group_name = #{groupName,jdbcType=VARCHAR},
+      order_group_id = #{orderGroupId,jdbcType=VARCHAR},
+      order_group_name = #{orderGroupName,jdbcType=VARCHAR},
+      loan_money = #{loanMoney,jdbcType=DECIMAL},
+      repayment_money = #{repaymentMoney,jdbcType=DECIMAL},
+      not_yet_repayment_money = #{notYetRepaymentMoney,jdbcType=DECIMAL},
+      repayment_rate = #{repaymentRate,jdbcType=DECIMAL},
+      migrate_rate = #{migrateRate,jdbcType=DECIMAL},
+      penalty = #{penalty,jdbcType=DECIMAL},
+      repayment_penalty = #{repaymentPenalty,jdbcType=DECIMAL},
+      not_repayment_penalty = #{notRepaymentPenalty,jdbcType=DECIMAL},
+      penalty_repayment_rate = #{penaltyRepaymentRate,jdbcType=DECIMAL},
+      interest = #{interest,jdbcType=DECIMAL},
+      repayment_interest = #{repaymentInterest,jdbcType=DECIMAL},
+      not_repayment_interest = #{notRepaymentInterest,jdbcType=DECIMAL},
+      interest_repayment_rate = #{interestRepaymentRate,jdbcType=DECIMAL},
+      order_total = #{orderTotal,jdbcType=INTEGER},
+      dispose_order_num = #{disposeOrderNum,jdbcType=INTEGER},
+      risk_order_num = #{riskOrderNum,jdbcType=INTEGER},
+      repayment_order_num = #{repaymentOrderNum,jdbcType=INTEGER},
+      repayment_order_rate = #{repaymentOrderRate,jdbcType=DECIMAL},
+      count_date = #{countDate,jdbcType=DATE}
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+    <update id="updateBatchByPrimaryKey" parameterType="java.util.List">
+        update count_collection_assessment
+        <trim prefix="set" suffixOverrides=",">
+            <trim prefix="personId =case id" suffix="end,">
+                <foreach collection="list" index="index" item="item" separator=" ">
+                    when #{item.id} then #{item.personId}
+                </foreach>
+            </trim>
+            <trim prefix="personName =case id" suffix="end,">
+                <foreach collection="list" index="index" item="item" separator=" ">
+                    when #{item.id} then #{item.personName}
+                </foreach>
+            </trim>
+            <trim prefix="companyId =case id" suffix="end,">
+                <foreach collection="list" index="index" item="item" separator=" ">
+                    when #{item.id} then #{item.companyId}
+                </foreach>
+            </trim>
+            <trim prefix="companyTitle =case id" suffix="end,">
+                <foreach collection="list" index="index" item="item" separator=" ">
+                    when #{item.id} then #{item.companyTitle}
+                </foreach>
+            </trim>
+            <trim prefix="groupId =case id" suffix="end,">
+                <foreach collection="list" index="index" item="item" separator=" ">
+                    when #{item.id} then #{item.groupId}
+                </foreach>
+            </trim>
+            <trim prefix="groupName =case id" suffix="end,">
+                <foreach collection="list" index="index" item="item" separator=" ">
+                    when #{item.id} then #{item.groupName}
+                </foreach>
+            </trim>
+            <trim prefix="orderGroupId =case id" suffix="end,">
+                <foreach collection="list" index="index" item="item" separator=" ">
+                    when #{item.id} then #{item.orderGroupId}
+                </foreach>
+            </trim>
+            <trim prefix="orderGroupName =case id" suffix="end,">
+                <foreach collection="list" index="index" item="item" separator=" ">
+                    when #{item.id} then #{item.orderGroupName}
+                </foreach>
+            </trim>
+            <trim prefix="loanMoney =case id" suffix="end,">
+                <foreach collection="list" index="index" item="item" separator=" ">
+                    when #{item.id} then #{item.loanMoney}
+                </foreach>
+            </trim>
+            <trim prefix="repaymentMoney =case id" suffix="end,">
+                <foreach collection="list" index="index" item="item" separator=" ">
+                    when #{item.id} then #{item.repaymentMoney}
+                </foreach>
+            </trim>
+            <trim prefix="notYetRepaymentMoney =case id" suffix="end,">
+                <foreach collection="list" index="index" item="item" separator=" ">
+                    when #{item.id} then #{item.notYetRepaymentMoney}
+                </foreach>
+            </trim>
+            <trim prefix="repaymentRate =case id" suffix="end,">
+                <foreach collection="list" index="index" item="item" separator=" ">
+                    when #{item.id} then #{item.repaymentRate}
+                </foreach>
+            </trim>
+            <trim prefix="migrateRate =case id" suffix="end,">
+                <foreach collection="list" index="index" item="item" separator=" ">
+                    when #{item.id} then #{item.migrateRate}
+                </foreach>
+            </trim>
+            <trim prefix="penalty =case id" suffix="end,">
+                <foreach collection="list" index="index" item="item" separator=" ">
+                    when #{item.id} then #{item.penalty}
+                </foreach>
+            </trim>
+            <trim prefix="repaymentPenalty =case id" suffix="end,">
+                <foreach collection="list" index="index" item="item" separator=" ">
+                    when #{item.id} then #{item.repaymentPenalty}
+                </foreach>
+            </trim>
+            <trim prefix="notRepaymentPenalty =case id" suffix="end,">
+                <foreach collection="list" index="index" item="item" separator=" ">
+                    when #{item.id} then #{item.notRepaymentPenalty}
+                </foreach>
+            </trim>
+            <trim prefix="penaltyRepaymentRate =case id" suffix="end,">
+                <foreach collection="list" index="index" item="item" separator=" ">
+                    when #{item.id} then #{item.penaltyRepaymentRate}
+                </foreach>
+            </trim>
+            <trim prefix="interest =case id" suffix="end,">
+                <foreach collection="list" index="index" item="item" separator=" ">
+                    when #{item.id} then #{item.interest}
+                </foreach>
+            </trim>
+            <trim prefix="repaymentInterest =case id" suffix="end,">
+                <foreach collection="list" index="index" item="item" separator=" ">
+                    when #{item.id} then #{item.repaymentInterest}
+                </foreach>
+            </trim>
+            <trim prefix="notRepaymentInterest =case id" suffix="end,">
+                <foreach collection="list" index="index" item="item" separator=" ">
+                    when #{item.id} then #{item.notRepaymentInterest}
+                </foreach>
+            </trim>
+            <trim prefix="interestRepaymentRate =case id" suffix="end,">
+                <foreach collection="list" index="index" item="item" separator=" ">
+                    when #{item.id} then #{item.interestRepaymentRate}
+                </foreach>
+            </trim>
+            <trim prefix="orderTotal =case id" suffix="end,">
+                <foreach collection="list" index="index" item="item" separator=" ">
+                    when #{item.id} then #{item.orderTotal}
+                </foreach>
+            </trim>
+            <trim prefix="disposeOrderNum =case id" suffix="end,">
+                <foreach collection="list" index="index" item="item" separator=" ">
+                    when #{item.id} then #{item.disposeOrderNum}
+                </foreach>
+            </trim>
+            <trim prefix="riskOrderNum =case id" suffix="end,">
+                <foreach collection="list" index="index" item="item" separator=" ">
+                    when #{item.id} then #{item.riskOrderNum}
+                </foreach>
+            </trim>
+            <trim prefix="repaymentOrderNum =case id" suffix="end,">
+                <foreach collection="list" index="index" item="item" separator=" ">
+                    when #{item.id} then #{item.repaymentOrderNum}
+                </foreach>
+            </trim>
+            <trim prefix="repaymentOrderRate =case id" suffix="end,">
+                <foreach collection="list" index="index" item="item" separator=" ">
+                    when #{item.id} then #{item.repaymentOrderRate}
+                </foreach>
+            </trim>
+            <trim prefix="countDate =case id" suffix="end,">
+                <foreach collection="list" index="index" item="item" separator=" ">
+                    when #{item.id} then #{item.countDate}
+                </foreach>
+            </trim>
+        </trim>
+        where id in
+        <foreach close=")" collection="list" index="index" item="item" open="(" separator=",">
+            #{item.id}
+        </foreach>
+    </update>
+    <update id="updateBatchByPrimaryKeySelective" parameterType="java.util.List">
+        update count_collection_assessment
+        <trim prefix="set" suffixOverrides=",">
+            <trim prefix="personId =case id" suffix="end,">
+                <foreach collection="list" index="index" item="item" separator=" ">
+                    <if test="item.personId != null ">
+                        when #{item.id} then #{item.personId}
+                    </if>
+                    <if test="item.personId == null ">
+                        when #{item.id} then count_collection_assessment.person_id
+                    </if>
+                </foreach>
+            </trim>
+            <trim prefix="personName =case id" suffix="end,">
+                <foreach collection="list" index="index" item="item" separator=" ">
+                    <if test="item.personName != null ">
+                        when #{item.id} then #{item.personName}
+                    </if>
+                    <if test="item.personName == null ">
+                        when #{item.id} then count_collection_assessment.person_name
+                    </if>
+                </foreach>
+            </trim>
+            <trim prefix="companyId =case id" suffix="end,">
+                <foreach collection="list" index="index" item="item" separator=" ">
+                    <if test="item.companyId != null ">
+                        when #{item.id} then #{item.companyId}
+                    </if>
+                    <if test="item.companyId == null ">
+                        when #{item.id} then count_collection_assessment.company_id
+                    </if>
+                </foreach>
+            </trim>
+            <trim prefix="companyTitle =case id" suffix="end,">
+                <foreach collection="list" index="index" item="item" separator=" ">
+                    <if test="item.companyTitle != null ">
+                        when #{item.id} then #{item.companyTitle}
+                    </if>
+                    <if test="item.companyTitle == null ">
+                        when #{item.id} then count_collection_assessment.company_title
+                    </if>
+                </foreach>
+            </trim>
+            <trim prefix="groupId =case id" suffix="end,">
+                <foreach collection="list" index="index" item="item" separator=" ">
+                    <if test="item.groupId != null ">
+                        when #{item.id} then #{item.groupId}
+                    </if>
+                    <if test="item.groupId == null ">
+                        when #{item.id} then count_collection_assessment.group_id
+                    </if>
+                </foreach>
+            </trim>
+            <trim prefix="groupName =case id" suffix="end,">
+                <foreach collection="list" index="index" item="item" separator=" ">
+                    <if test="item.groupName != null ">
+                        when #{item.id} then #{item.groupName}
+                    </if>
+                    <if test="item.groupName == null ">
+                        when #{item.id} then count_collection_assessment.group_name
+                    </if>
+                </foreach>
+            </trim>
+            <trim prefix="orderGroupId =case id" suffix="end,">
+                <foreach collection="list" index="index" item="item" separator=" ">
+                    <if test="item.orderGroupId != null ">
+                        when #{item.id} then #{item.orderGroupId}
+                    </if>
+                    <if test="item.orderGroupId == null ">
+                        when #{item.id} then count_collection_assessment.order_group_id
+                    </if>
+                </foreach>
+            </trim>
+            <trim prefix="orderGroupName =case id" suffix="end,">
+                <foreach collection="list" index="index" item="item" separator=" ">
+                    <if test="item.orderGroupName != null ">
+                        when #{item.id} then #{item.orderGroupName}
+                    </if>
+                    <if test="item.orderGroupName == null ">
+                        when #{item.id} then count_collection_assessment.order_group_name
+                    </if>
+                </foreach>
+            </trim>
+            <trim prefix="loanMoney =case id" suffix="end,">
+                <foreach collection="list" index="index" item="item" separator=" ">
+                    <if test="item.loanMoney != null ">
+                        when #{item.id} then #{item.loanMoney}
+                    </if>
+                    <if test="item.loanMoney == null ">
+                        when #{item.id} then count_collection_assessment.loan_money
+                    </if>
+                </foreach>
+            </trim>
+            <trim prefix="repaymentMoney =case id" suffix="end,">
+                <foreach collection="list" index="index" item="item" separator=" ">
+                    <if test="item.repaymentMoney != null ">
+                        when #{item.id} then #{item.repaymentMoney}
+                    </if>
+                    <if test="item.repaymentMoney == null ">
+                        when #{item.id} then count_collection_assessment.repayment_money
+                    </if>
+                </foreach>
+            </trim>
+            <trim prefix="notYetRepaymentMoney =case id" suffix="end,">
+                <foreach collection="list" index="index" item="item" separator=" ">
+                    <if test="item.notYetRepaymentMoney != null ">
+                        when #{item.id} then #{item.notYetRepaymentMoney}
+                    </if>
+                    <if test="item.notYetRepaymentMoney == null ">
+                        when #{item.id} then count_collection_assessment.not_yet_repayment_money
+                    </if>
+                </foreach>
+            </trim>
+            <trim prefix="repaymentRate =case id" suffix="end,">
+                <foreach collection="list" index="index" item="item" separator=" ">
+                    <if test="item.repaymentRate != null ">
+                        when #{item.id} then #{item.repaymentRate}
+                    </if>
+                    <if test="item.repaymentRate == null ">
+                        when #{item.id} then count_collection_assessment.repayment_rate
+                    </if>
+                </foreach>
+            </trim>
+            <trim prefix="migrateRate =case id" suffix="end,">
+                <foreach collection="list" index="index" item="item" separator=" ">
+                    <if test="item.migrateRate != null ">
+                        when #{item.id} then #{item.migrateRate}
+                    </if>
+                    <if test="item.migrateRate == null ">
+                        when #{item.id} then count_collection_assessment.migrate_rate
+                    </if>
+                </foreach>
+            </trim>
+            <trim prefix="penalty =case id" suffix="end,">
+                <foreach collection="list" index="index" item="item" separator=" ">
+                    <if test="item.penalty != null ">
+                        when #{item.id} then #{item.penalty}
+                    </if>
+                    <if test="item.penalty == null ">
+                        when #{item.id} then count_collection_assessment.penalty
+                    </if>
+                </foreach>
+            </trim>
+            <trim prefix="repaymentPenalty =case id" suffix="end,">
+                <foreach collection="list" index="index" item="item" separator=" ">
+                    <if test="item.repaymentPenalty != null ">
+                        when #{item.id} then #{item.repaymentPenalty}
+                    </if>
+                    <if test="item.repaymentPenalty == null ">
+                        when #{item.id} then count_collection_assessment.repayment_penalty
+                    </if>
+                </foreach>
+            </trim>
+            <trim prefix="notRepaymentPenalty =case id" suffix="end,">
+                <foreach collection="list" index="index" item="item" separator=" ">
+                    <if test="item.notRepaymentPenalty != null ">
+                        when #{item.id} then #{item.notRepaymentPenalty}
+                    </if>
+                    <if test="item.notRepaymentPenalty == null ">
+                        when #{item.id} then count_collection_assessment.not_repayment_penalty
+                    </if>
+                </foreach>
+            </trim>
+            <trim prefix="penaltyRepaymentRate =case id" suffix="end,">
+                <foreach collection="list" index="index" item="item" separator=" ">
+                    <if test="item.penaltyRepaymentRate != null ">
+                        when #{item.id} then #{item.penaltyRepaymentRate}
+                    </if>
+                    <if test="item.penaltyRepaymentRate == null ">
+                        when #{item.id} then count_collection_assessment.penalty_repayment_rate
+                    </if>
+                </foreach>
+            </trim>
+            <trim prefix="interest =case id" suffix="end,">
+                <foreach collection="list" index="index" item="item" separator=" ">
+                    <if test="item.interest != null ">
+                        when #{item.id} then #{item.interest}
+                    </if>
+                    <if test="item.interest == null ">
+                        when #{item.id} then count_collection_assessment.interest
+                    </if>
+                </foreach>
+            </trim>
+            <trim prefix="repaymentInterest =case id" suffix="end,">
+                <foreach collection="list" index="index" item="item" separator=" ">
+                    <if test="item.repaymentInterest != null ">
+                        when #{item.id} then #{item.repaymentInterest}
+                    </if>
+                    <if test="item.repaymentInterest == null ">
+                        when #{item.id} then count_collection_assessment.repayment_interest
+                    </if>
+                </foreach>
+            </trim>
+            <trim prefix="notRepaymentInterest =case id" suffix="end,">
+                <foreach collection="list" index="index" item="item" separator=" ">
+                    <if test="item.notRepaymentInterest != null ">
+                        when #{item.id} then #{item.notRepaymentInterest}
+                    </if>
+                    <if test="item.notRepaymentInterest == null ">
+                        when #{item.id} then count_collection_assessment.not_repayment_interest
+                    </if>
+                </foreach>
+            </trim>
+            <trim prefix="interestRepaymentRate =case id" suffix="end,">
+                <foreach collection="list" index="index" item="item" separator=" ">
+                    <if test="item.interestRepaymentRate != null ">
+                        when #{item.id} then #{item.interestRepaymentRate}
+                    </if>
+                    <if test="item.interestRepaymentRate == null ">
+                        when #{item.id} then count_collection_assessment.interest_repayment_rate
+                    </if>
+                </foreach>
+            </trim>
+            <trim prefix="orderTotal =case id" suffix="end,">
+                <foreach collection="list" index="index" item="item" separator=" ">
+                    <if test="item.orderTotal != null ">
+                        when #{item.id} then #{item.orderTotal}
+                    </if>
+                    <if test="item.orderTotal == null ">
+                        when #{item.id} then count_collection_assessment.order_total
+                    </if>
+                </foreach>
+            </trim>
+            <trim prefix="disposeOrderNum =case id" suffix="end,">
+                <foreach collection="list" index="index" item="item" separator=" ">
+                    <if test="item.disposeOrderNum != null ">
+                        when #{item.id} then #{item.disposeOrderNum}
+                    </if>
+                    <if test="item.disposeOrderNum == null ">
+                        when #{item.id} then count_collection_assessment.dispose_order_num
+                    </if>
+                </foreach>
+            </trim>
+            <trim prefix="riskOrderNum =case id" suffix="end,">
+                <foreach collection="list" index="index" item="item" separator=" ">
+                    <if test="item.riskOrderNum != null ">
+                        when #{item.id} then #{item.riskOrderNum}
+                    </if>
+                    <if test="item.riskOrderNum == null ">
+                        when #{item.id} then count_collection_assessment.risk_order_num
+                    </if>
+                </foreach>
+            </trim>
+            <trim prefix="repaymentOrderNum =case id" suffix="end,">
+                <foreach collection="list" index="index" item="item" separator=" ">
+                    <if test="item.repaymentOrderNum != null ">
+                        when #{item.id} then #{item.repaymentOrderNum}
+                    </if>
+                    <if test="item.repaymentOrderNum == null ">
+                        when #{item.id} then count_collection_assessment.repayment_order_num
+                    </if>
+                </foreach>
+            </trim>
+            <trim prefix="repaymentOrderRate =case id" suffix="end,">
+                <foreach collection="list" index="index" item="item" separator=" ">
+                    <if test="item.repaymentOrderRate != null ">
+                        when #{item.id} then #{item.repaymentOrderRate}
+                    </if>
+                    <if test="item.repaymentOrderRate == null ">
+                        when #{item.id} then count_collection_assessment.repayment_order_rate
+                    </if>
+                </foreach>
+            </trim>
+            <trim prefix="countDate =case id" suffix="end,">
+                <foreach collection="list" index="index" item="item" separator=" ">
+                    <if test="item.countDate != null ">
+                        when #{item.id} then #{item.countDate}
+                    </if>
+                    <if test="item.countDate == null ">
+                        when #{item.id} then count_collection_assessment.count_date
+                    </if>
+                </foreach>
+            </trim>
+        </trim>
+        where id in
+        <foreach close=")" collection="list" index="index" item="item" open="(" separator=",">
+            #{item.id}
+        </foreach>
+    </update>
+</mapper>

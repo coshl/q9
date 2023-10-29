@@ -1,0 +1,1257 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.summer.dao.mapper.ReportRepaymentDAO">
+    <resultMap id="BaseResultMap" type="com.summer.dao.entity.ReportRepayment">
+        <id column="id" jdbcType="INTEGER" property="id"/>
+        <result column="report_date" jdbcType="VARCHAR" property="reportDate"/>
+        <result column="all_repayment_count" jdbcType="BIGINT" property="allRepaymentCount"/>
+        <result column="expire_count_old" jdbcType="BIGINT" property="expireCountOld"/>
+        <result column="expire_count_new" jdbcType="BIGINT" property="expireCountNew"/>
+        <result column="normal_repayment_count" jdbcType="BIGINT" property="normalRepaymentCount"/>
+        <result column="normal_count_new" jdbcType="BIGINT" property="normalCountNew"/>
+        <result column="normal_count_old" jdbcType="BIGINT" property="normalCountOld"/>
+        <result column="repay_rate" jdbcType="BIGINT" property="repayRate"/>
+        <result column="repay_rate_old" jdbcType="BIGINT" property="repayRateOld"/>
+        <result column="repay_rate_new" jdbcType="BIGINT" property="repayRateNew"/>
+        <result column="repayment_rate_s1_count_all" jdbcType="BIGINT" property="repaymentRateS1CountAll"/>
+        <result column="repayment_rate_s1_count_new" jdbcType="BIGINT" property="repaymentRateS1CountNew"/>
+        <result column="repayment_rate_s1_count_old" jdbcType="BIGINT" property="repaymentRateS1CountOld"/>
+        <result column="repayment_rate_s2_count_all" jdbcType="BIGINT" property="repaymentRateS2CountAll"/>
+        <result column="repayment_rate_s2_count_new" jdbcType="BIGINT" property="repaymentRateS2CountNew"/>
+        <result column="repayment_rate_s2_count_old" jdbcType="BIGINT" property="repaymentRateS2CountOld"/>
+        <result column="repayment_rate_s3_count_all" jdbcType="BIGINT" property="repaymentRateS3CountAll"/>
+        <result column="repayment_rate_s3_count_new" jdbcType="BIGINT" property="repaymentRateS3CountNew"/>
+        <result column="repayment_rate_s3_count_old" jdbcType="BIGINT" property="repaymentRateS3CountOld"/>
+        <result column="all_repayment_amount" jdbcType="BIGINT" property="allRepaymentAmount"/>
+        <result column="expire_amount_old" jdbcType="BIGINT" property="expireAmountOld"/>
+        <result column="expire_amount_new" jdbcType="BIGINT" property="expireAmountNew"/>
+        <result column="normal_repayment_amount" jdbcType="BIGINT" property="normalRepaymentAmount"/>
+        <result column="normal_amount_new" jdbcType="BIGINT" property="normalAmountNew"/>
+        <result column="normal_amount_old" jdbcType="BIGINT" property="normalAmountOld"/>
+        <result column="repay_amount_rate" jdbcType="BIGINT" property="repayAmountRate"/>
+        <result column="repay_amount_rate_old" jdbcType="BIGINT" property="repayAmountRateOld"/>
+        <result column="repay_amount_rate_new" jdbcType="BIGINT" property="repayAmountRateNew"/>
+        <result column="repayment_rate_s1_amount_all" jdbcType="BIGINT" property="repaymentRateS1AmountAll"/>
+        <result column="repayment_rate_s1_amount_new" jdbcType="BIGINT" property="repaymentRateS1AmountNew"/>
+        <result column="repayment_rate_s1_amount_old" jdbcType="BIGINT" property="repaymentRateS1AmountOld"/>
+        <result column="repayment_rate_s2_amount_all" jdbcType="BIGINT" property="repaymentRateS2AmountAll"/>
+        <result column="repayment_rate_s2_amount_new" jdbcType="BIGINT" property="repaymentRateS2AmountNew"/>
+        <result column="repayment_rate_s2_amount_old" jdbcType="BIGINT" property="repaymentRateS2AmountOld"/>
+        <result column="repayment_rate_s3_amount_new" jdbcType="BIGINT" property="repaymentRateS3AmountNew"/>
+        <result column="repayment_rate_s3_amount_old" jdbcType="BIGINT" property="repaymentRateS3AmountOld"/>
+        <result column="repayment_rate_s3_amount_all" jdbcType="BIGINT" property="repaymentRateS3AmountAll"/>
+        <result column="channel_id" jdbcType="INTEGER" property="channelId"/>
+        <result column="create_time" jdbcType="TIMESTAMP" property="createTime"/>
+        <result column="update_time" jdbcType="TIMESTAMP" property="updateTime"/>
+        <result column="all_repay_count" jdbcType="BIGINT" property="allRepayCount"/>
+        <result column="all_repay_amount" jdbcType="BIGINT" property="allRepayAmount"/>
+        <result column="all_overdue_count" jdbcType="BIGINT" property="allOverdueCount"/>
+        <result column="all_overdue_amount" jdbcType="BIGINT" property="allOverdueAmount"/>
+        <result column="overdue_rate_s1_amount" jdbcType="BIGINT" property="overdueRateS1Amount"/>
+        <result column="overdue_rate_s2_amount" jdbcType="BIGINT" property="overdueRateS2Amount"/>
+        <result column="overdue_rate_s3_amount" jdbcType="BIGINT" property="overdueRateS3Amount"/>
+        <result column="overdue_rate_s2_count" jdbcType="BIGINT" property="overdueRateS2Count"/>
+        <result column="overdue_rate_s3_count" jdbcType="BIGINT" property="overdueRateS3Count"/>
+        <result column="overdue_rate_m3_amount" jdbcType="BIGINT" property="overdueRateM3Amount"/>
+        <result column="overdue_rate_m3_count" jdbcType="BIGINT" property="overdueRateM3Count"/>
+        <result column="renewal_number" jdbcType="INTEGER" property="renewalNumber"/>
+        <result column="renewal_amount" jdbcType="BIGINT" property="renewalAmount"/>
+    </resultMap>
+    <sql id="Base_Column_List">
+        id, report_date, all_repayment_count, expire_count_old, expire_count_new, normal_repayment_count,
+        normal_count_new, normal_count_old, repay_rate, repay_rate_old, repay_rate_new, repayment_rate_s1_count_all,
+        repayment_rate_s1_count_new, repayment_rate_s1_count_old, repayment_rate_s2_count_all,
+        repayment_rate_s2_count_new, repayment_rate_s2_count_old, repayment_rate_s3_count_all,
+        repayment_rate_s3_count_new, repayment_rate_s3_count_old, all_repayment_amount, expire_amount_old,
+        expire_amount_new, normal_repayment_amount, normal_amount_new, normal_amount_old,
+        repay_amount_rate, repay_amount_rate_old, repay_amount_rate_new, repayment_rate_s1_amount_all,
+        repayment_rate_s1_amount_new, repayment_rate_s1_amount_old, repayment_rate_s2_amount_all,
+        repayment_rate_s2_amount_new, repayment_rate_s2_amount_old, repayment_rate_s3_amount_new,
+        repayment_rate_s3_amount_old, repayment_rate_s3_amount_all, channel_id, create_time,
+        update_time, all_repay_count, all_repay_amount, all_overdue_count, all_overdue_amount,
+        overdue_rate_s1_amount, overdue_rate_s2_amount, overdue_rate_s3_amount, overdue_rate_s2_count,
+        overdue_rate_s3_count, overdue_rate_m3_amount, overdue_rate_m3_count, renewal_number, renewal_amount
+    </sql>
+    <sql id="selectSql">
+        from report_repayment
+        <where>
+            <![CDATA[    and report_date <= date_format(now(),'%Y-%m-%d') ]]>
+            <if test="reportDateStart != null and reportDateStart != ''">
+                <![CDATA[    and report_date >= #{reportDateStart}   ]]>
+            </if>
+            <if test="reportDateEnd != null and reportDateEnd != ''">
+                <![CDATA[    and report_date < date_add(#{reportDateEnd},interval 1 day) ]]>
+            </if>
+        </where>
+    </sql>
+    <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from report_repayment
+        where id = #{id,jdbcType=INTEGER}
+    </select>
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+        delete from report_repayment
+        where id = #{id,jdbcType=INTEGER}
+    </delete>
+    <insert id="insert" parameterType="com.summer.dao.entity.ReportRepayment">
+        insert into report_repayment (id, report_date, all_repayment_count,
+        expire_count_old, expire_count_new, normal_repayment_count,
+        normal_count_new, normal_count_old, repay_rate,
+        repay_rate_old, repay_rate_new, repayment_rate_s1_count_all,
+        repayment_rate_s1_count_new, repayment_rate_s1_count_old,
+        repayment_rate_s2_count_all, repayment_rate_s2_count_new,
+        repayment_rate_s2_count_old, repayment_rate_s3_count_all,
+        repayment_rate_s3_count_new, repayment_rate_s3_count_old,
+        all_repayment_amount, expire_amount_old, expire_amount_new,
+        normal_repayment_amount, normal_amount_new, normal_amount_old,
+        repay_amount_rate, repay_amount_rate_old, repay_amount_rate_new,
+        repayment_rate_s1_amount_all, repayment_rate_s1_amount_new,
+        repayment_rate_s1_amount_old, repayment_rate_s2_amount_all,
+        repayment_rate_s2_amount_new, repayment_rate_s2_amount_old,
+        repayment_rate_s3_amount_new, repayment_rate_s3_amount_old,
+        repayment_rate_s3_amount_all, channel_id, create_time,
+        update_time, all_repay_count, all_repay_amount,
+        all_overdue_count, all_overdue_amount, overdue_rate_s1_amount,
+        overdue_rate_s2_amount, overdue_rate_s3_amount,
+        overdue_rate_s2_count, overdue_rate_s3_count, overdue_rate_m3_amount,
+        overdue_rate_m3_count, renewal_number, renewal_amount)
+        values (#{id,jdbcType=INTEGER}, #{reportDate,jdbcType=VARCHAR}, #{allRepaymentCount,jdbcType=BIGINT},
+        #{expireCountOld,jdbcType=BIGINT}, #{expireCountNew,jdbcType=BIGINT}, #{normalRepaymentCount,jdbcType=BIGINT},
+        #{normalCountNew,jdbcType=BIGINT}, #{normalCountOld,jdbcType=BIGINT}, #{repayRate,jdbcType=BIGINT},
+        #{repayRateOld,jdbcType=BIGINT}, #{repayRateNew,jdbcType=BIGINT}, #{repaymentRateS1CountAll,jdbcType=BIGINT},
+        #{repaymentRateS1CountNew,jdbcType=BIGINT}, #{repaymentRateS1CountOld,jdbcType=BIGINT},
+        #{repaymentRateS2CountAll,jdbcType=BIGINT}, #{repaymentRateS2CountNew,jdbcType=BIGINT},
+        #{repaymentRateS2CountOld,jdbcType=BIGINT}, #{repaymentRateS3CountAll,jdbcType=BIGINT},
+        #{repaymentRateS3CountNew,jdbcType=BIGINT}, #{repaymentRateS3CountOld,jdbcType=BIGINT},
+        #{allRepaymentAmount,jdbcType=BIGINT}, #{expireAmountOld,jdbcType=BIGINT}, #{expireAmountNew,jdbcType=BIGINT},
+        #{normalRepaymentAmount,jdbcType=BIGINT}, #{normalAmountNew,jdbcType=BIGINT}, #{normalAmountOld,jdbcType=BIGINT},
+        #{repayAmountRate,jdbcType=BIGINT}, #{repayAmountRateOld,jdbcType=BIGINT}, #{repayAmountRateNew,jdbcType=BIGINT},
+        #{repaymentRateS1AmountAll,jdbcType=BIGINT}, #{repaymentRateS1AmountNew,jdbcType=BIGINT},
+        #{repaymentRateS1AmountOld,jdbcType=BIGINT}, #{repaymentRateS2AmountAll,jdbcType=BIGINT},
+        #{repaymentRateS2AmountNew,jdbcType=BIGINT}, #{repaymentRateS2AmountOld,jdbcType=BIGINT},
+        #{repaymentRateS3AmountNew,jdbcType=BIGINT}, #{repaymentRateS3AmountOld,jdbcType=BIGINT},
+        #{repaymentRateS3AmountAll,jdbcType=BIGINT}, #{channelId,jdbcType=INTEGER}, #{createTime,jdbcType=TIMESTAMP},
+        #{updateTime,jdbcType=TIMESTAMP}, #{allRepayCount,jdbcType=BIGINT}, #{allRepayAmount,jdbcType=BIGINT},
+        #{allOverdueCount,jdbcType=BIGINT}, #{allOverdueAmount,jdbcType=BIGINT}, #{overdueRateS1Amount,jdbcType=BIGINT},
+        #{overdueRateS2Amount,jdbcType=BIGINT}, #{overdueRateS3Amount,jdbcType=BIGINT},
+        #{overdueRateS2Count,jdbcType=BIGINT}, #{overdueRateS3Count,jdbcType=BIGINT}, #{overdueRateM3Amount,jdbcType=BIGINT},
+        #{overdueRateM3Count,jdbcType=BIGINT}, #{renewalNumber,jdbcType=INTEGER}, #{renewalAmount,jdbcType=BIGINT})
+    </insert>
+    <insert id="insertSelective" parameterType="com.summer.dao.entity.ReportRepayment">
+        insert into report_repayment
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                id,
+            </if>
+            <if test="reportDate != null">
+                report_date,
+            </if>
+            <if test="allRepaymentCount != null">
+                all_repayment_count,
+            </if>
+            <if test="expireCountOld != null">
+                expire_count_old,
+            </if>
+            <if test="expireCountNew != null">
+                expire_count_new,
+            </if>
+            <if test="normalRepaymentCount != null">
+                normal_repayment_count,
+            </if>
+            <if test="normalCountNew != null">
+                normal_count_new,
+            </if>
+            <if test="normalCountOld != null">
+                normal_count_old,
+            </if>
+            <if test="repayRate != null">
+                repay_rate,
+            </if>
+            <if test="repayRateOld != null">
+                repay_rate_old,
+            </if>
+            <if test="repayRateNew != null">
+                repay_rate_new,
+            </if>
+            <if test="repaymentRateS1CountAll != null">
+                repayment_rate_s1_count_all,
+            </if>
+            <if test="repaymentRateS1CountNew != null">
+                repayment_rate_s1_count_new,
+            </if>
+            <if test="repaymentRateS1CountOld != null">
+                repayment_rate_s1_count_old,
+            </if>
+            <if test="repaymentRateS2CountAll != null">
+                repayment_rate_s2_count_all,
+            </if>
+            <if test="repaymentRateS2CountNew != null">
+                repayment_rate_s2_count_new,
+            </if>
+            <if test="repaymentRateS2CountOld != null">
+                repayment_rate_s2_count_old,
+            </if>
+            <if test="repaymentRateS3CountAll != null">
+                repayment_rate_s3_count_all,
+            </if>
+            <if test="repaymentRateS3CountNew != null">
+                repayment_rate_s3_count_new,
+            </if>
+            <if test="repaymentRateS3CountOld != null">
+                repayment_rate_s3_count_old,
+            </if>
+            <if test="allRepaymentAmount != null">
+                all_repayment_amount,
+            </if>
+            <if test="expireAmountOld != null">
+                expire_amount_old,
+            </if>
+            <if test="expireAmountNew != null">
+                expire_amount_new,
+            </if>
+            <if test="normalRepaymentAmount != null">
+                normal_repayment_amount,
+            </if>
+            <if test="normalAmountNew != null">
+                normal_amount_new,
+            </if>
+            <if test="normalAmountOld != null">
+                normal_amount_old,
+            </if>
+            <if test="repayAmountRate != null">
+                repay_amount_rate,
+            </if>
+            <if test="repayAmountRateOld != null">
+                repay_amount_rate_old,
+            </if>
+            <if test="repayAmountRateNew != null">
+                repay_amount_rate_new,
+            </if>
+            <if test="repaymentRateS1AmountAll != null">
+                repayment_rate_s1_amount_all,
+            </if>
+            <if test="repaymentRateS1AmountNew != null">
+                repayment_rate_s1_amount_new,
+            </if>
+            <if test="repaymentRateS1AmountOld != null">
+                repayment_rate_s1_amount_old,
+            </if>
+            <if test="repaymentRateS2AmountAll != null">
+                repayment_rate_s2_amount_all,
+            </if>
+            <if test="repaymentRateS2AmountNew != null">
+                repayment_rate_s2_amount_new,
+            </if>
+            <if test="repaymentRateS2AmountOld != null">
+                repayment_rate_s2_amount_old,
+            </if>
+            <if test="repaymentRateS3AmountNew != null">
+                repayment_rate_s3_amount_new,
+            </if>
+            <if test="repaymentRateS3AmountOld != null">
+                repayment_rate_s3_amount_old,
+            </if>
+            <if test="repaymentRateS3AmountAll != null">
+                repayment_rate_s3_amount_all,
+            </if>
+            <if test="channelId != null">
+                channel_id,
+            </if>
+            <if test="createTime != null">
+                create_time,
+            </if>
+            <if test="updateTime != null">
+                update_time,
+            </if>
+            <if test="allRepayCount != null">
+                all_repay_count,
+            </if>
+            <if test="allRepayAmount != null">
+                all_repay_amount,
+            </if>
+            <if test="allOverdueCount != null">
+                all_overdue_count,
+            </if>
+            <if test="allOverdueAmount != null">
+                all_overdue_amount,
+            </if>
+            <if test="overdueRateS1Amount != null">
+                overdue_rate_s1_amount,
+            </if>
+            <if test="overdueRateS2Amount != null">
+                overdue_rate_s2_amount,
+            </if>
+            <if test="overdueRateS3Amount != null">
+                overdue_rate_s3_amount,
+            </if>
+            <if test="overdueRateS2Count != null">
+                overdue_rate_s2_count,
+            </if>
+            <if test="overdueRateS3Count != null">
+                overdue_rate_s3_count,
+            </if>
+            <if test="overdueRateM3Amount != null">
+                overdue_rate_m3_amount,
+            </if>
+            <if test="overdueRateM3Count != null">
+                overdue_rate_m3_count,
+            </if>
+            <if test="renewalNumber != null">
+                renewal_number,
+            </if>
+            <if test="renewalAmount != null">
+                renewal_amount,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                #{id,jdbcType=INTEGER},
+            </if>
+            <if test="reportDate != null">
+                #{reportDate,jdbcType=VARCHAR},
+            </if>
+            <if test="allRepaymentCount != null">
+                #{allRepaymentCount,jdbcType=BIGINT},
+            </if>
+            <if test="expireCountOld != null">
+                #{expireCountOld,jdbcType=BIGINT},
+            </if>
+            <if test="expireCountNew != null">
+                #{expireCountNew,jdbcType=BIGINT},
+            </if>
+            <if test="normalRepaymentCount != null">
+                #{normalRepaymentCount,jdbcType=BIGINT},
+            </if>
+            <if test="normalCountNew != null">
+                #{normalCountNew,jdbcType=BIGINT},
+            </if>
+            <if test="normalCountOld != null">
+                #{normalCountOld,jdbcType=BIGINT},
+            </if>
+            <if test="repayRate != null">
+                #{repayRate,jdbcType=BIGINT},
+            </if>
+            <if test="repayRateOld != null">
+                #{repayRateOld,jdbcType=BIGINT},
+            </if>
+            <if test="repayRateNew != null">
+                #{repayRateNew,jdbcType=BIGINT},
+            </if>
+            <if test="repaymentRateS1CountAll != null">
+                #{repaymentRateS1CountAll,jdbcType=BIGINT},
+            </if>
+            <if test="repaymentRateS1CountNew != null">
+                #{repaymentRateS1CountNew,jdbcType=BIGINT},
+            </if>
+            <if test="repaymentRateS1CountOld != null">
+                #{repaymentRateS1CountOld,jdbcType=BIGINT},
+            </if>
+            <if test="repaymentRateS2CountAll != null">
+                #{repaymentRateS2CountAll,jdbcType=BIGINT},
+            </if>
+            <if test="repaymentRateS2CountNew != null">
+                #{repaymentRateS2CountNew,jdbcType=BIGINT},
+            </if>
+            <if test="repaymentRateS2CountOld != null">
+                #{repaymentRateS2CountOld,jdbcType=BIGINT},
+            </if>
+            <if test="repaymentRateS3CountAll != null">
+                #{repaymentRateS3CountAll,jdbcType=BIGINT},
+            </if>
+            <if test="repaymentRateS3CountNew != null">
+                #{repaymentRateS3CountNew,jdbcType=BIGINT},
+            </if>
+            <if test="repaymentRateS3CountOld != null">
+                #{repaymentRateS3CountOld,jdbcType=BIGINT},
+            </if>
+            <if test="allRepaymentAmount != null">
+                #{allRepaymentAmount,jdbcType=BIGINT},
+            </if>
+            <if test="expireAmountOld != null">
+                #{expireAmountOld,jdbcType=BIGINT},
+            </if>
+            <if test="expireAmountNew != null">
+                #{expireAmountNew,jdbcType=BIGINT},
+            </if>
+            <if test="normalRepaymentAmount != null">
+                #{normalRepaymentAmount,jdbcType=BIGINT},
+            </if>
+            <if test="normalAmountNew != null">
+                #{normalAmountNew,jdbcType=BIGINT},
+            </if>
+            <if test="normalAmountOld != null">
+                #{normalAmountOld,jdbcType=BIGINT},
+            </if>
+            <if test="repayAmountRate != null">
+                #{repayAmountRate,jdbcType=BIGINT},
+            </if>
+            <if test="repayAmountRateOld != null">
+                #{repayAmountRateOld,jdbcType=BIGINT},
+            </if>
+            <if test="repayAmountRateNew != null">
+                #{repayAmountRateNew,jdbcType=BIGINT},
+            </if>
+            <if test="repaymentRateS1AmountAll != null">
+                #{repaymentRateS1AmountAll,jdbcType=BIGINT},
+            </if>
+            <if test="repaymentRateS1AmountNew != null">
+                #{repaymentRateS1AmountNew,jdbcType=BIGINT},
+            </if>
+            <if test="repaymentRateS1AmountOld != null">
+                #{repaymentRateS1AmountOld,jdbcType=BIGINT},
+            </if>
+            <if test="repaymentRateS2AmountAll != null">
+                #{repaymentRateS2AmountAll,jdbcType=BIGINT},
+            </if>
+            <if test="repaymentRateS2AmountNew != null">
+                #{repaymentRateS2AmountNew,jdbcType=BIGINT},
+            </if>
+            <if test="repaymentRateS2AmountOld != null">
+                #{repaymentRateS2AmountOld,jdbcType=BIGINT},
+            </if>
+            <if test="repaymentRateS3AmountNew != null">
+                #{repaymentRateS3AmountNew,jdbcType=BIGINT},
+            </if>
+            <if test="repaymentRateS3AmountOld != null">
+                #{repaymentRateS3AmountOld,jdbcType=BIGINT},
+            </if>
+            <if test="repaymentRateS3AmountAll != null">
+                #{repaymentRateS3AmountAll,jdbcType=BIGINT},
+            </if>
+            <if test="channelId != null">
+                #{channelId,jdbcType=INTEGER},
+            </if>
+            <if test="createTime != null">
+                #{createTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="updateTime != null">
+                #{updateTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="allRepayCount != null">
+                #{allRepayCount,jdbcType=BIGINT},
+            </if>
+            <if test="allRepayAmount != null">
+                #{allRepayAmount,jdbcType=BIGINT},
+            </if>
+            <if test="allOverdueCount != null">
+                #{allOverdueCount,jdbcType=BIGINT},
+            </if>
+            <if test="allOverdueAmount != null">
+                #{allOverdueAmount,jdbcType=BIGINT},
+            </if>
+            <if test="overdueRateS1Amount != null">
+                #{overdueRateS1Amount,jdbcType=BIGINT},
+            </if>
+            <if test="overdueRateS2Amount != null">
+                #{overdueRateS2Amount,jdbcType=BIGINT},
+            </if>
+            <if test="overdueRateS3Amount != null">
+                #{overdueRateS3Amount,jdbcType=BIGINT},
+            </if>
+            <if test="overdueRateS2Count != null">
+                #{overdueRateS2Count,jdbcType=BIGINT},
+            </if>
+            <if test="overdueRateS3Count != null">
+                #{overdueRateS3Count,jdbcType=BIGINT},
+            </if>
+            <if test="overdueRateM3Amount != null">
+                #{overdueRateM3Amount,jdbcType=BIGINT},
+            </if>
+            <if test="overdueRateM3Count != null">
+                #{overdueRateM3Count,jdbcType=BIGINT},
+            </if>
+            <if test="renewalNumber != null">
+                #{renewalNumber,jdbcType=INTEGER},
+            </if>
+            <if test="renewalAmount != null">
+                #{renewalAmount,jdbcType=BIGINT},
+            </if>
+        </trim>
+    </insert>
+    <update id="updateByPrimaryKeySelective" parameterType="com.summer.dao.entity.ReportRepayment">
+        update report_repayment
+        <set>
+            <if test="reportDate != null">
+                report_date = #{reportDate,jdbcType=VARCHAR},
+            </if>
+            <if test="allRepaymentCount != null">
+                all_repayment_count = #{allRepaymentCount,jdbcType=BIGINT},
+            </if>
+            <if test="expireCountOld != null">
+                expire_count_old = #{expireCountOld,jdbcType=BIGINT},
+            </if>
+            <if test="expireCountNew != null">
+                expire_count_new = #{expireCountNew,jdbcType=BIGINT},
+            </if>
+            <if test="normalRepaymentCount != null">
+                normal_repayment_count = #{normalRepaymentCount,jdbcType=BIGINT},
+            </if>
+            <if test="normalCountNew != null">
+                normal_count_new = #{normalCountNew,jdbcType=BIGINT},
+            </if>
+            <if test="normalCountOld != null">
+                normal_count_old = #{normalCountOld,jdbcType=BIGINT},
+            </if>
+            <if test="repayRate != null">
+                repay_rate = #{repayRate,jdbcType=BIGINT},
+            </if>
+            <if test="repayRateOld != null">
+                repay_rate_old = #{repayRateOld,jdbcType=BIGINT},
+            </if>
+            <if test="repayRateNew != null">
+                repay_rate_new = #{repayRateNew,jdbcType=BIGINT},
+            </if>
+            <if test="repaymentRateS1CountAll != null">
+                repayment_rate_s1_count_all = #{repaymentRateS1CountAll,jdbcType=BIGINT},
+            </if>
+            <if test="repaymentRateS1CountNew != null">
+                repayment_rate_s1_count_new = #{repaymentRateS1CountNew,jdbcType=BIGINT},
+            </if>
+            <if test="repaymentRateS1CountOld != null">
+                repayment_rate_s1_count_old = #{repaymentRateS1CountOld,jdbcType=BIGINT},
+            </if>
+            <if test="repaymentRateS2CountAll != null">
+                repayment_rate_s2_count_all = #{repaymentRateS2CountAll,jdbcType=BIGINT},
+            </if>
+            <if test="repaymentRateS2CountNew != null">
+                repayment_rate_s2_count_new = #{repaymentRateS2CountNew,jdbcType=BIGINT},
+            </if>
+            <if test="repaymentRateS2CountOld != null">
+                repayment_rate_s2_count_old = #{repaymentRateS2CountOld,jdbcType=BIGINT},
+            </if>
+            <if test="repaymentRateS3CountAll != null">
+                repayment_rate_s3_count_all = #{repaymentRateS3CountAll,jdbcType=BIGINT},
+            </if>
+            <if test="repaymentRateS3CountNew != null">
+                repayment_rate_s3_count_new = #{repaymentRateS3CountNew,jdbcType=BIGINT},
+            </if>
+            <if test="repaymentRateS3CountOld != null">
+                repayment_rate_s3_count_old = #{repaymentRateS3CountOld,jdbcType=BIGINT},
+            </if>
+            <if test="allRepaymentAmount != null">
+                all_repayment_amount = #{allRepaymentAmount,jdbcType=BIGINT},
+            </if>
+            <if test="expireAmountOld != null">
+                expire_amount_old = #{expireAmountOld,jdbcType=BIGINT},
+            </if>
+            <if test="expireAmountNew != null">
+                expire_amount_new = #{expireAmountNew,jdbcType=BIGINT},
+            </if>
+            <if test="normalRepaymentAmount != null">
+                normal_repayment_amount = #{normalRepaymentAmount,jdbcType=BIGINT},
+            </if>
+            <if test="normalAmountNew != null">
+                normal_amount_new = #{normalAmountNew,jdbcType=BIGINT},
+            </if>
+            <if test="normalAmountOld != null">
+                normal_amount_old = #{normalAmountOld,jdbcType=BIGINT},
+            </if>
+            <if test="repayAmountRate != null">
+                repay_amount_rate = #{repayAmountRate,jdbcType=BIGINT},
+            </if>
+            <if test="repayAmountRateOld != null">
+                repay_amount_rate_old = #{repayAmountRateOld,jdbcType=BIGINT},
+            </if>
+            <if test="repayAmountRateNew != null">
+                repay_amount_rate_new = #{repayAmountRateNew,jdbcType=BIGINT},
+            </if>
+            <if test="repaymentRateS1AmountAll != null">
+                repayment_rate_s1_amount_all = #{repaymentRateS1AmountAll,jdbcType=BIGINT},
+            </if>
+            <if test="repaymentRateS1AmountNew != null">
+                repayment_rate_s1_amount_new = #{repaymentRateS1AmountNew,jdbcType=BIGINT},
+            </if>
+            <if test="repaymentRateS1AmountOld != null">
+                repayment_rate_s1_amount_old = #{repaymentRateS1AmountOld,jdbcType=BIGINT},
+            </if>
+            <if test="repaymentRateS2AmountAll != null">
+                repayment_rate_s2_amount_all = #{repaymentRateS2AmountAll,jdbcType=BIGINT},
+            </if>
+            <if test="repaymentRateS2AmountNew != null">
+                repayment_rate_s2_amount_new = #{repaymentRateS2AmountNew,jdbcType=BIGINT},
+            </if>
+            <if test="repaymentRateS2AmountOld != null">
+                repayment_rate_s2_amount_old = #{repaymentRateS2AmountOld,jdbcType=BIGINT},
+            </if>
+            <if test="repaymentRateS3AmountNew != null">
+                repayment_rate_s3_amount_new = #{repaymentRateS3AmountNew,jdbcType=BIGINT},
+            </if>
+            <if test="repaymentRateS3AmountOld != null">
+                repayment_rate_s3_amount_old = #{repaymentRateS3AmountOld,jdbcType=BIGINT},
+            </if>
+            <if test="repaymentRateS3AmountAll != null">
+                repayment_rate_s3_amount_all = #{repaymentRateS3AmountAll,jdbcType=BIGINT},
+            </if>
+            <if test="channelId != null">
+                channel_id = #{channelId,jdbcType=INTEGER},
+            </if>
+            <if test="createTime != null">
+                create_time = #{createTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="updateTime != null">
+                update_time = #{updateTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="allRepayCount != null">
+                all_repay_count = #{allRepayCount,jdbcType=BIGINT},
+            </if>
+            <if test="allRepayAmount != null">
+                all_repay_amount = #{allRepayAmount,jdbcType=BIGINT},
+            </if>
+            <if test="allOverdueCount != null">
+                all_overdue_count = #{allOverdueCount,jdbcType=BIGINT},
+            </if>
+            <if test="allOverdueAmount != null">
+                all_overdue_amount = #{allOverdueAmount,jdbcType=BIGINT},
+            </if>
+            <if test="overdueRateS1Amount != null">
+                overdue_rate_s1_amount = #{overdueRateS1Amount,jdbcType=BIGINT},
+            </if>
+            <if test="overdueRateS2Amount != null">
+                overdue_rate_s2_amount = #{overdueRateS2Amount,jdbcType=BIGINT},
+            </if>
+            <if test="overdueRateS3Amount != null">
+                overdue_rate_s3_amount = #{overdueRateS3Amount,jdbcType=BIGINT},
+            </if>
+            <if test="overdueRateS2Count != null">
+                overdue_rate_s2_count = #{overdueRateS2Count,jdbcType=BIGINT},
+            </if>
+            <if test="overdueRateS3Count != null">
+                overdue_rate_s3_count = #{overdueRateS3Count,jdbcType=BIGINT},
+            </if>
+            <if test="overdueRateM3Amount != null">
+                overdue_rate_m3_amount = #{overdueRateM3Amount,jdbcType=BIGINT},
+            </if>
+            <if test="overdueRateM3Count != null">
+                overdue_rate_m3_count = #{overdueRateM3Count,jdbcType=BIGINT},
+            </if>
+            <if test="renewalNumber != null">
+                renewal_number = #{renewalNumber,jdbcType=INTEGER},
+            </if>
+            <if test="renewalAmount != null">
+                renewal_amount = #{renewalAmount,jdbcType=BIGINT},
+            </if>
+        </set>
+        where id = #{id,jdbcType=INTEGER}
+    </update>
+    <update id="updateByPrimaryKey" parameterType="com.summer.dao.entity.ReportRepayment">
+        update report_repayment
+        set report_date = #{reportDate,jdbcType=VARCHAR},
+        all_repayment_count = #{allRepaymentCount,jdbcType=BIGINT},
+        expire_count_old = #{expireCountOld,jdbcType=BIGINT},
+        expire_count_new = #{expireCountNew,jdbcType=BIGINT},
+        normal_repayment_count = #{normalRepaymentCount,jdbcType=BIGINT},
+        normal_count_new = #{normalCountNew,jdbcType=BIGINT},
+        normal_count_old = #{normalCountOld,jdbcType=BIGINT},
+        repay_rate = #{repayRate,jdbcType=BIGINT},
+        repay_rate_old = #{repayRateOld,jdbcType=BIGINT},
+        repay_rate_new = #{repayRateNew,jdbcType=BIGINT},
+        repayment_rate_s1_count_all = #{repaymentRateS1CountAll,jdbcType=BIGINT},
+        repayment_rate_s1_count_new = #{repaymentRateS1CountNew,jdbcType=BIGINT},
+        repayment_rate_s1_count_old = #{repaymentRateS1CountOld,jdbcType=BIGINT},
+        repayment_rate_s2_count_all = #{repaymentRateS2CountAll,jdbcType=BIGINT},
+        repayment_rate_s2_count_new = #{repaymentRateS2CountNew,jdbcType=BIGINT},
+        repayment_rate_s2_count_old = #{repaymentRateS2CountOld,jdbcType=BIGINT},
+        repayment_rate_s3_count_all = #{repaymentRateS3CountAll,jdbcType=BIGINT},
+        repayment_rate_s3_count_new = #{repaymentRateS3CountNew,jdbcType=BIGINT},
+        repayment_rate_s3_count_old = #{repaymentRateS3CountOld,jdbcType=BIGINT},
+        all_repayment_amount = #{allRepaymentAmount,jdbcType=BIGINT},
+        expire_amount_old = #{expireAmountOld,jdbcType=BIGINT},
+        expire_amount_new = #{expireAmountNew,jdbcType=BIGINT},
+        normal_repayment_amount = #{normalRepaymentAmount,jdbcType=BIGINT},
+        normal_amount_new = #{normalAmountNew,jdbcType=BIGINT},
+        normal_amount_old = #{normalAmountOld,jdbcType=BIGINT},
+        repay_amount_rate = #{repayAmountRate,jdbcType=BIGINT},
+        repay_amount_rate_old = #{repayAmountRateOld,jdbcType=BIGINT},
+        repay_amount_rate_new = #{repayAmountRateNew,jdbcType=BIGINT},
+        repayment_rate_s1_amount_all = #{repaymentRateS1AmountAll,jdbcType=BIGINT},
+        repayment_rate_s1_amount_new = #{repaymentRateS1AmountNew,jdbcType=BIGINT},
+        repayment_rate_s1_amount_old = #{repaymentRateS1AmountOld,jdbcType=BIGINT},
+        repayment_rate_s2_amount_all = #{repaymentRateS2AmountAll,jdbcType=BIGINT},
+        repayment_rate_s2_amount_new = #{repaymentRateS2AmountNew,jdbcType=BIGINT},
+        repayment_rate_s2_amount_old = #{repaymentRateS2AmountOld,jdbcType=BIGINT},
+        repayment_rate_s3_amount_new = #{repaymentRateS3AmountNew,jdbcType=BIGINT},
+        repayment_rate_s3_amount_old = #{repaymentRateS3AmountOld,jdbcType=BIGINT},
+        repayment_rate_s3_amount_all = #{repaymentRateS3AmountAll,jdbcType=BIGINT},
+        channel_id = #{channelId,jdbcType=INTEGER},
+        create_time = #{createTime,jdbcType=TIMESTAMP},
+        update_time = #{updateTime,jdbcType=TIMESTAMP},
+        all_repay_count = #{allRepayCount,jdbcType=BIGINT},
+        all_repay_amount = #{allRepayAmount,jdbcType=BIGINT},
+        all_overdue_count = #{allOverdueCount,jdbcType=BIGINT},
+        all_overdue_amount = #{allOverdueAmount,jdbcType=BIGINT},
+        overdue_rate_s1_amount = #{overdueRateS1Amount,jdbcType=BIGINT},
+        overdue_rate_s2_amount = #{overdueRateS2Amount,jdbcType=BIGINT},
+        overdue_rate_s3_amount = #{overdueRateS3Amount,jdbcType=BIGINT},
+        overdue_rate_s2_count = #{overdueRateS2Count,jdbcType=BIGINT},
+        overdue_rate_s3_count = #{overdueRateS3Count,jdbcType=BIGINT},
+        overdue_rate_m3_amount = #{overdueRateM3Amount,jdbcType=BIGINT},
+        overdue_rate_m3_count = #{overdueRateM3Count,jdbcType=BIGINT},
+        renewal_number = #{renewalNumber,jdbcType=INTEGER},
+        renewal_amount = #{renewalAmount,jdbcType=BIGINT}
+        where id = #{id,jdbcType=INTEGER}
+    </update>
+    <select id="queryReport" parameterType="map" resultType="com.summer.dao.entity.ReportRepayment">
+        select
+        report_date as reportDate,
+        ifnull(renewal_number,0) as renewalNumber,
+        ifnull(renewal_amount,0) as renewalAmount,
+        ifnull(all_repayment_count,0) as allRepaymentCount,
+        ifnull(expire_count_old,0) as expireCountOld,
+        ifnull(expire_count_new,0) as expireCountNew,
+        ifnull(normal_repayment_count,0) as normalRepaymentCount,
+        ifnull(normal_count_new,0) as normalCountNew,
+        ifnull(normal_count_old,0) as normalCountOld,
+        ifnull(repay_rate,0) as repayRate,
+
+        ifnull(normal_count_new*10000/expire_count_new,0) as repayRateNew,
+        ifnull(normal_count_old*10000/expire_count_old,0) as repayRateOld,
+
+        ifnull(repayment_rate_s1_count_all + repay_rate,0) as repaymentRateS1CountAll,
+        ifnull(repayment_rate_s1_count_new + repay_rate_new,0) as repaymentRateS1CountNew,
+        ifnull(repayment_rate_s1_count_old + repay_rate_old,0) as repaymentRateS1CountOld,
+        ifnull(repayment_rate_s2_count_all + repayment_rate_s1_count_all + repay_rate,0) as repaymentRateS2CountAll,
+        ifnull(repayment_rate_s2_count_new + repayment_rate_s1_count_new + repay_rate_new,0) as repaymentRateS2CountNew,
+        ifnull(repayment_rate_s2_count_old + repayment_rate_s1_count_old + repay_rate_old,0) as repaymentRateS2CountOld,
+        ifnull(repayment_rate_s3_count_all + repayment_rate_s2_count_all + repayment_rate_s1_count_all + repay_rate,0)
+        as repaymentRateS3CountAll,
+        ifnull(repayment_rate_s3_count_new + repayment_rate_s2_count_new + repayment_rate_s1_count_new +
+        repay_rate_new,0) as repaymentRateS3CountNew,
+        ifnull(repayment_rate_s3_count_old + repayment_rate_s2_count_old + repayment_rate_s1_count_old +
+        repay_rate_old,0) as repaymentRateS3CountOld,
+        ifnull(all_repayment_amount,0) as allRepaymentAmount,
+        ifnull(expire_amount_old,0) as expireAmountOld,
+        ifnull(expire_amount_new,0) as expireAmountNew,
+        ifnull(normal_repayment_amount,0) as normalRepaymentAmount,
+        ifnull(normal_amount_new,0) as normalAmountNew,
+        ifnull(normal_amount_old,0) as normalAmountOld,
+        ifnull(repay_amount_rate,0) as repayAmountRate,
+
+        ifnull(normal_amount_new*10000/expire_amount_new,0) as repayAmountRateNew,
+        ifnull(normal_amount_old*10000/expire_amount_old,0) as repayAmountRateOld,
+
+        ifnull(repayment_rate_s1_amount_all,0) as repaymentRateS1AmountAll,
+        ifnull(repayment_rate_s1_amount_new + repay_amount_rate_new,0) as repaymentRateS1AmountNew,
+        ifnull(repayment_rate_s1_amount_old + repay_amount_rate_old,0) as repaymentRateS1AmountOld,
+        ifnull(repayment_rate_s2_amount_all,0) as
+        repaymentRateS2AmountAll,
+        ifnull(repayment_rate_s2_amount_new + repayment_rate_s1_amount_new + repay_amount_rate_new,0) as
+        repaymentRateS2AmountNew,
+        ifnull(repayment_rate_s2_amount_old + repayment_rate_s1_amount_old + repay_amount_rate_old,0) as
+        repaymentRateS2AmountOld,
+        ifnull(repayment_rate_s3_amount_all ,0) as repaymentRateS3AmountAll,
+        ifnull(repayment_rate_s3_amount_new + repayment_rate_s2_amount_new + repayment_rate_s1_amount_new +
+        repay_amount_rate_new,0) as repaymentRateS3AmountNew,
+        ifnull(repayment_rate_s3_amount_old + repayment_rate_s2_amount_old + repayment_rate_s1_amount_old +
+        repay_amount_rate_old,0) as repaymentRateS3AmountOld,
+        ifnull(all_repay_count,0) as allRepayCount,
+        ifnull(all_repay_amount,0) as allRepayAmount,
+        ifnull(all_overdue_count,0) as allOverdueCount,
+        ifnull(all_overdue_amount,0) as allOverdueAmount,
+        ifnull(overdue_rate_s1_amount,0) as overdueRateS1Amount,
+        ifnull(overdue_rate_s2_amount,0) as overdueRateS2Amount,
+        ifnull(overdue_rate_s3_amount,0) as overdueRateS3Amount,
+        ifnull(overdue_rate_s2_count,0) as overdueRateS2Count,
+        ifnull(overdue_rate_s3_count,0) as overdueRateS3Count,
+        ifnull(overdue_rate_m3_amount,0) as overdueRateM3Amount,
+        ifnull(overdue_rate_m3_count,0) as overdueRateM3Count,
+        ifnull(normal_repayment_count - renewal_number,0) as normalCount,
+        ifnull(normal_repayment_amount - renewal_amount,0) as normalAmount
+        <include refid="selectSql"/>
+        order by report_date desc
+    </select>
+
+<!--    <select id="queryReport" parameterType="map" resultType="com.summer.dao.entity.ReportRepayment">-->
+<!--        select-->
+<!--        report_date as reportDate,-->
+<!--        ifnull(renewal_number,0) as renewalNumber,-->
+<!--        ifnull(renewal_amount,0) as renewalAmount,-->
+<!--        ifnull(all_repayment_count,0) as allRepaymentCount,-->
+<!--        ifnull(expire_count_old,0) as expireCountOld,-->
+<!--        ifnull(expire_count_new,0) as expireCountNew,-->
+<!--        ifnull(normal_repayment_count,0) as normalRepaymentCount,-->
+<!--        ifnull(normal_count_new,0) as normalCountNew,-->
+<!--        ifnull(normal_count_old,0) as normalCountOld,-->
+<!--        ifnull(repay_rate,0) as repayRate,-->
+
+<!--        ifnull(normal_count_new*10000/expire_count_new,0) as repayRateNew,-->
+<!--        ifnull(normal_count_old*10000/expire_count_old,0) as repayRateOld,-->
+
+<!--        ifnull(repayment_rate_s1_count_all + repay_rate,0) as repaymentRateS1CountAll,-->
+<!--        ifnull(repayment_rate_s1_count_new + repay_rate_new,0) as repaymentRateS1CountNew,-->
+<!--        ifnull(repayment_rate_s1_count_old + repay_rate_old,0) as repaymentRateS1CountOld,-->
+<!--        ifnull(repayment_rate_s2_count_all + repayment_rate_s1_count_all + repay_rate,0) as repaymentRateS2CountAll,-->
+<!--        ifnull(repayment_rate_s2_count_new + repayment_rate_s1_count_new + repay_rate_new,0) as repaymentRateS2CountNew,-->
+<!--        ifnull(repayment_rate_s2_count_old + repayment_rate_s1_count_old + repay_rate_old,0) as repaymentRateS2CountOld,-->
+<!--        ifnull(repayment_rate_s3_count_all + repayment_rate_s2_count_all + repayment_rate_s1_count_all + repay_rate,0)-->
+<!--        as repaymentRateS3CountAll,-->
+<!--        ifnull(repayment_rate_s3_count_new + repayment_rate_s2_count_new + repayment_rate_s1_count_new +-->
+<!--        repay_rate_new,0) as repaymentRateS3CountNew,-->
+<!--        ifnull(repayment_rate_s3_count_old + repayment_rate_s2_count_old + repayment_rate_s1_count_old +-->
+<!--        repay_rate_old,0) as repaymentRateS3CountOld,-->
+<!--        ifnull(all_repayment_amount,0) as allRepaymentAmount,-->
+<!--        ifnull(expire_amount_old,0) as expireAmountOld,-->
+<!--        ifnull(expire_amount_new,0) as expireAmountNew,-->
+<!--        ifnull(normal_repayment_amount,0) as normalRepaymentAmount,-->
+<!--        ifnull(normal_amount_new,0) as normalAmountNew,-->
+<!--        ifnull(normal_amount_old,0) as normalAmountOld,-->
+<!--        ifnull(repay_amount_rate,0) as repayAmountRate,-->
+
+<!--        ifnull(normal_amount_new*10000/expire_amount_new,0) as repayAmountRateNew,-->
+<!--        ifnull(normal_amount_old*10000/expire_amount_old,0) as repayAmountRateOld,-->
+
+<!--        ifnull(repayment_rate_s1_amount_all + repay_amount_rate,0) as repaymentRateS1AmountAll,-->
+<!--        ifnull(repayment_rate_s1_amount_new + repay_amount_rate_new,0) as repaymentRateS1AmountNew,-->
+<!--        ifnull(repayment_rate_s1_amount_old + repay_amount_rate_old,0) as repaymentRateS1AmountOld,-->
+<!--        ifnull(repayment_rate_s2_amount_all + repayment_rate_s1_amount_all + repay_amount_rate,0) as-->
+<!--        repaymentRateS2AmountAll,-->
+<!--        ifnull(repayment_rate_s2_amount_new + repayment_rate_s1_amount_new + repay_amount_rate_new,0) as-->
+<!--        repaymentRateS2AmountNew,-->
+<!--        ifnull(repayment_rate_s2_amount_old + repayment_rate_s1_amount_old + repay_amount_rate_old,0) as-->
+<!--        repaymentRateS2AmountOld,-->
+<!--        ifnull(repayment_rate_s3_amount_all + repayment_rate_s2_amount_all + repayment_rate_s1_amount_all +-->
+<!--        repay_amount_rate,0) as repaymentRateS3AmountAll,-->
+<!--        ifnull(repayment_rate_s3_amount_new + repayment_rate_s2_amount_new + repayment_rate_s1_amount_new +-->
+<!--        repay_amount_rate_new,0) as repaymentRateS3AmountNew,-->
+<!--        ifnull(repayment_rate_s3_amount_old + repayment_rate_s2_amount_old + repayment_rate_s1_amount_old +-->
+<!--        repay_amount_rate_old,0) as repaymentRateS3AmountOld,-->
+<!--        ifnull(all_repay_count,0) as allRepayCount,-->
+<!--        ifnull(all_repay_amount,0) as allRepayAmount,-->
+<!--        ifnull(all_overdue_count,0) as allOverdueCount,-->
+<!--        ifnull(all_overdue_amount,0) as allOverdueAmount,-->
+<!--        ifnull(overdue_rate_s1_amount,0) as overdueRateS1Amount,-->
+<!--        ifnull(overdue_rate_s2_amount,0) as overdueRateS2Amount,-->
+<!--        ifnull(overdue_rate_s3_amount,0) as overdueRateS3Amount,-->
+<!--        ifnull(overdue_rate_s2_count,0) as overdueRateS2Count,-->
+<!--        ifnull(overdue_rate_s3_count,0) as overdueRateS3Count,-->
+<!--        ifnull(overdue_rate_m3_amount,0) as overdueRateM3Amount,-->
+<!--        ifnull(overdue_rate_m3_count,0) as overdueRateM3Count,-->
+<!--        ifnull(normal_repayment_count - renewal_number,0) as normalCount,-->
+<!--        ifnull(normal_repayment_amount - renewal_amount,0) as normalAmount-->
+<!--        <include refid="selectSql"/>-->
+<!--        order by report_date desc-->
+<!--    </select>-->
+
+
+    <select id="findAllBorrowByReport" resultType="map" parameterType="java.lang.String">
+        <![CDATA[
+
+          select count(1) as countAll,ifnull(sum(bo.money_amount), 0) as amountAll from asset_borrow_order bo where DATE_FORMAT(loan_time,'%Y-%m-%d') <= #{reportTime} and bo.`status` in (21,30,23,34,-11,-20)
+
+        ]]>
+    </select>
+
+    <select id="findAllRenewalByReport" resultType="map" parameterType="java.lang.String">
+        <![CDATA[
+
+          select count(1) as countAll,IFNULL(sum(rr.money_amount),0) as amountAll from asset_renewal_record rr where DATE_FORMAT(rr.old_repayment_time,'%Y-%m-%d') <= #{reportTime} and rr.`status` = 1
+
+        ]]>
+    </select>
+
+    <select id="findByRepaymentReport" resultType="com.summer.dao.entity.RepaymentInfo" parameterType="map">
+        SELECT
+        re.id,
+        re.repayment_amount as repaymentAmount,
+        re.user_id as userId,
+        re.repayment_time as repaymentTime,
+        re.paid_amount as paidAmount,
+        re.first_repayment_time as firstRepaymentTime,
+        re.principal_amount AS repaymentPrincipal,
+        bo.customer_type AS customerType,
+        re.`status`,
+        re.late_day as lateDay,
+        bo.loan_term as loanTerm,
+        ui.channel_id as channelId,
+        re.paid_time as paidTime
+        FROM
+        order_repayment re
+        LEFT JOIN order_borrow bo ON bo.id = re.borrow_id
+        left join user_info ui on re.user_id = ui.id
+        <where>
+            <if test="paidTime != null and paidTime != ''">
+                <![CDATA[ (DATE_FORMAT(repayment_time,'%Y-%m-%d') != #{paidTime} ) and DATE_FORMAT(paid_time,'%Y-%m-%d') = #{paidTime}  ]]>
+            </if>
+            <![CDATA[ and paid_time > #{beginTime} and paid_time <= #{endTime}  ]]>
+        </where>
+    </select>
+
+    <select id="findByRepaymentReport1" resultType="java.lang.Long" parameterType="map">
+        SELECT
+        IFNULL(sum(paid_amount),0) as paidAmount
+        FROM
+        order_repayment_detail
+        where
+            1=1  AND `status` = 2 and overdue=2
+        <if test="paidTime != null and paidTime != ''">
+                and DATE_FORMAT( create_time, '%Y-%m-%d' )= DATE_FORMAT(#{paidTime}, '%Y-%m-%d' )
+        </if>
+    </select>
+    <select id="findByRepaymentReport3" resultType="java.lang.Long" parameterType="map">
+        SELECT
+        IFNULL(SUM( orpay.paid_amount),0) as paidAmount
+        FROM
+        order_repayment_detail ord
+        LEFT JOIN order_repayment orpay ON ord.repayment_id = orpay.id
+        <where>
+            <if test="paidTime != null and paidTime != ''">
+                <![CDATA[ (DATE_FORMAT( pay_time, '%Y-%m-%d' )= DATE_FORMAT( #{paidTime}, '%Y-%m-%d' ) ) and DATE_FORMAT( orpay.repayment_time, '%Y-%m-%d' )> DATE_FORMAT(
+            #{paidTime},
+            '%Y-%m-%d')  ]]>
+            </if>
+            <![CDATA[ AND ord.`status` = 2 AND overdue IN ( 0, 2 ) AND orpay.paid_time IS NULL ]]>
+        </where>
+    </select>
+
+    <select id="findByRepaymentReport4" resultType="java.lang.Long" parameterType="map">
+        SELECT
+        IFNULL(a.paidAmount + b.renewalFee,0) AS paidAmount
+        FROM
+        (SELECT IFNULL(SUM(paid_amount),0) paidAmount FROM order_repayment_detail WHERE status = 2
+        <if test="paidTime != null and paidTime != ''">
+            and (DATE_FORMAT( create_time, '%Y-%m-%d' ) = DATE_FORMAT( #{paidTime}, '%Y-%m-%d' ) )
+        </if>
+        ) a,
+        (SELECT IFNULL(SUM(renewal_fee),0) renewalFee FROM order_renewal WHERE status = 2
+        <if test="paidTime != null and paidTime != ''">
+            and (DATE_FORMAT( create_time, '%Y-%m-%d' ) = DATE_FORMAT( #{paidTime}, '%Y-%m-%d' ) )
+        </if>
+        ) b
+    </select>
+
+    <select id="findByRepaymentReport2" resultType="java.lang.Long" parameterType="map">
+        SELECT
+        IFNULL(sum(re.paid_amount),0) as paidAmount
+        FROM
+        order_repayment re
+        LEFT JOIN order_borrow bo ON bo.id = re.borrow_id
+        left join user_info ui on re.user_id = ui.id
+        <where>
+            <if test="paidTime != null and paidTime != ''">
+                <![CDATA[ (DATE_FORMAT(repayment_time,'%Y-%m-%d') < DATE_FORMAT(paid_time,'%Y-%m-%d') ) and DATE_FORMAT(paid_time,'%Y-%m-%d') = #{paidTime}  ]]>
+            </if>
+            <![CDATA[ and paid_time > #{beginTime} and paid_time <= #{endTime}  ]]>
+        </where>
+    </select>
+
+    <select id="findTodayRepaymentReport" resultType="com.summer.dao.entity.RepaymentInfo" parameterType="map">
+        SELECT
+        re.id,
+        re.repayment_amount as repaymentAmount,
+        re.user_id as userId,
+        re.repayment_time as repaymentTime,
+        re.paid_amount as paidAmount,
+        re.first_repayment_time as firstRepaymentTime,
+        re.principal_amount AS repaymentPrincipal,
+        bo.customer_type AS customerType,
+        re.`status`,
+        re.late_day as lateDay,
+        bo.loan_term as loanTerm,
+        ui.channel_id as channelId
+        FROM
+        order_repayment re
+        LEFT JOIN order_borrow bo ON bo.id = re.borrow_id
+        left join user_info ui on re.user_id = ui.id
+        <where>
+            <if test="repaymentTime != null and repaymentTime != ''">
+                <![CDATA[  and DATE_FORMAT(repayment_time,'%Y-%m-%d') = #{repaymentTime}  ]]>
+            </if>
+        </where>
+        group by id
+    </select>
+
+    <select id="findByRepaymentReportTitle" resultType="com.summer.dao.entity.RepaymentInfo" parameterType="map">
+        SELECT
+        re.id,
+        re.repayment_amount as repaymentAmount,
+        re.paid_amount as paidAmount,
+        re.user_id as userId,
+        re.repayment_time as repaymentTime,
+        re.first_repayment_time as firstRepaymentTime,
+        bo.customer_type AS customerType,
+        re.`status`,
+        re.late_day as lateDay,
+        bo.loan_term as loanTerm,
+        ui.channel_id as channelId
+        FROM
+        order_repayment re
+        LEFT JOIN order_borrow bo ON bo.id = re.borrow_id
+        left join user_info ui on re.user_id = ui.id
+        WHERE 1 = 1
+        <![CDATA[    and date_format(re.first_repayment_time,'%Y-%m-%d') <= date_format(now(),'%Y-%m-%d') ]]>
+        <if test="repaymentTimeStart != null and repaymentTimeStart != ''">
+            <![CDATA[    and re.repayment_time >= #{repaymentTimeStart}   ]]>
+        </if>
+        <if test="repaymentTimeEnd != null and repaymentTimeEnd != ''">
+            <![CDATA[    and re.repayment_time < #{repaymentTimeEnd}   ]]>
+        </if>
+        <if test="repaymentTime != null and repaymentTime != ''">
+            <![CDATA[  and DATE_FORMAT(repayment_time,'%Y-%m-%d') = #{repaymentTime} or DATE_FORMAT(paid_time,'%Y-%m-%d') = #{repaymentTime}  ]]>
+        </if>
+        <if test="paidTime != null and paidTime != ''">
+            <![CDATA[  or DATE_FORMAT(paid_time,'%Y-%m-%d') = #{paidTime}   ]]>
+        </if>
+        <if test="statuses != null and statuses != '' and statuses.length > 0">
+            or re.status in
+            <foreach item="item" index="index" collection="statuses" open="(" separator="," close=")">
+                ${item}
+            </foreach>
+        </if>
+    </select>
+
+    <select id="queryReportInfo" parameterType="map" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from report_repayment
+        where 1 = 1
+        <if test="reportDateStart != null and reportDateStart != ''">
+            <![CDATA[    and report_date = #{reportDateStart}   ]]>
+        </if>
+        <if test="channelId != null and channelId !=''">
+            <![CDATA[    and channel_id = #{channelId}   ]]>
+        </if>
+        order by id desc
+    </select>
+
+    <select id="queryReportByChannel" parameterType="map" resultMap="BaseResultMap">
+        select
+        report_date, sum(all_repayment_count) as all_repayment_count , sum(expire_count_old) expire_count_old,
+        sum(expire_count_new) as expire_count_new, sum(normal_repayment_count) as normal_repayment_count,
+        sum(normal_count_new) as normal_count_new, sum(normal_count_old) as normal_count_old,
+        sum(repay_rate) as repay_rate,sum(repay_rate_old) as repay_rate_old, sum(repay_rate_new),
+        sum(repayment_rate_s1_count_all) as repayment_rate_s1_count_all,
+        sum(repayment_rate_s1_count_new ) as repayment_rate_s1_count_new,sum( repayment_rate_s1_count_old) as
+        repayment_rate_s1_count_old,
+        sum(repayment_rate_s2_count_all) as repayment_rate_s2_count_all,
+        sum(repayment_rate_s2_count_new) as repayment_rate_s2_count_new,
+        sum(repayment_rate_s2_count_old) as repayment_rate_s2_count_old,
+        sum(repayment_rate_s3_count_all) as repayment_rate_s3_count_all,
+        sum(repayment_rate_s3_count_new) as repayment_rate_s3_count_new,
+        sum(repayment_rate_s3_count_old) as repayment_rate_s3_count_old,
+        sum(all_repayment_amount) as all_repayment_amount,
+        sum(expire_amount_old) as expire_amount_old,
+        sum(expire_amount_new) as expire_amount_new, sum(normal_repayment_amount) as normal_repayment_amount,
+        sum(normal_amount_new) as normal_amount_new, sum(normal_amount_old) as normal_amount_old,
+        sum(repay_amount_rate) as repay_amount_rate, sum(repay_amount_rate_old) as repay_amount_rate_old,
+        sum(repay_amount_rate_new) as repay_amount_rate_new, sum(repayment_rate_s1_amount_all) as
+        repayment_rate_s1_amount_all,
+        sum(repayment_rate_s1_amount_new) as repayment_rate_s1_amount_new,
+        sum(repayment_rate_s1_amount_old) as repayment_rate_s1_amount_old,
+        sum(repayment_rate_s2_amount_all) as repayment_rate_s2_amount_all,
+        sum(repayment_rate_s2_amount_new) as repayment_rate_s2_amount_new,
+        sum(repayment_rate_s2_amount_old) as repayment_rate_s2_amount_old,
+        sum(repayment_rate_s3_amount_new) as repayment_rate_s3_amount_new,
+        sum(repayment_rate_s3_amount_old) as repayment_rate_s3_amount_old,
+        sum( repayment_rate_s3_amount_all) as repayment_rate_s3_amount_all
+        from report_repayment
+        where 1 = 1
+        <if test="reportDateStart != null and reportDateStart != ''">
+            <![CDATA[    and report_date = #{reportDateStart}    ]]>
+        </if>
+        group by report_date order by report_date desc
+    </select>
+
+    <sql id="Base_order_List">
+        id,
+        user_id,
+        borrow_id,
+        repayment_amount
+        repayment,
+        paid_amount
+        paid,
+        principal_amount
+        principal,
+        fee_amount
+        fee,
+        late_fee
+        late,true_late_fee,true_principal,reduce_amount,
+        late_fee_apr,
+        repayment_time,
+        paid_time,
+        late_start_time,
+        late_update_time,
+    late_day, create_time, update_time, remark, status, collected, paid_forward, pay_type,
+    first_repayment_time
+  </sql>
+    <resultMap id="BaseResultMap_OrderRepayment" type="com.summer.dao.entity.OrderRepayment">
+        <id column="id" property="id" jdbcType="INTEGER"/>
+        <result column="user_id" property="userId" jdbcType="INTEGER"/>
+        <result column="borrow_id" property="borrowId" jdbcType="INTEGER"/>
+        <result column="repayment" property="repaymentAmount" jdbcType="INTEGER"/>
+        <result column="paid" property="paidAmount" jdbcType="INTEGER"/>
+        <result column="principal" property="principalAmount" jdbcType="INTEGER"/>
+        <result column="fee" property="feeAmount" jdbcType="INTEGER"/>
+        <result column="late" property="lateFee" jdbcType="INTEGER"/>
+        <result column="true_late_fee" property="trueLateFee" jdbcType="INTEGER"/>
+        <result column="true_principal" property="truePrincipal" jdbcType="INTEGER"/>
+        <result column="reduce_amount" property="reduceAmount" jdbcType="INTEGER"/>
+        <result column="late_fee_apr" property="lateFeeApr" jdbcType="SMALLINT"/>
+        <result column="repayment_time" property="repaymentTime" jdbcType="TIMESTAMP"/>
+        <result column="repayment_time_chg" property="repaymentTimeChg" jdbcType="VARCHAR"/>
+        <result column="paid_time" property="paidTime" jdbcType="TIMESTAMP"/>
+        <result column="late_start_time" property="lateStartTime" jdbcType="TIMESTAMP"/>
+        <result column="late_update_time" property="lateUpdateTime" jdbcType="TIMESTAMP"/>
+        <result column="late_day" property="lateDay" jdbcType="INTEGER"/>
+        <result column="create_time" property="createTime" jdbcType="TIMESTAMP"/>
+        <result column="update_time" property="updateTime" jdbcType="TIMESTAMP"/>
+        <result column="remark" property="remark" jdbcType="VARCHAR"/>
+        <result column="status" property="status" jdbcType="TINYINT"/>
+        <result column="collected" property="collected" jdbcType="TINYINT"/>
+        <result column="paid_forward" property="paidForward" jdbcType="TINYINT"/>
+        <result column="pay_type" property="payType" jdbcType="TINYINT"/>
+        <result column="first_repayment_time" property="firstRepaymentTime" jdbcType="TIMESTAMP"/>
+    </resultMap>
+    <select id="findByRepaymentSmsRemind" resultMap="BaseResultMap_OrderRepayment" parameterType="map">
+        SELECT
+        <include refid="Base_order_List"/>
+        FROM
+        order_repayment
+        WHERE 1 = 1
+        <if test="repaymentTimeStart != null">
+            <![CDATA[    and repayment_time >= #{repaymentTimeStart}   ]]>
+        </if>
+        <if test="repaymentTimeEnd != null and repaymentTimeEnd != ''">
+            <![CDATA[    and repayment_time < #{repaymentTimeEnd}   ]]>
+        </if>
+        <if test="statuses != null and statuses != '' and statuses.length > 0">
+            and status in
+            <foreach item="item" index="index" collection="statuses" open="(" separator="," close=")">
+                ${item}
+            </foreach>
+        </if>
+    </select>
+
+    <select id="renewalToday" resultType="com.summer.dao.entity.RepaymentInfo" parameterType="map">
+        SELECT
+        re.id,
+        re.repayment_amount as repaymentAmount,
+        re.user_id as userId,
+        re.repayment_time as repaymentTime,
+        re.paid_amount as paidAmount,
+        re.first_repayment_time as firstRepaymentTime,
+        re.principal_amount AS repaymentPrincipal,
+        bo.customer_type AS customerType,
+        re.`status`,
+        re.late_day as lateDay,
+        bo.loan_term as loanTerm,
+        ui.channel_id as channelId,
+        renewal.id as renewalId
+        FROM
+        order_repayment re
+        LEFT JOIN order_renewal renewal ON re.id = renewal.repayment_id
+        LEFT JOIN order_borrow bo ON bo.id = re.borrow_id
+        left join user_info ui on re.user_id = ui.id
+        <where>
+            renewal.old_repayment_time != re.first_repayment_time and renewal.status = 2
+            <if test="repaymentTime != null and repaymentTime != ''">
+                <![CDATA[  and DATE_FORMAT(renewal.old_repayment_time,'%Y-%m-%d') = #{repaymentTime} and DATE_FORMAT(renewal.repayment_time,'%Y-%m-%d') != #{repaymentTime} ]]>
+            </if>
+        </where>
+        group by id
+    </select>
+
+    <select id="findTitle" parameterType="map" resultType="com.summer.pojo.vo.ReportRepaymentTitleVO">
+        select
+        sum(ifnull(renewal_number,0)) as renewalNumber,
+        sum(ifnull(renewal_amount,0)) as renewalAmount,
+        sum(ifnull(all_repayment_count,0)) as allRepaymentCount,
+        sum(ifnull(expire_count_old,0)) as expireCountOld,
+        sum(ifnull(expire_count_new,0)) as expireCountNew,
+        sum(ifnull(normal_repayment_count,0)) as normalRepaymentCount,
+        sum(ifnull(normal_count_new,0)) as normalCountNew,
+        sum(ifnull(normal_count_old,0)) as normalCountOld,
+        sum(ifnull(repay_rate * all_repayment_count,0))/reAllRepaymentCount as repayRate,
+        sum(ifnull(repay_rate_new * all_repayment_count,0))/reExpireCountNew as repayRateNew,
+        sum(ifnull(repay_rate_old * all_repayment_count,0))/reExpireCountOld as repayRateOld,
+        sum(ifnull((repayment_rate_s1_count_all + repay_rate) * all_repayment_count,0))/reAllRepaymentCount as
+        repaymentRateS1CountAll,
+        sum(ifnull((repayment_rate_s1_count_new + repay_rate_new) * all_repayment_count,0))/reExpireCountNew as
+        repaymentRateS1CountNew,
+        sum(ifnull((repayment_rate_s1_count_old + repay_rate_old) * all_repayment_count,0))/reExpireCountOld as
+        repaymentRateS1CountOld,
+        sum(ifnull((repayment_rate_s2_count_all + repayment_rate_s1_count_all + repay_rate) *
+        all_repayment_count,0))/reAllRepaymentCount as repaymentRateS2CountAll,
+        sum(ifnull((repayment_rate_s2_count_new + repayment_rate_s1_count_new + repay_rate_new) *
+        all_repayment_count,0))/reExpireCountNew as repaymentRateS2CountNew,
+        sum(ifnull((repayment_rate_s2_count_old + repayment_rate_s1_count_old + repay_rate_old) *
+        all_repayment_count,0))/reExpireCountOld as repaymentRateS2CountOld,
+        sum(ifnull((repayment_rate_s3_count_all + repayment_rate_s2_count_all + repayment_rate_s1_count_all +
+        repay_rate) * all_repayment_count,0)
+        )/reAllRepaymentCount as repaymentRateS3CountAll,
+        sum(ifnull((repayment_rate_s3_count_new + repayment_rate_s2_count_new + repayment_rate_s1_count_new +
+        repay_rate_new) * all_repayment_count,0))/reExpireCountNew as repaymentRateS3CountNew,
+        sum(ifnull((repayment_rate_s3_count_old + repayment_rate_s2_count_old + repayment_rate_s1_count_old +
+        repay_rate_old) * all_repayment_count,0))/reExpireCountOld as repaymentRateS3CountOld,
+        sum(ifnull(all_repayment_amount,0)) as allRepaymentAmount,
+        sum(ifnull(expire_amount_old,0)) as expireAmountOld,
+        sum(ifnull(expire_amount_new,0)) as expireAmountNew,
+        sum(ifnull(normal_repayment_amount,0)) as normalRepaymentAmount,
+        sum(ifnull(normal_amount_new,0)) as normalAmountNew,
+        sum(ifnull(normal_amount_old,0)) as normalAmountOld,
+        sum(ifnull(repay_amount_rate * all_repayment_amount,0))/reAllRepaymentAmount as repayAmountRate,
+        sum(ifnull(repay_amount_rate_new * all_repayment_amount,0))/reExpireAmountNew as repayAmountRateNew,
+        sum(ifnull(repay_amount_rate_old * all_repayment_amount,0))/reExpireAmountOld as repayAmountRateOld,
+        sum(ifnull((repayment_rate_s1_amount_all + repay_amount_rate) * all_repayment_amount,0))/reAllRepaymentAmount as
+        repaymentRateS1AmountAll,
+        sum(ifnull((repayment_rate_s1_amount_new + repay_amount_rate_new) * all_repayment_amount,0))/reExpireAmountNew
+        as repaymentRateS1AmountNew,
+        sum(ifnull((repayment_rate_s1_amount_old + repay_amount_rate_old) * all_repayment_amount,0))/reExpireAmountOld
+        as repaymentRateS1AmountOld,
+        sum(ifnull((repayment_rate_s2_amount_all + repayment_rate_s1_amount_all + repay_amount_rate) *
+        all_repayment_amount,0))/reAllRepaymentAmount as
+        repaymentRateS2AmountAll,
+        sum(ifnull((repayment_rate_s2_amount_new + repayment_rate_s1_amount_new + repay_amount_rate_new) *
+        all_repayment_amount,0))/reExpireAmountNew as
+        repaymentRateS2AmountNew,
+        sum(ifnull((repayment_rate_s2_amount_old + repayment_rate_s1_amount_old + repay_amount_rate_old) *
+        all_repayment_amount,0))/reExpireAmountOld as
+        repaymentRateS2AmountOld,
+        sum(ifnull((repayment_rate_s3_amount_all + repayment_rate_s2_amount_all + repayment_rate_s1_amount_all +
+        repay_amount_rate) * all_repayment_amount,0))/reAllRepaymentAmount as repaymentRateS3AmountAll,
+        sum(ifnull((repayment_rate_s3_amount_new + repayment_rate_s2_amount_new + repayment_rate_s1_amount_new +
+        repay_amount_rate_new) * all_repayment_amount,0))/reExpireAmountNew as repaymentRateS3AmountNew,
+        sum(ifnull((repayment_rate_s3_amount_old + repayment_rate_s2_amount_old + repayment_rate_s1_amount_old +
+        repay_amount_rate_old) * all_repayment_amount,0))/reExpireAmountOld as repaymentRateS3AmountOld,
+        sum(ifnull(all_repay_count,0)) as allRepayCount,
+        sum(ifnull(all_repay_amount,0)) as allRepayAmount,
+        sum(ifnull(all_overdue_count,0)) as allOverdueCount,
+        sum(ifnull(all_overdue_amount,0)) as allOverdueAmount,
+        sum(ifnull(overdue_rate_s1_amount,0)) as overdueRateS1Amount,
+        sum(ifnull(overdue_rate_s2_amount,0)) as overdueRateS2Amount,
+        sum(ifnull(overdue_rate_s3_amount,0)) as overdueRateS3Amount,
+        sum(ifnull(overdue_rate_s2_count,0)) as overdueRateS2Count,
+        sum(ifnull(overdue_rate_s3_count,0)) as overdueRateS3Count,
+        sum(ifnull(overdue_rate_m3_amount,0)) as overdueRateM3Amount,
+        sum(ifnull(overdue_rate_m3_count,0)) as overdueRateM3Count,
+        sum(ifnull(normal_repayment_count - renewal_number,0)) as normalCount,
+        sum(ifnull(normal_repayment_amount - renewal_amount,0)) as normalAmount
+        from report_repayment left join (select id, count(1) as num, sum(ifnull(all_repayment_count,0)) as
+        reAllRepaymentCount, sum(ifnull(all_repayment_amount,0)) as reAllRepaymentAmount,
+        sum(ifnull(expire_count_old,0)) as reExpireCountOld,
+        sum(ifnull(expire_count_new,0)) as reExpireCountNew, sum(ifnull(expire_amount_old,0)) as reExpireAmountOld,
+        sum(ifnull(expire_amount_new,0)) as reExpireAmountNew from report_repayment
+        <where>
+            <![CDATA[    and report_date <= date_format(now(),'%Y-%m-%d') ]]>
+            <if test="reportDateStart != null and reportDateStart != ''">
+                <![CDATA[    and report_date >= #{reportDateStart}   ]]>
+            </if>
+            <if test="reportDateEnd != null and reportDateEnd != ''">
+                <![CDATA[    and report_date < date_add(#{reportDateEnd},interval 1 day) ]]>
+            </if>
+        </where>
+        ) re on report_repayment.id = re.id
+        <where>
+            <![CDATA[    and report_date <= date_format(now(),'%Y-%m-%d') ]]>
+            <if test="reportDateStart != null and reportDateStart != ''">
+                <![CDATA[    and report_date >= #{reportDateStart}   ]]>
+            </if>
+            <if test="reportDateEnd != null and reportDateEnd != ''">
+                <![CDATA[    and report_date < date_add(#{reportDateEnd},interval 1 day) ]]>
+            </if>
+        </where>
+    </select>
+
+    <select id="findByReportTime" parameterType="java.util.Map" resultMap="BaseResultMap">
+        select id,report_date,renewal_number,renewal_amount from report_repayment
+    </select>
+</mapper>

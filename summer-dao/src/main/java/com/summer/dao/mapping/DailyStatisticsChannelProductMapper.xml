@@ -1,0 +1,621 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.summer.dao.mapper.dailystatistics.DailyStatisticsChannelProductDAO">
+    <resultMap id="BaseResultMap" type="com.summer.dao.entity.dailystatics.DailyStatisticsChannelProduct">
+        <id column="id" jdbcType="INTEGER" property="id"/>
+        <result column="product_name" jdbcType="VARCHAR" property="productName"/>
+        <result column="report_time" property="reportTime"/>
+        <result column="channel_id" jdbcType="INTEGER" property="channelId"/>
+        <result column="plateform_user_id" jdbcType="INTEGER" property="plateformUserId"/>
+        <result column="uv" jdbcType="INTEGER" property="uv"/>
+        <result column="pv" jdbcType="INTEGER" property="pv"/>
+        <result column="register_number" jdbcType="INTEGER" property="registerNumber"/>
+        <result column="register_number_channel" jdbcType="INTEGER" property="registerNumberChannel"/>
+        <result column="factor" jdbcType="DECIMAL" property="factor"/>
+        <result column="pplication_number" jdbcType="INTEGER" property="pplicationNumber"/>
+        <result column="sum_channel_cost" jdbcType="INTEGER" property="sumChannelCost"/>
+        <result column="loan_number_channel" jdbcType="INTEGER" property="loanNumberChannel"/>
+        <result column="create_time" jdbcType="TIMESTAMP" property="createTime"/>
+        <result column="update_time" jdbcType="TIMESTAMP" property="updateTime"/>
+        <result column="price" property="price"/>
+        <result column="cooperation_mode" property="cooperationMode"/>
+
+    </resultMap>
+    <sql id="Base_Column_List">
+    id, product_name, report_time,channel_id, plateform_user_id, uv, pv, register_number, register_number_channel,
+    factor, pplication_number, sum_channel_cost, loan_number_channel, create_time, update_time,price,cooperation_mode
+  </sql>
+    <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from daily_statistics_channel_product
+        where id = #{id,jdbcType=INTEGER}
+    </select>
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from daily_statistics_channel_product
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+    <insert id="insert" parameterType="com.summer.dao.entity.dailystatics.DailyStatisticsChannelProduct">
+    insert into daily_statistics_channel_product (id, product_name, channel_id, 
+      plateform_user_id, uv, pv, 
+      register_number, register_number_channel, 
+      factor, pplication_number, sum_channel_cost, 
+      loan_number_channel, create_time, update_time,report_time
+      )
+    values (#{id,jdbcType=INTEGER}, #{productName,jdbcType=VARCHAR}, #{channelId,jdbcType=INTEGER}, 
+      #{plateformUserId,jdbcType=INTEGER}, #{uv,jdbcType=INTEGER}, #{pv,jdbcType=INTEGER}, 
+      #{registerNumber,jdbcType=INTEGER}, #{registerNumberChannel,jdbcType=INTEGER}, 
+      #{factor,jdbcType=DECIMAL}, #{pplicationNumber,jdbcType=INTEGER}, #{sumChannelCost,jdbcType=INTEGER}, 
+      #{loanNumberChannel,jdbcType=INTEGER}, #{createTime,jdbcType=TIMESTAMP}, #{updateTime,jdbcType=TIMESTAMP},
+      #{reportTime}
+      )
+  </insert>
+    <insert id="insertSelective" parameterType="com.summer.dao.entity.dailystatics.DailyStatisticsChannelProduct">
+        insert into daily_statistics_channel_product
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                id,
+            </if>
+            <if test="productName != null">
+                product_name,
+            </if>
+
+            <if test="reportTime != null">
+                report_time,
+            </if>
+            <if test="channelId != null">
+                channel_id,
+            </if>
+            <if test="plateformUserId != null">
+                plateform_user_id,
+            </if>
+            <if test="uv != null">
+                uv,
+            </if>
+            <if test="pv != null">
+                pv,
+            </if>
+            <if test="registerNumber != null">
+                register_number,
+            </if>
+            <if test="registerNumberChannel != null">
+                register_number_channel,
+            </if>
+            <if test="factor != null">
+                factor,
+            </if>
+            <if test="pplicationNumber != null">
+                pplication_number,
+            </if>
+            <if test="sumChannelCost != null">
+                sum_channel_cost,
+            </if>
+            <if test="loanNumberChannel != null">
+                loan_number_channel,
+            </if>
+            <if test="createTime != null">
+                create_time,
+            </if>
+            <if test="updateTime != null">
+                update_time,
+            </if>
+            <if test="price != null">
+                price,
+            </if>
+
+            <if test="cooperationMode != null">
+                cooperation_mode,
+            </if>
+
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                #{id,jdbcType=INTEGER},
+            </if>
+            <if test="productName != null">
+                #{productName,jdbcType=VARCHAR},
+            </if>
+            <if test="reportTime != null">
+                #{reportTime} ,
+            </if>
+            <if test="channelId != null">
+                #{channelId,jdbcType=INTEGER},
+            </if>
+            <if test="plateformUserId != null">
+                #{plateformUserId,jdbcType=INTEGER},
+            </if>
+            <if test="uv != null">
+                #{uv,jdbcType=INTEGER},
+            </if>
+            <if test="pv != null">
+                #{pv,jdbcType=INTEGER},
+            </if>
+            <if test="registerNumber != null">
+                #{registerNumber,jdbcType=INTEGER},
+            </if>
+            <if test="registerNumberChannel != null">
+                #{registerNumberChannel,jdbcType=INTEGER},
+            </if>
+            <if test="factor != null">
+                #{factor,jdbcType=DECIMAL},
+            </if>
+            <if test="pplicationNumber != null">
+                #{pplicationNumber,jdbcType=INTEGER},
+            </if>
+            <if test="sumChannelCost != null">
+                #{sumChannelCost,jdbcType=INTEGER},
+            </if>
+            <if test="loanNumberChannel != null">
+                #{loanNumberChannel,jdbcType=INTEGER},
+            </if>
+            <if test="createTime != null">
+                #{createTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="updateTime != null">
+                #{updateTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="price != null">
+                #{price},
+            </if>
+            <if test="cooperationMode != null">
+                #{cooperationMode},
+            </if>
+        </trim>
+    </insert>
+    <insert id="insertBatch" parameterType="java.util.List">
+        insert into daily_statistics_channel_product (id, product_name, channel_id,
+        plateform_user_id, uv, pv,
+        register_number, register_number_channel,
+        factor, pplication_number, sum_channel_cost,
+        loan_number_channel, create_time,
+        update_time)
+        values
+        <foreach collection="list" index="index" item="item" separator=",">
+            (#{item.id,jdbcType=INTEGER}, #{item.productName,jdbcType=VARCHAR}, #{item.channelId,jdbcType=INTEGER},
+            #{item.plateformUserId,jdbcType=INTEGER}, #{item.uv,jdbcType=INTEGER}, #{item.pv,jdbcType=INTEGER},
+            #{item.registerNumber,jdbcType=INTEGER}, #{item.registerNumberChannel,jdbcType=INTEGER},
+            #{item.factor,jdbcType=DECIMAL}, #{item.pplicationNumber,jdbcType=INTEGER},
+            #{item.sumChannelCost,jdbcType=INTEGER},
+            #{item.loanNumberChannel,jdbcType=INTEGER}, #{item.createTime,jdbcType=TIMESTAMP},
+            #{item.updateTime,jdbcType=TIMESTAMP})
+        </foreach>
+    </insert>
+    <insert id="insertBatchSelective" parameterType="java.util.List">
+        insert into daily_statistics_channel_product
+        (id, product_name, channel_id, plateform_user_id, uv, pv, register_number, register_number_channel,
+        factor, pplication_number, sum_channel_cost, loan_number_channel, create_time,
+        update_time)
+        values
+        <foreach collection="list" index="index" item="item" separator=",">
+            <trim prefix="(" suffix=")" suffixOverrides=",">
+                <if test="item.id != null">
+                    #{item.id,jdbcType=INTEGER},
+                </if>
+                <if test="item.id == null">
+                    NULL,
+                </if>
+                <if test="item.productName != null">
+                    #{item.productName,jdbcType=VARCHAR},
+                </if>
+                <if test="item.productName == null">
+                    NULL,
+                </if>
+                <if test="item.channelId != null">
+                    #{item.channelId,jdbcType=INTEGER},
+                </if>
+                <if test="item.channelId == null">
+                    NULL,
+                </if>
+                <if test="item.plateformUserId != null">
+                    #{item.plateformUserId,jdbcType=INTEGER},
+                </if>
+                <if test="item.plateformUserId == null">
+                    NULL,
+                </if>
+                <if test="item.uv != null">
+                    #{item.uv,jdbcType=INTEGER},
+                </if>
+                <if test="item.uv == null">
+                    NULL,
+                </if>
+                <if test="item.pv != null">
+                    #{item.pv,jdbcType=INTEGER},
+                </if>
+                <if test="item.pv == null">
+                    NULL,
+                </if>
+                <if test="item.registerNumber != null">
+                    #{item.registerNumber,jdbcType=INTEGER},
+                </if>
+                <if test="item.registerNumber == null">
+                    NULL,
+                </if>
+                <if test="item.registerNumberChannel != null">
+                    #{item.registerNumberChannel,jdbcType=INTEGER},
+                </if>
+                <if test="item.registerNumberChannel == null">
+                    NULL,
+                </if>
+                <if test="item.factor != null">
+                    #{item.factor,jdbcType=DECIMAL},
+                </if>
+                <if test="item.factor == null">
+                    NULL,
+                </if>
+                <if test="item.pplicationNumber != null">
+                    #{item.pplicationNumber,jdbcType=INTEGER},
+                </if>
+                <if test="item.pplicationNumber == null">
+                    NULL,
+                </if>
+                <if test="item.sumChannelCost != null">
+                    #{item.sumChannelCost,jdbcType=INTEGER},
+                </if>
+                <if test="item.sumChannelCost == null">
+                    NULL,
+                </if>
+                <if test="item.loanNumberChannel != null">
+                    #{item.loanNumberChannel,jdbcType=INTEGER},
+                </if>
+                <if test="item.loanNumberChannel == null">
+                    NULL,
+                </if>
+                <if test="item.createTime != null">
+                    #{item.createTime,jdbcType=TIMESTAMP},
+                </if>
+                <if test="item.createTime == null">
+                    NULL,
+                </if>
+                <if test="item.updateTime != null">
+                    #{item.updateTime,jdbcType=TIMESTAMP},
+                </if>
+                <if test="item.updateTime == null">
+                    NULL,
+                </if>
+            </trim>
+        </foreach>
+    </insert>
+    <update id="updateByPrimaryKeySelective"
+            parameterType="com.summer.dao.entity.dailystatics.DailyStatisticsChannelProduct">
+        update daily_statistics_channel_product
+        <set>
+            <if test="productName != null">
+                product_name = #{productName,jdbcType=VARCHAR},
+            </if>
+            <if test="channelId != null">
+                channel_id = #{channelId,jdbcType=INTEGER},
+            </if>
+            <if test="plateformUserId != null">
+                plateform_user_id = #{plateformUserId,jdbcType=INTEGER},
+            </if>
+            <if test="uv != null">
+                uv = #{uv,jdbcType=INTEGER},
+            </if>
+            <if test="pv != null">
+                pv = #{pv,jdbcType=INTEGER},
+            </if>
+            <if test="registerNumber != null">
+                register_number = #{registerNumber,jdbcType=INTEGER},
+            </if>
+            <if test="registerNumberChannel != null">
+                register_number_channel = #{registerNumberChannel,jdbcType=INTEGER},
+            </if>
+            <if test="factor != null">
+                factor = #{factor,jdbcType=DECIMAL},
+            </if>
+            <if test="pplicationNumber != null">
+                pplication_number = #{pplicationNumber,jdbcType=INTEGER},
+            </if>
+            <if test="sumChannelCost != null">
+                sum_channel_cost = #{sumChannelCost,jdbcType=INTEGER},
+            </if>
+            <if test="loanNumberChannel != null">
+                loan_number_channel = #{loanNumberChannel,jdbcType=INTEGER},
+            </if>
+            <if test="createTime != null">
+                create_time = #{createTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="updateTime != null">
+                update_time = #{updateTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="price != null">
+                price =#{price},
+            </if>
+            <if test="cooperationMode != null">
+                cooperation_mode = #{cooperationMode},
+            </if>
+        </set>
+        where id = #{id,jdbcType=INTEGER}
+    </update>
+    <update id="updateByPrimaryKey" parameterType="com.summer.dao.entity.dailystatics.DailyStatisticsChannelProduct">
+    update daily_statistics_channel_product
+    set product_name = #{productName,jdbcType=VARCHAR},
+      channel_id = #{channelId,jdbcType=INTEGER},
+      plateform_user_id = #{plateformUserId,jdbcType=INTEGER},
+      uv = #{uv,jdbcType=INTEGER},
+      pv = #{pv,jdbcType=INTEGER},
+      register_number = #{registerNumber,jdbcType=INTEGER},
+      register_number_channel = #{registerNumberChannel,jdbcType=INTEGER},
+      factor = #{factor,jdbcType=DECIMAL},
+      pplication_number = #{pplicationNumber,jdbcType=INTEGER},
+      sum_channel_cost = #{sumChannelCost,jdbcType=INTEGER},
+      loan_number_channel = #{loanNumberChannel,jdbcType=INTEGER},
+      create_time = #{createTime,jdbcType=TIMESTAMP},
+      update_time = #{updateTime,jdbcType=TIMESTAMP}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+    <update id="updateBatchByPrimaryKey" parameterType="java.util.List">
+        update daily_statistics_channel_product
+        <trim prefix="set" suffixOverrides=",">
+            <trim prefix="productName =case id" suffix="end,">
+                <foreach collection="list" index="index" item="item" separator=" ">
+                    when #{item.id} then #{item.productName}
+                </foreach>
+            </trim>
+            <trim prefix="channelId =case id" suffix="end,">
+                <foreach collection="list" index="index" item="item" separator=" ">
+                    when #{item.id} then #{item.channelId}
+                </foreach>
+            </trim>
+            <trim prefix="plateformUserId =case id" suffix="end,">
+                <foreach collection="list" index="index" item="item" separator=" ">
+                    when #{item.id} then #{item.plateformUserId}
+                </foreach>
+            </trim>
+            <trim prefix="uv =case id" suffix="end,">
+                <foreach collection="list" index="index" item="item" separator=" ">
+                    when #{item.id} then #{item.uv}
+                </foreach>
+            </trim>
+            <trim prefix="pv =case id" suffix="end,">
+                <foreach collection="list" index="index" item="item" separator=" ">
+                    when #{item.id} then #{item.pv}
+                </foreach>
+            </trim>
+            <trim prefix="registerNumber =case id" suffix="end,">
+                <foreach collection="list" index="index" item="item" separator=" ">
+                    when #{item.id} then #{item.registerNumber}
+                </foreach>
+            </trim>
+            <trim prefix="registerNumberChannel =case id" suffix="end,">
+                <foreach collection="list" index="index" item="item" separator=" ">
+                    when #{item.id} then #{item.registerNumberChannel}
+                </foreach>
+            </trim>
+            <trim prefix="factor =case id" suffix="end,">
+                <foreach collection="list" index="index" item="item" separator=" ">
+                    when #{item.id} then #{item.factor}
+                </foreach>
+            </trim>
+            <trim prefix="pplicationNumber =case id" suffix="end,">
+                <foreach collection="list" index="index" item="item" separator=" ">
+                    when #{item.id} then #{item.pplicationNumber}
+                </foreach>
+            </trim>
+            <trim prefix="sumChannelCost =case id" suffix="end,">
+                <foreach collection="list" index="index" item="item" separator=" ">
+                    when #{item.id} then #{item.sumChannelCost}
+                </foreach>
+            </trim>
+            <trim prefix="loanNumberChannel =case id" suffix="end,">
+                <foreach collection="list" index="index" item="item" separator=" ">
+                    when #{item.id} then #{item.loanNumberChannel}
+                </foreach>
+            </trim>
+            <trim prefix="createTime =case id" suffix="end,">
+                <foreach collection="list" index="index" item="item" separator=" ">
+                    when #{item.id} then #{item.createTime}
+                </foreach>
+            </trim>
+            <trim prefix="updateTime =case id" suffix="end,">
+                <foreach collection="list" index="index" item="item" separator=" ">
+                    when #{item.id} then #{item.updateTime}
+                </foreach>
+            </trim>
+        </trim>
+        where id in
+        <foreach close=")" collection="list" index="index" item="item" open="(" separator=",">
+            #{item.id}
+        </foreach>
+    </update>
+    <update id="updateBatchByPrimaryKeySelective" parameterType="java.util.List">
+        update daily_statistics_channel_product
+        <trim prefix="set" suffixOverrides=",">
+            <trim prefix="productName =case id" suffix="end,">
+                <foreach collection="list" index="index" item="item" separator=" ">
+                    <if test="item.productName != null ">
+                        when #{item.id} then #{item.productName}
+                    </if>
+                    <if test="item.productName == null ">
+                        when #{item.id} then daily_statistics_channel_product.product_name
+                    </if>
+                </foreach>
+            </trim>
+            <trim prefix="channelId =case id" suffix="end,">
+                <foreach collection="list" index="index" item="item" separator=" ">
+                    <if test="item.channelId != null ">
+                        when #{item.id} then #{item.channelId}
+                    </if>
+                    <if test="item.channelId == null ">
+                        when #{item.id} then daily_statistics_channel_product.channel_id
+                    </if>
+                </foreach>
+            </trim>
+            <trim prefix="plateformUserId =case id" suffix="end,">
+                <foreach collection="list" index="index" item="item" separator=" ">
+                    <if test="item.plateformUserId != null ">
+                        when #{item.id} then #{item.plateformUserId}
+                    </if>
+                    <if test="item.plateformUserId == null ">
+                        when #{item.id} then daily_statistics_channel_product.plateform_user_id
+                    </if>
+                </foreach>
+            </trim>
+            <trim prefix="uv =case id" suffix="end,">
+                <foreach collection="list" index="index" item="item" separator=" ">
+                    <if test="item.uv != null ">
+                        when #{item.id} then #{item.uv}
+                    </if>
+                    <if test="item.uv == null ">
+                        when #{item.id} then daily_statistics_channel_product.uv
+                    </if>
+                </foreach>
+            </trim>
+            <trim prefix="pv =case id" suffix="end,">
+                <foreach collection="list" index="index" item="item" separator=" ">
+                    <if test="item.pv != null ">
+                        when #{item.id} then #{item.pv}
+                    </if>
+                    <if test="item.pv == null ">
+                        when #{item.id} then daily_statistics_channel_product.pv
+                    </if>
+                </foreach>
+            </trim>
+            <trim prefix="registerNumber =case id" suffix="end,">
+                <foreach collection="list" index="index" item="item" separator=" ">
+                    <if test="item.registerNumber != null ">
+                        when #{item.id} then #{item.registerNumber}
+                    </if>
+                    <if test="item.registerNumber == null ">
+                        when #{item.id} then daily_statistics_channel_product.register_number
+                    </if>
+                </foreach>
+            </trim>
+            <trim prefix="registerNumberChannel =case id" suffix="end,">
+                <foreach collection="list" index="index" item="item" separator=" ">
+                    <if test="item.registerNumberChannel != null ">
+                        when #{item.id} then #{item.registerNumberChannel}
+                    </if>
+                    <if test="item.registerNumberChannel == null ">
+                        when #{item.id} then daily_statistics_channel_product.register_number_channel
+                    </if>
+                </foreach>
+            </trim>
+            <trim prefix="factor =case id" suffix="end,">
+                <foreach collection="list" index="index" item="item" separator=" ">
+                    <if test="item.factor != null ">
+                        when #{item.id} then #{item.factor}
+                    </if>
+                    <if test="item.factor == null ">
+                        when #{item.id} then daily_statistics_channel_product.factor
+                    </if>
+                </foreach>
+            </trim>
+            <trim prefix="pplicationNumber =case id" suffix="end,">
+                <foreach collection="list" index="index" item="item" separator=" ">
+                    <if test="item.pplicationNumber != null ">
+                        when #{item.id} then #{item.pplicationNumber}
+                    </if>
+                    <if test="item.pplicationNumber == null ">
+                        when #{item.id} then daily_statistics_channel_product.pplication_number
+                    </if>
+                </foreach>
+            </trim>
+            <trim prefix="sumChannelCost =case id" suffix="end,">
+                <foreach collection="list" index="index" item="item" separator=" ">
+                    <if test="item.sumChannelCost != null ">
+                        when #{item.id} then #{item.sumChannelCost}
+                    </if>
+                    <if test="item.sumChannelCost == null ">
+                        when #{item.id} then daily_statistics_channel_product.sum_channel_cost
+                    </if>
+                </foreach>
+            </trim>
+            <trim prefix="loanNumberChannel =case id" suffix="end,">
+                <foreach collection="list" index="index" item="item" separator=" ">
+                    <if test="item.loanNumberChannel != null ">
+                        when #{item.id} then #{item.loanNumberChannel}
+                    </if>
+                    <if test="item.loanNumberChannel == null ">
+                        when #{item.id} then daily_statistics_channel_product.loan_number_channel
+                    </if>
+                </foreach>
+            </trim>
+            <trim prefix="createTime =case id" suffix="end,">
+                <foreach collection="list" index="index" item="item" separator=" ">
+                    <if test="item.createTime != null ">
+                        when #{item.id} then #{item.createTime}
+                    </if>
+                    <if test="item.createTime == null ">
+                        when #{item.id} then daily_statistics_channel_product.create_time
+                    </if>
+                </foreach>
+            </trim>
+            <trim prefix="updateTime =case id" suffix="end,">
+                <foreach collection="list" index="index" item="item" separator=" ">
+                    <if test="item.updateTime != null ">
+                        when #{item.id} then #{item.updateTime}
+                    </if>
+                    <if test="item.updateTime == null ">
+                        when #{item.id} then daily_statistics_channel_product.update_time
+                    </if>
+                </foreach>
+            </trim>
+        </trim>
+        where id in
+        <foreach close=")" collection="list" index="index" item="item" open="(" separator=",">
+            #{item.id}
+        </foreach>
+    </update>
+    <select id="findParams" resultType="com.summer.pojo.vo.DailyStatisticsChannelProductVo" parameterType="map">
+        SELECT
+        dsc.uv as uv,
+        dsc.pv as pv,
+        dsc.register_number as registerNumber,
+        dsc.register_number_channel as registerNumberChannel,
+        dsc.pplication_number as pplicationNumber,
+        IFNULL(Round(dsc.price/100,2), Round(pc.price/100,2)) as price,
+        dsc.loan_number_channel as loanNumberChannel,
+        pu.user_name as plateformUserName,
+        pc.channel_name as channelName,
+        DATE_FORMAT(dsc.report_time,'%Y-%m-%d') as reportTime,
+        IFNULL(round(dsc.register_number/dsc.uv,4)*100,0) as uvConversion,
+        IFNULL(round(dsc.pplication_number/dsc.register_number,4)*100,0) as pplicationConversion,
+        IFNULL(round(dsc.loan_number_channel/dsc.register_number,4)*100,0) as loanConversion,
+        IFNULL(dsc.cooperation_mode,pc.cooperation_mode) as cooperationMode,
+        pc.status as status
+        FROM daily_statistics_channel_product as dsc
+        LEFT JOIN platform_user as pu on dsc.plateform_user_id=pu.id
+        LEFT JOIN plateform_channel as pc on pc.id=dsc.channel_id
+        <where>
+            <if test="channelName != null and channelName != ''">
+                pc.channel_name =#{channelName,jdbcType=VARCHAR}
+            </if>
+            <if test="userId != null">
+                and pu.id = #{userId}
+            </if>
+
+            <if test="plateformUserId != null">
+                and dsc.plateform_user_id =#{plateformUserId}
+            </if>
+
+            <if test="startTime != null and startTime != ''">
+                <![CDATA[    and DATE_FORMAT(dsc.report_time,'%Y-%m-%d') >= #{startTime}   ]]>
+            </if>
+            <if test="endTime != null and endTime != ''">
+                <![CDATA[    and DATE_FORMAT(dsc.report_time,'%Y-%m-%d') <= #{endTime}   ]]>
+            </if>
+            <if test="status != null and status != ''">
+                and pc.status =#{status}
+            </if>
+
+        </where>
+        group by dsc.report_time,pc.channel_name ORDER BY dsc.report_time desc ,pc.channel_name desc
+    </select>
+
+    <select id="selectByParams" parameterType="java.util.Map" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from daily_statistics_channel_product
+        <where>
+            <if test="nowTime != null">
+                <![CDATA[ DATE_FORMAT(report_time,'%Y-%m-%d') =DATE_FORMAT( #{nowTime},'%Y-%m-%d')  ]]>
+            </if>
+            <if test="channelId !=  null">
+                and channel_id = #{channelId}
+            </if>
+        </where>
+        ORDER BY id desc limit 1
+    </select>
+
+</mapper>

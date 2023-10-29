@@ -1,0 +1,494 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.summer.dao.mapper.PhoneDeviceInfoDAO">
+    <resultMap id="BaseResultMap" type="com.summer.dao.entity.PhoneDeviceInfo">
+        <id column="id" jdbcType="INTEGER" property="id"/>
+        <result column="user_id" jdbcType="INTEGER" property="userId"/>
+        <result column="phone" jdbcType="VARCHAR" property="phone"/>
+        <result column="orderId" jdbcType="VARCHAR" property="orderid"/>
+        <result column="merchCode" jdbcType="VARCHAR" property="merchcode"/>
+        <result column="tranTime" jdbcType="TIMESTAMP" property="trantime"/>
+        <result column="timestamp" jdbcType="TIMESTAMP" property="timestamp"/>
+        <result column="stepId" jdbcType="TINYINT" property="stepid"/>
+        <result column="sign" jdbcType="VARCHAR" property="sign"/>
+        <result column="create_time" jdbcType="TIMESTAMP" property="createTime"/>
+        <result column="update_time" jdbcType="TIMESTAMP" property="updateTime"/>
+    </resultMap>
+    <resultMap extends="BaseResultMap" id="ResultMapWithBLOBs" type="com.summer.dao.entity.PhoneDeviceInfo">
+        <result column="phone_device_data" property="phoneDeviceDataStr"/>
+    </resultMap>
+    <sql id="Base_Column_List">
+    id, user_id, phone, orderId, merchCode, tranTime, timestamp, stepId, sign, create_time,
+    update_time
+  </sql>
+    <sql id="Blob_Column_List">
+
+    phone_device_data
+  </sql>
+    <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="ResultMapWithBLOBs">
+        select
+        <include refid="Base_Column_List"/>
+        ,
+        <include refid="Blob_Column_List"/>
+        from phone_device_info
+        where id = #{id,jdbcType=INTEGER}
+    </select>
+    <select id="selectSimple" parameterType="java.util.Map" resultMap="ResultMapWithBLOBs">
+        select
+        <include refid="Base_Column_List"/>
+        ,
+        <include refid="Blob_Column_List"/>
+        from phone_device_info
+        <where>
+            <if test="phone != null ">
+                and phone = #{phone}
+            </if>
+
+        </where>
+        ORDER BY id DESC
+    </select>
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from phone_device_info
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+    <insert id="insert" parameterType="com.summer.dao.entity.PhoneDeviceInfo">
+    insert into phone_device_info (id, user_id, phone,
+      orderId, merchCode, tranTime,
+      timestamp, stepId, sign,
+      create_time, update_time, phone_device_data
+      )
+    values (#{id,jdbcType=INTEGER}, #{userId,jdbcType=INTEGER}, #{phone,jdbcType=VARCHAR},
+      #{orderid,jdbcType=VARCHAR}, #{merchcode,jdbcType=VARCHAR}, #{trantime,jdbcType=TIMESTAMP},
+      #{timestamp,jdbcType=TIMESTAMP}, #{stepid,jdbcType=TINYINT}, #{sign,jdbcType=VARCHAR},
+      #{createTime,jdbcType=TIMESTAMP}, NOW(), COMPRESS(#{phoneDeviceDataStr})
+      )
+  </insert>
+    <insert id="insertSelective" parameterType="com.summer.dao.entity.PhoneDeviceInfo">
+        insert into phone_device_info
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                id,
+            </if>
+            <if test="userId != null">
+                user_id,
+            </if>
+            <if test="phone != null">
+                phone,
+            </if>
+            <if test="orderid != null">
+                orderId,
+            </if>
+            <if test="merchcode != null">
+                merchCode,
+            </if>
+            <if test="trantime != null">
+                tranTime,
+            </if>
+            <if test="timestamp != null">
+                timestamp,
+            </if>
+            <if test="stepid != null">
+                stepId,
+            </if>
+            <if test="sign != null">
+                sign,
+            </if>
+            <if test="createTime != null">
+                create_time,
+            </if>
+            <if test="updateTime != null">
+                update_time,
+            </if>
+            <if test="phoneDeviceDataStr != null">
+                phone_device_data,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                #{id,jdbcType=INTEGER},
+            </if>
+            <if test="userId != null">
+                #{userId,jdbcType=INTEGER},
+            </if>
+            <if test="phone != null">
+                #{phone,jdbcType=VARCHAR},
+            </if>
+            <if test="orderid != null">
+                #{orderid,jdbcType=VARCHAR},
+            </if>
+            <if test="merchcode != null">
+                #{merchcode,jdbcType=VARCHAR},
+            </if>
+            <if test="trantime != null">
+                #{trantime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="timestamp != null">
+                #{timestamp,jdbcType=TIMESTAMP},
+            </if>
+            <if test="stepid != null">
+                #{stepid,jdbcType=TINYINT},
+            </if>
+            <if test="sign != null">
+                #{sign,jdbcType=VARCHAR},
+            </if>
+            <if test="createTime != null">
+                #{createTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="updateTime != null">
+                #{updateTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="phoneDeviceDataStr != null">
+                #{phoneDeviceDataStr},
+            </if>
+        </trim>
+    </insert>
+    <insert id="insertBatch" parameterType="java.util.List">
+        insert into phone_device_info (id, user_id, phone,
+        orderId, merchCode, tranTime,
+        timestamp, stepId, sign,
+        create_time, update_time, phone_device_data
+        )
+        values
+        <foreach collection="list" index="index" item="item" separator=",">
+            (#{item.id,jdbcType=INTEGER}, #{item.userId,jdbcType=INTEGER}, #{item.phone,jdbcType=VARCHAR},
+            #{item.orderid,jdbcType=VARCHAR}, #{item.merchcode,jdbcType=VARCHAR}, #{item.trantime,jdbcType=TIMESTAMP},
+            #{item.timestamp,jdbcType=TIMESTAMP}, #{item.stepid,jdbcType=TINYINT}, #{item.sign,jdbcType=VARCHAR},
+            #{item.createTime,jdbcType=TIMESTAMP},
+            #{item.updateTime,jdbcType=TIMESTAMP},COMPRESS(#{item.phoneDeviceDataStr})
+            )
+        </foreach>
+    </insert>
+    <insert id="insertBatchSelective" parameterType="java.util.List">
+        insert into phone_device_info
+        (id, user_id, phone, orderId, merchCode, tranTime, timestamp, stepId, sign, create_time,
+        update_time, phone_device_data)
+        values
+        <foreach collection="list" index="index" item="item" separator=",">
+            <trim prefix="(" suffix=")" suffixOverrides=",">
+                <if test="item.id != null">
+                    #{item.id,jdbcType=INTEGER},
+                </if>
+                <if test="item.id == null">
+                    NULL,
+                </if>
+                <if test="item.userId != null">
+                    #{item.userId,jdbcType=INTEGER},
+                </if>
+                <if test="item.userId == null">
+                    NULL,
+                </if>
+                <if test="item.phone != null">
+                    #{item.phone,jdbcType=VARCHAR},
+                </if>
+                <if test="item.phone == null">
+                    NULL,
+                </if>
+                <if test="item.orderid != null">
+                    #{item.orderid,jdbcType=VARCHAR},
+                </if>
+                <if test="item.orderid == null">
+                    NULL,
+                </if>
+                <if test="item.merchcode != null">
+                    #{item.merchcode,jdbcType=VARCHAR},
+                </if>
+                <if test="item.merchcode == null">
+                    NULL,
+                </if>
+                <if test="item.trantime != null">
+                    #{item.trantime,jdbcType=TIMESTAMP},
+                </if>
+                <if test="item.trantime == null">
+                    NULL,
+                </if>
+                <if test="item.timestamp != null">
+                    #{item.timestamp,jdbcType=TIMESTAMP},
+                </if>
+                <if test="item.timestamp == null">
+                    NULL,
+                </if>
+                <if test="item.stepid != null">
+                    #{item.stepid,jdbcType=TINYINT},
+                </if>
+                <if test="item.stepid == null">
+                    NULL,
+                </if>
+                <if test="item.sign != null">
+                    #{item.sign,jdbcType=VARCHAR},
+                </if>
+                <if test="item.sign == null">
+                    NULL,
+                </if>
+                <if test="item.createTime != null">
+                    #{item.createTime,jdbcType=TIMESTAMP},
+                </if>
+                <if test="item.createTime == null">
+                    NULL,
+                </if>
+                <if test="item.updateTime != null">
+                    #{item.updateTime,jdbcType=TIMESTAMP},
+                </if>
+                <if test="item.updateTime == null">
+                    NULL,
+                </if>
+                <if test="item.phoneDeviceDataStr != null">
+                    COMPRESS(#{item.phoneDeviceDataStr}),
+                </if>
+                <if test="item.phoneDeviceDataStr == null">
+                    NULL,
+                </if>
+            </trim>
+        </foreach>
+    </insert>
+    <update id="updateByPrimaryKeySelective" parameterType="com.summer.dao.entity.PhoneDeviceInfo">
+        update phone_device_info
+        <set>
+            <if test="userId != null">
+                user_id = #{userId,jdbcType=INTEGER},
+            </if>
+            <if test="phone != null">
+                phone = #{phone,jdbcType=VARCHAR},
+            </if>
+            <if test="orderid != null">
+                orderId = #{orderid,jdbcType=VARCHAR},
+            </if>
+            <if test="merchcode != null">
+                merchCode = #{merchcode,jdbcType=VARCHAR},
+            </if>
+            <if test="trantime != null">
+                tranTime = #{trantime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="timestamp != null">
+                timestamp = #{timestamp,jdbcType=TIMESTAMP},
+            </if>
+            <if test="stepid != null">
+                stepId = #{stepid,jdbcType=TINYINT},
+            </if>
+            <if test="sign != null">
+                sign = #{sign,jdbcType=VARCHAR},
+            </if>
+            <if test="createTime != null">
+                create_time = #{createTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="updateTime != null">
+                update_time = #{updateTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="phoneDeviceDataStr != null">
+                phone_device_data = #{phoneDeviceDataStr},
+            </if>
+        </set>
+        where id = #{id,jdbcType=INTEGER}
+    </update>
+    <update id="updateByPrimaryKeyWithBLOBs" parameterType="com.summer.dao.entity.PhoneDeviceInfo">
+    update phone_device_info
+    set user_id = #{userId,jdbcType=INTEGER},
+      phone = #{phone,jdbcType=VARCHAR},
+      orderId = #{orderid,jdbcType=VARCHAR},
+      merchCode = #{merchcode,jdbcType=VARCHAR},
+      tranTime = #{trantime,jdbcType=TIMESTAMP},
+      timestamp = #{timestamp,jdbcType=TIMESTAMP},
+      stepId = #{stepid,jdbcType=TINYINT},
+      sign = #{sign,jdbcType=VARCHAR},
+      create_time = #{createTime,jdbcType=TIMESTAMP},
+      update_time = #{updateTime,jdbcType=TIMESTAMP},
+      phone_device_data = #{phoneDeviceDataStr}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+    <update id="updateByPrimaryKey" parameterType="com.summer.dao.entity.PhoneDeviceInfo">
+    update phone_device_info
+    set user_id = #{userId,jdbcType=INTEGER},
+      phone = #{phone,jdbcType=VARCHAR},
+      orderId = #{orderid,jdbcType=VARCHAR},
+      merchCode = #{merchcode,jdbcType=VARCHAR},
+      tranTime = #{trantime,jdbcType=TIMESTAMP},
+      timestamp = #{timestamp,jdbcType=TIMESTAMP},
+      stepId = #{stepid,jdbcType=TINYINT},
+      sign = #{sign,jdbcType=VARCHAR},
+      create_time = #{createTime,jdbcType=TIMESTAMP},
+      update_time = #{updateTime,jdbcType=TIMESTAMP}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+    <update id="updateBatchByPrimaryKey" parameterType="java.util.List">
+        update phone_device_info
+        <trim prefix="set" suffixOverrides=",">
+            <trim prefix="userId =case id" suffix="end,">
+                <foreach collection="list" index="index" item="item" separator=" ">
+                    when #{item.id} then #{item.userId}
+                </foreach>
+            </trim>
+            <trim prefix="phone =case id" suffix="end,">
+                <foreach collection="list" index="index" item="item" separator=" ">
+                    when #{item.id} then #{item.phone}
+                </foreach>
+            </trim>
+            <trim prefix="orderid =case id" suffix="end,">
+                <foreach collection="list" index="index" item="item" separator=" ">
+                    when #{item.id} then #{item.orderid}
+                </foreach>
+            </trim>
+            <trim prefix="merchcode =case id" suffix="end,">
+                <foreach collection="list" index="index" item="item" separator=" ">
+                    when #{item.id} then #{item.merchcode}
+                </foreach>
+            </trim>
+            <trim prefix="trantime =case id" suffix="end,">
+                <foreach collection="list" index="index" item="item" separator=" ">
+                    when #{item.id} then #{item.trantime}
+                </foreach>
+            </trim>
+            <trim prefix="timestamp =case id" suffix="end,">
+                <foreach collection="list" index="index" item="item" separator=" ">
+                    when #{item.id} then #{item.timestamp}
+                </foreach>
+            </trim>
+            <trim prefix="stepid =case id" suffix="end,">
+                <foreach collection="list" index="index" item="item" separator=" ">
+                    when #{item.id} then #{item.stepid}
+                </foreach>
+            </trim>
+            <trim prefix="sign =case id" suffix="end,">
+                <foreach collection="list" index="index" item="item" separator=" ">
+                    when #{item.id} then #{item.sign}
+                </foreach>
+            </trim>
+            <trim prefix="createTime =case id" suffix="end,">
+                <foreach collection="list" index="index" item="item" separator=" ">
+                    when #{item.id} then #{item.createTime}
+                </foreach>
+            </trim>
+            <trim prefix="updateTime =case id" suffix="end,">
+                <foreach collection="list" index="index" item="item" separator=" ">
+                    when #{item.id} then #{item.updateTime}
+                </foreach>
+            </trim>
+            <trim prefix="phoneDeviceData =case id" suffix="end,">
+                <foreach collection="list" index="index" item="item" separator=" ">
+                    when #{item.id} then #{item.phoneDeviceData}
+                </foreach>
+            </trim>
+        </trim>
+        where id in
+        <foreach close=")" collection="list" index="index" item="item" open="(" separator=",">
+            #{item.id}
+        </foreach>
+    </update>
+    <update id="updateBatchByPrimaryKeySelective" parameterType="java.util.List">
+        update phone_device_info
+        <trim prefix="set" suffixOverrides=",">
+            <trim prefix="userId =case id" suffix="end,">
+                <foreach collection="list" index="index" item="item" separator=" ">
+                    <if test="item.userId != null ">
+                        when #{item.id} then #{item.userId}
+                    </if>
+                    <if test="item.userId == null ">
+                        when #{item.id} then phone_device_info.user_id
+                    </if>
+                </foreach>
+            </trim>
+            <trim prefix="phone =case id" suffix="end,">
+                <foreach collection="list" index="index" item="item" separator=" ">
+                    <if test="item.phone != null ">
+                        when #{item.id} then #{item.phone}
+                    </if>
+                    <if test="item.phone == null ">
+                        when #{item.id} then phone_device_info.phone
+                    </if>
+                </foreach>
+            </trim>
+            <trim prefix="orderid =case id" suffix="end,">
+                <foreach collection="list" index="index" item="item" separator=" ">
+                    <if test="item.orderid != null ">
+                        when #{item.id} then #{item.orderid}
+                    </if>
+                    <if test="item.orderid == null ">
+                        when #{item.id} then phone_device_info.orderId
+                    </if>
+                </foreach>
+            </trim>
+            <trim prefix="merchcode =case id" suffix="end,">
+                <foreach collection="list" index="index" item="item" separator=" ">
+                    <if test="item.merchcode != null ">
+                        when #{item.id} then #{item.merchcode}
+                    </if>
+                    <if test="item.merchcode == null ">
+                        when #{item.id} then phone_device_info.merchCode
+                    </if>
+                </foreach>
+            </trim>
+            <trim prefix="trantime =case id" suffix="end,">
+                <foreach collection="list" index="index" item="item" separator=" ">
+                    <if test="item.trantime != null ">
+                        when #{item.id} then #{item.trantime}
+                    </if>
+                    <if test="item.trantime == null ">
+                        when #{item.id} then phone_device_info.tranTime
+                    </if>
+                </foreach>
+            </trim>
+            <trim prefix="timestamp =case id" suffix="end,">
+                <foreach collection="list" index="index" item="item" separator=" ">
+                    <if test="item.timestamp != null ">
+                        when #{item.id} then #{item.timestamp}
+                    </if>
+                    <if test="item.timestamp == null ">
+                        when #{item.id} then phone_device_info.timestamp
+                    </if>
+                </foreach>
+            </trim>
+            <trim prefix="stepid =case id" suffix="end,">
+                <foreach collection="list" index="index" item="item" separator=" ">
+                    <if test="item.stepid != null ">
+                        when #{item.id} then #{item.stepid}
+                    </if>
+                    <if test="item.stepid == null ">
+                        when #{item.id} then phone_device_info.stepId
+                    </if>
+                </foreach>
+            </trim>
+            <trim prefix="sign =case id" suffix="end,">
+                <foreach collection="list" index="index" item="item" separator=" ">
+                    <if test="item.sign != null ">
+                        when #{item.id} then #{item.sign}
+                    </if>
+                    <if test="item.sign == null ">
+                        when #{item.id} then phone_device_info.sign
+                    </if>
+                </foreach>
+            </trim>
+            <trim prefix="createTime =case id" suffix="end,">
+                <foreach collection="list" index="index" item="item" separator=" ">
+                    <if test="item.createTime != null ">
+                        when #{item.id} then #{item.createTime}
+                    </if>
+                    <if test="item.createTime == null ">
+                        when #{item.id} then phone_device_info.create_time
+                    </if>
+                </foreach>
+            </trim>
+            <trim prefix="updateTime =case id" suffix="end,">
+                <foreach collection="list" index="index" item="item" separator=" ">
+                    <if test="item.updateTime != null ">
+                        when #{item.id} then #{item.updateTime}
+                    </if>
+                    <if test="item.updateTime == null ">
+                        when #{item.id} then phone_device_info.update_time
+                    </if>
+                </foreach>
+            </trim>
+            <trim prefix="phoneDeviceData =case id" suffix="end,">
+                <foreach collection="list" index="index" item="item" separator=" ">
+                    <if test="item.phoneDeviceData != null ">
+                        when #{item.id} then #{item.phoneDeviceData}
+                    </if>
+                    <if test="item.phoneDeviceData == null ">
+                        when #{item.id} then phone_device_info.phone_device_data
+                    </if>
+                </foreach>
+            </trim>
+        </trim>
+        where id in
+        <foreach close=")" collection="list" index="index" item="item" open="(" separator=",">
+            #{item.id}
+        </foreach>
+    </update>
+</mapper>
